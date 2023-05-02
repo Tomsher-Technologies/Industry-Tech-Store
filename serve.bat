@@ -1,2 +1,2 @@
 @REM start "" php artisan schedule:work
-php artisan serve --host=aldouri.local --port=8000
+php artisan serve --host=ints.local --port=8008
