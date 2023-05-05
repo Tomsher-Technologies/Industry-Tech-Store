@@ -17,11 +17,11 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $sort_search =null;
+        $sort_search = null;
         $brands = Brand::orderBy('name', 'asc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $brands = $brands->where('name', 'like', '%'.$sort_search.'%');
+            $brands = $brands->where('name', 'like', '%' . $sort_search . '%');
         }
         $brands = $brands->paginate(15);
         return view('backend.product.brands.index', compact('brands', 'sort_search'));
@@ -34,6 +34,7 @@ class BrandController extends Controller
      */
     public function create()
     {
+        return view('backend.product.brands.create');
     }
 
     /**
@@ -44,27 +45,33 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:brands,slug',
+            'logo' => 'required',
+        ]);
+
         $brand = new Brand;
         $brand->name = $request->name;
-        $brand->meta_title = $request->meta_title;
-        $brand->meta_description = $request->meta_description;
-        if ($request->slug != null) {
-            $brand->slug = str_replace(' ', '-', $request->slug);
-        }
-        else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
-        }
+
+        $brand->meta_title = $request->meta_title ?? $request->name;
+        $brand->meta_description = $request->meta_description ?? $request->name;
+        $brand->meta_keywords  = $request->meta_keywords;
+
+        $brand->og_title = $request->og_title ?? $request->meta_title;
+        $brand->og_description = $request->og_description ?? $request->meta_description;
+
+        $brand->twitter_title = $request->twitter_title ?? $request->meta_title;
+        $brand->twitter_description = $request->twitter_description ?? $request->meta_description;
+
+        $brand->slug = $request->slug;
+        $brand->top = $request->top;
 
         $brand->logo = $request->logo;
         $brand->save();
 
-        $brand_translation = BrandTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'brand_id' => $brand->id]);
-        $brand_translation->name = $request->name;
-        $brand_translation->save();
-
         flash(translate('Brand has been inserted successfully'))->success();
         return redirect()->route('brands.index');
-
     }
 
     /**
@@ -84,11 +91,9 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, Brand $brand)
     {
-        $lang   = $request->lang;
-        $brand  = Brand::findOrFail($id);
-        return view('backend.product.brands.edit', compact('brand','lang'));
+        return view('backend.product.brands.edit', compact('brand'));
     }
 
     /**
@@ -100,28 +105,33 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:brands,slug,' . $id,
+            'logo' => 'required',
+        ]);
+
         $brand = Brand::findOrFail($id);
-        if($request->lang == env("DEFAULT_LANGUAGE")){
-            $brand->name = $request->name;
-        }
-        $brand->meta_title = $request->meta_title;
-        $brand->meta_description = $request->meta_description;
-        if ($request->slug != null) {
-            $brand->slug = strtolower($request->slug);
-        }
-        else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
-        }
+        $brand->name = $request->name;
+        
+        $brand->meta_title = $request->meta_title ?? $request->name;
+        $brand->meta_description = $request->meta_description ?? $request->name;
+        $brand->meta_keywords  = $request->meta_keywords;
+
+        $brand->og_title = $request->og_title ?? $request->meta_title;
+        $brand->og_description = $request->og_description ?? $request->meta_description;
+
+        $brand->twitter_title = $request->twitter_title ?? $request->meta_title;
+        $brand->twitter_description = $request->twitter_description ?? $request->meta_description;
+        
+        $brand->slug = $request->slug;
         $brand->logo = $request->logo;
+        $brand->top = $request->top;
         $brand->save();
 
-        $brand_translation = BrandTranslation::firstOrNew(['lang' => $request->lang, 'brand_id' => $brand->id]);
-        $brand_translation->name = $request->name;
-        $brand_translation->save();
-
         flash(translate('Brand has been updated successfully'))->success();
-        return back();
-
+        return redirect()->route('brands.index');
     }
 
     /**
@@ -132,15 +142,13 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        $brand = Brand::findOrFail($id);
-        Product::where('brand_id', $brand->id)->delete();
-        foreach ($brand->brand_translations as $key => $brand_translation) {
-            $brand_translation->delete();
-        }
+        Product::where('brand_id', $id)->update([
+            'brand_id' => 0
+        ]);
+
         Brand::destroy($id);
 
         flash(translate('Brand has been deleted successfully'))->success();
         return redirect()->route('brands.index');
-
     }
 }

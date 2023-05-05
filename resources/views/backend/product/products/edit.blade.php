@@ -13,16 +13,6 @@
                 <input type="hidden" name="lang" value="{{ $lang }}">
                 @csrf
                 <div class="card">
-                    <ul class="nav nav-tabs nav-fill border-light">
-                        @foreach (\App\Models\Language::all() as $key => $language)
-                        <li class="nav-item">
-                            <a class="nav-link text-reset @if ($language->code == $lang) active @else bg-soft-dark border-light border-left-0 @endif py-3" href="{{ route('products.admin.edit', ['id'=>$product->id, 'lang'=> $language->code] ) }}">
-                                <img src="{{ static_asset('assets/img/flags/'.$language->code.'.png') }}" height="11" class="mr-1">
-                                <span>{{$language->name}}</span>
-                            </a>
-                        </li>
-                        @endforeach
-                    </ul>
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-lg-3 col-from-label">{{translate('Product Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
@@ -193,28 +183,7 @@
                         <h5 class="mb-0 h6">{{translate('Product Variation')}}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="form-group row gutters-5">
-                            <div class="col-lg-3">
-                                <input type="text" class="form-control" value="{{translate('Colors')}}" disabled>
-                            </div>
-                            <div class="col-lg-8">
-                                <select class="form-control aiz-selectpicker" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple>
-                                    @foreach (\App\Models\Color::orderBy('name', 'asc')->get() as $key => $color)
-                                    <option
-                                        value="{{ $color->code }}"
-                                        data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>"
-                                        <?php if (in_array($color->code, json_decode($product->colors))) echo 'selected' ?>
-                                        ></option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-1">
-                                <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input value="1" type="checkbox" name="colors_active" <?php if (count(json_decode($product->colors)) > 0) echo "checked"; ?> >
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
+                        
 
                         <div class="form-group row gutters-5">
                             <div class="col-lg-3">

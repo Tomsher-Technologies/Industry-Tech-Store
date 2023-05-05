@@ -13,6 +13,7 @@ use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Color;
 use App\Models\FlashDeal;
+use App\Models\ProductSeo;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
@@ -24,78 +25,7 @@ use Str;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function admin_products(Request $request)
-    {
-        //CoreComponentRepository::instantiateShopRepository();
 
-        $type = 'In House';
-        $col_name = null;
-        $query = null;
-        $sort_search = null;
-
-        $products = Product::where('added_by', 'admin')->where('auction_product', 0)->where('wholesale_product', 0);
-
-        if ($request->type != null) {
-            $var = explode(",", $request->type);
-            $col_name = $var[0];
-            $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
-            $sort_type = $request->type;
-        }
-        if ($request->search != null) {
-            $sort_search = $request->search;
-            $products = $products
-                ->where('name', 'like', '%' . $sort_search . '%')
-                ->orWhereHas('stocks', function($q) use ($sort_search){
-                        $q->where('sku', 'like', '%'.$sort_search.'%');
-                    });
-            
-        }
-
-        $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
-
-        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'sort_search'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function seller_products(Request $request)
-    {
-        $col_name = null;
-        $query = null;
-        $seller_id = null;
-        $sort_search = null;
-        $products = Product::where('added_by', 'seller')->where('auction_product', 0)->where('wholesale_product', 0);
-        if ($request->has('user_id') && $request->user_id != null) {
-            $products = $products->where('user_id', $request->user_id);
-            $seller_id = $request->user_id;
-        }
-        if ($request->search != null) {
-            $products = $products
-                ->where('name', 'like', '%' . $request->search . '%');
-            $sort_search = $request->search;
-        }
-        if ($request->type != null) {
-            $var = explode(",", $request->type);
-            $col_name = $var[0];
-            $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
-            $sort_type = $request->type;
-        }
-
-        $products = $products->where('digital', 0)->orderBy('created_at', 'desc')->paginate(15);
-        $type = 'Seller';
-
-        return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
-    }
 
     public function all_products(Request $request)
     {
@@ -112,10 +42,9 @@ class ProductController extends Controller
             $sort_search = $request->search;
             $products = $products
                 ->where('name', 'like', '%' . $sort_search . '%')
-                ->orWhereHas('stocks', function($q) use ($sort_search){
-                        $q->where('sku', 'like', '%'.$sort_search.'%');
-                    });
-            
+                ->orWhereHas('stocks', function ($q) use ($sort_search) {
+                    $q->where('sku', 'like', '%' . $sort_search . '%');
+                });
         }
         if ($request->type != null) {
             $var = explode(",", $request->type);
@@ -139,8 +68,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //CoreComponentRepository::initializeCache();
-
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
@@ -170,6 +97,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+         // dd($request);
+
         $product = new Product;
         $product->name = $request->name;
         $product->added_by = $request->added_by;
@@ -222,48 +152,26 @@ class ProductController extends Controller
             $product->discount_end_date   = strtotime($date_var[1]);
         }
 
-        $product->shipping_type = $request->shipping_type;
-        $product->est_shipping_days  = $request->est_shipping_days;
+        // $product->meta_title = $request->meta_title;
+        // $product->meta_description = $request->meta_description;
 
-        if (addon_is_activated('club_point')) {
-            if ($request->earn_point) {
-                $product->earn_point = $request->earn_point;
-            }
-        }
+        // if ($request->has('meta_img')) {
+        //     $product->meta_img = $request->meta_img;
+        // } else {
+        //     $product->meta_img = $product->thumbnail_img;
+        // }
 
-        if ($request->has('shipping_type')) {
-            if ($request->shipping_type == 'free') {
-                $product->shipping_cost = 0;
-            } elseif ($request->shipping_type == 'flat_rate') {
-                $product->shipping_cost = $request->flat_shipping_cost;
-            } elseif ($request->shipping_type == 'product_wise') {
-                $product->shipping_cost = json_encode($request->shipping_cost);
-            }
-        }
-        if ($request->has('is_quantity_multiplied')) {
-            $product->is_quantity_multiplied = 1;
-        }
+        // if ($product->meta_title == null) {
+        //     $product->meta_title = $product->name;
+        // }
 
-        $product->meta_title = $request->meta_title;
-        $product->meta_description = $request->meta_description;
+        // if ($product->meta_description == null) {
+        //     $product->meta_description = strip_tags($product->description);
+        // }
 
-        if ($request->has('meta_img')) {
-            $product->meta_img = $request->meta_img;
-        } else {
-            $product->meta_img = $product->thumbnail_img;
-        }
-
-        if ($product->meta_title == null) {
-            $product->meta_title = $product->name;
-        }
-
-        if ($product->meta_description == null) {
-            $product->meta_description = strip_tags($product->description);
-        }
-
-        if ($product->meta_img == null) {
-            $product->meta_img = $product->thumbnail_img;
-        }
+        // if ($product->meta_img == null) {
+        //     $product->meta_img = $product->thumbnail_img;
+        // }
 
         if ($request->hasFile('pdf')) {
             $product->pdf = $request->pdf->store('uploads/products/pdf');
@@ -276,12 +184,6 @@ class ProductController extends Controller
 
         $product->slug = $slug;
 
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $product->colors = json_encode($request->colors);
-        } else {
-            $colors = array();
-            $product->colors = json_encode($colors);
-        }
 
         $choice_options = array();
 
@@ -316,43 +218,58 @@ class ProductController extends Controller
             $product->published = 0;
         }
 
-        if ($request->has('cash_on_delivery')) {
-            $product->cash_on_delivery = 1;
-        }
+
         if ($request->has('featured')) {
             $product->featured = 1;
         }
+
         if ($request->has('todays_deal')) {
             $product->todays_deal = 1;
         }
-        $product->cash_on_delivery = 0;
-        if ($request->cash_on_delivery) {
-            $product->cash_on_delivery = 1;
+
+        if ($request->has('return_refund')) {
+            $product->return_refund = 1;
         }
+
         //$variations = array();
 
         $product->save();
 
-        //VAT & Tax
-        if ($request->tax_id) {
-            foreach ($request->tax_id as $key => $val) {
-                $product_tax = new ProductTax;
-                $product_tax->tax_id = $val;
-                $product_tax->product_id = $product->id;
-                $product_tax->tax = $request->tax[$key];
-                $product_tax->tax_type = $request->tax_type[$key];
-                $product_tax->save();
-            }
+        
+        $seo = ProductSeo::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
+
+        $seo->meta_title        = $request->meta_title;
+        $seo->meta_description  = $request->meta_description;
+        $seo->meta_keywords = $request->meta_keywords;
+
+        $seo->og_title        = $request->og_title;
+        $seo->og_description  = $request->og_description;
+
+        $seo->twitter_title        = $request->twitter_title;
+        $seo->twitter_description  = $request->twitter_description;
+
+        if ($seo->meta_title == null) {
+            $seo->meta_title = $product->name;
         }
-        //Flash Deal
-        if ($request->flash_deal_id) {
-            $flash_deal = FlashDeal::findOrFail($request->flash_deal_id);
-            $product->discount = $request->flash_discount;
-            $product->discount_type = $request->flash_discount_type;
-            $product->discount_start_date = $flash_deal->start_date;
-            $product->discount_end_date   = $flash_deal->end_date;
-            $product->save();
+        if ($seo->og_title == null) {
+            $seo->og_title = $product->name;
         }
+        if ($seo->twitter_title == null) {
+            $seo->twitter_title = $product->name;
+        }
+
+        $seo_dec = strip_tags($product->description);
+        if ($seo->meta_description == null) {
+            $seo->meta_description = $seo_dec;
+        }
+        if ($seo->og_description == null) {
+            $seo->og_description = $seo_dec;
+        }
+        if ($seo->twitter_description == null) {
+            $seo->twitter_description = $seo_dec;
+        }
+
+        $seo->save();
 
         //combinations start
         $options = array();
@@ -417,27 +334,18 @@ class ProductController extends Controller
         $product->save();
 
         // Product Translations
-        $product_translation = ProductTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'product_id' => $product->id]);
-        $product_translation->name = $request->name;
-        $product_translation->unit = $request->unit;
-        $product_translation->description = $request->description;
-        $product_translation->save();
+        // $product_translation = ProductTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'product_id' => $product->id]);
+        // $product_translation->name = $request->name;
+        // $product_translation->unit = $request->unit;
+        // $product_translation->description = $request->description;
+        // $product_translation->save();
 
         flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
-            return redirect()->route('products.admin');
-        } else {
-            if (addon_is_activated('seller_subscription')) {
-                $seller = Auth::user()->seller;
-                $seller->remaining_uploads -= 1;
-                $seller->save();
-            }
-            return redirect()->route('seller.products');
-        }
+        return redirect()->route('products.all');
     }
 
     /**
@@ -494,7 +402,7 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-            
+
         return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
     }
 

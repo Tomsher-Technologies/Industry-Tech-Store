@@ -11,11 +11,16 @@
   |
  */
 
- use App\Http\Controllers\Admin\AbandonedCartController;
+use App\Http\Controllers\AddonController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Admin\AbandonedCartController;
+use App\Http\Controllers\Admin\Products\EnquiriesController;
 use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\CategoryController;
@@ -56,50 +61,65 @@ Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
 Route::get('/update/step2', [UpdateController::class, 'step2'])->name('update.step2');
 
-Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
-    //Update Routes
+Route::get('/' . env('ADMIN_PREFIX') , [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
 
+
+Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']], function () {
+    //Update Routes
     Route::resource('categories', CategoryController::class);
     Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::get('/categories/destroy/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::post('/categories/featured', [CategoryController::class, 'updateFeatured'])->name('categories.featured');
 
     Route::resource('brands', BrandController::class);
-    Route::get('/brands/edit/{id}', [BrandController::class, 'edit'])->name('brands.edit');
+    // Route::get('/brands/edit/{id}', [BrandController::class, 'edit'])->name('brands.edit');
     Route::get('/brands/destroy/{id}', [BrandController::class, 'destroy'])->name('brands.destroy');
 
-    Route::get('/products/admin', [ProductController::class, 'admin_products'])->name('products.admin');
-    Route::get('/products/seller', [ProductController::class, 'seller_products'])->name('products.seller');
+    // Route::get('/products/admin', [ProductController::class, 'admin_products'])->name('products.admin');
+    // Route::get('/products/seller', [ProductController::class, 'seller_products'])->name('products.seller');
     Route::get('/products/all', [ProductController::class, 'all_products'])->name('products.all');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::get('/products/admin/{id}/edit', [ProductController::class, 'admin_product_edit'])->name('products.admin.edit');
-    Route::get('/products/seller/{id}/edit', [ProductController::class, 'seller_product_edit'])->name('products.seller.edit');
+    Route::get('/products/admin/{id}/edit', [ProductController::class, 'admin_product_edit'])->name('products.edit');
+    // Route::get('/products/seller/{id}/edit', [ProductController::class, 'seller_product_edit'])->name('products.seller.edit');
     Route::post('/products/todays_deal', [ProductController::class, 'updateTodaysDeal'])->name('products.todays_deal');
     Route::post('/products/featured', [ProductController::class, 'updateFeatured'])->name('products.featured');
     Route::post('/products/approved', [ProductController::class, 'updateProductApproval'])->name('products.approved');
     Route::post('/products/get_products_by_subcategory', [ProductController::class, 'get_products_by_subcategory'])->name('products.get_products_by_subcategory');
     Route::post('/bulk-product-delete', [ProductController::class, 'bulk_product_delete'])->name('bulk-product-delete');
 
+    Route::post('/products/store/', [ProductController::class, 'store'])->name('products.store');
+    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::get('/products/destroy/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/duplicate/{id}', [ProductController::class, 'duplicate'])->name('products.duplicate');
+
+    Route::post('/products/slug_check', [ProductController::class, 'slug_check'])->name('products.slug_check');
+
+    Route::post('/products/sku_combination', [ProductController::class, 'sku_combination'])->name('products.sku_combination');
+    Route::post('/products/sku_combination_edit', [ProductController::class, 'sku_combination_edit'])->name('products.sku_combination_edit');
+    Route::post('/products/seller/featured', [ProductController::class, 'updateSellerFeatured'])->name('products.seller.featured');
+    Route::post('/products/published', [ProductController::class, 'updatePublished'])->name('products.published');
+    Route::post('/products/add-more-choice-option', [ProductController::class, 'add_more_choice_option'])->name('products.add-more-choice-option');
 
 
-    Route::resource('sellers', SellerController::class);
-    Route::get('sellers_ban/{id}', [SellerController::class, 'ban'])->name('sellers.ban');
-    Route::get('/sellers/destroy/{id}', [SellerController::class, 'destroy'])->name('sellers.destroy');
-    Route::post('/bulk-seller-delete', [SellerController::class, 'bulk_seller_delete'])->name('bulk-seller-delete');
-    Route::get('/sellers/view/{id}/verification', [SellerController::class, 'show_verification_request'])->name('sellers.show_verification_request');
-    Route::get('/sellers/approve/{id}', [SellerController::class, 'approve_seller'])->name('sellers.approve');
-    Route::get('/sellers/reject/{id}', [SellerController::class, 'reject_seller'])->name('sellers.reject');
-    Route::get('/sellers/login/{id}', [SellerController::class, 'login'])->name('sellers.login');
-    Route::post('/sellers/payment_modal', [SellerController::class, 'payment_modal'])->name('sellers.payment_modal');
-    Route::get('/seller/payments', [PaymentController::class, 'payment_histories'])->name('sellers.payment_histories');
-    Route::get('/seller/payments/show/{id}', [PaymentController::class, 'show'])->name('sellers.payment_history');
+    // Route::resource('sellers', SellerController::class);
+    // Route::get('sellers_ban/{id}', [SellerController::class, 'ban'])->name('sellers.ban');
+    // Route::get('/sellers/destroy/{id}', [SellerController::class, 'destroy'])->name('sellers.destroy');
+    // Route::post('/bulk-seller-delete', [SellerController::class, 'bulk_seller_delete'])->name('bulk-seller-delete');
+    // Route::get('/sellers/view/{id}/verification', [SellerController::class, 'show_verification_request'])->name('sellers.show_verification_request');
+    // Route::get('/sellers/approve/{id}', [SellerController::class, 'approve_seller'])->name('sellers.approve');
+    // Route::get('/sellers/reject/{id}', [SellerController::class, 'reject_seller'])->name('sellers.reject');
+    // Route::get('/sellers/login/{id}', [SellerController::class, 'login'])->name('sellers.login');
+    // Route::post('/sellers/payment_modal', [SellerController::class, 'payment_modal'])->name('sellers.payment_modal');
+    // Route::get('/seller/payments', [PaymentController::class, 'payment_histories'])->name('sellers.payment_histories');
+    // Route::get('/seller/payments/show/{id}', [PaymentController::class, 'show'])->name('sellers.payment_history');
 
     Route::resource('customers', CustomerController::class);
     Route::get('customers_ban/{customer}', [CustomerController::class, 'ban'])->name('customers.ban');
     Route::get('/customers/login/{id}', [CustomerController::class, 'login'])->name('customers.login');
     Route::get('/customers/destroy/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::post('/bulk-customer-delete', [CustomerController::class, 'bulk_customer_delete'])->name('bulk-customer-delete');
+
+    Route::get('/addresses/set_default/{customer}/{id}', [CustomerController::class,'address_set_default'])->name('admin.addresses.set_default');
 
     Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletters.index');
     Route::post('/newsletter/send', [NewsletterController::class, 'send'])->name('newsletters.send');
@@ -185,13 +205,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::resource('staffs', StaffController::class);
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
-    Route::resource('flash_deals', FlashDealController::class);
-    Route::get('/flash_deals/edit/{id}', [FlashDealController::class, 'edit'])->name('flash_deals.edit');
-    Route::get('/flash_deals/destroy/{id}', [FlashDealController::class, 'destroy'])->name('flash_deals.destroy');
-    Route::post('/flash_deals/update_status', [FlashDealController::class, 'update_status'])->name('flash_deals.update_status');
-    Route::post('/flash_deals/update_featured', [FlashDealController::class, 'update_featured'])->name('flash_deals.update_featured');
-    Route::post('/flash_deals/product_discount', [FlashDealController::class, 'product_discount'])->name('flash_deals.product_discount');
-    Route::post('/flash_deals/product_discount_edit', [FlashDealController::class, 'product_discount_edit'])->name('flash_deals.product_discount_edit');
+    // Route::resource('flash_deals', FlashDealController::class);
+    // Route::get('/flash_deals/edit/{id}', [FlashDealController::class, 'edit'])->name('flash_deals.edit');
+    // Route::get('/flash_deals/destroy/{id}', [FlashDealController::class, 'destroy'])->name('flash_deals.destroy');
+    // Route::post('/flash_deals/update_status', [FlashDealController::class, 'update_status'])->name('flash_deals.update_status');
+    // Route::post('/flash_deals/update_featured', [FlashDealController::class, 'update_featured'])->name('flash_deals.update_featured');
+    // Route::post('/flash_deals/product_discount', [FlashDealController::class, 'product_discount'])->name('flash_deals.product_discount');
+    // Route::post('/flash_deals/product_discount_edit', [FlashDealController::class, 'product_discount_edit'])->name('flash_deals.product_discount_edit');
 
     //Subscribers
     Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
@@ -202,23 +222,31 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     // Route::get('/sales/{id}/show', [OrderController::class,'sales_show'])->name('sales.show');
     // Route::get('/sales', [OrderController::class,'sales'])->name('sales.index');
     // All Orders
+
+
+
     Route::get('/all_orders', [OrderController::class, 'all_orders'])->name('all_orders.index');
     Route::get('/all_orders/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
 
-    // Inhouse Orders
-    Route::get('/inhouse-orders', [OrderController::class, 'admin_orders'])->name('inhouse_orders.index');
-    Route::get('/inhouse-orders/{id}/show', [OrderController::class, 'show'])->name('inhouse_orders.show');
+    Route::resource('enquiries', EnquiriesController::class)->only('index','show');
+    
+    // Route::get('/', [OrderController::class, 'all_orders'])->name('enquiries.index');
+    // Route::get('/enquiries/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
 
-    // Seller Orders
-    Route::get('/seller_orders', [OrderController::class, 'seller_orders'])->name('seller_orders.index');
-    Route::get('/seller_orders/{id}/show', [OrderController::class, 'seller_orders_show'])->name('seller_orders.show');
+    // Inhouse Orders
+    // Route::get('/inhouse-orders', [OrderController::class, 'admin_orders'])->name('inhouse_orders.index');
+    // Route::get('/inhouse-orders/{id}/show', [OrderController::class, 'show'])->name('inhouse_orders.show');
+
+    // // Seller Orders
+    // Route::get('/seller_orders', [OrderController::class, 'seller_orders'])->name('seller_orders.index');
+    // Route::get('/seller_orders/{id}/show', [OrderController::class, 'seller_orders_show'])->name('seller_orders.show');
 
     Route::post('/bulk-order-status', [OrderController::class, 'bulk_order_status'])->name('bulk-order-status');
 
 
     // Pickup point orders
-    Route::get('orders_by_pickup_point', [OrderController::class, 'pickup_point_order_index'])->name('pick_up_point.order_index');
-    Route::get('/orders_by_pickup_point/{id}/show', [OrderController::class, 'pickup_point_order_sales_show'])->name('pick_up_point.order_show');
+    // Route::get('orders_by_pickup_point', [OrderController::class, 'pickup_point_order_index'])->name('pick_up_point.order_index');
+    // Route::get('/orders_by_pickup_point/{id}/show', [OrderController::class, 'pickup_point_order_sales_show'])->name('pick_up_point.order_show');
 
     Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::post('/bulk-order-delete', [OrderController::class, 'bulk_order_delete'])->name('bulk-order-delete');
@@ -227,31 +255,35 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     //Reports
     Route::get('/stock_report', [ReportController::class, 'stock_report'])->name('stock_report.index');
-    Route::get('/in_house_sale_report', [ReportController::class, 'in_house_sale_report'])->name('in_house_sale_report.index');
-    Route::get('/seller_sale_report', [ReportController::class, 'seller_sale_report'])->name('seller_sale_report.index');
+    Route::get('/in_house_sa le_report', [ReportController::class, 'in_house_sale_report'])->name('in_house_sale_report.index');
+    // Route::get('/seller_sale_report', [ReportController::class, 'seller_sale_report'])->name('seller_sale_report.index');
     Route::get('/wish_report', [ReportController::class, 'wish_report'])->name('wish_report.index');
     Route::get('/user_search_report', [ReportController::class, 'user_search_report'])->name('user_search_report.index');
-    Route::get('/wallet-history', [ReportController::class, 'wallet_transaction_history'])->name('wallet-history.index');
+    // Route::get('/wallet-history', [ReportController::class, 'wallet_transaction_history'])->name('wallet-history.index');
+    Route::get('/abandoned-cart', [AbandonedCartController::class, 'index'])->name('abandoned-cart.index');
+    Route::get('/{cart}/abandoned-cart', [AbandonedCartController::class, 'view'])->name('abandoned-cart.view');
 
     //Blog Section
     Route::resource('blog-category', BlogCategoryController::class);
     Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
-    Route::resource('blog', 'BlogController');
+    Route::resource('blog', BlogController::class);
     Route::get('/blog/destroy/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
     Route::post('/blog/change-status', [BlogController::class, 'change_status'])->name('blog.change-status');
 
     //Coupons
     Route::resource('coupon', CouponController::class);
     Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('coupon.destroy');
+    Route::post('/coupon/get_form', [CouponController::class,'get_coupon_form'])->name('coupon.get_coupon_form');
+    Route::post('/coupon/get_form_edit', [CouponController::class,'get_coupon_form_edit'])->name('coupon.get_coupon_form_edit');
 
     //Reviews
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews/published', [ReviewController::class, 'updatePublished'])->name('reviews.published');
 
     //Support_Ticket
-    Route::get('support_ticket/', [SupportTicketController::class, 'admin_index'])->name('support_ticket.admin_index');
-    Route::get('support_ticket/{id}/show', [SupportTicketController::class, 'admin_show'])->name('support_ticket.admin_show');
-    Route::post('support_ticket/reply', [SupportTicketController::class, 'admin_store'])->name('support_ticket.admin_store');
+    // Route::get('support_ticket/', [SupportTicketController::class, 'admin_index'])->name('support_ticket.admin_index');
+    // Route::get('support_ticket/{id}/show', [SupportTicketController::class, 'admin_show'])->name('support_ticket.admin_show');
+    // Route::post('support_ticket/reply', [SupportTicketController::class, 'admin_store'])->name('support_ticket.admin_store');
 
     //Pickup_Points
     Route::resource('pick_up_points', PickupPointController::class);
@@ -259,11 +291,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/pick_up_points/destroy/{id}', [PickupPointController::class, 'destroy'])->name('pick_up_points.destroy');
 
     //conversation of seller customer
-    Route::get('conversations', [ConversationController::class, 'admin_index'])->name('conversations.admin_index');
-    Route::get('conversations/{id}/show', [ConversationController::class, 'admin_show'])->name('conversations.admin_show');
+    // Route::get('conversations', [ConversationController::class, 'admin_index'])->name('conversations.admin_index');
+    // Route::get('conversations/{id}/show', [ConversationController::class, 'admin_show'])->name('conversations.admin_show');
 
-    Route::post('/sellers/profile_modal', [SellerController::class, 'profile_modal'])->name('sellers.profile_modal');
-    Route::post('/sellers/approved', [SellerController::class, 'updateApproved'])->name('sellers.approved');
+    // Route::post('/sellers/profile_modal', [SellerController::class, 'profile_modal'])->name('sellers.profile_modal');
+    // Route::post('/sellers/approved', [SellerController::class, 'updateApproved'])->name('sellers.approved');
 
     Route::resource('attributes', AttributeController::class);
     Route::get('/attributes/edit/{id}', [AttributeController::class, 'edit'])->name('attributes.edit');
@@ -276,11 +308,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/destroy-attribute-value/{id}', [AttributeController::class, 'destroy_attribute_value'])->name('destroy-attribute-value');
 
     //Colors
-    Route::get('/colors', [AttributeController::class, 'colors'])->name('colors');
-    Route::post('/colors/store', [AttributeController::class, 'store_color'])->name('colors.store');
-    Route::get('/colors/edit/{id}', [AttributeController::class, 'edit_color'])->name('colors.edit');
-    Route::post('/colors/update/{id}', [AttributeController::class, 'update_color'])->name('colors.update');
-    Route::get('/colors/destroy/{id}', [AttributeController::class, 'destroy_color'])->name('colors.destroy');
+    // Route::get('/colors', [AttributeController::class, 'colors'])->name('colors');
+    // Route::post('/colors/store', [AttributeController::class, 'store_color'])->name('colors.store');
+    // Route::get('/colors/edit/{id}', [AttributeController::class, 'edit_color'])->name('colors.edit');
+    // Route::post('/colors/update/{id}', [AttributeController::class, 'update_color'])->name('colors.update');
+    // Route::get('/colors/destroy/{id}', [AttributeController::class, 'destroy_color'])->name('colors.destroy');
 
     Route::resource('addons', AddonController::class);
     Route::post('/addons/activation', [AddonController::class, 'activation'])->name('addons.activation');
@@ -328,4 +360,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/all-notification', [NotificationController::class, 'index'])->name('admin.all-notification');
 
     Route::get('/cache-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
+
+
+    Route::post('/aiz-uploader', [AizUploadController::class, 'show_uploader']);
+    Route::post('/aiz-uploader/upload', [AizUploadController::class, 'upload']);
+    Route::get('/aiz-uploader/get_uploaded_files', [AizUploadController::class, 'get_uploaded_files']);
+    Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class, 'get_preview_files']);
+    Route::get('/aiz-uploader/download/{id}', [AizUploadController::class, 'attachment_download'])->name('download_attachment');
 });

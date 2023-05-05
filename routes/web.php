@@ -12,6 +12,12 @@
  */
 // use App\Mail\SupportMailManager;
 //demo
+
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SubscriberController;
+
 Route::get('/demo/cron_1', [DemoController::class,'cron_1']);
 Route::get('/demo/cron_2', [DemoController::class,'cron_2']);
 Route::get('/convert_assets', [DemoController::class,'convert_assets']);
@@ -25,11 +31,6 @@ Route::get('/refresh-csrf', function() {
     return csrf_token();
 });
 
-Route::post('/aiz-uploader', [AizUploadController::class,'show_uploader']);
-Route::post('/aiz-uploader/upload', [AizUploadController::class,'upload']);
-Route::get('/aiz-uploader/get_uploaded_files', [AizUploadController::class,'get_uploaded_files']);
-Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class,'get_preview_files']);
-Route::get('/aiz-uploader/download/{id}', [AizUploadController::class,'attachment_download'])->name('download_attachment');
 
 
 Auth::routes(['verify' => true]);
@@ -140,7 +141,7 @@ Route::get('/compare', [CompareController::class,'index'])->name('compare');
 Route::get('/compare/reset', [CompareController::class,'reset'])->name('compare.reset');
 Route::post('/compare/addToCompare', [CompareController::class,'addToCompare'])->name('compare.addToCompare');
 
-Route::resource('subscribers', 'SubscriberController');
+Route::resource('subscribers', SubscriberController::class);
 
 Route::get('/brands', [HomeController::class,'all_brands'])->name('brands.all');
 Route::get('/categories', [HomeController::class,'all_categories'])->name('categories.all');
@@ -220,16 +221,15 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
 });
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::post('/products/store/', [ProductController::class,'store'])->name('products.store');
-    Route::post('/products/update/{id}', [ProductController::class,'update'])->name('products.update');
-    Route::get('/products/destroy/{id}', [ProductController::class,'destroy'])->name('products.destroy');
-    Route::get('/products/duplicate/{id}', [ProductController::class,'duplicate'])->name('products.duplicate');
-    Route::post('/products/sku_combination', [ProductController::class,'sku_combination'])->name('products.sku_combination');
-    Route::post('/products/sku_combination_edit', [ProductController::class,'sku_combination_edit'])->name('products.sku_combination_edit');
-    Route::post('/products/seller/featured', [ProductController::class,'updateSellerFeatured'])->name('products.seller.featured');
-    Route::post('/products/published', [ProductController::class,'updatePublished'])->name('products.published');
-
-    Route::post('/products/add-more-choice-option', [ProductController::class,'add_more_choice_option'])->name('products.add-more-choice-option');
+    // Route::post('/products/store/', [ProductController::class,'store'])->name('products.store');
+    // Route::post('/products/update/{id}', [ProductController::class,'update'])->name('products.update');
+    // Route::get('/products/destroy/{id}', [ProductController::class,'destroy'])->name('products.destroy');
+    // Route::get('/products/duplicate/{id}', [ProductController::class,'duplicate'])->name('products.duplicate');
+    // Route::post('/products/sku_combination', [ProductController::class,'sku_combination'])->name('products.sku_combination');
+    // Route::post('/products/sku_combination_edit', [ProductController::class,'sku_combination_edit'])->name('products.sku_combination_edit');
+    // Route::post('/products/seller/featured', [ProductController::class,'updateSellerFeatured'])->name('products.seller.featured');
+    // Route::post('/products/published', [ProductController::class,'updatePublished'])->name('products.published');
+    // Route::post('/products/add-more-choice-option', [ProductController::class,'add_more_choice_option'])->name('products.add-more-choice-option');
 
     Route::get('invoice/{order_id}', [InvoiceController::class,'invoice_download'])->name('invoice.download');
 
@@ -275,11 +275,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/digitalproducts/download/{id}', [DigitalProductController::class,'download'])->name('digitalproducts.download');
 
     //Reports
-    Route::get('/commission-log', [ReportController::class,'commission_history'])->name('commission-log.index');
+    // Route::get('/commission-log', [ReportController::class,'commission_history'])->name('commission-log.index');
 
     //Coupon Form
-    Route::post('/coupon/get_form', [CouponController::class,'get_coupon_form'])->name('coupon.get_coupon_form');
-    Route::post('/coupon/get_form_edit', [CouponController::class,'get_coupon_form_edit'])->name('coupon.get_coupon_form_edit');
+
 });
 
 Route::resource('shops', 'ShopController');
@@ -303,7 +302,7 @@ Route::post('/get-city', [CityController::class,'get_city'])->name('get-city');
 //Address
 Route::post('/get-states', [AddressController::class,'getStates'])->name('get-state');
 Route::post('/get-cities', [AddressController::class,'getCities'])->name('get-city');
-Route::resource('addresses', 'AddressController');
+Route::resource('addresses', AddressController::class);
 Route::post('/addresses/update/{id}', [AddressController::class,'update'])->name('addresses.update');
 Route::get('/addresses/destroy/{id}', [AddressController::class,'destroy'])->name('addresses.destroy');
 Route::get('/addresses/set_default/{id}', [AddressController::class,'set_default'])->name('addresses.set_default');

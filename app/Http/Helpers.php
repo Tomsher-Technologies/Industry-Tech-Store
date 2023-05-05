@@ -194,7 +194,7 @@ if (!function_exists('single_price')) {
     }
 }
 
-if (! function_exists('discount_in_percentage')) {
+if (!function_exists('discount_in_percentage')) {
     function discount_in_percentage($product)
     {
         try {
@@ -204,7 +204,6 @@ if (! function_exists('discount_in_percentage')) {
             $dp = ($discount * 100) / $base;
             return round($dp);
         } catch (Exception $e) {
-
         }
         return 0;
     }
@@ -449,16 +448,16 @@ if (!function_exists('renderStarRating')) {
 
 function translate($key, $lang = null, $addslashes = false)
 {
-    if($lang == null){
+    if ($lang == null) {
         $lang = App::getLocale();
     }
-    
+
     $lang_key = preg_replace('/[^A-Za-z0-9\_]/', '', str_replace(' ', '_', strtolower($key)));
-    
+
     $translations_en = Cache::rememberForever('translations-en', function () {
         return Translation::where('lang', 'en')->pluck('lang_value', 'lang_key')->toArray();
     });
-    
+
     if (!isset($translations_en[$lang_key])) {
         $translation_def = new Translation;
         $translation_def->lang = 'en';
@@ -525,15 +524,13 @@ function getShippingCost($carts, $index)
 
     if (get_setting('shipping_type') == 'flat_rate') {
         return get_setting('flat_rate_shipping_cost') / count($carts);
-    }
-    elseif (get_setting('shipping_type') == 'seller_wise_shipping') {
+    } elseif (get_setting('shipping_type') == 'seller_wise_shipping') {
         if ($product->added_by == 'admin') {
             return get_setting('shipping_cost_admin') / count($admin_products);
         } else {
             return Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
         }
-    }
-    elseif (get_setting('shipping_type') == 'area_wise_shipping') {
+    } elseif (get_setting('shipping_type') == 'area_wise_shipping') {
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
         $city = City::where('id', $shipping_info->city_id)->first();
         if ($city != null) {
@@ -544,9 +541,8 @@ function getShippingCost($carts, $index)
             }
         }
         return 0;
-    }
-    else {
-        if($product->is_quantity_multiplied && get_setting('shipping_type') == 'product_wise_shipping') {
+    } else {
+        if ($product->is_quantity_multiplied && get_setting('shipping_type') == 'product_wise_shipping') {
             return  $product->shipping_cost * $cartItem['quantity'];
         }
         return $product->shipping_cost;
@@ -580,7 +576,7 @@ if (!function_exists('uploaded_asset')) {
     function uploaded_asset($id)
     {
         if (($asset = \App\Models\Upload::find($id)) != null) {
-            return $asset->external_link == null ? my_asset($asset->file_name) : $asset->external_link;
+            return $asset->external_link == null ? storage_asset($asset->file_name) : $asset->external_link;
         }
         return null;
     }
@@ -601,6 +597,20 @@ if (!function_exists('my_asset')) {
         } else {
             return app('url')->asset('public/' . $path, $secure);
         }
+    }
+}
+
+if (!function_exists('storage_asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param string $path
+     * @param bool|null $secure
+     * @return string
+     */
+    function storage_asset($path, $secure = null)
+    {
+        return app('url')->asset('storage/' . $path, $secure);
     }
 }
 
@@ -643,7 +653,8 @@ if (!function_exists('getFileBaseURL')) {
         if (env('FILESYSTEM_DRIVER') == 's3') {
             return env('AWS_URL') . '/';
         } else {
-            return getBaseURL() . '/';
+            return app('url')->asset('storage') . '/';
+            return getBaseURL();
         }
     }
 }
@@ -795,7 +806,6 @@ if (!function_exists('checkout_done')) {
                 NotificationUtility::sendOrderPlacedNotification($order);
                 calculateCommissionAffilationClubPoint($order);
             } catch (\Exception $e) {
-               
             }
         }
     }

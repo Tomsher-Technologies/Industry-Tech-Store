@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductTranslation extends Model
 {
-    protected $fillable = ['product_id','name', 'lang'];
+  protected $fillable = [
+    'product_id',
+    'name',
+    'lang',
+  ];
 
-    public function product(){
-      return $this->belongsTo(Product::class);
-    }
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
 }
