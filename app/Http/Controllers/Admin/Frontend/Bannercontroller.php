@@ -39,7 +39,32 @@ class Bannercontroller extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $request->validate([
+            'name' => 'required',
+            'banner' => 'required',
+            'mobile_banner' => 'required',
+            'link_type' => 'required',
+            'status' => 'required',
+            'link' => 'nullable|required_if:link_type,external',
+            'link_ref_id' => 'nullable|required_if:link_type,product,category',
+        ],[
+            'link.required_if' => "Please enter a valid link",
+            'link_ref_id.required_if' => "Please enter an option",
+        ]);
+
+        $banner = Banner::create([
+            'name' => $request->name,
+            'image' => $request->banner,
+            'mobile_image' => $request->mobile_banner,
+            'link_type' => $request->link_type,
+            'link_ref' => $request->link_type,
+            'link_ref_id' => $request->link_ref_id,
+            'link' => $request->link,
+            'status' => $request->status,
+        ]);
+        
+        flash(translate('Banner created successfully'))->error();
+        return redirect()->route('banners.index');
     }
 
     /**
@@ -71,9 +96,34 @@ class Bannercontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Banner $banner)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'banner' => 'required',
+            'mobile_banner' => 'required',
+            'link_type' => 'required',
+            'status' => 'required',
+            'link' => 'nullable|required_if:link_type,external',
+            'link_ref_id' => 'nullable|required_if:link_type,product,category',
+        ],[
+            'link.required_if' => "Please enter a valid link",
+            'link_ref_id.required_if' => "Please enter an option",
+        ]);
+
+        $banner->update([
+            'name' => $request->name,
+            'image' => $request->banner,
+            'mobile_image' => $request->mobile_banner,
+            'link_type' => $request->link_type,
+            'link_ref' => $request->link_type,
+            'link_ref_id' => $request->link_ref_id,
+            'link' => $request->link,
+            'status' => $request->status,
+        ]);
+        
+        flash(translate('Banner created successfully'))->error();
+        return redirect()->route('banners.index');
     }
 
     /**
@@ -98,7 +148,6 @@ class Bannercontroller extends Controller
             $categories = Category::where('parent_id', 0)
                 ->with('childrenCategories')
                 ->get();
-                
             return view('partials.banners.banner_form_category', compact('categories'));
         } else {
             return view('partials.banners.banner_form');
