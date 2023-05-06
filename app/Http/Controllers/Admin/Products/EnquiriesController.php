@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin\Products;
 
 use App\Http\Controllers\Controller;
 use App\Models\Products\ProductEnquiries;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EnquiriesController extends Controller
@@ -13,10 +15,32 @@ class EnquiriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $enquiries = ProductEnquiries::with('products')->latest()->get();
-        dd( $enquiries);
+        $query = ProductEnquiries::withCount('products')->latest();
+
+        $date = '';
+
+        if ($request->date) {
+            $date_array = explode(' to ', $request->date);
+            $start_date = $date_array[0];
+            $start_date = Carbon::parse($start_date)->startOfDay();
+            $end_date = isset($date_array[1]) ? $date_array[1]  : $date_array[0];
+            $end_date = Carbon::parse($start_date)->endOfDay();
+            $query->whereBetween('created_at', [$start_date, $end_date]);
+            $date = $request->date;
+        }
+
+        if ($request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $users = User::where('user_type', 'customer')->get();
+        $search_user = $request->user_id;
+
+        $enquiries = $query->with('user')->paginate(15);
+
+        return view('backend.sales.enquiries.index', compact('enquiries', 'date', 'users', 'search_user'));
     }
 
     /**
@@ -48,7 +72,16 @@ class EnquiriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $enquiry = ProductEnquiries::with(['products' => function ($query) {
+            $query->without(['product_translations', 'taxes']);
+        }, 'user'])->findOrFail(decrypt($id));
+
+        if ($enquiry->status == 0) {
+            $enquiry->status = 1;
+            $enquiry->save();
+        }
+        // dd($enquiry);
+        return view('backend.sales.enquiries.show', compact('enquiry'));
     }
 
     /**
@@ -82,6 +115,16 @@ class EnquiriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $enquiry = ProductEnquiries::find($id)->first();
+        if ($enquiry) {
+
+            $enquiry->products()->sync([]);
+            $enquiry->destroy();
+
+            flash(translate('Enqrury deleted'))->success();
+            return back();
+        }
+        flash(translate('Somthing went wrong, please try again'))->error();
+        return back();
     }
 }

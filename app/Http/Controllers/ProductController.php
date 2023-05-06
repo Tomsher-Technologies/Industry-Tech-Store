@@ -69,7 +69,6 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 

@@ -13,11 +13,11 @@ class ProductEnquiries extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_product_enquiry','product_enquiry_id');
+        return $this->belongsToMany(Product::class, 'product_product_enquiry', 'product_id', 'product_enquiry_id')->withPivot(['sku', 'varient']);
     }
 }

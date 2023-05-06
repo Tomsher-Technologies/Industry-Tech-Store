@@ -1,10 +1,10 @@
 @extends('frontend.layouts.app')
 
-@section('meta_title'){{ $detailedProduct->meta_title }}@stop
+@section('meta_title'){{ $detailedProduct->meta_title ??  $detailedProduct->name }}@endsection
 
-@section('meta_description'){{ $detailedProduct->meta_description }}@stop
+@section('meta_description'){{ $detailedProduct->meta_description }}@endsection
 
-@section('meta_keywords'){{ $detailedProduct->tags }}@stop
+@section('meta_keywords'){{ $detailedProduct->tags }}@endsection
 
 @section('meta')
     <!-- Schema.org markup for Google+ -->
@@ -270,32 +270,6 @@
                                     @endforeach
                                 @endif
 
-                                @if (count(json_decode($detailedProduct->colors)) > 0)
-                                    <div class="row no-gutters">
-                                        <div class="col-sm-2">
-                                            <div class="opacity-50 my-2">{{ translate('Color')}}:</div>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <div class="aiz-radio-inline">
-                                                @foreach (json_decode($detailedProduct->colors) as $key => $color)
-                                                <label class="aiz-megabox pl-0 mr-2" data-toggle="tooltip" data-title="{{ \App\Models\Color::where('code', $color)->first()->name }}">
-                                                    <input
-                                                        type="radio"
-                                                        name="color"
-                                                        value="{{ \App\Models\Color::where('code', $color)->first()->name }}"
-                                                        @if($key == 0) checked @endif
-                                                    >
-                                                    <span class="aiz-megabox-elem rounded d-flex align-items-center justify-content-center p-1 mb-2">
-                                                        <span class="size-30px d-inline-block rounded" style="background: {{ $color }};"></span>
-                                                    </span>
-                                                </label>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <hr>
-                                @endif
 
                                 <!-- Quantity + Add to cart -->
                                 <div class="row no-gutters">

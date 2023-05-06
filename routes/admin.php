@@ -14,6 +14,7 @@
 use App\Http\Controllers\AddonController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\AbandonedCartController;
+use App\Http\Controllers\Admin\Frontend\Bannercontroller;
 use App\Http\Controllers\Admin\Products\EnquiriesController;
 use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\AdminController;
@@ -61,7 +62,7 @@ Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
 Route::get('/update/step2', [UpdateController::class, 'step2'])->name('update.step2');
 
-Route::get('/' . env('ADMIN_PREFIX') , [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
+Route::get('/' . env('ADMIN_PREFIX'), [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
 
 
 Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']], function () {
@@ -119,7 +120,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/customers/destroy/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::post('/bulk-customer-delete', [CustomerController::class, 'bulk_customer_delete'])->name('bulk-customer-delete');
 
-    Route::get('/addresses/set_default/{customer}/{id}', [CustomerController::class,'address_set_default'])->name('admin.addresses.set_default');
+    Route::get('/addresses/set_default/{customer}/{id}', [CustomerController::class, 'address_set_default'])->name('admin.addresses.set_default');
 
     Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletters.index');
     Route::post('/newsletter/send', [NewsletterController::class, 'send'])->name('newsletters.send');
@@ -228,8 +229,9 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/all_orders', [OrderController::class, 'all_orders'])->name('all_orders.index');
     Route::get('/all_orders/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
 
-    Route::resource('enquiries', EnquiriesController::class)->only('index','show');
-    
+    Route::get('/enquiries/{id}/delete', [EnquiriesController::class, 'destroy'])->name('enquiries.destroy');
+    Route::resource('enquiries', EnquiriesController::class)->only('index', 'show');
+
     // Route::get('/', [OrderController::class, 'all_orders'])->name('enquiries.index');
     // Route::get('/enquiries/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
 
@@ -273,8 +275,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     //Coupons
     Route::resource('coupon', CouponController::class);
     Route::get('/coupon/destroy/{id}', [CouponController::class, 'destroy'])->name('coupon.destroy');
-    Route::post('/coupon/get_form', [CouponController::class,'get_coupon_form'])->name('coupon.get_coupon_form');
-    Route::post('/coupon/get_form_edit', [CouponController::class,'get_coupon_form_edit'])->name('coupon.get_coupon_form_edit');
+    Route::post('/coupon/get_form', [CouponController::class, 'get_coupon_form'])->name('coupon.get_coupon_form');
+    Route::post('/coupon/get_form_edit', [CouponController::class, 'get_coupon_form_edit'])->name('coupon.get_coupon_form_edit');
 
     //Reviews
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
@@ -361,6 +363,9 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     Route::get('/cache-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 
+    Route::post('/banners/get_form', [Bannercontroller::class, 'get_form'])->name('banners.get_form');
+    Route::get('/banners/destroy/{banner}', [Bannercontroller::class, 'destroy'])->name('banners.destroy');
+    Route::resource('banners', Bannercontroller::class)->except(['show', 'destroy']);
 
     Route::post('/aiz-uploader', [AizUploadController::class, 'show_uploader']);
     Route::post('/aiz-uploader/upload', [AizUploadController::class, 'upload']);
