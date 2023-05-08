@@ -528,11 +528,13 @@ function getShippingCost($carts, $index)
         if ($product->added_by == 'admin') {
             return get_setting('shipping_cost_admin') / count($admin_products);
         } else {
-            return Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
+            return Shop::where('user_id', $product->user_id)
+                ->first()
+                ->shipping_cost / count($seller_products[$product->user_id]);
         }
     } elseif (get_setting('shipping_type') == 'area_wise_shipping') {
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
-        $city = City::where('id', $shipping_info->city_id)->first();
+        $shippingInfo = Address::where('id', $carts[0]['address_id'])->first();
+        $city = City::where('id', $shippingInfo->city_id)->first();
         if ($city != null) {
             if ($product->added_by == 'admin') {
                 return $city->cost / count($admin_products);
@@ -575,9 +577,10 @@ if (!function_exists('api_asset')) {
 if (!function_exists('uploaded_asset')) {
     function uploaded_asset($id)
     {
-        if (($asset = \App\Models\Upload::find($id)) != null) {
+        if ($id && ($asset = \App\Models\Upload::find($id)) != null) {
             return $asset->external_link == null ? storage_asset($asset->file_name) : $asset->external_link;
         }
+
         return null;
     }
 }
