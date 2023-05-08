@@ -64,6 +64,9 @@ class BrandController extends Controller
         $brand->twitter_title = $request->twitter_title ?? $request->meta_title;
         $brand->twitter_description = $request->twitter_description ?? $request->meta_description;
 
+        $brand->footer_title = $request->footer_title;
+        $brand->footer_content = $request->footer_description;
+
         $brand->slug = $request->slug;
         $brand->top = $request->top;
 
@@ -106,6 +109,8 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
 
+        // dd($request->footer_description);
+
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:brands,slug,' . $id,
@@ -124,6 +129,9 @@ class BrandController extends Controller
 
         $brand->twitter_title = $request->twitter_title ?? $request->meta_title;
         $brand->twitter_description = $request->twitter_description ?? $request->meta_description;
+
+        $brand->footer_title = $request->footer_title;
+        $brand->footer_content = $request->footer_description;
         
         $brand->slug = $request->slug;
         $brand->logo = $request->logo;

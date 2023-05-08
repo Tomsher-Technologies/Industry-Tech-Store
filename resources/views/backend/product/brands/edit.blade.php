@@ -112,6 +112,22 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label"
+                            for="name">{{ translate('Footer Title') }}</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="footer_title"
+                                placeholder="{{ translate('Footer Title') }}" value="{{ old('footer_title', $brand->footer_title) }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label"
+                            for="name">{{ translate('Footer Description') }}</label>
+                        <div class="col-md-9">
+                            <textarea name="footer_description" rows="5" class="form-control aiz-text-editor">{{ old('footer_description', $brand->footer_content) }}</textarea>
+                        </div>
+                    </div>
+
                     <div class="form-group mb-0 text-right">
                         <button type="submit" class="btn btn-primary">{{ translate('Save') }}</button>
                     </div>
