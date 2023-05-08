@@ -33,7 +33,8 @@ class Product extends Model
         'return_refund',
     ];
 
-    protected $with = ['product_translations', 'taxes'];
+    protected $with = ['taxes'];
+    // protected $with = ['product_translations', 'taxes'];
 
     public function getTranslation($field = '', $lang = false)
     {

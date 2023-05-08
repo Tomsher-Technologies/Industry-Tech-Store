@@ -17,6 +17,8 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 
@@ -245,7 +247,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Delivery Boy Assign
     Route::post('/orders/delivery-boy-assign', [OrderController::class, 'assign_delivery_boy'])->name('orders.delivery-boy-assign');
 
-    Route::resource('/reviews', 'ReviewController');
+    // Route::resource('/reviews', ReviewController::class);
 
     Route::resource('/withdraw_requests', 'SellerWithdrawRequestController');
     Route::get('/withdraw_requests_all', [SellerWithdrawRequestController::class, 'request_index'])->name('withdraw_requests_all');
