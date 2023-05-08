@@ -98,8 +98,8 @@
                             <label class="col-md-3 col-form-label">{{ translate('Status') }}</label>
                             <div class="col-md-9">
                                 <select class="form-control aiz-selectpicker" name="status" id="status" required>
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
+                                    <option {{ old('status') == '1' ? 'selected' : '' }} value="1">Enabled</option>
+                                    <option {{ old('status') == '0' ? 'selected' : '' }} value="0">Disabled</option>
                                 </select>
                                 @error('status')
                                     <div class="alert alert-danger">{{ $message }}</div>

@@ -8,13 +8,15 @@
                     <h5 class="mb-0 h6">{{ translate('Create Banner') }}</h5>
                 </div>
                 <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('banners.store') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('banners.update', $banner) }}">
                         @csrf
+                        @method('PATCH')
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">{{ translate('Name') }}</label>
                             <div class="col-md-9">
-                                <input type="text" placeholder="{{ translate('Name') }}" value="{{ old('name') }}"
-                                    id="name" name="name" class="form-control" required>
+                                <input type="text" placeholder="{{ translate('Name') }}"
+                                    value="{{ old('name', $banner->name) }}" id="name" name="name"
+                                    class="form-control" required>
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
@@ -34,8 +36,8 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input value="{{ old('banner') }}" type="hidden" name="banner" class="selected-files"
-                                        required>
+                                    <input value="{{ old('banner', $banner->image) }}" type="hidden" name="banner"
+                                        class="selected-files" required>
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
@@ -58,8 +60,8 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input value="{{ old('mobile_banner') }}" type="hidden" name="mobile_banner"
-                                        class="selected-files" required>
+                                    <input value="{{ old('mobile_banner', $banner->mobile_image) }}" type="hidden"
+                                        name="mobile_banner" class="selected-files" required>
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
@@ -74,10 +76,16 @@
                             <div class="col-md-9">
                                 <select onchange="banner_form()" class="form-control aiz-selectpicker" name="link_type"
                                     id="link_type" data-live-search="true" required>
-                                    <option {{ old('link_type') == 'external' ? 'selected' : '' }} value="external">External
+                                    <option {{ old('link_type', $banner->link_type) == 'external' ? 'selected' : '' }}
+                                        value="external">
+                                        External
                                     </option>
-                                    <option {{ old('link_type') == 'product' ? 'selected' : '' }} value="product">Product</option>
-                                    <option {{ old('link_type') == 'category' ? 'selected' : '' }} value="category">Category</option>
+                                    <option {{ old('link_type', $banner->link_type) == 'product' ? 'selected' : '' }}
+                                        value="product">Product
+                                    </option>
+                                    <option {{ old('link_type', $banner->link_type) == 'category' ? 'selected' : '' }}
+                                        value="category">
+                                        Category</option>
                                 </select>
                                 @error('link_type')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -98,8 +106,10 @@
                             <label class="col-md-3 col-form-label">{{ translate('Status') }}</label>
                             <div class="col-md-9">
                                 <select class="form-control aiz-selectpicker" name="status" id="status" required>
-                                    <option value="1">Enabled</option>
-                                    <option value="0">Disabled</option>
+                                    <option {{ old('status', $banner->status) == '1' ? 'selected' : '' }} value="1">
+                                        Enabled</option>
+                                    <option {{ old('status', $banner->status) == '0' ? 'selected' : '' }} value="0">
+                                        Disabled</option>
                                 </select>
                                 @error('status')
                                     <div class="alert alert-danger">{{ $message }}</div>
@@ -128,9 +138,11 @@
             var link_type = $('#link_type').val();
             var link_error = "{{ $errors->getBag('default')->first('link') }}"
             var link_id_error = "{{ $errors->getBag('default')->first('link_ref_id') }}"
+            var old_data = "{{ $banner->link ?? $banner->link_ref_id }}"
             $.post('{{ route('banners.get_form') }}', {
                 _token: '{{ csrf_token() }}',
                 link_type: link_type,
+                old_data: old_data,
             }, function(data) {
                 $('#banner_form').html(data);
             });
