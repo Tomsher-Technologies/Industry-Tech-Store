@@ -36,7 +36,6 @@
                     <th data-breakpoints="lg">{{translate('Banner')}}</th>
                     <th data-breakpoints="lg">{{translate('Icon')}}</th>
                     <th data-breakpoints="lg">{{translate('Featured')}}</th>
-                    <th data-breakpoints="lg">{{translate('Commission')}}</th>
                     <th width="10%" class="text-right">{{translate('Options')}}</th>
                 </tr>
             </thead>
@@ -79,7 +78,6 @@
                                 <span></span>
                             </label>
                         </td>
-                        <td>{{ $category->commision_rate }} %</td>
                         <td class="text-right">
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('categories.edit', ['id'=>$category->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
                                 <i class="las la-edit"></i>

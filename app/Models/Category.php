@@ -7,7 +7,27 @@ use App;
 
 class Category extends Model
 {
-    protected $with = ['category_translations'];
+
+    protected $fillable = [
+        'parent_id',
+        'level',
+        'name',
+        'order_level',
+        'banner',
+        'icon',
+        'featured',
+        'top',
+        'slug',
+        'meta_title',
+        'meta_description',
+        'og_title',
+        'og_description',
+        'twitter_title',
+        'twitter_description',
+        'meta_keyword',
+        'footer_title',
+        'footer_content',
+    ];
 
     public function getTranslation($field = '', $lang = false){
         $lang = $lang == false ? App::getLocale() : $lang;

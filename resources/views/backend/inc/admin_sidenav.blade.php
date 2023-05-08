@@ -830,7 +830,7 @@
                 @if (Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#"
-                            class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header']) }}">
+                            class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header','banners.*']) }}">
                             <i class="las la-desktop aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Website Setup') }}</span>
                             <span class="aiz-side-nav-arrow"></span>
@@ -856,6 +856,11 @@
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('website.appearance') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Appearance') }}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('banners.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['banners.index','banners.create','banners.edit']) }}">
+                                    <span class="aiz-side-nav-text">{{ translate('Banners') }}</span>
                                 </a>
                             </li>
                         </ul>
