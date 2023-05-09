@@ -25,7 +25,7 @@ class EnquiriesController extends Controller
             $date_array = explode(' to ', $request->date);
             $start_date = $date_array[0];
             $start_date = Carbon::parse($start_date)->startOfDay();
-            $end_date = isset($date_array[1]) ? $date_array[1]  : $date_array[0];
+            $end_date = isset($date_array[1]) ? $date_array[1] : $date_array[0];
             $end_date = Carbon::parse($start_date)->endOfDay();
             $query->whereBetween('created_at', [$start_date, $end_date]);
             $date = $request->date;
@@ -80,7 +80,6 @@ class EnquiriesController extends Controller
             $enquiry->status = 1;
             $enquiry->save();
         }
-        // dd($enquiry);
         return view('backend.sales.enquiries.show', compact('enquiry'));
     }
 

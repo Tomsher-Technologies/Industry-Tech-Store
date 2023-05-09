@@ -171,7 +171,7 @@
                             @endforeach
                         @endif
 
-                        @if (count(json_decode($product->colors)) > 0)
+                        {{-- @if (count(json_decode($product->colors)) > 0)
                             <div class="row no-gutters">
                                 <div class="col-2">
                                     <div class="opacity-50 mt-2">{{ translate('Color')}}:</div>
@@ -196,7 +196,7 @@
                             </div>
 
                             <hr>
-                        @endif
+                        @endif --}}
 
                         <div class="row no-gutters">
                             <div class="col-2">

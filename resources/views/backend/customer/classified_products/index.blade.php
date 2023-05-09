@@ -1,4 +1,4 @@
-@extends('backend.layouts.app')
+a@extends('backend.layouts.app')
 
 @section('content')
     <div class="card">
@@ -23,7 +23,7 @@
                         <tr>
                             <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
                             <td>
-                                <a href="{{ route('customer.product', $product->slug) }}" class="text-reset text-truncate-2"
+                                <a class="text-reset text-truncate-2" href="{{ route('customer.product', $product->slug) }}"
                                     target="_blank">{{ $product->getTranslation('name') }}</a>
                             </td>
                             <td><img src="{{ uploaded_asset($product->thumbnail_img) }}"

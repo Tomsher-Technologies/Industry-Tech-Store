@@ -62,7 +62,9 @@ Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
 Route::get('/update/step2', [UpdateController::class, 'step2'])->name('update.step2');
 
-Route::get('/' . env('ADMIN_PREFIX'), [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
+Route::get('/' . env('ADMIN_PREFIX'), [AdminController::class, 'admin_dashboard'])
+    ->name('admin.dashboard')
+    ->middleware(['auth', 'admin']);
 
 
 Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']], function () {

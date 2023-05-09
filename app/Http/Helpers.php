@@ -204,6 +204,7 @@ if (!function_exists('discount_in_percentage')) {
             $dp = ($discount * 100) / $base;
             return round($dp);
         } catch (Exception $e) {
+            return 0;
         }
         return 0;
     }

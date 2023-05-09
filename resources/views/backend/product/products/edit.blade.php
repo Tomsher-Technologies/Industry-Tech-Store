@@ -16,13 +16,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-from-label">{{ translate('Product Name') }} <i
-                                        class="las la-language text-danger"
-                                        title="{{ translate('Translatable') }}"></i></label>
+                                <label class="col-lg-3 col-from-label">{{ translate('Product Name') }} </label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="name"
                                         placeholder="{{ translate('Product Name') }}"
-                                        value="{{ $product->getTranslation('name', $lang) }}" required>
+                                        value="{{ $product->name }}" required>
                                 </div>
                             </div>
                             <div class="form-group row" id="category">
@@ -31,7 +29,7 @@
                                     <select class="form-control aiz-selectpicker" name="category_id" id="category_id"
                                         data-selected="{{ $product->category_id }}" data-live-search="true" required>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}
+                                            <option value="{{ $category->id }}">{{ $category->name }}
                                             </option>
                                             @foreach ($category->childrenCategories as $childCategory)
                                                 @include('categories.child_category', [
@@ -51,7 +49,7 @@
                                         @foreach (\App\Models\Brand::all() as $brand)
                                             <option value="{{ $brand->id }}"
                                                 @if ($product->brand_id == $brand->id) selected @endif>
-                                                {{ $brand->getTranslation('name') }}</option>
+                                                {{ $brand->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -63,14 +61,14 @@
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="unit"
                                         placeholder="{{ translate('Unit (e.g. KG, Pc etc)') }}"
-                                        value="{{ $product->getTranslation('unit', $lang) }}" required>
+                                        value="{{ $product->unit }}" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">{{ translate('Minimum Purchase Qty') }}</label>
                                 <div class="col-lg-8">
                                     <input type="number" lang="en" class="form-control" name="min_qty"
-                                        value="@if ($product->min_qty <= 1) {{ 1 }}@else{{ $product->min_qty }} @endif"
+                                        value="{{ $product->min_qty <= 1 ? 1 : $product->min_qty }}"
                                         min="1" required>
                                 </div>
                             </div>

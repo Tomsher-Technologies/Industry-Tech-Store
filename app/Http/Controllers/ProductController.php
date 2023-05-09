@@ -369,14 +369,10 @@ class ProductController extends Controller
         //CoreComponentRepository::initializeCache();
 
         $product = Product::findOrFail($id);
-        if ($product->digital == 1) {
-            return redirect('digitalproducts/' . $id . '/edit');
-        }
 
         $lang = $request->lang;
         $tags = json_decode($product->tags);
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
         return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
@@ -398,7 +394,7 @@ class ProductController extends Controller
         $tags = json_decode($product->tags);
         // $categories = Category::all();
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
+            
             ->with('childrenCategories')
             ->get();
 

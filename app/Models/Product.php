@@ -104,16 +104,6 @@ class Product extends Model
         return $this->hasOne(FlashDealProduct::class);
     }
 
-    public function bids()
-    {
-        return $this->hasMany(AuctionProductBid::class);
-    }
-
-    public function scopePhysical($query)
-    {
-        return $query->where('digital', 0);
-    }
-
     // public function enquiries()
     // {
     //     return $this->belongsToMany(ProductEnquiries::class, 'product_product_enquiry');
