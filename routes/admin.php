@@ -12,11 +12,9 @@
  */
 
 use App\Http\Controllers\AddonController;
-use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\AbandonedCartController;
 use App\Http\Controllers\Admin\Frontend\Bannercontroller;
 use App\Http\Controllers\Admin\Products\EnquiriesController;
-use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\AttributeController;
@@ -27,7 +25,6 @@ use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CommissionController;
-use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CurrencyController;
@@ -35,23 +32,19 @@ use App\Http\Controllers\CustomerBulkUploadController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\CustomerProductController;
-use App\Http\Controllers\FlashDealController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PickupPointController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SellerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\SubscriberController;
-use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
@@ -363,8 +356,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     Route::get('/all-notification', [NotificationController::class, 'index'])->name('admin.all-notification');
 
-    Route::get('/cache-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
-
     Route::post('/banners/get_form', [Bannercontroller::class, 'get_form'])->name('banners.get_form');
     Route::get('/banners/destroy/{banner}', [Bannercontroller::class, 'destroy'])->name('banners.destroy');
     Route::resource('banners', Bannercontroller::class)->except(['show', 'destroy']);
@@ -374,4 +365,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/aiz-uploader/get_uploaded_files', [AizUploadController::class, 'get_uploaded_files']);
     Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class, 'get_preview_files']);
     Route::get('/aiz-uploader/download/{id}', [AizUploadController::class, 'attachment_download'])->name('download_attachment');
+
+    // Cache
+    Route::get('/cache-cache/{type?}', [AdminController::class, 'clearCache'])->name('cache.clear');
 });

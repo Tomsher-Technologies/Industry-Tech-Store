@@ -12,6 +12,8 @@ use App\Models\Search;
 use App\Models\User;
 use Artisan;
 use Cache;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class AdminController extends Controller
 {
@@ -23,66 +25,219 @@ class AdminController extends Controller
     public function admin_dashboard(Request $request)
     {
         // //CoreComponentRepository::initializeCache();
-
         $counts = [];
 
-        $counts['totalUsersCount'] = Cache::remember('totalUsersCount', 86400, function () {
-            return User::where('user_type', 'customer')->count();
-        });
-        $counts['totalOrderCount'] = Cache::remember('totalOrderCount', 86400, function () {
-            return Order::count();
-        });
-        $counts['categoryCount'] = Cache::remember('totalOrderCount', 86400, function () {
-            return Category::count();
-        });
-        $counts['brandCount'] = Cache::remember('totalOrderCount', 86400, function () {
-            return Brand::count();
-        });
+        $counts = Cache::remember('counts', 86400, function () {
+            $a = [];
 
-        $root_categories = Category::where('level', 0)->get();
+            $a['totalUsersCount'] = User::where('user_type', 'customer')->count();
+            $a['totalProductsCount'] = Product::count();
+            $a['categoryCount'] = Category::count();
+            $a['brandCount'] = Brand::count();
 
-        $searches = Search::latest()->with(['user'])->limit(10)->get();
+            $a['orderCount'] = Order::where('delivery_status', '!=', 'delivered')->count();
+            $a['orderCompletedCount'] = Order::where('delivery_status', 'delivered')->count();
+            $a['salesAmount'] = Order::where('delivery_status', 'delivered')->sum('grand_total');
+            $a['productsSold'] = OrderDetail::where('delivery_status', 'delivered')->sum('quantity');
+
+            return $a;
+        });
+        // $counts['totalUsersCount'] = Cache::remember('totalUsersCount', 86400, function () {
+        //     return User::where('user_type', 'customer')->count();
+        // });
+        // $counts['totalProductsCount'] = Cache::remember('totalProductsCount', 86400, function () {
+        //     return
+        // });
+        // $counts['categoryCount'] = Cache::remember('categoryCount', 86400, function () {
+        //     return
+        // });
+        // $counts['brandCount'] = Cache::remember('brandCount', 86400, function () {
+        //     return ::count();
+        // });
+
+        $searches = Cache::remember('searches', 86400, function () {
+            return Search::latest()->with(['user'])->limit(10)->get();
+        });
 
         // Top Selling products
         // $topOrders = OrderDetail::groupBy('product_id')->selectRaw('product_id, sum(quantity) as sum')->orderBy('sum', 'DESC')->limit(1)->get()->pluck('product_id')->toArray();
 
         // $topProducts = Product::whereIn('id', $topOrders)->get();
 
-        $topProducts2 = Product::withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity','DESC')->get()
-            ->where('order_details_sum_quantity', '>', 0);
-
-            // dd($topProducts2);
-
-        $cached_graph_data = Cache::remember('cached_graph_data', 86400, function () use ($root_categories) {
-            $num_of_sale_data = null;
-            $qty_data = null;
-            foreach ($root_categories as $key => $category) {
-                $category_ids = \App\Utility\CategoryUtility::children_ids($category->id);
-                $category_ids[] = $category->id;
-
-                $products = Product::with('stocks')->whereIn('category_id', $category_ids)->get();
-                $qty = 0;
-                $sale = 0;
-                foreach ($products as $key => $product) {
-                    $sale += $product->num_of_sale;
-                    foreach ($product->stocks as $key => $stock) {
-                        $qty += $stock->qty;
-                    }
-                }
-                $qty_data .= $qty . ',';
-                $num_of_sale_data .= $sale . ',';
-            }
-            $item['num_of_sale_data'] = $num_of_sale_data;
-            $item['qty_data'] = $qty_data;
-
-            return $item;
+        $topProducts = Cache::remember('topProducts', 86400, function () {
+            return Product::withSum('orderDetails', 'quantity')->orderBy('order_details_sum_quantity', 'DESC')->get()
+                ->where('order_details_sum_quantity', '>', 0);
         });
 
-        return view('backend.dashboard', compact('root_categories', 'cached_graph_data', 'searches', 'counts'));
+        $days = Cache::remember('days', 86400, function () {
+            $period = CarbonPeriod::between(Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth());
+            $adDys = [];
+            foreach ($period as $date) {
+                $day = $date->format('d');
+                $adDys[] = $day;
+            }
+            return $adDys;
+        });
+
+        // $months = Cache::remember('months', 86400, function () {
+        //     $period = CarbonPeriod::between(Carbon::now()->start(), Carbon::now()->endOfMonth());
+        //     $adDys = [];
+        //     foreach ($period as $date) {
+        //         $day = $date->format('d');
+        //         $adDys[] = $day;
+        //     }
+        //     return $adDys;
+        // });
+
+        $orderMonthGraph = Cache::remember('orderMonthGraph', 86400, function () use ($days) {
+            $graph = [];
+
+            // All Orders this month
+            $monthOrders = Order::whereMonth('created_at', Carbon::now()->month)
+                ->get()
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('d'); // grouping by months
+                });
+
+            $monthOrdersData = [];
+            foreach ($days as $day) {
+                $monthOrdersData[] = isset($monthOrders[$day]) ?  $monthOrders[$day]->count() : 0;
+            }
+            $graph['monthOrdersData'] = implode(',', $monthOrdersData);
+
+
+            // Completed Orders this month
+            $monthOrdersCompleted = Order::where('delivery_status', 'delivered')
+                ->whereMonth('created_at', Carbon::now()->month)
+                ->get()
+                ->groupBy(function ($date) {
+                    // return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+                    return Carbon::parse($date->created_at)->format('d'); // grouping by months
+                });
+            $monthOrdersCompletedData = [];
+            foreach ($days as $day) {
+                $monthOrdersCompletedData[] = isset($monthOrdersCompleted[$day]) ?  $monthOrdersCompleted[$day]->count() : 0;
+            }
+            $graph['monthOrdersCompletedData'] = implode(',', $monthOrdersCompletedData);
+
+            return $graph;
+        });
+
+        // $months = Cache::remember('months', 86400, function () {
+        //     $period = CarbonPeriod::create(Carbon::now()->subYear(), '1 month', Carbon::now());
+        //     $adDys = [];
+        //     foreach ($period as $key => $date) {
+        //         $adDys[$key]['name'] = $date->format('M y');
+        //         $adDys[$key]['date'] = $date->format('m-y');
+        //     }
+        //     return $adDys;
+        // });
+
+        // $orderYearGraph = Cache::remember('orderYearGraph', 86400, function () use ($months) {
+        //     $graph = [];
+        //     // All orders
+        //     $allOrders = Order::whereBetween('created_at', [Carbon::now()->subYear(), Carbon::now()])
+        //         ->get()
+        //         ->groupBy(function ($date) {
+        //             return Carbon::parse($date->created_at)->format('m-y'); // grouping by months
+        //         });
+
+        //     $data = [];
+        //     foreach ($months as $month) {
+        //         $data[] = isset($allOrders[$month['date']]) ?  $allOrders[$month['date']]->count() : 0;
+        //     }
+        //     $graph['all_orders_per_month'] = implode(',', $data);
+
+        //     // Completed orders
+        //     $completedOrders = Order::where('delivery_status', 'delivered')
+        //         ->whereBetween('created_at', [Carbon::now()->subYear(), Carbon::now()])
+        //         ->get()
+        //         ->groupBy(function ($date) {
+        //             return Carbon::parse($date->created_at)->format('m-y'); // grouping by months
+        //         });
+
+        //     $data = [];
+        //     foreach ($months as $month) {
+        //         $data[] = isset($completedOrders[$month['date']]) ?  $completedOrders[$month['date']]->count() : 0;
+        //     }
+        //     $graph['completed_orders_per_month'] = implode(',', $data);
+
+        //     return $graph;
+        // });
+
+        $orderYearGraph = Cache::remember('orderYearGraph', 86400, function () {
+            $graph = [];
+
+            $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+            // All orders
+            $data = Order::select(\DB::raw('MONTH(created_at) as month, COUNT(*) as count'))
+                ->where('created_at', '>=', Carbon::now()->subMonths(11))
+                ->groupBy('month')
+                ->get();
+
+            $months = collect([]);
+            $counts = collect([]);
+
+            for ($i = 0; $i < 12; $i++) {
+                $currentMonth = $startDate->copy()->addMonths($i);
+                $monthData = $data->where('month', $currentMonth->month)->first();
+
+                $months->push($currentMonth->format('M y'));
+                $counts->push($monthData ? $monthData->count : 0);
+            }
+            $graph['all']['months'] = $months;
+            $graph['all']['counts'] = $counts;
+
+
+
+            // Completed orders
+            unset($data);
+            $data = Order::select(\DB::raw('MONTH(created_at) as month, COUNT(*) as count'))
+                ->where('delivery_status', 'delivered')
+                ->where('created_at', '>=', Carbon::now()->subMonths(11))
+                ->groupBy('month')
+                ->get();
+
+            $months = collect([]);
+            $counts = collect([]);
+
+            for ($i = 0; $i < 12; $i++) {
+                $currentMonth = $startDate->copy()->addMonths($i);
+                $monthData = $data->where('month', $currentMonth->month)->first();
+
+                $months->push($currentMonth->format('M y'));
+                $counts->push($monthData ? $monthData->count : 0);
+            }
+            $graph['completed']['months'] = $months;
+            $graph['completed']['counts'] = $counts;
+
+
+            return $graph;
+        });
+        // dd($months2);
+
+        // dd($data);
+
+
+        return view(
+            'backend.dashboard',
+            compact('searches', 'counts', 'topProducts', 'orderMonthGraph', 'days', 'orderYearGraph')
+        );
     }
 
-    function clearCache(Request $request)
+    public function clearCache($type = null)
     {
+        if ($type) {
+            Cache::forget($type);
+
+            if ($type == 'orderMonthGraph') {
+                Cache::forget('days');
+            }
+
+            flash(translate('Data refreshed'))->success();
+            return back();
+        }
+
         Artisan::call('cache:clear');
         flash(translate('Cache cleared successfully'))->success();
         return back();
