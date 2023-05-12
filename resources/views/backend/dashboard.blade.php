@@ -182,7 +182,7 @@
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">{{ translate('Orders Past 12 Months') }}</h6>
 
-                        <a href="{{ route('cache.clear', ['type' => 'orderMonthGraph']) }}"
+                        <a href="{{ route('cache.clear', ['type' => 'orderYearGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
                         </a>
