@@ -35,7 +35,7 @@ class AdminController extends Controller
             $a['categoryCount'] = Category::count();
             $a['brandCount'] = Brand::count();
 
-            $a['orderCount'] = Order::where('delivery_status', '!=', 'delivered')->count();
+            $a['orderCount'] = Order::count();
             $a['orderCompletedCount'] = Order::where('delivery_status', 'delivered')->count();
             $a['salesAmount'] = Order::where('delivery_status', 'delivered')->sum('grand_total');
             $a['productsSold'] = OrderDetail::where('delivery_status', 'delivered')->sum('quantity');
@@ -120,6 +120,26 @@ class AdminController extends Controller
             }
             $graph['monthOrdersCompletedData'] = implode(',', $monthOrdersCompletedData);
 
+            return $graph;
+        });
+
+        Cache::forget('salesMonthGraph');
+        $salesMonthGraph = Cache::remember('salesMonthGraph', 86400, function () use ($days) {
+            $graph = [];
+
+            // All Orders this month
+            $monthOrders = Order::whereMonth('created_at', Carbon::now()->month)
+                ->get()
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('d'); // grouping by months
+                });
+
+            
+            $monthOrdersData = [];
+            foreach ($days as $day) {
+                $monthOrdersData[] = isset($monthOrders[$day]) ?  $monthOrders[$day]->sum('grand_total') : 0;
+            }
+            $graph['monthSalesData'] = implode(',', $monthOrdersData);
             return $graph;
         });
 
@@ -214,14 +234,39 @@ class AdminController extends Controller
 
             return $graph;
         });
-        // dd($months2);
 
-        // dd($data);
+        // Cache::forget('salesYearGraph');
+        $salesYearGraph = Cache::remember('salesYearGraph', 86400, function () {
+            $graph = [];
 
+            $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+            // All orders
+            $data = Order::select(\DB::raw('MONTH(created_at) as month, COUNT(*) as count, SUM(grand_total) as total'))
+                ->where('delivery_status', 'delivered')
+                ->where('created_at', '>=', Carbon::now()->subMonths(11))
+                ->groupBy('month')
+                ->get();
+
+            $months = collect([]);
+            $counts = collect([]);
+
+            for ($i = 0; $i < 12; $i++) {
+                $currentMonth = $startDate->copy()->addMonths($i);
+                $monthData = $data->where('month', $currentMonth->month)->first();
+
+                $months->push($currentMonth->format('M y'));
+                $counts->push($monthData ? $monthData->total : 0);
+            }
+
+            $graph['months'] = $months;
+            $graph['counts'] = $counts;
+
+            return $graph;
+        });
 
         return view(
             'backend.dashboard',
-            compact('searches', 'counts', 'topProducts', 'orderMonthGraph', 'days', 'orderYearGraph')
+            compact('searches', 'counts', 'topProducts', 'orderMonthGraph', 'days', 'orderYearGraph', 'salesYearGraph', 'salesMonthGraph')
         );
     }
 

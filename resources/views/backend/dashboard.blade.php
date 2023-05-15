@@ -181,14 +181,43 @@
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">{{ translate('Orders Past 12 Months') }}</h6>
-
                         <a href="{{ route('cache.clear', ['type' => 'orderYearGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
                         </a>
                     </div>
                     <div class="card-body">
-                        <canvas id="graph-2" class="w-100" height="500"></canvas>
+                        <canvas id="graph-2" class="w-100" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0 fs-14">{{ translate('Total Sales This Month') }}</h6>
+                        <a href="{{ route('cache.clear', ['type' => 'salesYearGraph']) }}"
+                            class="btn btn-sm btn-soft-secondary btn-circle mr-2">
+                            <i class="la la-refresh fs-24"></i>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graph-3" class="w-100" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0 fs-14">{{ translate('Total Sales 12 Months') }}</h6>
+                        <a href="{{ route('cache.clear', ['type' => 'salesYearGraph']) }}"
+                            class="btn btn-sm btn-soft-secondary btn-circle mr-2">
+                            <i class="la la-refresh fs-24"></i>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graph-4" class="w-100" height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -211,7 +240,7 @@
             <a href="{{ route('user_search_report.index') }}" class="btn btn-primary">View All</a>
         </div>
         <div class="card-body">
-            <table class="table table-bordered aiz-table mb-0">
+            <table aria-describedby="" class="table table-bordered aiz-table mb-0">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -377,6 +406,7 @@
             data: {
                 labels: {!! $orderYearGraph['all']['months'] !!},
                 datasets: [{
+                    type: 'bar',
                     label: '{{ translate('No:of orders recived') }}',
                     data: {{ $orderYearGraph['all']['counts'] }},
                     backgroundColor: [
@@ -391,6 +421,7 @@
                     ],
                     borderWidth: 1
                 }, {
+                    type: 'bar',
                     label: '{{ translate('No:of orders completed') }}',
                     data: {{ $orderYearGraph['completed']['counts'] }},
                     backgroundColor: [
@@ -404,6 +435,124 @@
                         @endfor
                     ],
                     borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8',
+                            zeroLineColor: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10,
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        fontFamily: 'Poppins',
+                        boxWidth: 10,
+                        usePointStyle: true
+                    }
+                }
+            }
+        });
+
+        AIZ.plugins.chart('#graph-3', {
+            type: 'bar',
+            data: {
+                labels: [
+                    @foreach ($days as $day)
+                        '{{ $day }}',
+                    @endforeach
+                ],
+                datasets: [{
+                    label: '{{ translate('Sales this month') }}',
+                    data: [
+                        {{ $salesMonthGraph['monthSalesData'] }}
+                    ],
+                    backgroundColor: [
+                        @foreach ($days as $key => $day)
+                            'rgba(55, 125, 255, 0.4)',
+                        @endforeach
+                    ],
+                    borderColor: [
+                        @foreach ($days as $key => $day)
+                            'rgba(55, 125, 255, 1)',
+                        @endforeach
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8',
+                            zeroLineColor: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10,
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        fontFamily: 'Poppins',
+                        boxWidth: 10,
+                        usePointStyle: true
+                    }
+                }
+            }
+        });
+
+        AIZ.plugins.chart('#graph-4', {
+            type: 'line',
+            data: {
+                labels: {!! $orderYearGraph['all']['months'] !!},
+                datasets: [{
+                    type: 'line',
+                    label: '{{ translate('Total sales') }}',
+                    data: {{ $salesYearGraph['counts'] }},
+                    backgroundColor: [
+                        @for ($i = 0; $i < 12; $i++)
+                            'rgba(43, 255, 112, 0.4)',
+                        @endfor
+                    ],
+                    borderColor: [
+                        @for ($i = 0; $i < 12; $i++)
+                            'rgba(43, 255, 112, 1)',
+                        @endfor
+                    ],
                 }]
             },
             options: {

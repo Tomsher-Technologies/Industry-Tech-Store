@@ -21,7 +21,8 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="name"
-                                        placeholder="{{ translate('Product Name') }}" onchange="title_update(this)" required>
+                                        placeholder="{{ translate('Product Name') }}" onchange="title_update(this)"
+                                        required>
                                 </div>
                             </div>
                             <div class="form-group row" id="category">
@@ -80,28 +81,17 @@
                                         class="text-muted">{{ translate('This is used for search. Input those words by which cutomer can find this product.') }}</small>
                                 </div>
                             </div>
-
-                            @if (addon_is_activated('pos_system'))
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-from-label">{{ translate('Barcode') }}</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" name="barcode"
-                                            placeholder="{{ translate('Barcode') }}">
-                                    </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{ translate('Slug') }}<span
+                                    class="text-danger">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" placeholder="{{ translate('Slug') }}" id="slug"
+                                        name="slug" required class="form-control">
+                                    @error('slug')
+                                        <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            @endif
-
-                            @if (addon_is_activated('refund_request'))
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-from-label">{{ translate('Refundable') }}</label>
-                                    <div class="col-md-8">
-                                        <label class="aiz-switch aiz-switch-success mb-0">
-                                            <input type="checkbox" name="refundable" checked>
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -350,13 +340,13 @@
                     </div>
 
                     <!--                <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
-                                </div>
-                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
+                                    </div>
+                                    <div class="card-body">
 
-                                </div>
-                            </div>-->
+                                    </div>
+                                </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -435,24 +425,12 @@
                                     <textarea name="twitter_description" rows="8" class="form-control"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">{{ translate('Slug') }}</label>
-                                <div class="col-md-8">
-                                    <input type="text" placeholder="{{ translate('Slug') }}" id="slug"
-                                        name="slug" required class="form-control">
-                                    @error('slug')
-                                        <div class="alert alert-danger mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-lg-4">
-
-
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">{{ translate('Low Stock Quantity Warning') }}</h5>
@@ -528,22 +506,6 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0 h6">{{ translate('Todays Deal') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-md-6 col-from-label">{{ translate('Status') }}</label>
-                                <div class="col-md-6">
-                                    <label class="aiz-switch aiz-switch-success mb-0">
-                                        <input type="checkbox" name="todays_deal" value="1">
-                                        <span></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="card">
                         <div class="card-header">
@@ -627,19 +589,19 @@
                 success: function(data) {
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append('\
-                            <div class="form-group row">\
-                                <div class="col-md-3">\
-                                    <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                    <input type="text" class="form-control" name="choice[]" value="' + name +
+                                <div class="form-group row">\
+                                    <div class="col-md-3">\
+                                        <input type="hidden" name="choice_no[]" value="' + i + '">\
+                                        <input type="text" class="form-control" name="choice[]" value="' + name +
                         '" placeholder="{{ translate('Choice Title') }}" readonly>\
-                                </div>\
-                                <div class="col-md-8">\
-                                    <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                    </div>\
+                                    <div class="col-md-8">\
+                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple>\
-                                        ' + obj + '\
-                                    </select>\
-                                </div>\
-                            </div>');
+                                            ' + obj + '\
+                                        </select>\
+                                    </div>\
+                                </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });
@@ -647,10 +609,10 @@
 
         }
 
-        function title_update(e){
+        function title_update(e) {
             update_sku();
             title = e.value;
-            title = title.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'')
+            title = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
             $('#slug').val(title)
         }
 
