@@ -628,7 +628,7 @@ if (!function_exists('static_asset')) {
      */
     function static_asset($path, $secure = null)
     {
-        return app('url')->asset('public/' . $path, $secure);
+        return app('url')->asset('admin_assets/' . $path, $secure);
     }
 }
 
