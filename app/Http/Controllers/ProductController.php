@@ -13,6 +13,7 @@ use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Color;
 use App\Models\FlashDeal;
+use App\Models\Products\ProductTabs;
 use App\Models\ProductSeo;
 use App\Models\User;
 use Auth;
@@ -33,11 +34,7 @@ class ProductController extends Controller
         $query = null;
         $seller_id = null;
         $sort_search = null;
-        $products = Product::orderBy('created_at', 'desc')->where('auction_product', 0)->where('wholesale_product', 0);
-        if ($request->has('user_id') && $request->user_id != null) {
-            $products = $products->where('user_id', $request->user_id);
-            $seller_id = $request->user_id;
-        }
+        $products = Product::orderBy('created_at', 'desc');
         if ($request->search != null) {
             $sort_search = $request->search;
             $products = $products
@@ -97,30 +94,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-         // dd($request);
+        // dd($request);
 
         $product = new Product;
         $product->name = $request->name;
-        $product->added_by = $request->added_by;
-        if (Auth::user()->user_type == 'seller') {
-            $product->user_id = Auth::user()->id;
-            if (get_setting('product_approve_by_admin') == 1) {
-                $product->approved = 0;
-            }
-        } else {
-            $product->user_id = User::where('user_type', 'admin')->first()->id;
-        }
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
-        $product->barcode = $request->barcode;
 
-        if (addon_is_activated('refund_request')) {
-            if ($request->refundable != null) {
-                $product->refundable = 1;
-            } else {
-                $product->refundable = 0;
-            }
-        }
         $product->photos = $request->photos;
         $product->thumbnail_img = $request->thumbnail_img;
         $product->unit = $request->unit;
@@ -151,27 +131,6 @@ class ProductController extends Controller
             $product->discount_end_date   = strtotime($date_var[1]);
         }
 
-        // $product->meta_title = $request->meta_title;
-        // $product->meta_description = $request->meta_description;
-
-        // if ($request->has('meta_img')) {
-        //     $product->meta_img = $request->meta_img;
-        // } else {
-        //     $product->meta_img = $product->thumbnail_img;
-        // }
-
-        // if ($product->meta_title == null) {
-        //     $product->meta_title = $product->name;
-        // }
-
-        // if ($product->meta_description == null) {
-        //     $product->meta_description = strip_tags($product->description);
-        // }
-
-        // if ($product->meta_img == null) {
-        //     $product->meta_img = $product->thumbnail_img;
-        // }
-
         if ($request->hasFile('pdf')) {
             $product->pdf = $request->pdf->store('uploads/products/pdf');
         }
@@ -182,7 +141,6 @@ class ProductController extends Controller
         $slug .= $slug_suffix;
 
         $product->slug = $slug;
-
 
         $choice_options = array();
 
@@ -217,29 +175,35 @@ class ProductController extends Controller
             $product->published = 0;
         }
 
-
         if ($request->has('featured')) {
             $product->featured = 1;
-        }
-
-        if ($request->has('todays_deal')) {
-            $product->todays_deal = 1;
         }
 
         if ($request->has('return_refund')) {
             $product->return_refund = 1;
         }
 
-        //$variations = array();
+        $product->length = $request->length;
+        $product->height = $request->height;
+        $product->width = $request->width;
+        $product->weight = $request->weight;
 
         $product->save();
 
-        
+
+        // SEO
         $seo = ProductSeo::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
 
         $seo->meta_title        = $request->meta_title;
         $seo->meta_description  = $request->meta_description;
-        $seo->meta_keywords = $request->meta_keywords;
+
+        $keywords = array();
+        if ($request->meta_keywords[0] != null) {
+            foreach (json_decode($request->meta_keywords[0]) as $key => $keyword) {
+                array_push($keywords, $keyword->value);
+            }
+        }
+        $seo->meta_keywords = implode(',', $keywords);
 
         $seo->og_title        = $request->og_title;
         $seo->og_description  = $request->og_description;
@@ -269,6 +233,16 @@ class ProductController extends Controller
         }
 
         $seo->save();
+
+        // Tabs
+        if ($request->has('tabs')) {
+            foreach ($request->tabs as $tab) {
+                $p_tab = $product->tabs()->create([
+                    'heading' => $tab['tab_heading'],
+                    'content' => $tab['tab_description'],
+                ]);
+            }
+        }
 
         //combinations start
         $options = array();
@@ -332,13 +306,6 @@ class ProductController extends Controller
 
         $product->save();
 
-        // Product Translations
-        // $product_translation = ProductTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'product_id' => $product->id]);
-        // $product_translation->name = $request->name;
-        // $product_translation->unit = $request->unit;
-        // $product_translation->description = $request->description;
-        // $product_translation->save();
-
         flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
@@ -368,7 +335,7 @@ class ProductController extends Controller
     {
         //CoreComponentRepository::initializeCache();
 
-        $product = Product::findOrFail($id);
+        $product = Product::with(['tabs', 'seo'])->findOrFail($id);
 
         $lang = $request->lang;
         $tags = json_decode($product->tags);
@@ -394,7 +361,7 @@ class ProductController extends Controller
         $tags = json_decode($product->tags);
         // $categories = Category::all();
         $categories = Category::where('parent_id', 0)
-            
+
             ->with('childrenCategories')
             ->get();
 
@@ -413,25 +380,11 @@ class ProductController extends Controller
         $product                    = Product::findOrFail($id);
         $product->category_id       = $request->category_id;
         $product->brand_id          = $request->brand_id;
-        $product->barcode           = $request->barcode;
-        $product->cash_on_delivery = 0;
         $product->featured = 0;
-        $product->todays_deal = 0;
-        $product->is_quantity_multiplied = 0;
 
-        if (addon_is_activated('refund_request')) {
-            if ($request->refundable != null) {
-                $product->refundable = 1;
-            } else {
-                $product->refundable = 0;
-            }
-        }
-
-        if ($request->lang == env("DEFAULT_LANGUAGE")) {
-            $product->name          = $request->name;
-            $product->unit          = $request->unit;
-            $product->description   = $request->description;
-        }
+        $product->name          = $request->name;
+        $product->unit          = $request->unit;
+        $product->description   = $request->description;
 
         $slug = $request->slug ? Str::slug($request->slug, '-') : Str::slug($request->name, '-');
         $same_slug_count = Product::where('slug', 'LIKE', $slug . '%')->count();
@@ -462,70 +415,22 @@ class ProductController extends Controller
         $product->discount       = $request->discount;
         $product->discount_type     = $request->discount_type;
 
+        $product->length = $request->length;
+        $product->height = $request->height;
+        $product->width = $request->width;
+        $product->weight = $request->weight;
+
         if ($request->date_range != null) {
             $date_var               = explode(" to ", $request->date_range);
             $product->discount_start_date = strtotime($date_var[0]);
             $product->discount_end_date   = strtotime($date_var[1]);
         }
 
-        $product->shipping_type  = $request->shipping_type;
-        $product->est_shipping_days  = $request->est_shipping_days;
-
-        if (addon_is_activated('club_point')) {
-            if ($request->earn_point) {
-                $product->earn_point = $request->earn_point;
-            }
-        }
-
-        if ($request->has('shipping_type')) {
-            if ($request->shipping_type == 'free') {
-                $product->shipping_cost = 0;
-            } elseif ($request->shipping_type == 'flat_rate') {
-                $product->shipping_cost = $request->flat_shipping_cost;
-            } elseif ($request->shipping_type == 'product_wise') {
-                $product->shipping_cost = json_encode($request->shipping_cost);
-            }
-        }
-
-        if ($request->has('is_quantity_multiplied')) {
-            $product->is_quantity_multiplied = 1;
-        }
-        if ($request->has('cash_on_delivery')) {
-            $product->cash_on_delivery = 1;
-        }
-
         if ($request->has('featured')) {
             $product->featured = 1;
         }
 
-        if ($request->has('todays_deal')) {
-            $product->todays_deal = 1;
-        }
-
-        $product->meta_title        = $request->meta_title;
-        $product->meta_description  = $request->meta_description;
-        $product->meta_img          = $request->meta_img;
-
-        if ($product->meta_title == null) {
-            $product->meta_title = $product->name;
-        }
-
-        if ($product->meta_description == null) {
-            $product->meta_description = strip_tags($product->description);
-        }
-
-        if ($product->meta_img == null) {
-            $product->meta_img = $product->thumbnail_img;
-        }
-
         $product->pdf = $request->pdf;
-
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $product->colors = json_encode($request->colors);
-        } else {
-            $colors = array();
-            $product->colors = json_encode($colors);
-        }
 
         $choice_options = array();
 
@@ -645,12 +550,69 @@ class ProductController extends Controller
             }
         }
 
-        // Product Translations
-        $product_translation                = ProductTranslation::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
-        $product_translation->name          = $request->name;
-        $product_translation->unit          = $request->unit;
-        $product_translation->description   = $request->description;
-        $product_translation->save();
+
+        // SEO
+        $seo = ProductSeo::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
+
+        $seo->meta_title        = $request->meta_title;
+        $seo->meta_description  = $request->meta_description;
+
+        $keywords = array();
+        if ($request->meta_keywords[0] != null) {
+            foreach (json_decode($request->meta_keywords[0]) as $key => $keyword) {
+                array_push($keywords, $keyword->value);
+            }
+        }
+
+        $seo->meta_keywords = implode(',', $keywords);
+
+        $seo->og_title        = $request->og_title;
+        $seo->og_description  = $request->og_description;
+
+        $seo->twitter_title        = $request->twitter_title;
+        $seo->twitter_description  = $request->twitter_description;
+
+        if ($seo->meta_title == null) {
+            $seo->meta_title = $product->name;
+        }
+        if ($seo->og_title == null) {
+            $seo->og_title = $product->name;
+        }
+        if ($seo->twitter_title == null) {
+            $seo->twitter_title = $product->name;
+        }
+
+        $seo_dec = strip_tags($product->description);
+        if ($seo->meta_description == null) {
+            $seo->meta_description = $seo_dec;
+        }
+        if ($seo->og_description == null) {
+            $seo->og_description = $seo->meta_description;
+        }
+        if ($seo->twitter_description == null) {
+            $seo->twitter_description = $seo->meta_description;
+        }
+
+        $seo->save();
+
+        // Tabs
+        if ($request->has('tabs')) {
+            // dd($request->tabs);
+            foreach ($request->tabs as $tab) {
+                if ($tab['tab_id'] !== null) {
+                    ProductTabs::where('id', $tab['tab_id'])
+                        ->update([
+                            'heading' => $tab['tab_heading'],
+                            'content' => $tab['tab_description'],
+                        ]);
+                } else {
+                    $p_tab = $product->tabs()->create([
+                        'heading' => $tab['tab_heading'],
+                        'content' => $tab['tab_description'],
+                    ]);
+                }
+            }
+        }
 
         flash(translate('Product has been updated successfully'))->success();
 

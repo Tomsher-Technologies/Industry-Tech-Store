@@ -10,7 +10,6 @@
             <div class="row gutters-5">
                 <div class="col-lg-8">
                     @csrf
-                    <input type="hidden" name="added_by" value="admin">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">{{ translate('Product Information') }}</h5>
@@ -72,8 +71,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-from-label">{{ translate('Tags') }} <span
-                                        class="text-danger">*</span></label>
+                                <label class="col-md-3 col-from-label">{{ translate('Tags') }}</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control aiz-tag-input" name="tags[]"
                                         placeholder="{{ translate('Type and hit enter to add a tag') }}">
@@ -83,7 +81,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">{{ translate('Slug') }}<span
-                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" placeholder="{{ translate('Slug') }}" id="slug"
                                         name="slug" required class="form-control">
@@ -100,8 +98,8 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">{{ translate('Gallery Images') }} <small>(600x600)</small></label>
+                                <label class="col-md-3 col-form-label">{{ translate('Gallery Images') }}
+                                    <small>(600x600)</small></label>
                                 <div class="col-md-8">
                                     <div class="input-group" data-toggle="aizuploader" data-type="image"
                                         data-multiple="true">
@@ -110,7 +108,7 @@
                                                 {{ translate('Browse') }}</div>
                                         </div>
                                         <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                        <input type="hidden" name="photos" class="selected-files">
+                                        <input type="hidden" name="photos" id="photos" class="selected-files">
                                     </div>
                                     <div class="file-preview box sm">
                                     </div>
@@ -119,8 +117,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">{{ translate('Thumbnail Image') }}
+                                <label class="col-md-3 col-form-label">{{ translate('Thumbnail Image') }}
                                     <small>(300x300)</small></label>
                                 <div class="col-md-8">
                                     <div class="input-group" data-toggle="aizuploader" data-type="image">
@@ -129,7 +126,8 @@
                                                 {{ translate('Browse') }}</div>
                                         </div>
                                         <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                        <input type="hidden" name="thumbnail_img" class="selected-files">
+                                        <input type="hidden" name="thumbnail_img" id="thumbnail_img"
+                                            class="selected-files">
                                     </div>
                                     <div class="file-preview box sm">
                                     </div>
@@ -139,33 +137,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0 h6">{{ translate('Product Videos') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-from-label">{{ translate('Video Provider') }}</label>
-                                <div class="col-md-8">
-                                    <select class="form-control aiz-selectpicker" name="video_provider"
-                                        id="video_provider">
-                                        <option value="youtube">{{ translate('Youtube') }}</option>
-                                        <option value="dailymotion">{{ translate('Dailymotion') }}</option>
-                                        <option value="vimeo">{{ translate('Vimeo') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-3 col-from-label">{{ translate('Video Link') }}</label>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="video_link"
-                                        placeholder="{{ translate('Video Link') }}">
-                                    <small
-                                        class="text-muted">{{ translate("Use proper link without extra parameter. Don't use short share link/embeded iframe code.") }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">{{ translate('Product Variation') }}</h5>
@@ -240,11 +212,12 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-3 control-label"
-                                    for="start_date">{{ translate('Discount Date Range') }}</label>
+                                    for="date_range">{{ translate('Discount Date Range') }}</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control aiz-date-range" name="date_range"
-                                        placeholder="{{ translate('Select Date') }}" data-time-picker="true"
-                                        data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
+                                    <input type="text" class="form-control aiz-date-range" id="date_range"
+                                        name="date_range" placeholder="{{ translate('Select Date') }}"
+                                        data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to "
+                                        autocomplete="off">
                                 </div>
                             </div>
 
@@ -297,6 +270,164 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <br>
+                            <div class="sku_combination" id="sku_combination">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Description') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
+                                <div class="col-md-8">
+                                    <textarea class="aiz-text-editor" name="description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card repeater">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Tabs') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div data-repeater-list="tabs">
+                                <div data-repeater-item>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-from-label">{{ translate('Heading') }}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="tab_heading">
+                                        </div>
+                                        <input data-repeater-delete type="button" class="btn btn-danger action-btn"
+                                            value="Delete" />
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
+                                        <div class="col-md-8">
+                                            <textarea class="text-area" name="tab_description"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <input data-repeater-create type="button" class="btn btn-success action-btn"
+                                value="Add" />
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Dimensions') }}</h5>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Length') }}</label>
+                                <div class="col-md-6">
+                                    <input type="number" step="0.01" placeholder="{{ translate('Length') }}"
+                                        name="length" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Height') }}</label>
+                                <div class="col-md-6">
+                                    <input type="number" step="0.01" placeholder="{{ translate('Height') }}"
+                                        name="height" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Width') }}</label>
+                                <div class="col-md-6">
+                                    <input type="number" step="0.01" placeholder="{{ translate('Width') }}"
+                                        name="width" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Weight') }}</label>
+                                <div class="col-md-6">
+                                    <input type="number" step="0.01" placeholder="{{ translate('Weight') }}"
+                                        name="weight" class="form-control" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--                <div class="card">
+                                                                                                    <div class="card-header">
+                                                                                                        <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
+                                                                                                    </div>
+                                                                                                    <div class="card-body">
+
+                                                                                                    </div>
+                                                                                                </div>-->
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Videos') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Video Provider') }}</label>
+                                <div class="col-md-8">
+                                    <select class="form-control aiz-selectpicker" name="video_provider"
+                                        id="video_provider">
+                                        <option value="youtube">{{ translate('Youtube') }}</option>
+                                        <option value="dailymotion">{{ translate('Dailymotion') }}</option>
+                                        <option value="vimeo">{{ translate('Vimeo') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Video Link') }}</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="video_link"
+                                        placeholder="{{ translate('Video Link') }}">
+                                    <small
+                                        class="text-muted">{{ translate("Use proper link without extra parameter. Don't use short share link/embeded iframe code.") }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('PDF Specification') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{ translate('PDF Specification') }}</label>
+                                <div class="col-md-8">
+                                    <div class="input-group" data-toggle="aizuploader" data-type="document">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                {{ translate('Browse') }}</div>
+                                        </div>
+                                        <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                        <input type="hidden" name="pdf" id="pdf" class="selected-files">
+                                    </div>
+                                    <div class="file-preview box sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('External link') }}</h5>
+                        </div>
+                        <div class="card-body">
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">
                                     {{ translate('External link') }}
@@ -317,56 +448,6 @@
                                         name="external_link_btn" class="form-control">
                                     <small
                                         class="text-muted">{{ translate('Leave it blank if you do not use external site link') }}</small>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="sku_combination" id="sku_combination">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0 h6">{{ translate('Product Description') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
-                                <div class="col-md-8">
-                                    <textarea class="aiz-text-editor" name="description"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
-                                    </div>
-                                    <div class="card-body">
-
-                                    </div>
-                                </div>-->
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0 h6">{{ translate('PDF Specification') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">{{ translate('PDF Specification') }}</label>
-                                <div class="col-md-8">
-                                    <div class="input-group" data-toggle="aizuploader" data-type="document">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                {{ translate('Browse') }}</div>
-                                        </div>
-                                        <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                        <input type="hidden" name="pdf" class="selected-files">
-                                    </div>
-                                    <div class="file-preview box sm">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -391,10 +472,13 @@
                                     <textarea name="meta_description" rows="8" class="form-control"></textarea>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">{{ translate('Keywords') }}</label>
                                 <div class="col-md-8">
-                                    <textarea name="meta_keywords" rows="8" class="form-control"></textarea>
+                                    {{-- data-max-tags="1" --}}
+                                    <input type="text" class="form-control aiz-tag-input" name="meta_keywords[]"
+                                        placeholder="{{ translate('Type and hit enter to add a keyword') }}">
                                 </div>
                             </div>
 
@@ -431,17 +515,38 @@
                 </div>
 
                 <div class="col-lg-4">
+
+                    <div class="card bg-transparent shadow-none border-0">
+                        <div class="card-body p-0">
+                            <div class="btn-toolbar justify-content-between" role="toolbar"
+                                aria-label="Toolbar with button groups">
+                                <div class="btn-group mr-2" role="group" aria-label="First group">
+                                    <button type="submit" name="button" value="draft"
+                                        class="btn btn-warning action-btn">{{ translate('Save As Draft') }}</button>
+                                </div>
+                                <div class="btn-group mr-2" role="group" aria-label="Third group">
+                                    <button type="submit" name="button" value="unpublish"
+                                        class="btn btn-primary action-btn">{{ translate('Save & Unpublish') }}</button>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Second group">
+                                    <button type="submit" name="button" value="publish"
+                                        class="btn btn-success action-btn">{{ translate('Save & Publish') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">{{ translate('Low Stock Quantity Warning') }}</h5>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3">
-                                <label for="name">
+                                <label for="low_stock_quantity">
                                     {{ translate('Quantity') }}
                                 </label>
-                                <input type="number" name="low_stock_quantity" value="1" min="0"
-                                    step="1" class="form-control">
+                                <input type="number" name="low_stock_quantity" id="low_stock_quantity" value="1"
+                                    min="0" step="1" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -546,6 +651,62 @@
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"
+        integrity="sha512-foIijUdV0fR0Zew7vmw98E6mOWd9gkGWQBWaoA1EOFAx+pY+N8FmmtIYAVj64R98KeD2wzZh1aHK0JSpKmRH8w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $('.repeater').repeater({
+            initEmpty: true,
+            show: function() {
+                $(this).slideDown();
+
+                buttons = [
+                    ["font", ["bold", "underline", "italic", "clear"]],
+                    ["para", ["ul", "ol", "paragraph"]],
+                    ["style", ["style"]],
+                    ["color", ["color"]],
+                    ["table", ["table"]],
+                    ["insert", ["link", "picture", "video"]],
+                    ["view", ["fullscreen", "undo", "redo"]],
+                ];
+
+                note = $(this).find('.text-area').summernote({
+                    toolbar: buttons,
+                    height: 200,
+                    callbacks: {
+                        onImageUpload: function(data) {
+                            data.pop();
+                        },
+                        onPaste: function(e) {
+                            if (format) {
+                                var bufferText = ((e.originalEvent || e).clipboardData || window
+                                    .clipboardData).getData('Text');
+                                e.preventDefault();
+                                document.execCommand('insertText', false, bufferText);
+                            }
+                        }
+                    }
+                });
+
+                var nativeHtmlBuilderFunc = note.summernote('module', 'videoDialog').createVideoNode;
+
+                note.summernote('module', 'videoDialog').createVideoNode = function (url) {
+                    var wrap = $('<div class="embed-responsive embed-responsive-16by9"></div>');
+                    var html = nativeHtmlBuilderFunc(url);
+                    html = $(html).addClass('embed-responsive-item');
+                    return wrap.append(html)[0];
+                };
+
+            },
+            hide: function(deleteElement) {
+                if (confirm('Are you sure you want to delete this element?')) {
+                    $(this).slideUp(deleteElement);
+                }
+            },
+        });
+    </script>
+
     <script type="text/javascript">
         $('form').bind('submit', function(e) {
             if ($(".action-btn").attr('attempted') == 'true') {
@@ -588,20 +749,24 @@
                 },
                 success: function(data) {
                     var obj = JSON.parse(data);
-                    $('#customer_choice_options').append('\
-                                <div class="form-group row">\
-                                    <div class="col-md-3">\
-                                        <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                        <input type="text" class="form-control" name="choice[]" value="' + name +
+                    $('#customer_choice_options').append(
+                        '\
+                                                                                                <div class="form-group row">\
+                                                                                                    <div class="col-md-3">\
+                                                                                                        <input type="hidden" name="choice_no[]" value="' +
+                        i +
+                        '">\
+                                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
+                        name +
                         '" placeholder="{{ translate('Choice Title') }}" readonly>\
-                                    </div>\
-                                    <div class="col-md-8">\
-                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                                                                                    </div>\
+                                                                                                    <div class="col-md-8">\
+                                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple>\
-                                            ' + obj + '\
-                                        </select>\
-                                    </div>\
-                                </div>');
+                                                                                                            ' + obj + '\
+                                                                                                        </select>\
+                                                                                                    </div>\
+                                                                                                </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

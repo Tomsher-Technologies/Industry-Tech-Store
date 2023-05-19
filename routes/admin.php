@@ -38,6 +38,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PickupPointController;
+use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
@@ -95,6 +96,21 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::post('/products/seller/featured', [ProductController::class, 'updateSellerFeatured'])->name('products.seller.featured');
     Route::post('/products/published', [ProductController::class, 'updatePublished'])->name('products.published');
     Route::post('/products/add-more-choice-option', [ProductController::class, 'add_more_choice_option'])->name('products.add-more-choice-option');
+
+
+    //Product Bulk Upload
+    Route::get('/product-bulk-upload/index', [ProductBulkUploadController::class, 'index'])->name('product_bulk_upload.index');
+    Route::post('/bulk-product-upload', [ProductBulkUploadController::class, 'bulk_upload'])->name('bulk_product_upload');
+    Route::get('/product-csv-download/{type}', [ProductBulkUploadController::class, 'import_product'])->name('product_csv.download');
+    Route::get('/vendor-product-csv-download/{id}', [ProductBulkUploadController::class, 'import_vendor_product'])->name('import_vendor_product.download');
+    Route::group(['prefix' => 'bulk-upload/download'], function () {
+        Route::get('/category', [ProductBulkUploadController::class, 'pdf_download_category'])->name('pdf.download_category');
+        Route::get('/brand', [ProductBulkUploadController::class, 'pdf_download_brand'])->name('pdf.download_brand');
+        Route::get('/seller', [ProductBulkUploadController::class, 'pdf_download_seller'])->name('pdf.download_seller');
+    });
+
+    //Product Export
+    Route::get('/product-bulk-export', [ProductBulkUploadController::class, 'export'])->name('product_bulk_export.index');
 
 
     // Route::resource('sellers', SellerController::class);

@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App;
+use App\Models\Products\ProductDetails;
 use App\Models\Products\ProductEnquiries;
+use App\Models\Products\ProductTabs;
 use Illuminate\Support\Str;
+use Wildside\Userstamps\Userstamps;
 
 class Product extends Model
 {
+    use Userstamps;
 
     protected $fillable = [
         'name',
@@ -31,9 +35,13 @@ class Product extends Model
         'photos',
         'thumbnail_img',
         'return_refund',
+        'length',
+        'height',
+        'width',
+        'weight',
     ];
 
-    protected $with = ['taxes'];
+    // protected $with = ['taxes'];
     // protected $with = ['product_translations', 'taxes'];
 
     public function getTranslation($field = '', $lang = false)
@@ -50,7 +58,7 @@ class Product extends Model
 
     public function seo()
     {
-        return $this->hasMany(ProductSeo::class);
+        return $this->hasOne(ProductSeo::class);
     }
 
     public function getSeoTranslation($lang = "")
@@ -102,6 +110,11 @@ class Product extends Model
     public function flash_deal_product()
     {
         return $this->hasOne(FlashDealProduct::class);
+    }
+
+    public function tabs()
+    {
+        return $this->hasMany(ProductTabs::class);
     }
 
     // public function enquiries()

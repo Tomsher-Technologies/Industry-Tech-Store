@@ -2,10 +2,11 @@
 
 namespace App\Models\Products;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductDetails extends Model
+class ProductTabs extends Model
 {
     use HasFactory;
 
@@ -14,4 +15,9 @@ class ProductDetails extends Model
         'heading',
         'content',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

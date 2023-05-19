@@ -33,29 +33,6 @@
                     <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
                 </div>
             </div>
-            
-            @if($type == 'Seller')
-            <div class="col-md-2 ml-auto">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
-                    <option value="">{{ translate('All Sellers') }}</option>
-                    @foreach (App\Models\Seller::all() as $key => $seller)
-                        @if ($seller->user != null && $seller->user->shop != null)
-                            <option value="{{ $seller->user->id }}" @if ($seller->user->id == $seller_id) selected @endif>{{ $seller->user->shop->name }} ({{ $seller->user->name }})</option>
-                        @endif
-                    @endforeach
-                </select>
-            </div>
-            @endif
-            @if($type == 'All')
-            <div class="col-md-2 ml-auto">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
-                    <option value="">{{ translate('All Sellers') }}</option>
-                        @foreach (App\Models\User::where('user_type', '=', 'admin')->orWhere('user_type', '=', 'seller')->get() as $key => $seller)
-                            <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>{{ $seller->name }}</option>
-                        @endforeach
-                </select>
-            </div>
-            @endif
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type" onchange="sort_products()">
                     <option value="">{{ translate('Sort By') }}</option>
