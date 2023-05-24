@@ -50,7 +50,7 @@
                                     <th scope="row">{{ translate('Image')}}</th>
                                     @foreach (Session::get('compare') as $key => $item)
                                         <td>
-                                            <img loading="lazy" src="{{ uploaded_asset(\App\Models\Product::find($item)->thumbnail_img) }}" alt="{{ translate('Product Image') }}" class="img-fluid py-4">
+                                            <img loading="lazy" src="{{ uploaded_asset(\App\Models\Product::find($item)->thumbnail_img) }}" alt="Product Image" class="img-fluid py-4">
                                         </td>
                                     @endforeach
                                 </tr>

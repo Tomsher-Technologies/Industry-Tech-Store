@@ -67,7 +67,7 @@
                                         {{ translate('Browse')}}
                                     </div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="banner" class="selected-files" value="{{ $blog->banner }}">
                             </div>
                             <div class="file-preview box sm">
@@ -113,7 +113,7 @@
                                         {{ translate('Browse')}}
                                     </div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="meta_img" class="selected-files" value="{{ $blog->meta_img }}">
                             </div>
                             <div class="file-preview box sm">

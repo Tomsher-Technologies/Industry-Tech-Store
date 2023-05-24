@@ -6,14 +6,14 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{ translate('Default Language') }}</h5>
+                <h5 class="mb-0 h6">Default Language</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('env_key_update.update') }}" method="POST">
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="col-from-label">{{ translate('Default Language') }}</label>
+                            <label class="col-from-label">Default Language</label>
                         </div>
                         <input type="hidden" name="types[]" value="DEFAULT_LANGUAGE">
                         <div class="col-lg-6">
@@ -36,20 +36,20 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{ translate('Import App Translations') }}</h5>
+                <h5 class="mb-0 h6">Import App Translations</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('app-translations.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="col-from-label">{{ translate('English Trasnlation File') }}</label>
+                            <label class="col-from-label">English Trasnlation File</label>
                         </div>
                         <div class="col-lg-6">
                             <div class="custom-file">
                                 <label class="custom-file-label">
                                     <input type="file" id="lang_file" name="lang_file"  class="custom-file-input" required>
-                                    <span class="custom-file-name">{{ translate('Choose app_en.arb file') }}</span>
+                                    <span class="custom-file-name">Choose app_en.arb file</span>
                                 </label>
                             </div>
                         </div>
@@ -109,20 +109,20 @@
                             <span class="slider round"></span></label>
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('languages.show', $language->id)}}" title="{{ translate('Translation') }}">
+                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('languages.show', $language->id)}}" title="Translation">
                                 <i class="las la-language"></i>
                             </a>
-                            <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('app-translations.show', $language->id)}}" title="{{ translate('App Translation') }}">
+                            <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('app-translations.show', $language->id)}}" title="App Translation">
                                 <i class="las la-language"></i>
                             </a>
-                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('app-translations.export', $language->id)}}" title="{{ translate('arb File Export') }}" download>
+                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('app-translations.export', $language->id)}}" title="arb File Export" download>
                                 <i class="las la-download"></i>
                             </a>
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('languages.edit', $language->id)}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('languages.edit', $language->id)}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
                             @if($language->code != 'en')
-                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('languages.destroy', $language->id)}}" title="{{ translate('Delete') }}">
+                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('languages.destroy', $language->id)}}" title="Delete">
                                     <i class="las la-trash"></i>
                                 </a>
                             @endif
@@ -161,7 +161,7 @@
                     location.reload();
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }
@@ -181,7 +181,7 @@
                     location.reload();
                 }
                 else { 
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

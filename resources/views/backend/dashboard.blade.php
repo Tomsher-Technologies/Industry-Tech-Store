@@ -4,8 +4,8 @@
     @if (env('MAIL_USERNAME') == null && env('MAIL_PASSWORD') == null)
         <div class="">
             <div class="alert alert-danger d-flex align-items-center">
-                {{ translate('Please Configure SMTP Setting to work all email sending functionality') }},
-                <a class="alert-link ml-2" href="{{ route('smtp_settings.index') }}">{{ translate('Configure Now') }}</a>
+                Please Configure SMTP Setting to work all email sending functionality,
+                <a class="alert-link ml-2" href="{{ route('smtp_settings.index') }}">Configure Now</a>
             </div>
         </div>
     @endif
@@ -23,8 +23,8 @@
                         <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Customer') }}
+                                    <span class=" d-block">Total</span>
+                                    Customer
                                 </div>
                                 <div class="h3 fw-700 mb-3">
                                     {{ $counts['totalUsersCount'] }}
@@ -41,8 +41,8 @@
                         <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class="d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Products') }}
+                                    <span class="d-block">Total</span>
+                                    Products
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['totalProductsCount'] }}</div>
                             </div>
@@ -57,8 +57,8 @@
                         <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Product category') }}
+                                    <span class=" d-block">Total</span>
+                                    Product category
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['categoryCount'] }}</div>
                             </div>
@@ -73,8 +73,8 @@
                         <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Product brand') }}
+                                    <span class=" d-block">Total</span>
+                                    Product brand
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['brandCount'] }}</div>
                             </div>
@@ -93,8 +93,8 @@
                         <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Sales Amount') }}
+                                    <span class=" d-block">Total</span>
+                                    Sales Amount
                                 </div>
                                 <div class="h3 fw-700 mb-3">
                                     {{ $counts['salesAmount'] }}
@@ -111,8 +111,8 @@
                         <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class="d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Orders') }}
+                                    <span class="d-block">Total</span>
+                                    Orders
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['orderCount'] }}</div>
                             </div>
@@ -127,8 +127,8 @@
                         <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Completed Orders') }}
+                                    <span class=" d-block">Total</span>
+                                    Completed Orders
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['orderCompletedCount'] }}</div>
                             </div>
@@ -143,8 +143,8 @@
                         <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
                             <div class="px-3 pt-3">
                                 <div class="fs-20">
-                                    <span class=" d-block">{{ translate('Total') }}</span>
-                                    {{ translate('Products Sold') }}
+                                    <span class=" d-block">Total</span>
+                                    Products Sold
                                 </div>
                                 <div class="h3 fw-700 mb-3">{{ $counts['productsSold'] }}</div>
                             </div>
@@ -166,7 +166,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0 fs-14">{{ translate('Orders This Month') }}</h6>
+                        <h6 class="mb-0 fs-14">Orders This Month</h6>
                         <a href="{{ route('cache.clear', ['type' => 'orderMonthGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
@@ -180,7 +180,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0 fs-14">{{ translate('Orders Past 12 Months') }}</h6>
+                        <h6 class="mb-0 fs-14">Orders Past 12 Months</h6>
                         <a href="{{ route('cache.clear', ['type' => 'orderYearGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
@@ -195,7 +195,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0 fs-14">{{ translate('Total Sales This Month') }}</h6>
+                        <h6 class="mb-0 fs-14">Total Sales This Month</h6>
                         <a href="{{ route('cache.clear', ['type' => 'salesYearGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
@@ -210,7 +210,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0 fs-14">{{ translate('Total Sales 12 Months') }}</h6>
+                        <h6 class="mb-0 fs-14">Total Sales 12 Months</h6>
                         <a href="{{ route('cache.clear', ['type' => 'salesYearGraph']) }}"
                             class="btn btn-sm btn-soft-secondary btn-circle mr-2">
                             <i class="la la-refresh fs-24"></i>
@@ -229,7 +229,7 @@
     <div class="card">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h6 class="mb-0">{{ translate('Latest User Searches') }}</h6>
+                <h6 class="mb-0">Latest User Searches</h6>
             </div>
 
             <a href="{{ route('cache.clear', ['type' => 'searches']) }}"
@@ -244,10 +244,10 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>{{ translate('Search Key') }}</th>
-                        <th>{{ translate('User') }}</th>
-                        <th>{{ translate('IP Address') }}</th>
-                        <th>{{ translate('Date') }}</th>
+                        <th>Search Key</th>
+                        <th>User</th>
+                        <th>IP Address</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -275,7 +275,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h6 class="mb-0">{{ translate('Top Selling Products') }}</h6>
+            <h6 class="mb-0">Top Selling Products</h6>
 
             <a href="{{ route('cache.clear', ['type' => 'topProducts']) }}"
                 class="btn btn-sm btn-soft-secondary btn-circle mr-2">
@@ -331,7 +331,7 @@
                     @endforeach
                 ],
                 datasets: [{
-                    label: '{{ translate('No:of orders recived this month') }}',
+                    label: 'No:of orders recived this month',
                     data: [
                         {{ $orderMonthGraph['monthOrdersData'] }}
                     ],
@@ -347,7 +347,7 @@
                     ],
                     borderWidth: 1
                 }, {
-                    label: '{{ translate('No:of orders completed this month') }}',
+                    label: 'No:of orders completed this month',
                     data: [
                         {{ $orderMonthGraph['monthOrdersCompletedData'] }}
                     ],
@@ -407,7 +407,7 @@
                 labels: {!! $orderYearGraph['all']['months'] !!},
                 datasets: [{
                     type: 'bar',
-                    label: '{{ translate('No:of orders recived') }}',
+                    label: 'No:of orders recived',
                     data: {{ $orderYearGraph['all']['counts'] }},
                     backgroundColor: [
                         @for ($i = 0; $i < 12; $i++)
@@ -422,7 +422,7 @@
                     borderWidth: 1
                 }, {
                     type: 'bar',
-                    label: '{{ translate('No:of orders completed') }}',
+                    label: 'No:of orders completed',
                     data: {{ $orderYearGraph['completed']['counts'] }},
                     backgroundColor: [
                         @for ($i = 0; $i < 12; $i++)
@@ -482,7 +482,7 @@
                     @endforeach
                 ],
                 datasets: [{
-                    label: '{{ translate('Sales this month') }}',
+                    label: 'Sales this month',
                     data: [
                         {{ $salesMonthGraph['monthSalesData'] }}
                     ],
@@ -541,7 +541,7 @@
                 labels: {!! $orderYearGraph['all']['months'] !!},
                 datasets: [{
                     type: 'line',
-                    label: '{{ translate('Total sales') }}',
+                    label: 'Total sales',
                     data: {{ $salesYearGraph['counts'] }},
                     backgroundColor: [
                         @for ($i = 0; $i < 12; $i++)

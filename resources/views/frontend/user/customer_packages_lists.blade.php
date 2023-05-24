@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-8 mx-auto text-center">
-                <h1 class="mb-0 fw-700">{{ translate('Premium Packages for Customers') }}</h1>
+                <h1 class="mb-0 fw-700">Premium Packages for Customers</h1>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
 
                             <div class="mb-5 d-flex align-items-center justify-content-center">
                                 @if ($customer_package->amount == 0)
-                                    <span class="display-4 fw-600 lh-1 mb-0">{{ translate('Free') }}</span>
+                                    <span class="display-4 fw-600 lh-1 mb-0">Free</span>
                                 @else
                                     <span class="display-4 fw-600 lh-1 mb-0">{{ single_price($customer_package->amount) }}</span>
                                 @endif
@@ -65,7 +65,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('Select Payment Type') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Select Payment Type</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -99,7 +99,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('Purchase Your Package') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Purchase Your Package</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form class="" id="package_payment_form" action="{{ route('customer_packages.purchase') }}" method="post">
@@ -187,7 +187,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('Offline Package Purchase ') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Offline Package Purchase </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="offline_customer_package_purchase_modal_body"></div>

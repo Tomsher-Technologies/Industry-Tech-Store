@@ -3,7 +3,7 @@
 @section('panel_content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Product Reviews') }}</h5>
+            <h5 class="mb-0 h6">Product Reviews</h5>
         </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">

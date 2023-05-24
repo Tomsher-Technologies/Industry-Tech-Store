@@ -18,8 +18,8 @@
                                 <div class='form-row'>
                                     <div class='col-12 form-group required'>
                                         <label class='control-label'>{{translate('Enter Mobile Number')}}</label>
-                                        <input type="text" name="Msisdn" class="form-control" placeholder="{{ translate('Enter Mobile Number') }}" required>
-                                        <small class="text-warning">{{ translate('KINDLY PLEASE PROVIDE YOUR SAFARICOM M-PESA NUMBER START WITH 254') }}</small>
+                                        <input type="text" name="Msisdn" class="form-control" placeholder="Enter Mobile Number" required>
+                                        <small class="text-warning">KINDLY PLEASE PROVIDE YOUR SAFARICOM M-PESA NUMBER START WITH 254</small>
                                     </div>
                                 </div>
 

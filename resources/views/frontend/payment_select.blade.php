@@ -384,7 +384,7 @@
                                                         @if ($method->bank_info != null)
                                                             <ul>
                                                                 @foreach (json_decode($method->bank_info) as $key => $info)
-                                                                    <li>{{ translate('Bank Name') }} - {{ $info->bank_name }}, {{ translate('Account Name') }} - {{ $info->account_name }}, {{ translate('Account Number') }} - {{ $info->account_number}}, {{ translate('Routing Number') }} - {{ $info->routing_number }}</li>
+                                                                    <li>Bank Name - {{ $info->bank_name }}, Account Name - {{ $info->account_name }}, Account Number - {{ $info->account_number}}, Routing Number - {{ $info->routing_number }}</li>
                                                                 @endforeach
                                                             </ul>
                                                         @endif
@@ -475,7 +475,7 @@
             if($('#agree_checkbox').is(":checked")){
                 $('#checkout-form').submit();
             }else{
-                AIZ.plugins.notify('danger','{{ translate('You need to agree with our policies') }}');
+                AIZ.plugins.notify('danger','You need to agree with our policies');
             }
         }
         function submitOrder(el){
@@ -483,7 +483,7 @@
             if($('#agree_checkbox').is(":checked")){
                 $('#checkout-form').submit();
             }else{
-                AIZ.plugins.notify('danger','{{ translate('You need to agree with our policies') }}');
+                AIZ.plugins.notify('danger','You need to agree with our policies');
                 $(el).prop('disabled', false);
             }
         }

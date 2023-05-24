@@ -3,7 +3,7 @@
 @section('panel_content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Download Your Product') }}</h5>
+            <h5 class="mb-0 h6">Download Your Product</h5>
         </div>
         <div class="card-body">
           <table class="table aiz-table mb-0">
@@ -21,7 +21,7 @@
                       <tr>
                           <td><a href="{{ route('product', $order->product->slug) }}">{{ $order->product->getTranslation('name') }}</a></td>
                           <td>
-                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($order->product->id))}}" title="{{ translate('Download') }}">
+                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($order->product->id))}}" title="Download">
                                 <i class="las la-download"></i>
                             </a>
                           </td>

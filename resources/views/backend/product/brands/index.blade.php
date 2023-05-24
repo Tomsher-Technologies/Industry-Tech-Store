@@ -3,7 +3,7 @@
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3">{{ translate('All Brands') }}</h1>
+            <h1 class="h3">All Brands</h1>
         </div>
     </div>
     <div class="row">
@@ -11,14 +11,14 @@
             <div class="card">
                 <div class="card-header row gutters-5">
                     <div class="col text-center text-md-left">
-                        <h5 class="mb-md-0 h6">{{ translate('Brands') }}</h5>
+                        <h5 class="mb-md-0 h6">Brands</h5>
                     </div>
                     <div class="col-md-4">
                         <form class="" id="sort_brands" action="" method="GET">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" id="search"
                                     name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset
-                                    placeholder="{{ translate('Type name & Enter') }}">
+                                    placeholder="Type name & Enter">
                             </div>
                         </form>
                     </div>
@@ -28,10 +28,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>{{ translate('Name') }}</th>
-                                <th>{{ translate('Logo') }}</th>
-                                <th>{{ translate('Is Top') }}</th>
-                                <th class="text-right">{{ translate('Options') }}</th>
+                                <th>Name</th>
+                                <th>Logo</th>
+                                <th>Is Top</th>
+                                <th class="text-right">Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,7 +40,7 @@
                                     <td>{{ $key + 1 + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
                                     <td>{{ $brand->getTranslation('name') }}</td>
                                     <td>
-                                        <img src="{{ uploaded_asset($brand->logo) }}" alt="{{ translate('Brand') }}"
+                                        <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand"
                                             class="h-50px">
                                     </td>
                                     <td>
@@ -50,13 +50,13 @@
                                     </td>
                                     <td class="text-right">
                                         <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                            href="{{ route('brands.edit', $brand) }}" title="{{ translate('Edit') }}">
+                                            href="{{ route('brands.edit', $brand) }}" title="Edit">
                                             <i class="las la-edit"></i>
                                         </a>
                                         <a href="#"
                                             class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                             data-href="{{ route('brands.destroy', $brand->id) }}"
-                                            title="{{ translate('Delete') }}">
+                                            title="Delete">
                                             <i class="las la-trash"></i>
                                         </a>
                                     </td>

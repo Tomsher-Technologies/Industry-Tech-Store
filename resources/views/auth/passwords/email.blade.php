@@ -7,15 +7,15 @@
         <div class="row">
             <div class="col-xxl-5 col-xl-6 col-md-8 mx-auto">
                 <div class="bg-white rounded shadow-sm p-4 text-left">
-                    <h1 class="h3 fw-600">{{ translate('Forgot Password?') }}</h1>
+                    <h1 class="h3 fw-600">Forgot Password?</h1>
                     <p class="mb-4 opacity-60">{{translate('Enter your email address to recover your password.')}} </p>
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
                         <div class="form-group">
                             @if (addon_is_activated('otp_system'))
-                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required placeholder="{{ translate('Email or Phone') }}">
+                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required placeholder="Email or Phone">
                             @else
-                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email') }}" name="email">
+                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="Email" name="email">
                             @endif
 
                             @if ($errors->has('email'))
@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group text-right">
                             <button class="btn btn-primary btn-block" type="submit">
-                                {{ translate('Send Password Reset Link') }}
+                                Send Password Reset Link
                             </button>
                         </div>
                     </form>

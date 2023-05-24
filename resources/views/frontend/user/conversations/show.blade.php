@@ -13,7 +13,7 @@
         <div class="card-header">
             <h5 class="card-title fs-16 fw-600 mb-0">#{{ $conversation->title }}
             (
-                {{ translate('Between you and') }}
+                Between you and
                 @if ($conversation->sender_id == Auth::user()->id)
                     {{ $conversation->receiver->name }}
                 @else
@@ -48,10 +48,10 @@
                 @csrf
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
                 <div class="form-group">
-                    <textarea class="form-control" rows="4" name="message" placeholder="{{ translate('Type your reply') }}" required></textarea>
+                    <textarea class="form-control" rows="4" name="message" placeholder="Type your reply" required></textarea>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-primary">{{ translate('Send') }}</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
                 </div>
             </form>
         </div>

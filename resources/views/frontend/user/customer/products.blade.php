@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Products') }}</h1>
+            <h1 class="h3">Products</h1>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
                   <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                       <i class="las la-plus la-3x text-white"></i>
                   </span>
-                  <div class="fs-18 text-primary">{{ translate('Add New Product') }}</div>
+                  <div class="fs-18 text-primary">Add New Product</div>
               </div>
             </a>
         </div>
@@ -40,7 +40,7 @@
             <a href="{{ route('customer_packages_list_show') }}" class="text-center bg-white shadow-sm hov-shadow-lg text-center d-block p-3 rounded">
                 @if($customer_package != null)
                     <img src="{{ uploaded_asset($customer_package->logo) }}" height="44" class="mw-100 mx-auto">
-                    <span class="d-block sub-title mb-2">{{ translate('Current Package')}}: {{ $customer_package->getTranslation('name') }}</span>
+                    <span class="d-block sub-title mb-2">Current Package')}}: {{ $customer_package->getTranslation('name</span>
                 @else
                     <i class="la la-frown-o mb-1 la-3x"></i>
                     <div class="d-block sub-title mb-2">{{ translate('No Package Found')}}</div>
@@ -54,7 +54,7 @@
     <div class="card">
         <div class="card-header">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('All Products') }}</h5>
+                <h5 class="mb-md-0 h6">All Products</h5>
             </div>
         </div>
         <div class="card-body">
@@ -88,13 +88,13 @@
                             @endif
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('customer_products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('customer_products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
 							   <i class="las la-edit"></i>
 						    </a>
-                            {{-- <a href="{{route('customer_products.edit',encrypt($product->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Edit') }}">
+                            {{-- <a href="{{route('customer_products.edit',encrypt($product->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="Edit">
                               <i class="las la-edit"></i>
                             </a> --}}
-                            <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customer_products.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                            <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customer_products.destroy', $product->id)}}" title="Delete">
                               <i class="las la-trash"></i>
                             </a>
                         </td>
@@ -125,10 +125,10 @@
             }
             $.post('{{ route('customer_products.update.status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Status has been updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Status has been updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

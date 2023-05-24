@@ -17,7 +17,7 @@
                     </li>
                     <li class="text-dark fw-600 breadcrumb-item">
                         <a class="text-reset" href="{{ route('blog') }}">
-                            "{{ translate('Blog') }}"
+                            "Blog"
                         </a>
                     </li>
                 </ul>
@@ -54,7 +54,7 @@
                             {{ $blog->short_description }}
                         </p>
                         <a href="{{ url("blog").'/'. $blog->slug }}" class="btn btn-soft-primary">
-                            {{ translate('View More') }}
+                            View More
                         </a>
                     </div>
                 </div>

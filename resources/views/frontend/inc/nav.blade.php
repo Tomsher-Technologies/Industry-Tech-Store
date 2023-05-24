@@ -97,7 +97,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg py-0">
                                     <div class="p-3 bg-light border-bottom">
-                                        <h6 class="mb-0">{{ translate('Notifications') }}</h6>
+                                        <h6 class="mb-0">Notifications</h6>
                                     </div>
                                     <div class="px-3 c-scrollbar-light overflow-auto " style="max-height:300px;">
                                         <ul class="list-group list-group-flush" >
@@ -130,7 +130,7 @@
                                             @empty
                                                 <li class="list-group-item">
                                                     <div class="py-4 text-center fs-16">
-                                                        {{ translate('No notification found') }}
+                                                        No notification found
                                                     </div>
                                                 </li>
                                             @endforelse

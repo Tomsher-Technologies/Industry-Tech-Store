@@ -33,7 +33,7 @@
 
                 @empty
                     <li class="list-group-item">
-                        <div class="py-4 text-center fs-16">{{ translate('No notification found') }}</div>
+                        <div class="py-4 text-center fs-16">No notification found</div>
                     </li>
                 @endforelse
             </ul>

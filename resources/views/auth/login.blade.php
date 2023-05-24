@@ -14,13 +14,13 @@
                             @else
                                 <img src="{{ static_asset('assets/img/logo.png') }}" class="mw-100 mb-4" height="40">
                             @endif
-                            <h1 class="h3 text-primary mb-0">{{ translate('Welcome to') }} {{ env('APP_NAME') }}</h1>
-                            <p>{{ translate('Login to your account.') }}</p>
+                            <h1 class="h3 text-primary mb-0">Welcome to {{ env('APP_NAME') }}</h1>
+                            <p>Login to your account.</p>
                         </div>
                         <form class="pad-hor" method="POST" role="form" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="{{ translate('Email') }}">
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -28,7 +28,7 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ translate('Password') }}">
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="Password">
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -40,7 +40,7 @@
                                     <div class="text-left">
                                         <label class="aiz-checkbox">
                                             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                            <span>{{ translate('Remember Me') }}</span>
+                                            <span>Remember Me</span>
                                             <span class="aiz-square-check"></span>
                                         </label>
                                     </div>
@@ -54,7 +54,7 @@
                                 @endif
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">
-                                {{ translate('Login') }}
+                                Login
                             </button>
                         </form>
                         @if (env("DEMO_MODE") == "On")
@@ -64,7 +64,7 @@
                                         <tr>
                                             <td>admin@example.com</td>
                                             <td>123456</td>
-                                            <td><button class="btn btn-info btn-xs" onclick="autoFill()">{{ translate('Copy') }}</button></td>
+                                            <td><button class="btn btn-info btn-xs" onclick="autoFill()">Copy</button></td>
                                         </tr>
                                     </tbody>
                                 </table>

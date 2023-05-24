@@ -34,7 +34,7 @@
                                             </div>
 
                                             <div class="form-group text-right">
-                                                <button class="btn btn-link p-0 opacity-50 text-reset" type="button" onclick="toggleEmailPhone(this)">{{ translate('Use Email Instead') }}</button>
+                                                <button class="btn btn-link p-0 opacity-50 text-reset" type="button" onclick="toggleEmailPhone(this)">Use Email Instead</button>
                                             </div>
                                         @else
                                             <div class="form-group">
@@ -76,19 +76,19 @@
                                                     <tr>
                                                         <td>{{ translate('Seller Account')}}</td>
                                                         <td>
-                                                            <button class="btn btn-info btn-sm" onclick="autoFillSeller()">{{ translate('Copy credentials') }}</button>
+                                                            <button class="btn btn-info btn-sm" onclick="autoFillSeller()">Copy credentials</button>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>{{ translate('Customer Account')}}</td>
                                                         <td>
-                                                            <button class="btn btn-info btn-sm" onclick="autoFillCustomer()">{{ translate('Copy credentials') }}</button>
+                                                            <button class="btn btn-info btn-sm" onclick="autoFillCustomer()">Copy credentials</button>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>{{ translate('Delivery Boy Account')}}</td>
                                                         <td>
-                                                            <button class="btn btn-info btn-sm" onclick="autoFillDeliveryBoy()">{{ translate('Copy credentials') }}</button>
+                                                            <button class="btn btn-info btn-sm" onclick="autoFillDeliveryBoy()">Copy credentials</button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -180,14 +180,14 @@
                 $('.email-form-group').removeClass('d-none');
                 $('input[name=phone]').val(null);
                 isPhoneShown = false;
-                $(el).html('{{ translate('Use Phone Instead') }}');
+                $(el).html('Use Phone Instead');
             }
             else{
                 $('.phone-form-group').removeClass('d-none');
                 $('.email-form-group').addClass('d-none');
                 $('input[name=email]').val(null);
                 isPhoneShown = true;
-                $(el).html('{{ translate('Use Email Instead') }}');
+                $(el).html('Use Email Instead');
             }
         }
 

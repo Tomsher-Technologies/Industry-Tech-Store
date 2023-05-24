@@ -5,7 +5,7 @@
         <div class="col-md-12 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="h6">{{ translate('Abandoned Cart Details') }}</h1>
+                    <h1 class="h6">Abandoned Cart Details</h1>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -14,16 +14,16 @@
                                 <thead>
                                     <tr class="bg-trans-dark">
                                         <th data-breakpoints="lg" class="min-col">#</th>
-                                        <th width="10%">{{ translate('Photo') }}</th>
-                                        <th class="text-uppercase">{{ translate('Description') }}</th>
+                                        <th width="10%">Photo</th>
+                                        <th class="text-uppercase">Description</th>
                                         <th data-breakpoints="lg" class="min-col text-center text-uppercase">
-                                            {{ translate('Date added') }}</th>
+                                            Date added</th>
                                         <th data-breakpoints="lg" class="min-col text-center text-uppercase">
-                                            {{ translate('Qty') }}</th>
+                                            Qty</th>
                                         <th data-breakpoints="lg" class="min-col text-center text-uppercase">
-                                            {{ translate('Price') }}</th>
+                                            Price</th>
                                         <th data-breakpoints="lg" class="min-col text-right text-uppercase">
-                                            {{ translate('Total') }}</th>
+                                            Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,7 +47,7 @@
                                                             target="_blank"
                                                             class="text-muted">{{ $cart->product->getTranslation('name') }}</a></strong>
                                                 @else
-                                                    <strong>{{ translate('Product Unavailable') }}</strong>
+                                                    <strong>Product Unavailable</strong>
                                                 @endif
                                             </td>
                                             <td>{{ $cart->created_at->format('d-m-Y h:i:s A') }}</td>

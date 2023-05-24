@@ -18,7 +18,7 @@
                                 <label class="col-from-label">{{translate('Paypal Client Id')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYPAL_CLIENT_ID" value="{{  env('PAYPAL_CLIENT_ID') }}" placeholder="{{ translate('Paypal Client ID') }}" required>
+                                <input type="text" class="form-control" name="PAYPAL_CLIENT_ID" value="{{  env('PAYPAL_CLIENT_ID') }}" placeholder="Paypal Client ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -27,7 +27,7 @@
                                 <label class="col-from-label">{{translate('Paypal Client Secret')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYPAL_CLIENT_SECRET" value="{{  env('PAYPAL_CLIENT_SECRET') }}" placeholder="{{ translate('Paypal Client Secret') }}" required>
+                                <input type="text" class="form-control" name="PAYPAL_CLIENT_SECRET" value="{{  env('PAYPAL_CLIENT_SECRET') }}" placeholder="Paypal Client Secret" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -66,7 +66,7 @@
                                 <label class="col-from-label">{{translate('Stripe Key')}}</label>
                             </div>
                             <div class="col-md-8">
-                            <input type="text" class="form-control" name="STRIPE_KEY" value="{{  env('STRIPE_KEY') }}" placeholder="{{ translate('STRIPE KEY') }}" required>
+                            <input type="text" class="form-control" name="STRIPE_KEY" value="{{  env('STRIPE_KEY') }}" placeholder="STRIPE KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -75,7 +75,7 @@
                                 <label class="col-from-label">{{translate('Stripe Secret')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="STRIPE_SECRET" value="{{  env('STRIPE_SECRET') }}" placeholder="{{ translate('STRIPE SECRET') }}" required>
+                                <input type="text" class="form-control" name="STRIPE_SECRET" value="{{  env('STRIPE_SECRET') }}" placeholder="STRIPE SECRET" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -101,7 +101,7 @@
                                 <label class="col-from-label">{{translate('Mercadopago Key')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="MERCADOPAGO_KEY" value="{{  env('MERCADOPAGO_KEY') }}" placeholder="{{ translate('Mercadopago Key') }}" required>
+                                <input type="text" class="form-control" name="MERCADOPAGO_KEY" value="{{  env('MERCADOPAGO_KEY') }}" placeholder="Mercadopago Key" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -110,7 +110,7 @@
                                 <label class="col-from-label">{{translate('Mercadopago Access')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="MERCADOPAGO_ACCESS" value="{{  env('MERCADOPAGO_ACCESS') }}" placeholder="{{ translate('Mercadopago Access') }}" required>
+                                <input type="text" class="form-control" name="MERCADOPAGO_ACCESS" value="{{  env('MERCADOPAGO_ACCESS') }}" placeholder="Mercadopago Access" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -119,7 +119,7 @@
                                 <label class="col-from-label">{{translate('MERCADOPAGO CURRENCY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="MERCADOPAGO_CURRENCY" value="{{  env('MERCADOPAGO_CURRENCY') }}" placeholder="{{ translate('MERCADOPAGO CURRENCY') }}" required>
+                                <input type="text" class="form-control" name="MERCADOPAGO_CURRENCY" value="{{  env('MERCADOPAGO_CURRENCY') }}" placeholder="MERCADOPAGO CURRENCY" required>
                                 <br>
                                 <div class="alert alert-primary" role="alert">
                                     Currency must be <b>es-AR</b> or <b>es-CL</b> or <b>es-CO</b> or <b>es-MX</b> or <b>es-VE</b> or <b>es-UY</b> or <b>es-PE</b> or <b>pt-BR</b><br>
@@ -375,7 +375,7 @@
                                 <label class="col-from-label">{{translate('IYZICO_API_KEY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="IYZICO_API_KEY" value="{{  env('IYZICO_API_KEY') }}" placeholder="{{ translate('IYZICO API KEY') }}" required>
+                                <input type="text" class="form-control" name="IYZICO_API_KEY" value="{{  env('IYZICO_API_KEY') }}" placeholder="IYZICO API KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -384,7 +384,7 @@
                                 <label class="col-from-label">{{translate('IYZICO_SECRET_KEY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="IYZICO_SECRET_KEY" value="{{  env('IYZICO_SECRET_KEY') }}" placeholder="{{ translate('IYZICO SECRET KEY') }}" required>
+                                <input type="text" class="form-control" name="IYZICO_SECRET_KEY" value="{{  env('IYZICO_SECRET_KEY') }}" placeholder="IYZICO SECRET KEY" required>
                             </div>
                         </div>
 
@@ -425,7 +425,7 @@
                                 <label class="col-from-label">{{translate('API KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="IM_API_KEY" value="{{  env('IM_API_KEY') }}" placeholder="{{ translate('IM API KEY') }}" required>
+                                <input type="text" class="form-control" name="IM_API_KEY" value="{{  env('IM_API_KEY') }}" placeholder="IM API KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -434,7 +434,7 @@
                                 <label class="col-from-label">{{translate('AUTH TOKEN')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="IM_AUTH_TOKEN" value="{{  env('IM_AUTH_TOKEN') }}" placeholder="{{ translate('IM AUTH TOKEN') }}" required>
+                                <input type="text" class="form-control" name="IM_AUTH_TOKEN" value="{{  env('IM_AUTH_TOKEN') }}" placeholder="IM AUTH TOKEN" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -473,7 +473,7 @@
                                 <label class="col-from-label">{{translate('PUBLIC KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYSTACK_PUBLIC_KEY" value="{{  env('PAYSTACK_PUBLIC_KEY') }}" placeholder="{{ translate('PUBLIC KEY') }}" required>
+                                <input type="text" class="form-control" name="PAYSTACK_PUBLIC_KEY" value="{{  env('PAYSTACK_PUBLIC_KEY') }}" placeholder="PUBLIC KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -482,7 +482,7 @@
                                 <label class="col-from-label">{{translate('SECRET KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYSTACK_SECRET_KEY" value="{{  env('PAYSTACK_SECRET_KEY') }}" placeholder="{{ translate('SECRET KEY') }}" required>
+                                <input type="text" class="form-control" name="PAYSTACK_SECRET_KEY" value="{{  env('PAYSTACK_SECRET_KEY') }}" placeholder="SECRET KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -491,7 +491,7 @@
                                 <label class="col-from-label">{{translate('MERCHANT EMAIL')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="MERCHANT_EMAIL" value="{{  env('MERCHANT_EMAIL') }}" placeholder="{{ translate('MERCHANT EMAIL') }}" required>
+                                <input type="text" class="form-control" name="MERCHANT_EMAIL" value="{{  env('MERCHANT_EMAIL') }}" placeholder="MERCHANT EMAIL" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -500,7 +500,7 @@
                                 <label class="col-from-label">{{translate('PAYSTACK CURRENCY CODE')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYSTACK_CURRENCY_CODE" value="{{  env('PAYSTACK_CURRENCY_CODE') }}" placeholder="{{ translate('PAYSTACK CURRENCY CODE') }}" required>
+                                <input type="text" class="form-control" name="PAYSTACK_CURRENCY_CODE" value="{{  env('PAYSTACK_CURRENCY_CODE') }}" placeholder="PAYSTACK CURRENCY CODE" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -526,7 +526,7 @@
                                 <label class="col-from-label">{{translate('PAYHERE MERCHANT ID')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYHERE_MERCHANT_ID" value="{{  env('PAYHERE_MERCHANT_ID') }}" placeholder="{{ translate('PAYHERE MERCHANT ID') }}" required>
+                                <input type="text" class="form-control" name="PAYHERE_MERCHANT_ID" value="{{  env('PAYHERE_MERCHANT_ID') }}" placeholder="PAYHERE MERCHANT ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -535,7 +535,7 @@
                                 <label class="col-from-label">{{translate('PAYHERE SECRET')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYHERE_SECRET" value="{{  env('PAYHERE_SECRET') }}" placeholder="{{ translate('PAYHERE SECRET') }}" required>
+                                <input type="text" class="form-control" name="PAYHERE_SECRET" value="{{  env('PAYHERE_SECRET') }}" placeholder="PAYHERE SECRET" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -544,7 +544,7 @@
                                 <label class="col-from-label">{{translate('PAYHERE CURRENCY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="PAYHERE_CURRENCY" value="{{  env('PAYHERE_CURRENCY') }}" placeholder="{{ translate('PAYHERE CURRENCY') }}" required>
+                                <input type="text" class="form-control" name="PAYHERE_CURRENCY" value="{{  env('PAYHERE_CURRENCY') }}" placeholder="PAYHERE CURRENCY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -582,7 +582,7 @@
                                 <label class="col-from-label">{{translate('NGENIUS OUTLET ID')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="NGENIUS_OUTLET_ID" value="{{  env('NGENIUS_OUTLET_ID') }}" placeholder="{{ translate('NGENIUS OUTLET ID') }}" required>
+                                <input type="text" class="form-control" name="NGENIUS_OUTLET_ID" value="{{  env('NGENIUS_OUTLET_ID') }}" placeholder="NGENIUS OUTLET ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -591,7 +591,7 @@
                                 <label class="col-from-label">{{translate('NGENIUS API KEY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="NGENIUS_API_KEY" value="{{  env('NGENIUS_API_KEY') }}" placeholder="{{ translate('NGENIUS API KEY') }}" required>
+                                <input type="text" class="form-control" name="NGENIUS_API_KEY" value="{{  env('NGENIUS_API_KEY') }}" placeholder="NGENIUS API KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -600,7 +600,7 @@
                                 <label class="col-from-label">{{translate('NGENIUS CURRENCY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="NGENIUS_CURRENCY" value="{{  env('NGENIUS_CURRENCY') }}" placeholder="{{ translate('NGENIUS CURRENCY') }}" required>
+                                <input type="text" class="form-control" name="NGENIUS_CURRENCY" value="{{  env('NGENIUS_CURRENCY') }}" placeholder="NGENIUS CURRENCY" required>
                                 <br>
                                 <div class="alert alert-primary" role="alert">
                                     Currency must be <b>AED</b> or <b>USD</b> or <b>EUR</b><br>
@@ -631,7 +631,7 @@
                                 <label class="col-from-label">{{translate('MERCHANT ID')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="VOGUE_MERCHANT_ID" value="{{  env('VOGUE_MERCHANT_ID') }}" placeholder="{{ translate('MERCHANT ID') }}" required>
+                                <input type="text" class="form-control" name="VOGUE_MERCHANT_ID" value="{{  env('VOGUE_MERCHANT_ID') }}" placeholder="MERCHANT ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -670,7 +670,7 @@
                                 <label class="col-from-label">{{translate('RAZOR KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="RAZOR_KEY" value="{{  env('RAZOR_KEY') }}" placeholder="{{ translate('RAZOR KEY') }}" required>
+                                <input type="text" class="form-control" name="RAZOR_KEY" value="{{  env('RAZOR_KEY') }}" placeholder="RAZOR KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -679,7 +679,7 @@
                                 <label class="col-from-label">{{translate('RAZOR SECRET')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="RAZOR_SECRET" value="{{  env('RAZOR_SECRET') }}" placeholder="{{ translate('RAZOR SECRET') }}" required>
+                                <input type="text" class="form-control" name="RAZOR_SECRET" value="{{  env('RAZOR_SECRET') }}" placeholder="RAZOR SECRET" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -705,7 +705,7 @@
                                 <label class="col-from-label">{{translate('MERCHANT_LOGIN_ID')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="MERCHANT_LOGIN_ID" value="{{  env('MERCHANT_LOGIN_ID') }}" placeholder="{{ translate('MERCHANT LOGIN ID') }}" required>
+                                <input type="text" class="form-control" name="MERCHANT_LOGIN_ID" value="{{  env('MERCHANT_LOGIN_ID') }}" placeholder="MERCHANT LOGIN ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -714,7 +714,7 @@
                                 <label class="col-from-label">{{translate('MERCHANT_TRANSACTION_KEY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="MERCHANT_TRANSACTION_KEY" value="{{  env('MERCHANT_TRANSACTION_KEY') }}" placeholder="{{ translate('MERCHANT TRANSACTION KEY') }}" required>
+                                <input type="text" class="form-control" name="MERCHANT_TRANSACTION_KEY" value="{{  env('MERCHANT_TRANSACTION_KEY') }}" placeholder="MERCHANT TRANSACTION KEY" required>
                             </div>
                         </div>
 
@@ -755,7 +755,7 @@
                                 <label class="col-from-label">{{translate('PAYKU_BASE_URL')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="PAYKU_BASE_URL" value="{{  env('PAYKU_BASE_URL') }}" placeholder="{{ translate('PAYKU_BASE_URL') }}" required>
+                                <input type="text" class="form-control" name="PAYKU_BASE_URL" value="{{  env('PAYKU_BASE_URL') }}" placeholder="PAYKU_BASE_URL" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -764,7 +764,7 @@
                                 <label class="col-from-label">{{translate('PAYKU_PUBLIC_TOKEN')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="PAYKU_PUBLIC_TOKEN" value="{{  env('PAYKU_PUBLIC_TOKEN') }}" placeholder="{{ translate('PAYKU_PUBLIC_TOKEN') }}" required>
+                                <input type="text" class="form-control" name="PAYKU_PUBLIC_TOKEN" value="{{  env('PAYKU_PUBLIC_TOKEN') }}" placeholder="PAYKU_PUBLIC_TOKEN" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -773,7 +773,7 @@
                                 <label class="col-from-label">{{translate('PAYKU_PRIVATE_TOKEN')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="PAYKU_PRIVATE_TOKEN" value="{{  env('PAYKU_PRIVATE_TOKEN') }}" placeholder="{{ translate('PAYKU_PRIVATE_TOKEN') }}" required>
+                                <input type="text" class="form-control" name="PAYKU_PRIVATE_TOKEN" value="{{  env('PAYKU_PRIVATE_TOKEN') }}" placeholder="PAYKU_PRIVATE_TOKEN" required>
                             </div>
                         </div>
 

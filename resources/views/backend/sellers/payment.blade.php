@@ -13,7 +13,7 @@
                     <th data-breakpoints="lg">#</th>
                     <th>{{translate('Date')}}</th>
                     <th>{{translate('Amount')}}</th>
-                    <th data-breakpoints="lg">{{ translate('Payment Details') }}</th>
+                    <th data-breakpoints="lg">Payment Details</th>
                 </tr>
             </thead>
             <tbody>

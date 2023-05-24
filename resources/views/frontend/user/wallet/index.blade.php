@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
     <div class="row align-items-center">
       <div class="col-md-6">
-          <h1 class="h3">{{ translate('My Wallet') }}</h1>
+          <h1 class="h3">My Wallet</h1>
       </div>
     </div>
     </div>
@@ -16,7 +16,7 @@
             </span>
             <div class="px-3 pt-3 pb-3">
                 <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->balance) }}</div>
-                <div class="opacity-50 text-center">{{ translate('Wallet Balance') }}</div>
+                <div class="opacity-50 text-center">Wallet Balance</div>
             </div>
           </div>
       </div>
@@ -25,7 +25,7 @@
             <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                 <i class="las la-plus la-3x text-white"></i>
             </span>
-            <div class="fs-18 text-primary">{{ translate('Recharge Wallet') }}</div>
+            <div class="fs-18 text-primary">Recharge Wallet</div>
         </div>
       </div>
       @if (addon_is_activated('offline_payment'))
@@ -34,7 +34,7 @@
                   <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                       <i class="las la-plus la-3x text-white"></i>
                   </span>
-                  <div class="fs-18 text-primary">{{ translate('Offline Recharge Wallet') }}</div>
+                  <div class="fs-18 text-primary">Offline Recharge Wallet</div>
               </div>
           </div>
       @endif
@@ -90,7 +90,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ translate('Recharge Wallet') }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Recharge Wallet</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
               </div>
               <form class="" action="{{ route('wallet.recharge') }}" method="post">
@@ -192,7 +192,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">{{ translate('Offline Recharge Wallet') }}</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Offline Recharge Wallet</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
               </div>
               <div id="offline_wallet_recharge_modal_body"></div>

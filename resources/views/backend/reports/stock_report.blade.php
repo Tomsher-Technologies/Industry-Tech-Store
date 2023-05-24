@@ -23,15 +23,15 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
                 <table class="table table-bordered aiz-table mb-0">
                     <thead>
                         <tr>
-                            <th>{{ translate('Product Name') }}</th>
-                            <th>{{ translate('Stock') }}</th>
+                            <th>Product Name</th>
+                            <th>Stock</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -5,7 +5,7 @@
         <div class="col-lg-8 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Edit Customer') }}</h5>
+                    <h5 class="mb-0 h6">Edit Customer</h5>
                 </div>
                 <div class="card-body">
 
@@ -20,25 +20,25 @@
                         @csrf
                         @method('PATCH')
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Name') }}</label>
+                            <label class="col-md-3 col-form-label">Name</label>
                             <div class="col-md-9">
-                                <input type="text" placeholder="{{ translate('Name') }}" id="name" name="name"
+                                <input type="text" placeholder="Name" id="name" name="name"
                                     class="form-control" value="{{ $customer->name }}" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Email') }}</label>
+                            <label class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
-                                <input type="email" placeholder="{{ translate('Email') }}" class="form-control"
+                                <input type="email" placeholder="Email" class="form-control"
                                     value="{{ $customer->email }}" disabled>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Phone number') }}</label>
+                            <label class="col-md-3 col-form-label">Phone number</label>
                             <div class="col-md-9">
-                                <input type="text" placeholder="{{ translate('Phone number') }}" class="form-control"
+                                <input type="text" placeholder="Phone number" class="form-control"
                                     value="{{ $customer->phone }}" name="phone">
                             </div>
                         </div>
@@ -49,11 +49,11 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Password') }}</label>
+                            <label class="col-md-3 col-form-label">Password</label>
                             <div class="col-md-9">
                                 <div class="input-group mb-3">
                                     <input type="password" class="form-control password" type="password" name="password"
-                                        placeholder="{{ translate('Password') }}">
+                                        placeholder="Password">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary passwordToggle" type="button">
                                             <i class="las la-eye"></i>
@@ -65,11 +65,11 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Confirm Password') }}</label>
+                            <label class="col-md-3 col-form-label">Confirm Password</label>
                             <div class="col-md-9">
                                 <div class="input-group mb-3">
                                     <input type="password" class="form-control password" name="password_confirmation"
-                                        placeholder="{{ translate('Confirm Password') }}">
+                                        placeholder="Confirm Password">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary passwordToggle" type="button">
                                             <i class="las la-eye"></i>
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-primary">{{ translate('Save') }}</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
                 </div>
@@ -126,7 +126,7 @@
                                         @if ($address->set_default)
                                             <div class="position-absolute right-0 bottom-0 pr-2 pb-3">
                                                 <span
-                                                    class="badge badge-inline badge-primary">{{ translate('Default') }}</span>
+                                                    class="badge badge-inline badge-primary">Default</span>
                                             </div>
                                         @endif
                                         <div class="dropdown position-absolute right-0 top-0">
@@ -140,7 +140,7 @@
                                                 </a>
                                                 @if (!$address->set_default)
                                                     <a class="dropdown-item"
-                                                        href="{{ route('admin.addresses.set_default', [$customer, $address->id]) }}">{{ translate('Make This Default') }}</a>
+                                                        href="{{ route('admin.addresses.set_default', [$customer, $address->id]) }}">Make This Default</a>
                                                 @endif
                                                 <a class="dropdown-item"
                                                     href="{{ route('addresses.destroy', $address->id) }}">Delete</a>
@@ -172,7 +172,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('New Address') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">New Address</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -184,23 +184,23 @@
                         <div class="p-3">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('Address') }}</label>
+                                    <label>Address</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea class="form-control mb-3" placeholder="{{ translate('Your Address') }}" rows="2" name="address"
+                                    <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address"
                                         required></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('Country') }}</label>
+                                    <label>Country</label>
                                 </div>
                                 <div class="col-md-10">
                                     <div class="mb-3">
                                         <select class="form-control aiz-selectpicker" data-live-search="true"
-                                            data-placeholder="{{ translate('Select your country') }}" name="country_id"
+                                            data-placeholder="Select your country" name="country_id"
                                             required>
-                                            <option value="">{{ translate('Select your country') }}</option>
+                                            <option value="">Select your country</option>
                                             @foreach ($country as $key => $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
@@ -211,7 +211,7 @@
 
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('State') }}</label>
+                                    <label>State</label>
                                 </div>
                                 <div class="col-md-10">
                                     <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
@@ -222,7 +222,7 @@
 
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('City') }}</label>
+                                    <label>City</label>
                                 </div>
                                 <div class="col-md-10">
                                     <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
@@ -235,7 +235,7 @@
                             @if (get_setting('google_map') == 1)
                                 <div class="row">
                                     <input id="searchInput" class="controls" type="text"
-                                        placeholder="{{ translate('Enter a location') }}">
+                                        placeholder="Enter a location">
                                     <div id="map"></div>
                                     <ul id="geoData">
                                         <li style="display: none;">Full Address: <span id="location"></span></li>
@@ -268,25 +268,25 @@
 
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('Postal code') }}</label>
+                                    <label>Postal code</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control mb-3"
-                                        placeholder="{{ translate('Your Postal Code') }}" name="postal_code"
+                                        placeholder="Your Postal Code" name="postal_code"
                                         value="" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label>{{ translate('Phone') }}</label>
+                                    <label>Phone</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control mb-3"
-                                        placeholder="{{ translate('+880') }}" name="phone" value="" required>
+                                        placeholder="+880" name="phone" value="" required>
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save') }}</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Save</button>
                             </div>
                         </div>
                     </div>
@@ -300,7 +300,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('New Address') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">New Address</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

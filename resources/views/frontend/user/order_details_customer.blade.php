@@ -38,7 +38,7 @@
     </div> --}}
     <div class="card mt-4">
         <div class="card-header">
-          <b class="fs-15">{{ translate('Order Summary') }}</b>
+          <b class="fs-15">Order Summary</b>
         </div>
         <div class="card-body">
             <div class="row">
@@ -101,7 +101,7 @@
         <div class="col-lg-9">
             <div class="card mt-4">
                 <div class="card-header">
-                  <b class="fs-15">{{ translate('Order Details') }}</b>
+                  <b class="fs-15">Order Details</b>
                 </div>
                 <div class="card-body pb-0">
                     <table class="table table-borderless table-responsive">
@@ -184,7 +184,7 @@
         <div class="col-lg-3">
             <div class="card mt-4">
                 <div class="card-header">
-                  <b class="fs-15">{{ translate('Order Ammount') }}</b>
+                  <b class="fs-15">Order Ammount</b>
                 </div>
                 <div class="card-body pb-0">
                     <table class="table table-borderless">

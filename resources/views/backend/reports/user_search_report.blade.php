@@ -5,17 +5,17 @@
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="h6">{{ translate('User Search Report') }}</h1>
+                    <h1 class="h6">User Search Report</h1>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered aiz-table mb-0">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>{{ translate('Search Key') }}</th>
-                                <th>{{ translate('User') }}</th>
-                                <th>{{ translate('IP Address') }}</th>
-                                <th>{{ translate('Date') }}</th>
+                                <th>Search Key</th>
+                                <th>User</th>
+                                <th>IP Address</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>

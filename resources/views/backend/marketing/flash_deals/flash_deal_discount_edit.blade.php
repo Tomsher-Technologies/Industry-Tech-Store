@@ -41,8 +41,8 @@
                 </td>
                 <td>
                     <select class="aiz-selectpicker" name="discount_type_{{ $id }}">
-                        <option value="amount" <?php if($product->discount_type == 'amount') echo "selected";?> >{{ translate('Flat') }}</option>
-                        <option value="percent" <?php if($product->discount_type == 'percent') echo "selected";?> >{{ translate('Percent') }}</option>
+                        <option value="amount" <?php if($product->discount_type == 'amount') echo "selected";?> >Flat</option>
+                        <option value="percent" <?php if($product->discount_type == 'percent') echo "selected";?> >Percent</option>
                     </select>
                 </td>
             </tr>

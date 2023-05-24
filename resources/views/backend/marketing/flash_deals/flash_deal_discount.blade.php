@@ -40,8 +40,8 @@
             </td>
             <td>
                 <select class="form-control aiz-selectpicker" name="discount_type_{{ $id }}">
-                  <option value="amount">{{ translate('Flat') }}</option>
-                  <option value="percent">{{ translate('Percent') }}</option>
+                  <option value="amount">Flat</option>
+                  <option value="percent">Percent</option>
                 </select>
             </td>
           </tr>

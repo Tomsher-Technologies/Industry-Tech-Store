@@ -43,29 +43,29 @@
         <div class="col-md-12">
             <div class="form-group">
                 <strong>{{translate('Name')}}</strong>
-                <input type="text" name="name" class="form-control" placeholder="{{ translate('Enter Name') }}" value="{{$order->user->name}}" required>
+                <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{$order->user->name}}" required>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 <strong>{{translate('Mobile Number')}}</strong>
-                <input type="text" name="mobile_number" class="form-control" placeholder="{{ translate('Enter Mobile Number') }}" value="{{$order->user->phone}}" required>
+                <input type="text" name="mobile_number" class="form-control" placeholder="Enter Mobile Number" value="{{$order->user->phone}}" required>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 <strong>{{translate('Email Id')}}</strong>
-                <input type="text" name="email" class="form-control" placeholder="{{ translate('Enter Email id') }}" value="{{$order->user->email}}" required>
+                <input type="text" name="email" class="form-control" placeholder="Enter Email id" value="{{$order->user->email}}" required>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 <strong>{{translate('Amount')}}</strong>
-                <input type="text" name="amount" class="form-control" placeholder="{{ translate('Enter Amount') }}" value="{{round($order->grand_total)}}" readonly="">
+                <input type="text" name="amount" class="form-control" placeholder="Enter Amount" value="{{round($order->grand_total)}}" readonly="">
             </div>
         </div>
         <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">{{ translate('Submit') }}</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
 

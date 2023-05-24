@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Manage Profile') }}</h1>
+            <h1 class="h3">Manage Profile</h1>
         </div>
       </div>
     </div>
@@ -17,26 +17,26 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('Your Name') }}</label>
+                    <label class="col-md-2 col-form-label">Your Name</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Your Name') }}" name="name" value="{{ Auth::user()->name }}">
+                        <input type="text" class="form-control" placeholder="Your Name" name="name" value="{{ Auth::user()->name }}">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('Your Phone') }}</label>
+                    <label class="col-md-2 col-form-label">Your Phone</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" placeholder="{{ translate('Your Phone')}}" name="phone" value="{{ Auth::user()->phone }}">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('Photo') }}</label>
+                    <label class="col-md-2 col-form-label">Photo</label>
                     <div class="col-md-10">
                         <div class="input-group" data-toggle="aizuploader" data-type="image">
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="photo" value="{{ Auth::user()->avatar_original }}" class="selected-files">
                         </div>
                         <div class="file-preview box sm">
@@ -44,15 +44,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('Your Password') }}</label>
+                    <label class="col-md-2 col-form-label">Your Password</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" placeholder="{{ translate('New Password') }}" name="new_password">
+                        <input type="password" class="form-control" placeholder="New Password" name="new_password">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('Confirm Password') }}</label>
+                    <label class="col-md-2 col-form-label">Confirm Password</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" placeholder="{{ translate('Confirm Password') }}" name="confirm_password">
+                        <input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Cash Payment') }}</label>
+                    <label class="col-md-3 col-form-label">Cash Payment</label>
                     <div class="col-md-9">
                         <label class="aiz-switch aiz-switch-success mb-3">
                             <input value="1" name="cash_on_delivery_status" type="checkbox" @if (Auth::user()->seller->cash_on_delivery_status == 1) checked @endif>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Bank Payment') }}</label>
+                    <label class="col-md-3 col-form-label">Bank Payment</label>
                     <div class="col-md-9">
                         <label class="aiz-switch aiz-switch-success mb-3">
                             <input value="1" name="bank_payment_status" type="checkbox" @if (Auth::user()->seller->bank_payment_status == 1) checked @endif>
@@ -85,25 +85,25 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Bank Name') }}</label>
+                    <label class="col-md-3 col-form-label">Bank Name</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" placeholder="{{ translate('Bank Name')}}" value="{{ Auth::user()->seller->bank_name }}" name="bank_name">
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Bank Account Name') }}</label>
+                    <label class="col-md-3 col-form-label">Bank Account Name</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" placeholder="{{ translate('Bank Account Name')}}" value="{{ Auth::user()->seller->bank_acc_name }}" name="bank_acc_name">
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Bank Account Number') }}</label>
+                    <label class="col-md-3 col-form-label">Bank Account Number</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control mb-3" placeholder="{{ translate('Bank Account Number')}}" value="{{ Auth::user()->seller->bank_acc_no }}" name="bank_acc_no">
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3 col-form-label">{{ translate('Bank Routing Number') }}</label>
+                    <label class="col-md-3 col-form-label">Bank Routing Number</label>
                     <div class="col-md-9">
                         <input type="number" lang="en" class="form-control mb-3" placeholder="{{ translate('Bank Routing Number')}}" value="{{ Auth::user()->seller->bank_routing_no }}" name="bank_routing_no">
                     </div>
@@ -130,32 +130,32 @@
                     <div class="col-lg-6">
                         <div class="border p-3 pr-5 rounded mb-3 position-relative">
                             <div>
-                                <span class="w-50 fw-600">{{ translate('Address') }}:</span>
+                                <span class="w-50 fw-600">Address:</span>
                                 <span class="ml-2">{{ $address->address }}</span>
                             </div>
                             <div>
-                                <span class="w-50 fw-600">{{ translate('Postal Code') }}:</span>
+                                <span class="w-50 fw-600">Postal Code:</span>
                                 <span class="ml-2">{{ $address->postal_code }}</span>
                             </div>
                             <div>
-                                <span class="w-50 fw-600">{{ translate('City') }}:</span>
+                                <span class="w-50 fw-600">City:</span>
                                 <span class="ml-2">{{ optional($address->city)->name }}</span>
                             </div>
                             <div>
-                                <span class="w-50 fw-600">{{ translate('State') }}:</span>
+                                <span class="w-50 fw-600">State:</span>
                                 <span class="ml-2">{{ optional($address->state)->name }}</span>
                             </div>
                             <div>
-                                <span class="w-50 fw-600">{{ translate('Country') }}:</span>
+                                <span class="w-50 fw-600">Country:</span>
                                 <span class="ml-2">{{ optional($address->country)->name }}</span>
                             </div>
                             <div>
-                                <span class="w-50 fw-600">{{ translate('Phone') }}:</span>
+                                <span class="w-50 fw-600">Phone:</span>
                                 <span class="ml-2">{{ $address->phone }}</span>
                             </div>
                             @if ($address->set_default)
                                 <div class="position-absolute right-0 bottom-0 pr-2 pb-3">
-                                    <span class="badge badge-inline badge-primary">{{ translate('Default') }}</span>
+                                    <span class="badge badge-inline badge-primary">Default</span>
                                 </div>
                             @endif
                             <div class="dropdown position-absolute right-0 top-0">
@@ -164,12 +164,12 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" onclick="edit_address('{{$address->id}}')">
-                                        {{ translate('Edit') }}
+                                        Edit
                                     </a>
                                     @if (!$address->set_default)
-                                        <a class="dropdown-item" href="{{ route('addresses.set_default', $address->id) }}">{{ translate('Make This Default') }}</a>
+                                        <a class="dropdown-item" href="{{ route('addresses.set_default', $address->id) }}">Make This Default</a>
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('addresses.destroy', $address->id) }}">{{ translate('Delete') }}</a>
+                                    <a class="dropdown-item" href="{{ route('addresses.destroy', $address->id) }}">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                 <div class="col-lg-6 mx-auto" onclick="add_new_address()">
                     <div class="border p-3 rounded mb-3 c-pointer text-center bg-light">
                         <i class="la la-plus la-2x"></i>
-                        <div class="alpha-7">{{ translate('Add New Address') }}</div>
+                        <div class="alpha-7">Add New Address</div>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
           <div class="card-body">
               <div class="row">
                   <div class="col-md-2">
-                      <label>{{ translate('Your Email') }}</label>
+                      <label>Your Email</label>
                   </div>
                   <div class="col-md-10">
                       <div class="input-group mb-3">
@@ -204,9 +204,9 @@
                         <div class="input-group-append">
                            <button type="button" class="btn btn-outline-secondary new-email-verification">
                                <span class="d-none loading">
-                                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>{{ translate('Sending Email...') }}
+                                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Sending Email...
                                </span>
-                               <span class="default">{{ translate('Verify') }}</span>
+                               <span class="default">Verify</span>
                            </button>
                         </div>
                       </div>

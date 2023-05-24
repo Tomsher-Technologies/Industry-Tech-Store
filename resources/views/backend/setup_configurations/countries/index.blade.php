@@ -6,13 +6,13 @@
         <form class="" id="" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col text-center text-md-left">
-                    <h5 class="mb-md-0 h6">{{ translate('Countries') }}</h5>
+                    <h5 class="mb-md-0 h6">Countries</h5>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="sort_country" name="sort_country" @isset($sort_country) value="{{ $sort_country }}" @endisset placeholder="{{ translate('Type country name') }}">
+                    <input type="text" class="form-control" id="sort_country" name="sort_country" @isset($sort_country) value="{{ $sort_country }}" @endisset placeholder="Type country name">
                 </div>
                 <div class="col-md-1">
-                    <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                    <button class="btn btn-primary" type="submit">Filter</button>
                 </div>
             </div>
         </form>
@@ -61,10 +61,10 @@
             }
             $.post('{{ route('countries.status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Country status updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Country status updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

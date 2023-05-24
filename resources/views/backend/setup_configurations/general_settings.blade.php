@@ -24,14 +24,14 @@
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
+                                        <div class="input-group-text bg-soft-secondary">Browse</div>
                                     </div>
-                                    <div class="form-control file-amount">{{ translate('Choose Files') }}</div>
+                                    <div class="form-control file-amount">Choose Files</div>
                                     <input type="hidden" name="types[]" value="system_logo_white">
                                     <input type="hidden" name="system_logo_white" value="{{ get_setting('system_logo_white') }}" class="selected-files">
                                 </div>
                                 <div class="file-preview box sm"></div>
-                                <small>{{ translate('Will be used in admin panel side menu') }}</small>
+                                <small>Will be used in admin panel side menu</small>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -39,14 +39,14 @@
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
+                                        <div class="input-group-text bg-soft-secondary">Browse</div>
                                     </div>
-                                    <div class="form-control file-amount">{{ translate('Choose Files') }}</div>
+                                    <div class="form-control file-amount">Choose Files</div>
                                     <input type="hidden" name="types[]" value="system_logo_black">
                                     <input type="hidden" name="system_logo_black" value="{{ get_setting('system_logo_black') }}" class="selected-files">
                                 </div>
                                 <div class="file-preview box sm"></div>
-                                <small>{{ translate('Will be used in admin panel topbar in mobile + Admin login page') }}</small>
+                                <small>Will be used in admin panel topbar in mobile + Admin login page</small>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -67,9 +67,9 @@
                             <div class="col-sm-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
+                                        <div class="input-group-text bg-soft-secondary">Browse</div>
                                     </div>
-                                    <div class="form-control file-amount">{{ translate('Choose Files') }}</div>
+                                    <div class="form-control file-amount">Choose Files</div>
                                     <input type="hidden" name="types[]" value="admin_login_background">
                                     <input type="hidden" name="admin_login_background" value="{{ get_setting('admin_login_background') }}" class="selected-files">
                                 </div>
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-    						<button type="submit" class="btn btn-primary">{{ translate('Update') }}</button>
+    						<button type="submit" class="btn btn-primary">Update</button>
     					</div>
                     </form>
                 </div>

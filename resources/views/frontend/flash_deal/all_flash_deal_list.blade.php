@@ -17,7 +17,7 @@
                     </li>
                     <li class="text-dark fw-600 breadcrumb-item">
                         <a class="text-reset" href="{{ route('flash-deals') }}">
-                            "{{ translate('Flash Deals') }}"
+                            "Flash Deals"
                         </a>
                     </li>
                 </ul>

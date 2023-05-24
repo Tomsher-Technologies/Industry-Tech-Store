@@ -29,7 +29,7 @@
                                 <label class="control-label">{{translate('Map API KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="MAP_API_KEY" value="{{  env('MAP_API_KEY') }}" placeholder="{{ translate('Map API KEY') }}">
+                                <input type="text" class="form-control" name="MAP_API_KEY" value="{{  env('MAP_API_KEY') }}" placeholder="Map API KEY">
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

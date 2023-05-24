@@ -217,7 +217,7 @@
                                         @if($product->stock_visibility_state == 'quantity')
                                         (<span id="available-quantity">{{ $qty }}</span> {{ translate('available')}})
                                         @elseif($product->stock_visibility_state == 'text' && $qty >= 1)
-                                            (<span id="available-quantity">{{ translate('In Stock') }}</span>)
+                                            (<span id="available-quantity">In Stock</span>)
                                         @endif
                                     </div>
                                 </div>

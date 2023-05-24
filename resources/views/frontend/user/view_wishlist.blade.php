@@ -83,7 +83,7 @@
             $.post('{{ route('wishlists.remove') }}',{_token:'{{ csrf_token() }}', id:id}, function(data){
                 $('#wishlist').html(data);
                 $('#wishlist_'+id).hide();
-                AIZ.plugins.notify('success', '{{ translate('Item has been renoved from wishlist') }}');
+                AIZ.plugins.notify('success', 'Item has been renoved from wishlist');
             })
         }
     </script>

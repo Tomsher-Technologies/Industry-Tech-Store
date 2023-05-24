@@ -9,15 +9,15 @@
         <div class="col-md-12 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="h6">{{ translate('Abandoned Cart') }}</h1>
+                    <h1 class="h6">Abandoned Cart</h1>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered aiz-table mb-0">
                         <thead>
                             <tr>
-                                <th>{{ translate('User') }}</th>
-                                <th>{{ translate('Created At') }}</th>
-                                <th>{{ translate('Action') }}</th>
+                                <th>User</th>
+                                <th>Created At</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -150,7 +150,7 @@
                                                                 {{  translate('Home Delivery') }}
                                                             @elseif ($order->shipping_type == 'pickup_point')
                                                                 @if ($order->pickup_point != null)
-                                                                    {{ $order->pickup_point->getTranslation('name') }} ({{ translate('Pickip Point') }})
+                                                                    {{ $order->pickup_point->getTranslation('name') }} (Pickip Point)
                                                                 @endif
                                                             @endif
                                                         </td>

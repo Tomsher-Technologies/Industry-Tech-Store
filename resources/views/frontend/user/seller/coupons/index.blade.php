@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Coupons') }}</h1>
+                <h1 class="h3">Coupons</h1>
             </div>
         </div>
     </div>
@@ -16,7 +16,7 @@
                 <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                     <i class="las la-plus la-3x text-white"></i>
                 </span>
-                <div class="fs-18 text-primary">{{ translate('Add New Coupon') }}</div>
+                <div class="fs-18 text-primary">Add New Coupon</div>
             </div>
             </a>
         </div>
@@ -24,7 +24,7 @@
     <div class="card">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h5 class="mb-md-0 h6">{{ translate('All Coupons') }}</h5>
+                <h5 class="mb-md-0 h6">All Coupons</h5>
             </div>
         </div>
         <div class="card-body">
@@ -45,17 +45,17 @@
                             <td>{{$key+1}}</td>
                             <td>{{$coupon->code}}</td>
                             <td>@if ($coupon->type == 'cart_base')
-                                    {{ translate('Cart Base') }}
+                                    Cart Base
                                 @elseif ($coupon->type == 'product_base')
-                                    {{ translate('Product Base') }}
+                                    Product Base
                             @endif</td>
                             <td>{{ date('d-m-Y', $coupon->start_date) }}</td>
                             <td>{{ date('d-m-Y', $coupon->end_date) }}</td>
                             <td class="text-right">
-                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('seller.coupon.edit', encrypt($coupon->id) )}}" title="{{ translate('Edit') }}">
+                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('seller.coupon.edit', encrypt($coupon->id) )}}" title="Edit">
                                     <i class="las la-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.coupon.destroy', $coupon->id)}}" title="{{ translate('Delete') }}">
+                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('seller.coupon.destroy', $coupon->id)}}" title="Delete">
                                     <i class="las la-trash"></i>
                                 </a>
                             </td>

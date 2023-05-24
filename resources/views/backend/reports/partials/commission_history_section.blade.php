@@ -1,12 +1,12 @@
 <form action="{{ route('commission-log.index') }}" method="GET">
     <div class="card-header row gutters-5">
         <div class="col text-center text-md-left">
-            <h5 class="mb-md-0 h6">{{ translate('Commission History') }}</h5>
+            <h5 class="mb-md-0 h6">Commission History</h5>
         </div>
         @if(Auth::user()->user_type != 'seller')
         <div class="col-md-3 ml-auto">
             <select id="demo-ease" class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="seller_id">
-                <option value="">{{ translate('Choose Seller') }}</option>
+                <option value="">Choose Seller</option>
                 @foreach (\App\Models\Seller::all() as $key => $seller)
                     @if(isset($seller->user->id))
                     <option value="{{ $seller->user->id }}" @if($seller->user->id == $seller_id) selected @endif >
@@ -19,12 +19,12 @@
         @endif
         <div class="col-md-3">
             <div class="form-group mb-0">
-                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
+                <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="Daterange">
             </div>
         </div>
         <div class="col-md-2">
             <button class="btn btn-md btn-primary" type="submit">
-                {{ translate('Filter') }}
+                Filter
             </button>
         </div>
     </div>
@@ -35,10 +35,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th data-breakpoints="lg">{{ translate('Order Code') }}</th>
-                <th>{{ translate('Admin Commission') }}</th>
-                <th>{{ translate('Seller Earning') }}</th>
-                <th data-breakpoints="lg">{{ translate('Created At') }}</th>
+                <th data-breakpoints="lg">Order Code</th>
+                <th>Admin Commission</th>
+                <th>Seller Earning</th>
+                <th data-breakpoints="lg">Created At</th>
             </tr>
         </thead>
         <tbody>

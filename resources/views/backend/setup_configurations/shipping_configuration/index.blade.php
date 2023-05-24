@@ -46,16 +46,16 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        1. {{ translate('Product Wise Shipping Cost calulation: Shipping cost is calculate by addition of each product shipping cost') }}.
+                        1. Product Wise Shipping Cost calulation: Shipping cost is calculate by addition of each product shipping cost.
                     </li>
                     <li class="list-group-item">
-                        2. {{ translate('Flat Rate Shipping Cost calulation: How many products a customer purchase, doesn\'t matter. Shipping cost is fixed') }}.
+                        2. Flat Rate Shipping Cost calulation: How many products a customer purchase, doesn\'t matter. Shipping cost is fixed.
                     </li>
                     <li class="list-group-item">
-                        3. {{ translate('Seller Wise Flat Shipping Cost calulation: Fixed rate for each seller. If customers purchase 2 product from two seller shipping cost is calculated by addition of each seller flat shipping cost') }}.
+                        3. Seller Wise Flat Shipping Cost calulation: Fixed rate for each seller. If customers purchase 2 product from two seller shipping cost is calculated by addition of each seller flat shipping cost.
                     </li>
                     <li class="list-group-item">
-                        4. {{ translate('Area Wise Flat Shipping Cost calulation: Fixed rate for each area. If customers purchase multiple products from one seller shipping cost is calculated by the customer shipping area. To configure area wise shipping cost go to ') }} <a href="{{ route('cities.index') }}">{{ translate('Shipping Cities') }}</a>.
+                        4. Area Wise Flat Shipping Cost calulation: Fixed rate for each area. If customers purchase multiple products from one seller shipping cost is calculated by the customer shipping area. To configure area wise shipping cost go to  <a href="{{ route('cities.index') }}">Shipping Cities</a>.
                     </li>
                 </ul>
             </div>
@@ -93,7 +93,7 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        {{ translate('1. Flat rate shipping cost is applicable if Flat rate shipping is enabled.') }}
+                        1. Flat rate shipping cost is applicable if Flat rate shipping is enabled.
                     </li>
                 </ul>
             </div>
@@ -131,7 +131,7 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        {{ translate('1. Shipping cost for admin is applicable if Seller wise shipping cost is enabled.') }}
+                        1. Shipping cost for admin is applicable if Seller wise shipping cost is enabled.
                     </li>
                 </ul>
             </div>

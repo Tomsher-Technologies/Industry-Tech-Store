@@ -15,11 +15,11 @@
 </div>
 <div class="card">
     <div class="card-header d-block d-md-flex">
-        <h5 class="mb-0 h6">{{ translate('Blog Categories') }}</h5>
+        <h5 class="mb-0 h6">Blog Categories</h5>
         <form class="" id="sort_categories" action="" method="GET">
             <div class="box-inline pad-rgt pull-left">
                 <div class="" style="min-width: 200px;">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
                 </div>
             </div>
         </form>
@@ -39,10 +39,10 @@
                     <td>{{ ($key+1) + ($categories->currentPage() - 1)*$categories->perPage() }}</td>
                     <td>{{ $category->category_name }}</td>
                     <td class="text-right">
-                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{url('admin/blog-category/'.$category->id.'/edit')}}" title="{{ translate('Edit') }}">
+                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{url('admin/blog-category/'.$category->id.'/edit')}}" title="Edit">
                             <i class="las la-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('blog-category.destroy', $category->id)}}" title="{{ translate('Delete') }}">
+                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('blog-category.destroy', $category->id)}}" title="Delete">
                             <i class="las la-trash"></i>
                         </a>
                     </td>

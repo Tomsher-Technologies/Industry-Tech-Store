@@ -50,7 +50,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="logo" value="{{$customer_package->logo}}" class="selected-files">
                             </div>
                             <div class="file-preview box sm">

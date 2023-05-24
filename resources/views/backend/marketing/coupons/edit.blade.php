@@ -4,7 +4,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0 h6">{{ translate('Coupon Information Update') }}</h3>
+                <h3 class="mb-0 h6">Coupon Information Update</h3>
             </div>
             <form action="{{ route('coupon.update', $coupon->id) }}" method="POST">
                 <input name="_method" type="hidden" value="PATCH">
@@ -12,15 +12,15 @@
                 <div class="card-body">
                     <input type="hidden" name="id" value="{{ $coupon->id }}" id="id">
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="name">{{ translate('Coupon Type') }}</label>
+                        <label class="col-lg-3 col-from-label" for="name">Coupon Type</label>
                         <div class="col-lg-9">
                             <select name="coupon_type" id="coupon_type" class="form-control aiz-selectpicker"
                                 onchange="coupon_form()" required>
                                 @if ($coupon->type == 'product_base')
                                     )
-                                    <option value="product_base" selected>{{ translate('For Products') }}</option>
+                                    <option value="product_base" selected>For Products</option>
                                 @elseif ($coupon->type == 'cart_base')
-                                    <option value="cart_base">{{ translate('For Total Orders') }}</option>
+                                    <option value="cart_base">For Total Orders</option>
                                 @endif
                             </select>
                         </div>
@@ -31,19 +31,19 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="name">{{ translate('Is one time use') }}</label>
+                        <label class="col-lg-3 col-from-label" for="name">Is one time use</label>
                         <div class="col-lg-9">
                             <select name="one_time_use" class="form-control aiz-selectpicker" required>
                                 <option value="0" {{ $coupon->one_time_use == 0 ? 'selected' : '' }}>
-                                    {{ translate('No') }}</option>
+                                    No</option>
                                 <option value="1" {{ $coupon->one_time_use == 1 ? 'selected' : '' }}>
-                                    {{ translate('Yes') }}</option>
+                                    Yes</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{ translate('Save') }}</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
             </form>
 

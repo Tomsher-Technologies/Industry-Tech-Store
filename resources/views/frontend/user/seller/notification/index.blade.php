@@ -18,13 +18,13 @@
                                 <div class="media-body">
                                     <p class="mb-1 text-truncate-2">
                                         @if(Auth::user()->id == $notification->data['user_id'])
-                                            {{ translate('Your Order: ') }}
+                                            Your Order: 
                                             <a href="javascript:void(0)" onclick="show_purchase_history_details({{ $notification->data['order_id'] }})">
                                                 {{ $notification->data['order_code'] }}
                                             </a>
                                             {{ translate(' has been '. ucfirst(str_replace('_', ' ', $notification->data['status']))) }}
                                         @else
-                                            {{ translate('Order: ') }}
+                                            Order: 
                                             <a href="javascript:void(0)" onclick="show_order_details({{ $notification->data['order_id'] }})">
                                                 {{ $notification->data['order_code'] }}
                                             </a>
@@ -41,7 +41,7 @@
 
                 @empty
                     <li class="list-group-item">
-                        <div class="py-4 text-center fs-16">{{ translate('No notification found') }}</div>
+                        <div class="py-4 text-center fs-16">No notification found</div>
                     </li>
                 @endforelse
             </ul>

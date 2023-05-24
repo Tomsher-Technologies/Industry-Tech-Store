@@ -3,7 +3,7 @@
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3">{{ translate('All Customers') }}</h1>
+            <h1 class="h3">All Customers</h1>
         </div>
     </div>
 
@@ -12,16 +12,16 @@
         <form class="" id="sort_customers" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
-                    <h5 class="mb-0 h6">{{ translate('Customers') }}</h5>
+                    <h5 class="mb-0 h6">Customers</h5>
                 </div>
 
                 <div class="dropdown mb-2 mb-md-0">
                     <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
-                        {{ translate('Bulk Action') }}
+                        Bulk Action
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#"
-                            onclick="bulk_delete()">{{ translate('Delete selection') }}</a>
+                            onclick="bulk_delete()">Delete selection</a>
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                     <div class="form-group mb-0">
                         <input type="text" class="form-control" id="search"
                             name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset
-                            placeholder="{{ translate('Type email or name & Enter') }}">
+                            placeholder="Type email or name & Enter">
                     </div>
                 </div>
             </div>
@@ -49,11 +49,11 @@
                                     </div>
                                 </div>
                             </th>
-                            <th>{{ translate('Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Email Address') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Phone') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Phone Verified Status') }}</th>
-                            <th>{{ translate('Options') }}</th>
+                            <th>Name</th>
+                            <th data-breakpoints="lg">Email Address</th>
+                            <th data-breakpoints="lg">Phone</th>
+                            <th data-breakpoints="lg">Phone Verified Status</th>
+                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,31 +90,31 @@
                                     <td class="text-right">
                                         <a href="{{ route('customers.edit', $user->id) }}"
                                             class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                            title="{{ translate('Edit') }}">
+                                            title="Edit">
                                             <i class="las la-edit"></i>
                                         </a>
                                         <a href="{{ route('customers.login', encrypt($user->id)) }}"
                                             class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                            title="{{ translate('Log in as this Customer') }}">
+                                            title="Log in as this Customer">
                                             <i class="las la-sign-in-alt"></i>
                                         </a>
                                         @if ($user->banned != 1)
                                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm"
                                                 onclick="confirm_ban('{{ route('customers.ban', encrypt($user->id)) }}');"
-                                                title="{{ translate('Ban this Customer') }}">
+                                                title="Ban this Customer">
                                                 <i class="las la-user-slash"></i>
                                             </a>
                                         @else
                                             <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm"
                                                 onclick="confirm_unban('{{ route('customers.ban', encrypt($user->id)) }}');"
-                                                title="{{ translate('Unban this Customer') }}">
+                                                title="Unban this Customer">
                                                 <i class="las la-user-check"></i>
                                             </a>
                                         @endif
                                         <a href="#"
                                             class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                             data-href="{{ route('customers.destroy', $user->id) }}"
-                                            title="{{ translate('Delete') }}">
+                                            title="Delete">
                                             <i class="las la-trash"></i>
                                         </a>
                                     </td>
@@ -135,15 +135,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h6">{{ translate('Confirmation') }}</h5>
+                    <h5 class="modal-title h6">Confirmation</h5>
                     <button type="button" class="close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>{{ translate('Do you really want to ban this Customer?') }}</p>
+                    <p>Do you really want to ban this Customer?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                    <a type="button" id="confirmation" class="btn btn-primary">{{ translate('Proceed!') }}</a>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <a type="button" id="confirmation" class="btn btn-primary">Proceed!</a>
                 </div>
             </div>
         </div>
@@ -153,15 +153,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h6">{{ translate('Confirmation') }}</h5>
+                    <h5 class="modal-title h6">Confirmation</h5>
                     <button type="button" class="close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>{{ translate('Do you really want to unban this Customer?') }}</p>
+                    <p>Do you really want to unban this Customer?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                    <a type="button" id="confirmationunban" class="btn btn-primary">{{ translate('Proceed!') }}</a>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <a type="button" id="confirmationunban" class="btn btn-primary">Proceed!</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 
 <section id="coupons" class="bg-dark text-white pb-5">
     <div class="container">
-        <h1 class="d-block text-center h2 my-5 fw-700">{{ translate('All coupons') }}</h1>
+        <h1 class="d-block text-center h2 my-5 fw-700">All coupons</h1>
         <div class="row gutters-10">
             @foreach($coupons as $coupon)  
                 @if($coupon->type == 'product_base')
@@ -64,9 +64,9 @@
                                     </div>
                                     <div class="col-md-4 bg-primary d-flex">
                                         <div class="align-self-center p-3 flex-grow-1 text-center">
-                                            <p class="fs-20 fw-700 mb-1">{{ single_price($coupon->discount) }} {{ translate('OFF') }}</p>                                    
+                                            <p class="fs-20 fw-700 mb-1">{{ single_price($coupon->discount) }} OFF</p>                                    
                                             <span class="fs-16 d-block mb-3">
-                                                {{ translate('Code') }}:
+                                                Code:
                                                 <span class="fw-600">{{ $coupon->code }}</span>
                                             </span>
                                             <a 
@@ -77,7 +77,7 @@
                                                     href="{{ route('inhouse.all') }}"
                                                 @endif
                                                 >
-                                                {{ translate('Visit store') }}
+                                                Visit store
                                             </a>
                                         </div>
                                     </div>
@@ -87,18 +87,18 @@
                                             <div class="fs-20 mb-3 fw-700 text-truncate">{{ $name }}</div>
                                             <span class="h5 text-center d-block m-auto bg-soft-info p-3 rounded">
                                                 @if($coupon->discount_type == 'amount')
-                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ single_price($coupon->discount) }} {{ translate('OFF on total orders') }}
+                                                    Min Spend  {{ single_price($order_discount->min_buy) }} from {{ $name }} to get {{ single_price($coupon->discount) }} OFF on total orders
                                                 @else 
-                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ $coupon->discount }}% {{ translate('OFF on total orders') }}                                   
+                                                    Min Spend  {{ single_price($order_discount->min_buy) }} from {{ $name }} to get {{ $coupon->discount }}% OFF on total orders                                   
                                                 @endif
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-md-4 bg-primary d-flex">
                                         <div class="align-self-center p-3 flex-grow-1 text-center">
-                                            <p class="fs-20 fw-700 mb-1">{{ translate('Max Discount') }}: {{ single_price($order_discount->max_discount) }}</p>
+                                            <p class="fs-20 fw-700 mb-1">Max Discount: {{ single_price($order_discount->max_discount) }}</p>
                                             <span class="fs-16 d-block mb-3">
-                                                {{ translate('Code') }}:
+                                                Code:
                                                 <span class="fw-600">{{ $coupon->code }}</span>
                                             </span>
                                             <a 
@@ -109,7 +109,7 @@
                                                     href="{{ route('inhouse.all') }}"
                                                 @endif
                                                 >
-                                                {{ translate('Visit store') }}
+                                                Visit store
                                             </a>
                                         </div>
                                     </div>

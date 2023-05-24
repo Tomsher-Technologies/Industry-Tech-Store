@@ -3,7 +3,7 @@
 @section('panel_content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Purchase History') }}</h5>
+            <h5 class="mb-0 h6">Purchase History</h5>
         </div>
         @if (count($orders) > 0)
             <div class="card-body">
@@ -47,14 +47,14 @@
                                     </td>
                                     <td class="text-right">
                                         @if ($order->orderDetails->first()->delivery_status == 'pending' && $order->payment_status == 'unpaid')
-                                            <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('orders.destroy', $order->id)}}" title="{{ translate('Cancel') }}">
+                                            <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('orders.destroy', $order->id)}}" title="Cancel">
                                                <i class="las la-trash"></i>
                                            </a>
                                         @endif
-                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_purchase_history_details({{ $order->id }})" title="{{ translate('Order Details') }}">
+                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_purchase_history_details({{ $order->id }})" title="Order Details">
                                             <i class="las la-eye"></i>
                                         </a>
-                                        <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="{{ translate('Download Invoice') }}">
+                                        <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="Download Invoice">
                                             <i class="las la-download"></i>
                                         </a>
                                     </td>

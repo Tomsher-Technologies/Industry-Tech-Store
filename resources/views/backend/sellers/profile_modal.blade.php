@@ -33,15 +33,15 @@
       <table class="table table-striped mar-no">
           <tbody>
           <tr>
-              <td>{{ translate('Total Products') }}</td>
+              <td>Total Products</td>
               <td>{{ App\Models\Product::where('user_id', $seller->user->id)->get()->count() }}</td>
           </tr>
           <tr>
-              <td>{{ translate('Total Orders') }}</td>
+              <td>Total Orders</td>
               <td>{{ App\Models\OrderDetail::where('seller_id', $seller->user->id)->get()->count() }}</td>
           </tr>
           <tr>
-              <td>{{ translate('Total Sold Amount') }}</td>
+              <td>Total Sold Amount</td>
               @php
                   $orderDetails = \App\Models\OrderDetail::where('seller_id', $seller->user->id)->get();
                   $total = 0;
@@ -54,7 +54,7 @@
               <td>{{ single_price($total) }}</td>
           </tr>
           <tr>
-              <td>{{ translate('Wallet Balance') }}</td>
+              <td>Wallet Balance</td>
               <td>{{ single_price($seller->user->balance) }}</td>
           </tr>
           </tbody>

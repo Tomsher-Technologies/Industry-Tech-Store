@@ -4,19 +4,19 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{ translate('Coupon Information Adding') }}</h5>
+                <h5 class="mb-0 h6">Coupon Information Adding</h5>
             </div>
             <div class="card-body">
                 <form class="form-horizontal" action="{{ route('coupon.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="name">{{ translate('Coupon Type') }}</label>
+                        <label class="col-lg-3 col-from-label" for="name">Coupon Type</label>
                         <div class="col-lg-9">
                             <select name="coupon_type" id="coupon_type" class="form-control aiz-selectpicker"
                                 onchange="coupon_form()" required>
-                                <option value="">{{ translate('Select One') }}</option>
-                                <option value="product_base">{{ translate('For Products') }}</option>
-                                <option value="cart_base">{{ translate('For Total Orders') }}</option>
+                                <option value="">Select One</option>
+                                <option value="product_base">For Products</option>
+                                <option value="cart_base">For Total Orders</option>
                             </select>
                         </div>
                     </div>
@@ -25,17 +25,17 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label" for="name">{{ translate('Is one time use') }}</label>
+                        <label class="col-lg-3 col-from-label" for="name">Is one time use</label>
                         <div class="col-lg-9">
                             <select name="one_time_use" class="form-control aiz-selectpicker" required>
-                                <option value="0">{{ translate('No') }}</option>
-                                <option value="1">{{ translate('Yes') }}</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-primary">{{ translate('Save') }}</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>

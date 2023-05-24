@@ -26,7 +26,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="attachments" class="selected-files">
                         </div>
                         <div class="file-preview box sm">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-0 text-right">
-                    <button type="submit" class="btn btn-sm btn-primary" onclick="submit_reply('pending')">{{ translate('Send Reply') }}</button>
+                    <button type="submit" class="btn btn-sm btn-primary" onclick="submit_reply('pending')">Send Reply</button>
                 </div>
             </form>
             <div class="pad-top">

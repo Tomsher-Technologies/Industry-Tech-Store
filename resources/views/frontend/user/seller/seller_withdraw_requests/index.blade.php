@@ -5,7 +5,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Money Withdraw') }}</h1>
+            <h1 class="h3">Money Withdraw</h1>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
               </span>
               <div class="px-3 pt-3 pb-3">
                   <div class="h4 fw-700 text-center">{{ single_price(Auth::user()->seller->admin_to_pay) }}</div>
-                  <div class="opacity-50 text-center">{{ translate('Pending Balance') }}</div>
+                  <div class="opacity-50 text-center">Pending Balance</div>
               </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
               <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                   <i class="las la-plus la-3x text-white"></i>
               </span>
-              <div class="fs-18 text-primary">{{ translate('Send Withdraw Request') }}</div>
+              <div class="fs-18 text-primary">Send Withdraw Request</div>
           </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                   <thead>
                       <tr>
                           <th>#</th>
-                          <th>{{ translate('Date') }}</th>
+                          <th>Date</th>
                           <th>{{ translate('Amount')}}</th>
                           <th data-breakpoints="lg">{{ translate('Status')}}</th>
                           <th data-breakpoints="lg">{{ translate('Message')}}</th>
@@ -79,7 +79,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ translate('Send A Withdraw Request') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Send A Withdraw Request</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 @if (Auth::user()->seller->admin_to_pay > 5)
@@ -91,7 +91,7 @@
                                     <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="number" lang="en" class="form-control mb-3" name="amount" min="1" max="{{ Auth::user()->seller->admin_to_pay }}" placeholder="{{ translate('Amount') }}" required>
+                                    <input type="number" lang="en" class="form-control mb-3" name="amount" min="1" max="{{ Auth::user()->seller->admin_to_pay }}" placeholder="Amount" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -110,7 +110,7 @@
                 @else
                     <div class="modal-body gry-bg px-3 pt-3">
                         <div class="p-5 heading-3">
-                            {{ translate('You do not have enough balance to send withdraw request') }}
+                            You do not have enough balance to send withdraw request
                         </div>
                     </div>
                 @endif

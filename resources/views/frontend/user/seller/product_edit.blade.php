@@ -5,7 +5,7 @@
 <div class="aiz-titlebar mt-2 mb-4">
     <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Update your product') }}</h1>
+            <h1 class="h3">Update your product</h1>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@
                         <label class="col-lg-3 col-from-label">{{translate('Brand')}}</label>
                         <div class="col-lg-8">
                             <select class="form-control aiz-selectpicker" name="brand_id" id="brand_id">
-                                <option value="">{{ translate('Select Brand') }}</option>
+                                <option value="">Select Brand</option>
                                 @foreach (\App\Models\Brand::all() as $brand)
                                 <option value="{{ $brand->id }}" @if($product->brand_id == $brand->id) selected
                                     @endif>{{ $brand->getTranslation('name') }}</option>
@@ -71,7 +71,7 @@
                         <label class="col-lg-3 col-from-label">{{translate('Unit')}}</label>
                         <div class="col-lg-8">
                             <input type="text" class="form-control" name="unit"
-                                placeholder="{{ translate('Unit (e.g. KG, Pc etc)') }}"
+                                placeholder="Unit (e.g. KG, Pc etc)"
                                 value="{{$product->getTranslation('unit')}}" required>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                         <label class="col-lg-3 col-from-label">{{translate('Tags')}}</label>
                         <div class="col-lg-8">
                             <input type="text" class="form-control aiz-tag-input" name="tags[]" id="tags"
-                                value="{{ $product->tags }}" placeholder="{{ translate('Type to add a tag') }}"
+                                value="{{ $product->tags }}" placeholder="Type to add a tag"
                                 data-role="tagsinput">
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <label class="col-lg-3 col-from-label">{{translate('Barcode')}}</label>
                         <div class="col-lg-8">
                             <input type="text" class="form-control" name="barcode"
-                                placeholder="{{ translate('Barcode') }}" value="{{ $product->barcode }}">
+                                placeholder="Barcode" value="{{ $product->barcode }}">
                         </div>
                     </div>
                     @endif
@@ -130,7 +130,7 @@
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">
                                         {{ translate('Browse')}}</div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="photos" value="{{ $product->photos }}"
                                     class="selected-files">
                             </div>
@@ -147,7 +147,7 @@
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">
                                         {{ translate('Browse')}}</div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="thumbnail_img" value="{{ $product->thumbnail_img }}"
                                     class="selected-files">
                             </div>
@@ -220,7 +220,7 @@
                 <label class="col-lg-3 col-from-label">{{translate('Video Link')}}</label>
                 <div class="col-lg-8">
                     <input type="text" class="form-control" name="video_link" value="{{ $product->video_link }}"
-                        placeholder="{{ translate('Video Link') }}">
+                        placeholder="Video Link">
                 </div>
             </div>
         </div>
@@ -260,7 +260,7 @@
                 <div class="col-lg-8">
                     <select name="choice_attributes[]" data-live-search="true" data-selected-text-format="count"
                         id="choice_attributes" class="form-control aiz-selectpicker" multiple
-                        data-placeholder="{{ translate('Choose Attributes') }}">
+                        data-placeholder="Choose Attributes">
                         @foreach (\App\Models\Attribute::all() as $key => $attribute)
                         <option value="{{ $attribute->id }}" @if($product->attributes != null &&
                             in_array($attribute->id, json_decode($product->attributes, true))) selected
@@ -271,7 +271,7 @@
             </div>
 
             <div class="">
-                <p>{{ translate('Choose the attributes of this product and then input values of each attribute') }}</p>
+                <p>Choose the attributes of this product and then input values of each attribute</p>
                 <br>
             </div>
 
@@ -282,7 +282,7 @@
                         <input type="hidden" name="choice_no[]" value="{{ $choice_option->attribute_id }}">
                         <input type="text" class="form-control" name="choice[]"
                             value="{{ \App\Models\Attribute::find($choice_option->attribute_id)->getTranslation('name') }}"
-                            placeholder="{{ translate('Choice Title') }}" disabled>
+                            placeholder="Choice Title" disabled>
                     </div>
                     <div class="col-lg-8">
                         <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_{{ $choice_option->attribute_id }}[]" multiple>
@@ -292,7 +292,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        {{-- <input type="text" class="form-control aiz-tag-input" name="choice_options_{{ $choice_option->attribute_id }}[]" placeholder="{{ translate('Enter choice values') }}" value="{{ implode(',', $choice_option->values) }}" data-on-change="update_sku"> --}}
+                        {{-- <input type="text" class="form-control aiz-tag-input" name="choice_options_{{ $choice_option->attribute_id }}[]" placeholder="Enter choice values" value="{{ implode(',', $choice_option->values) }}" data-on-change="update_sku"> --}}
                     </div>
                 </div>
                 @endforeach
@@ -357,7 +357,7 @@
                         {{translate('SKU')}}
                     </label>
                     <div class="col-md-6">
-                        <input type="text" placeholder="{{ translate('SKU') }}" value="{{ $product->stocks->first()->sku }}" name="sku" class="form-control">
+                        <input type="text" placeholder="SKU" value="{{ $product->stocks->first()->sku }}" name="sku" class="form-control">
                     </div>
                 </div>
             </div>
@@ -366,7 +366,7 @@
                     {{translate('External link')}}
                 </label>
                 <div class="col-md-9">
-                    <input type="text" placeholder="{{ translate('External link') }}" name="external_link" value="{{ $product->external_link }}" class="form-control">
+                    <input type="text" placeholder="External link" name="external_link" value="{{ $product->external_link }}" class="form-control">
                     <small class="text-muted">{{translate('Leave it blank if you do not use external site link')}}</small>
                 </div>
             </div>
@@ -375,7 +375,7 @@
                     {{translate('External link button text')}}
                 </label>
                 <div class="col-md-9">
-                    <input type="text" placeholder="{{ translate('External link button text') }}" name="external_link_btn" value="{{ $product->external_link_btn }}" class="form-control">
+                    <input type="text" placeholder="External link button text" name="external_link_btn" value="{{ $product->external_link_btn }}" class="form-control">
                     <small class="text-muted">{{translate('Leave it blank if you do not use external site link')}}</small>
                 </div>
             </div>
@@ -413,7 +413,7 @@
                             <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}
                             </div>
                         </div>
-                        <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                        <div class="form-control file-amount">Choose File</div>
                         <input type="hidden" name="pdf" value="{{ $product->pdf }}" class="selected-files">
                     </div>
                     <div class="file-preview box sm">
@@ -449,7 +449,7 @@
                             <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}
                             </div>
                         </div>
-                        <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                        <div class="form-control file-amount">Choose File</div>
                         <input type="hidden" name="meta_img" value="{{ $product->meta_img }}" class="selected-files">
                     </div>
                     <div class="file-preview box sm">
@@ -503,7 +503,7 @@
                         <label class="col-lg-6 col-from-label">{{translate('Shipping cost')}}</label>
                         <div class="col-lg-6">
                             <input type="number" lang="en" min="0" value="{{ $product->shipping_cost }}" step="0.01"
-                                placeholder="{{ translate('Shipping cost') }}" name="flat_shipping_cost"
+                                placeholder="Shipping cost" name="flat_shipping_cost"
                                 class="form-control">
                         </div>
                     </div>
@@ -512,7 +512,7 @@
 
                 @else
                 <p>
-                    {{ translate('Shipping configuration is maintained by Admin.') }}
+                    Shipping configuration is maintained by Admin.
                 </p>
                 @endif
             </div>
@@ -600,7 +600,7 @@
                 </div>
                 @else
                 <p>
-                    {{ translate('Cash On Delivery activation is maintained by Admin.') }}
+                    Cash On Delivery activation is maintained by Admin.
                 </p>
                 @endif
             </div>
@@ -651,7 +651,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <input type="number" lang="en" min="0" value="{{ $tax_amount }}" step="0.01"
-                            placeholder="{{ translate('Tax') }}" name="tax[]" class="form-control" required>
+                            placeholder="Tax" name="tax[]" class="form-control" required>
                     </div>
                     <div class="form-group col-md-6">
                         <select class="form-control aiz-selectpicker" name="tax_type[]">
@@ -671,7 +671,7 @@
     <div class="col-12">
         <div class="mar-all text-right">
             <button type="submit" name="button" value="publish"
-                class="btn btn-primary">{{ translate('Update Product') }}</button>
+                class="btn btn-primary">Update Product</button>
         </div>
     </div>
     </div>
@@ -716,7 +716,7 @@
                 <div class="form-group row">\
                     <div class="col-md-3">\
                         <input type="hidden" name="choice_no[]" value="'+i+'">\
-                        <input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="{{ translate('Choice Title') }}" readonly>\
+                        <input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly>\
                     </div>\
                     <div class="col-md-8">\
                         <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_'+ i +'[]" multiple>\

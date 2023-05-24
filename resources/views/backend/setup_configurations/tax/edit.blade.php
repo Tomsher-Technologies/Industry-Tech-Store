@@ -18,10 +18,10 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="control-label">{{ translate('Name') }}</label>
+                            <label class="control-label">Name</label>
                         </div>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="name" placeholder="{{ translate('Name') }}" value="{{ $tax->name }}" required>
+                            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $tax->name }}" required>
                         </div>
                     </div>
                     

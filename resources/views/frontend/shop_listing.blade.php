@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 text-center text-lg-left">
-                <h1 class="fw-600 h4">{{ translate('All Sellers') }}</h1>
+                <h1 class="fw-600 h4">All Sellers</h1>
             </div>
             <div class="col-lg-6">
                 <ul class="breadcrumb bg-transparent p-0 justify-content-center justify-content-lg-end">
@@ -13,7 +13,7 @@
                         <a class="text-reset" href="{{ route('home') }}">{{ translate('Home')}}</a>
                     </li>
                     <li class="text-dark fw-600 breadcrumb-item">
-                        <a class="text-reset" href="{{ route('sellers') }}">"{{ translate('All Sellers') }}"</a>
+                        <a class="text-reset" href="{{ route('sellers') }}">"All Sellers"</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
                                             {{ renderStarRating($shop->user->seller->rating) }}
                                         </div>
                                         <a href="{{ route('shop.visit', $shop->slug) }}" class="btn btn-soft-primary btn-sm" tabindex="0">
-                                            {{ translate('Visit Store') }}
+                                            Visit Store
                                             <i class="las la-angle-right"></i>
                                         </a>
                                     </div>

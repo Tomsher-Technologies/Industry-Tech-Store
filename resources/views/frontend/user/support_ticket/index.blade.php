@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Support Ticket') }}</h1>
+                <h1 class="h3">Support Ticket</h1>
             </div>
         </div>
     </div>
@@ -14,7 +14,7 @@
                 <span class="size-70px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                     <i class="las la-plus la-3x text-white"></i>
                 </span>
-                <div class="fs-20 text-primary">{{ translate('Create a Ticket') }}</div>
+                <div class="fs-20 text-primary">Create a Ticket</div>
             </div>
         </div>
     </div>
@@ -27,8 +27,8 @@
               <table class="table aiz-table mb-0">
                   <thead>
                       <tr>
-                          <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
-                          <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
+                          <th data-breakpoints="lg">Ticket ID</th>
+                          <th data-breakpoints="lg">Sending Date</th>
                           <th>{{ translate('Subject')}}</th>
                           <th>{{ translate('Status')}}</th>
                           <th data-breakpoints="lg">{{ translate('Options')}}</th>
@@ -97,13 +97,13 @@
                           </div>
                       </div>
                       <div class="form-group row">
-                          <label class="col-md-2 col-form-label">{{ translate('Photo') }}</label>
+                          <label class="col-md-2 col-form-label">Photo</label>
                           <div class="col-md-10">
                               <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="true">
                                   <div class="input-group-prepend">
                                       <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                   </div>
-                                  <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                  <div class="form-control file-amount">Choose File</div>
                                   <input type="hidden" name="attachments" class="selected-files">
                               </div>
                               <div class="file-preview box sm">

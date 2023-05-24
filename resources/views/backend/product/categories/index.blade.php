@@ -15,11 +15,11 @@
 </div>
 <div class="card">
     <div class="card-header d-block d-md-flex">
-        <h5 class="mb-0 h6">{{ translate('Categories') }}</h5>
+        <h5 class="mb-0 h6">Categories</h5>
         <form class="" id="sort_categories" action="" method="GET">
             <div class="box-inline pad-rgt pull-left">
                 <div class="" style="min-width: 200px;">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
                 </div>
             </div>
         </form>
@@ -30,9 +30,9 @@
                 <tr>
                     <th data-breakpoints="lg">#</th>
                     <th>{{translate('Name')}}</th>
-                    <th data-breakpoints="lg">{{ translate('Parent Category') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Order Level') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Level') }}</th>
+                    <th data-breakpoints="lg">Parent Category</th>
+                    <th data-breakpoints="lg">Order Level</th>
+                    <th data-breakpoints="lg">Level</th>
                     <th data-breakpoints="lg">{{translate('Banner')}}</th>
                     <th data-breakpoints="lg">{{translate('Icon')}}</th>
                     <th data-breakpoints="lg">{{translate('Featured')}}</th>
@@ -79,10 +79,10 @@
                             </label>
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('categories.edit', ['id'=>$category->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('categories.edit', ['id'=>$category->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('categories.destroy', $category->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('categories.destroy', $category->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>
@@ -114,10 +114,10 @@
             }
             $.post('{{ route('categories.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Featured categories updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Featured categories updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

@@ -14,14 +14,14 @@
                 <form class="" id="sort_cities" action="" method="GET">
                     <div class="card-header row gutters-5">
                         <div class="col text-center text-md-left">
-                            <h5 class="mb-md-0 h6">{{ translate('Cities') }}</h5>
+                            <h5 class="mb-md-0 h6">Cities</h5>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="sort_city" name="sort_city" @isset($sort_city) value="{{ $sort_city }}" @endisset placeholder="{{ translate('Type city name & Enter') }}">
+                            <input type="text" class="form-control" id="sort_city" name="sort_city" @isset($sort_city) value="{{ $sort_city }}" @endisset placeholder="Type city name & Enter">
                         </div>
                         <div class="col-md-4">
                             <select class="form-control aiz-selectpicker" data-live-search="true" id="sort_state" name="sort_state">
-                                <option value="">{{ translate('Select State') }}</option>
+                                <option value="">Select State</option>
                                 @foreach ($states as $state)
                                     <option value="{{ $state->id }}" @if ($sort_state == $state->id) selected @endif {{$sort_state}}>
                                         {{ $state->name }}
@@ -30,7 +30,7 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
@@ -60,10 +60,10 @@
                                         </label>
                                       </td>
                                     <td class="text-right">
-                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('cities.edit', ['id'=>$city->id, 'lang'=>env('DEFAULT_LANGUAGE')]) }}" title="{{ translate('Edit') }}">
+                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('cities.edit', ['id'=>$city->id, 'lang'=>env('DEFAULT_LANGUAGE')]) }}" title="Edit">
                                             <i class="las la-edit"></i>
                                         </a>
-                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('cities.destroy', $city->id)}}" title="{{ translate('Delete') }}">
+                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('cities.destroy', $city->id)}}" title="Delete">
                                             <i class="las la-trash"></i>
                                         </a>
                                     </td>
@@ -80,7 +80,7 @@
         <div class="col-md-5">
     		<div class="card">
     			<div class="card-header">
-    				<h5 class="mb-0 h6">{{ translate('Add New city') }}</h5>
+    				<h5 class="mb-0 h6">Add New city</h5>
     			</div>
     			<div class="card-body">
     				<form action="{{ route('cities.store') }}" method="POST">
@@ -133,10 +133,10 @@
             }
             $.post('{{ route('cities.status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Country status updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Country status updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

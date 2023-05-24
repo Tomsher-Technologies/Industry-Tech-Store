@@ -17,7 +17,7 @@
                             <label class="col-from-label">{{translate('Client ID')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="GOOGLE_CLIENT_ID" value="{{  env('GOOGLE_CLIENT_ID') }}" placeholder="{{ translate('Google Client ID') }}" required>
+                            <input type="text" class="form-control" name="GOOGLE_CLIENT_ID" value="{{  env('GOOGLE_CLIENT_ID') }}" placeholder="Google Client ID" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,7 +26,7 @@
                             <label class="col-from-label">{{translate('Client Secret')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="GOOGLE_CLIENT_SECRET" value="{{  env('GOOGLE_CLIENT_SECRET') }}" placeholder="{{ translate('Google Client Secret') }}" required>
+                            <input type="text" class="form-control" name="GOOGLE_CLIENT_SECRET" value="{{  env('GOOGLE_CLIENT_SECRET') }}" placeholder="Google Client Secret" required>
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
@@ -50,7 +50,7 @@
                             <label class="col-from-label">{{translate('App ID')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="FACEBOOK_CLIENT_ID" value="{{ env('FACEBOOK_CLIENT_ID') }}" placeholder="{{ translate('Facebook Client ID') }}" required>
+                            <input type="text" class="form-control" name="FACEBOOK_CLIENT_ID" value="{{ env('FACEBOOK_CLIENT_ID') }}" placeholder="Facebook Client ID" required>
                         </div>
                     </div>
 
@@ -60,7 +60,7 @@
                             <label class="col-from-label">{{translate('App Secret')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="FACEBOOK_CLIENT_SECRET" value="{{ env('FACEBOOK_CLIENT_SECRET') }}" placeholder="{{ translate('Facebook Client Secret') }}" required>
+                            <input type="text" class="form-control" name="FACEBOOK_CLIENT_SECRET" value="{{ env('FACEBOOK_CLIENT_SECRET') }}" placeholder="Facebook Client Secret" required>
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
@@ -87,7 +87,7 @@
                             <label class="col-from-label">{{translate('Client ID')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="TWITTER_CLIENT_ID" value="{{ env('TWITTER_CLIENT_ID') }}" placeholder="{{ translate('Twitter Client ID') }}" required>
+                            <input type="text" class="form-control" name="TWITTER_CLIENT_ID" value="{{ env('TWITTER_CLIENT_ID') }}" placeholder="Twitter Client ID" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -96,7 +96,7 @@
                             <label class="col-from-label">{{translate('Client Secret')}}</label>
                         </div>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" name="TWITTER_CLIENT_SECRET" value="{{ env('TWITTER_CLIENT_SECRET') }}" placeholder="{{ translate('Twitter Client Secret') }}" required>
+                            <input type="text" class="form-control" name="TWITTER_CLIENT_SECRET" value="{{ env('TWITTER_CLIENT_SECRET') }}" placeholder="Twitter Client Secret" required>
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">

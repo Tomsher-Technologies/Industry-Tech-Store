@@ -121,7 +121,7 @@
                                                 <span class="dummy">{{ str_replace(substr($customer_product->user->phone,3),'XXXXXXXX', $customer_product->user->phone) }}</span>
                                                 <span class="real d-none">{{ $customer_product->user->phone }}</span>
                                             </h3>
-                                            <p class="mb-0 opacity-50">{{ translate('Click to show phone number') }}</p>
+                                            <p class="mb-0 opacity-50">Click to show phone number</p>
                                         </div>
                                     </div>
                                 </li>
@@ -191,9 +191,9 @@
            <div class="bg-white shadow-sm rounded">
                 <div class="d-flex mb-3 align-items-baseline border-bottom px-3 py-2">
                     <h3 class="fs-16 fw-600 mb-0">
-                        {{ translate('Other Ads of') }} {{$customer_product->category->getTranslation('name') }}
+                        Other Ads of {{$customer_product->category->getTranslation('name') }}
                     </h3>
-                    <a href="{{ route('customer_products.category', $customer_product->category->slug) }}" class="ml-auto mr-0 btn btn-primary btn-sm shadow-md">{{ translate('View More') }}</a>
+                    <a href="{{ route('customer_products.category', $customer_product->category->slug) }}" class="ml-auto mr-0 btn btn-primary btn-sm shadow-md">View More</a>
                 </div>
                 <div class="p-3">
                     <div class="aiz-carousel gutters-5 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='true'>

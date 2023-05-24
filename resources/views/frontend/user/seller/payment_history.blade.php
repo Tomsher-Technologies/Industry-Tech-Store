@@ -3,7 +3,7 @@
 @section('panel_content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Payment History') }}</h5>
+            <h5 class="mb-0 h6">Payment History</h5>
         </div>
         @if (count($payments) > 0)
             <div class="card-body">

@@ -20,12 +20,12 @@
     <form class="" id="sort_blogs" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('All blog posts') }}</h5>
+                <h5 class="mb-md-0 h6">All blog posts</h5>
             </div>
             
             <div class="col-md-2">
                 <div class="form-group mb-0">
-                    <input type="text" class="form-control form-control-sm" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type & Enter') }}">
+                    <input type="text" class="form-control form-control-sm" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type & Enter">
                 </div>
             </div>
         </div>
@@ -68,11 +68,11 @@
                             </label>
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('blog.edit',$blog->id)}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('blog.edit',$blog->id)}}" title="Edit">
                                 <i class="las la-pen"></i>
                             </a>
                             
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('blog.destroy', $blog->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('blog.destroy', $blog->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>
@@ -103,10 +103,10 @@
             }
             $.post('{{ route('blog.change-status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Change blog status successfully') }}');
+                    AIZ.plugins.notify('success', 'Change blog status successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

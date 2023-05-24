@@ -18,12 +18,12 @@
 <div class="card">
 	<div class="card-header row gutters-5">
 		<div class="col text-center text-md-left">
-			<h5 class="mb-md-0 h6">{{ translate('Brands') }}</h5>
+			<h5 class="mb-md-0 h6">Brands</h5>
 		</div>
 		<div class="col-md-4">
 			<form class="" id="sort_pickup_points" action="" method="GET">
 				<div class="input-group input-group-sm">
-					<input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+					<input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
 				</div>
 			</form>
 		</div>
@@ -50,7 +50,7 @@
                             <td>{{$pickup_point->staff->user->name}}</td>
                         @else
                             <td><div class="badge badge-inline badge-danger">
-                                {{ translate('No Manager') }}
+                                No Manager
                             </div></td>
                         @endif
                         <td>{{$pickup_point->getTranslation('address')}}</td>
@@ -58,19 +58,19 @@
                         <td>
                             @if ($pickup_point->pick_up_status != 1)
                                 <div class="badge badge-inline badge-danger">
-                                    {{ translate('Close') }}
+                                    Close
                                 </div>
                             @else
                                 <div class="badge badge-inline badge-success">
-                                    {{ translate('Open') }}
+                                    Open
                                 </div>
                             @endif
                         </td>
 						<td class="text-right">
-							<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('pick_up_points.edit', ['id'=>$pickup_point->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+							<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('pick_up_points.edit', ['id'=>$pickup_point->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
 								<i class="las la-edit"></i>
 							</a>
-							<a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('pick_up_points.destroy', $pickup_point->id)}}" title="{{ translate('Delete') }}">
+							<a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('pick_up_points.destroy', $pickup_point->id)}}" title="Delete">
 								<i class="las la-trash"></i>
 							</a>
 						</td>

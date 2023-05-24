@@ -3,19 +3,19 @@ a@extends('backend.layouts.app')
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Classified Products') }}</h5>
+            <h5 class="mb-0 h6">Classified Products</h5>
         </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
                         <th data-breakpoints="lg">#</th>
-                        <th>{{ translate('Name') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Image') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Uploaded By') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Customer Status') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Published') }}</th>
-                        <th width="10%">{{ translate('Options') }}</th>
+                        <th>Name</th>
+                        <th data-breakpoints="lg">Image</th>
+                        <th data-breakpoints="lg">Uploaded By</th>
+                        <th data-breakpoints="lg">Customer Status</th>
+                        <th data-breakpoints="lg">Published</th>
+                        <th width="10%">Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,13 +27,13 @@ a@extends('backend.layouts.app')
                                     target="_blank">{{ $product->getTranslation('name') }}</a>
                             </td>
                             <td><img src="{{ uploaded_asset($product->thumbnail_img) }}"
-                                    alt="{{ translate('Product Image') }}" class="h-50px"></td>
+                                    alt="Product Image" class="h-50px"></td>
                             <td>{{ $product->added_by }}</td>
                             <td>
                                 @if ($product->status == 1)
-                                    <span class="badge badge-inline badge-success">{{ translate('PUBLISHED') }}</span>
+                                    <span class="badge badge-inline badge-success">PUBLISHED</span>
                                 @else
-                                    <span class="badge badge-inline badge-danger">{{ translate('UNPUBLISHED') }}</span>
+                                    <span class="badge badge-inline badge-danger">UNPUBLISHED</span>
                                 @endif
                             </td>
                             <td>
@@ -48,12 +48,12 @@ a@extends('backend.layouts.app')
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
                                     href="{{ route('customer.product', $product->slug) }}"
-                                    title="{{ translate('Show') }}">
+                                    title="Show">
                                     <i class="las la-eye"></i>
                                 </a>
                                 <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                     data-href="{{ route('customer_products.destroy', $product->id) }}}}"
-                                    title="{{ translate('Delete') }}">
+                                    title="Delete">
                                     <i class="las la-trash"></i>
                                 </a>
                             </td>
@@ -88,9 +88,9 @@ a@extends('backend.layouts.app')
                 status: status
             }, function(data) {
                 if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Published products updated successfully');
                 } else {
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

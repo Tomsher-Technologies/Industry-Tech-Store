@@ -22,7 +22,7 @@
             <form class="" id="sort_flash_deals" action="" method="GET">
                 <div class="box-inline pad-rgt pull-left">
                     <div class="" style="min-width: 200px;">
-                        <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                        <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
                     </div>
                 </div>
             </form>
@@ -34,12 +34,12 @@
                 <tr>
                     <th data-breakpoints="lg">#</th>
                     <th>{{translate('Title')}}</th>
-                    <th data-breakpoints="lg">{{ translate('Banner') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Start Date') }}</th>
-                    <th data-breakpoints="lg">{{ translate('End Date') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Featured') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Page Link') }}</th>
+                    <th data-breakpoints="lg">Banner</th>
+                    <th data-breakpoints="lg">Start Date</th>
+                    <th data-breakpoints="lg">End Date</th>
+                    <th data-breakpoints="lg">Status</th>
+                    <th data-breakpoints="lg">Featured</th>
+                    <th data-breakpoints="lg">Page Link</th>
                     <th class="text-right">{{translate('Options')}}</th>
                 </tr>
             </thead>
@@ -65,10 +65,10 @@
 						</td>
 						<td>{{ url('flash-deal/'.$flash_deal->slug) }}</td>
 						<td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('flash_deals.edit', ['id'=>$flash_deal->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('flash_deals.edit', ['id'=>$flash_deal->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('flash_deals.destroy', $flash_deal->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('flash_deals.destroy', $flash_deal->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>
@@ -104,7 +104,7 @@
                     location.reload();
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }
@@ -120,7 +120,7 @@
                     location.reload();
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

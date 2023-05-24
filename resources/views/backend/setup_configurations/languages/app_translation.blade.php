@@ -10,7 +10,7 @@
          <div class="col-md-4">
            <form class="" id="sort_keys" action="" method="GET">
              <div class="input-group input-group-sm">
-                 <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type key & Enter') }}">
+                 <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type key & Enter">
              </div>
            </form>
          </div>
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="form-group mb-0 text-right">
-                    <button type="button" class="btn btn-primary" onclick="copyTranslation()">{{ translate('Copy Translations') }}</button>
+                    <button type="button" class="btn btn-primary" onclick="copyTranslation()">Copy Translations</button>
                     <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
                 </div>
             </div>

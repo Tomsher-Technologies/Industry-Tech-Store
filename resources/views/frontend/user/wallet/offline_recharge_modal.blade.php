@@ -31,7 +31,7 @@
                         <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-9">
-                        <input type="number" lang="en" class="form-control mb-3" min="0" step="0.01" name="amount" placeholder="{{ translate('Amount') }}" required>
+                        <input type="number" lang="en" class="form-control mb-3" min="0" step="0.01" name="amount" placeholder="Amount" required>
                     </div>
                 </div>
 
@@ -40,17 +40,17 @@
                         <label>{{ translate('Transaction ID')}} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text" class="form-control mb-3" name="trx_id" placeholder="{{ translate('Transaction ID') }}" required>
+                        <input type="text" class="form-control mb-3" name="trx_id" placeholder="Transaction ID" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label">{{ translate('Photo') }}</label>
+                    <label class="col-md-3 col-form-label">Photo</label>
                     <div class="col-md-9">
                         <div class="input-group" data-toggle="aizuploader" data-type="image">
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose image') }}</div>
+                            <div class="form-control file-amount">Choose image</div>
                             <input type="hidden" name="photo" class="selected-files">
                         </div>
                         <div class="file-preview box sm">
@@ -71,7 +71,7 @@
       @if ($method->bank_info != null)
           <ul>
               @foreach (json_decode($method->bank_info) as $key => $info)
-                  <li>{{ translate('Bank Name') }} - {{ $info->bank_name }}, {{ translate('Account Name') }} - {{ $info->account_name }}, {{ translate('Account Number') }} - {{ $info->account_number}}, {{ translate('Routing Number') }} - {{ $info->routing_number }}</li>
+                  <li>Bank Name - {{ $info->bank_name }}, Account Name - {{ $info->account_name }}, Account Number - {{ $info->account_number}}, Routing Number - {{ $info->routing_number }}</li>
               @endforeach
           </ul>
       @endif

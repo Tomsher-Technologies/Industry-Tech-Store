@@ -24,12 +24,12 @@
                         <table class="table aiz-table mb-0">
                             <thead>
                                 <tr>
-                                    <th data-breakpoints="lg">{{ translate('Name') }}</th>
-                                    <th data-breakpoints="lg">{{ translate('Image') }}</th>
-                                    {{-- <th data-breakpoints="lg">{{ translate('Banner Position') }}</th> --}}
-                                    <th data-breakpoints="lg">{{ translate('Link Type') }}</th>
-                                    <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                                    <th>{{ translate('Options') }}</th>
+                                    <th data-breakpoints="lg">Name</th>
+                                    <th data-breakpoints="lg">Image</th>
+                                    {{-- <th data-breakpoints="lg">Banner Position</th> --}}
+                                    <th data-breakpoints="lg">Link Type</th>
+                                    <th data-breakpoints="lg">Status</th>
+                                    <th>Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,21 +54,21 @@
                                         <td>
                                             @if ($banner->status)
                                                 <span
-                                                    class="badge badge-inline badge-success text-capitalize">{{ translate('Enabled') }}</span>
+                                                    class="badge badge-inline badge-success text-capitalize">Enabled</span>
                                             @else
                                                 <span
-                                                    class="badge badge-inline badge-danger text-capitalize">{{ translate('Disabled') }}</span>
+                                                    class="badge badge-inline badge-danger text-capitalize">Disabled</span>
                                             @endif
                                         </td>
                                         <td class="text-right">
                                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                                href="{{ route('banners.edit', $banner) }}" title="{{ translate('Edit') }}">
+                                                href="{{ route('banners.edit', $banner) }}" title="Edit">
                                                 <i class="las la-edit"></i>
                                             </a>
                                             <a href="#"
                                                 class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                                 data-href="{{ route('banners.destroy', $banner) }}"
-                                                title="{{ translate('Delete') }}">
+                                                title="Delete">
                                                 <i class="las la-trash"></i>
                                             </a>
                                         </td>

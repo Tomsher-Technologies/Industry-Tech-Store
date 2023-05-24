@@ -4,7 +4,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h1 class="h2 fs-16 mb-0">{{ translate('Order Details') }}</h1>
+            <h1 class="h2 fs-16 mb-0">Order Details</h1>
         </div>
         <div class="card-body">
             <div class="row gutters-5">
@@ -18,11 +18,11 @@
                 <!--Assign Delivery Boy-->
                 @if (addon_is_activated('delivery_boy'))
                     <div class="col-md-3 ml-auto">
-                        <label for="assign_deliver_boy">{{ translate('Assign Deliver Boy') }}</label>
+                        <label for="assign_deliver_boy">Assign Deliver Boy</label>
                         @if ($delivery_status == 'pending' || $delivery_status == 'confirmed' || $delivery_status == 'picked_up')
                             <select class="form-control aiz-selectpicker" data-live-search="true"
                                 data-minimum-results-for-search="Infinity" id="assign_deliver_boy">
-                                <option value="">{{ translate('Select Delivery Boy') }}</option>
+                                <option value="">Select Delivery Boy</option>
                                 @foreach ($delivery_boys as $delivery_boy)
                                     <option value="{{ $delivery_boy->id }}"
                                         @if ($order->assign_delivery_boy == $delivery_boy->id) selected @endif>
@@ -38,39 +38,39 @@
                 @endif
 
                 <div class="col-md-3 ml-auto">
-                    <label for="update_payment_status">{{ translate('Payment Status') }}</label>
+                    <label for="update_payment_status">Payment Status</label>
                     <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
                         id="update_payment_status">
-                        <option value="unpaid" @if ($payment_status == 'unpaid') selected @endif>{{ translate('Unpaid') }}
+                        <option value="unpaid" @if ($payment_status == 'unpaid') selected @endif>Unpaid
                         </option>
-                        <option value="paid" @if ($payment_status == 'paid') selected @endif>{{ translate('Paid') }}
+                        <option value="paid" @if ($payment_status == 'paid') selected @endif>Paid
                         </option>
                     </select>
                 </div>
                 <div class="col-md-3 ml-auto">
-                    <label for="update_delivery_status">{{ translate('Delivery Status') }}</label>
+                    <label for="update_delivery_status">Delivery Status</label>
                     @if ($delivery_status != 'delivered' && $delivery_status != 'cancelled')
                         <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
                             id="update_delivery_status">
                             <option value="pending" @if ($delivery_status == 'pending') selected @endif>
-                                {{ translate('Pending') }}</option>
+                                Pending</option>
                             <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>
-                                {{ translate('Confirmed') }}</option>
+                                Confirmed</option>
                             <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>
-                                {{ translate('Picked Up') }}</option>
+                                Picked Up</option>
                             <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>
-                                {{ translate('On The Way') }}</option>
+                                On The Way</option>
                             <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>
-                                {{ translate('Delivered') }}</option>
+                                Delivered</option>
                             <option value="cancelled" @if ($delivery_status == 'cancelled') selected @endif>
-                                {{ translate('Cancel') }}</option>
+                                Cancel</option>
                         </select>
                     @else
                         <input type="text" class="form-control" value="{{ $delivery_status }}" disabled>
                     @endif
                 </div>
                 <div class="col-md-3 ml-auto">
-                    <label for="update_tracking_code">{{ translate('Tracking Code (optional)') }}</label>
+                    <label for="update_tracking_code">Tracking Code (optional)</label>
                     <input type="text" class="form-control" id="update_tracking_code"
                         value="{{ $order->tracking_code }}">
                 </div>
@@ -91,10 +91,10 @@
                     </address>
                     @if ($order->manual_payment && is_array(json_decode($order->manual_payment_data, true)))
                         <br>
-                        <strong class="text-main">{{ translate('Payment Information') }}</strong><br>
-                        {{ translate('Name') }}: {{ json_decode($order->manual_payment_data)->name }},
-                        {{ translate('Amount') }}: {{ single_price(json_decode($order->manual_payment_data)->amount) }},
-                        {{ translate('TRX ID') }}: {{ json_decode($order->manual_payment_data)->trx_id }}
+                        <strong class="text-main">Payment Information</strong><br>
+                        Name: {{ json_decode($order->manual_payment_data)->name }},
+                        Amount: {{ single_price(json_decode($order->manual_payment_data)->amount) }},
+                        TRX ID: {{ json_decode($order->manual_payment_data)->trx_id }}
                         <br>
                         <a href="{{ uploaded_asset(json_decode($order->manual_payment_data)->photo) }}"
                             target="_blank"><img
@@ -106,11 +106,11 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td class="text-main text-bold">{{ translate('Order #') }}</td>
+                                <td class="text-main text-bold">Order #</td>
                                 <td class="text-right text-info text-bold"> {{ $order->code }}</td>
                             </tr>
                             <tr>
-                                <td class="text-main text-bold">{{ translate('Order Status') }}</td>
+                                <td class="text-main text-bold">Order Status</td>
                                 <td class="text-right">
                                     @if ($delivery_status == 'delivered')
                                         <span
@@ -122,19 +122,19 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-main text-bold">{{ translate('Order Date') }} </td>
+                                <td class="text-main text-bold">Order Date </td>
                                 <td class="text-right">{{ date('d-m-Y h:i A', $order->date) }}</td>
                             </tr>
                             <tr>
                                 <td class="text-main text-bold">
-                                    {{ translate('Total amount') }}
+                                    Total amount
                                 </td>
                                 <td class="text-right">
                                     {{ single_price($order->grand_total) }}
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-main text-bold">{{ translate('Payment method') }}</td>
+                                <td class="text-main text-bold">Payment method</td>
                                 <td class="text-right">
                                     {{ translate(ucfirst(str_replace('_', ' ', $order->payment_type))) }}</td>
                             </tr>
@@ -149,15 +149,15 @@
                         <thead>
                             <tr class="bg-trans-dark">
                                 <th data-breakpoints="lg" class="min-col">#</th>
-                                <th width="10%">{{ translate('Photo') }}</th>
-                                <th class="text-uppercase">{{ translate('Description') }}</th>
-                                <th data-breakpoints="lg" class="text-uppercase">{{ translate('Delivery Type') }}</th>
-                                <th data-breakpoints="lg" class="min-col text-center text-uppercase">{{ translate('Qty') }}
+                                <th width="10%">Photo</th>
+                                <th class="text-uppercase">Description</th>
+                                <th data-breakpoints="lg" class="text-uppercase">Delivery Type</th>
+                                <th data-breakpoints="lg" class="min-col text-center text-uppercase">Qty
                                 </th>
                                 <th data-breakpoints="lg" class="min-col text-center text-uppercase">
-                                    {{ translate('Price') }}</th>
+                                    Price</th>
                                 <th data-breakpoints="lg" class="min-col text-right text-uppercase">
-                                    {{ translate('Total') }}</th>
+                                    Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,7 +174,7 @@
                                                 target="_blank"><img height="50"
                                                     src="{{ uploaded_asset($orderDetail->product->thumbnail_img) }}"></a>
                                         @else
-                                            <strong>{{ translate('N/A') }}</strong>
+                                            <strong>N/A</strong>
                                         @endif
                                     </td>
                                     <td>
@@ -188,18 +188,18 @@
                                                     target="_blank"
                                                     class="text-muted">{{ $orderDetail->product->getTranslation('name') }}</a></strong>
                                         @else
-                                            <strong>{{ translate('Product Unavailable') }}</strong>
+                                            <strong>Product Unavailable</strong>
                                         @endif
                                     </td>
                                     <td>
                                         @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
-                                            {{ translate('Home Delivery') }}
+                                            Home Delivery
                                         @elseif ($order->shipping_type == 'pickup_point')
                                             @if ($order->pickup_point != null)
                                                 {{ $order->pickup_point->getTranslation('name') }}
-                                                ({{ translate('Pickup Point') }})
+                                                (Pickup Point)
                                             @else
-                                                {{ translate('Pickup Point') }}
+                                                Pickup Point
                                             @endif
                                         @endif
                                     </td>
@@ -222,7 +222,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('Sub Total') }} :</strong>
+                                <strong class="text-muted">Sub Total :</strong>
                             </td>
                             <td>
                                 {{ single_price($order->orderDetails->sum('price')) }}
@@ -230,7 +230,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('Tax') }} :</strong>
+                                <strong class="text-muted">Tax :</strong>
                             </td>
                             <td>
                                 {{ single_price($order->orderDetails->sum('tax')) }}
@@ -238,7 +238,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('Shipping') }} :</strong>
+                                <strong class="text-muted">Shipping :</strong>
                             </td>
                             <td>
                                 {{ single_price($order->orderDetails->sum('shipping_cost')) }}
@@ -246,7 +246,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('Coupon') }} :</strong>
+                                <strong class="text-muted">Coupon :</strong>
                             </td>
                             <td>
                                 {{ single_price($order->coupon_discount) }}
@@ -254,7 +254,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong class="text-muted">{{ translate('TOTAL') }} :</strong>
+                                <strong class="text-muted">TOTAL :</strong>
                             </td>
                             <td class="text-muted h5">
                                 {{ single_price($order->grand_total) }}
@@ -282,7 +282,7 @@
                 order_id: order_id,
                 delivery_boy: delivery_boy
             }, function(data) {
-                AIZ.plugins.notify('success', '{{ translate('Delivery boy has been assigned') }}');
+                AIZ.plugins.notify('success', 'Delivery boy has been assigned');
             });
         });
 
@@ -294,7 +294,7 @@
                 order_id: order_id,
                 status: status
             }, function(data) {
-                AIZ.plugins.notify('success', '{{ translate('Delivery status has been updated') }}');
+                AIZ.plugins.notify('success', 'Delivery status has been updated');
             });
         });
 
@@ -306,7 +306,7 @@
                 order_id: order_id,
                 status: status
             }, function(data) {
-                AIZ.plugins.notify('success', '{{ translate('Payment status has been updated') }}');
+                AIZ.plugins.notify('success', 'Payment status has been updated');
             });
         });
 
@@ -318,7 +318,7 @@
                 order_id: order_id,
                 tracking_code: tracking_code
             }, function(data) {
-                AIZ.plugins.notify('success', '{{ translate('Order tracking code has been updated') }}');
+                AIZ.plugins.notify('success', 'Order tracking code has been updated');
             });
         });
     </script>

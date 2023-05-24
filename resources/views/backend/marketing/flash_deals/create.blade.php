@@ -40,12 +40,12 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="banner" class="selected-files">
                             </div>
                             <div class="file-preview box sm">
                             </div>
-                            <span class="small text-muted">{{ translate('This image is shown as cover banner in flash deal details page.') }}</span>
+                            <span class="small text-muted">This image is shown as cover banner in flash deal details page.</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -58,7 +58,7 @@
                     <div class="form-group row mb-3">
                         <label class="col-sm-3 control-label" for="products">{{translate('Products')}}</label>
                         <div class="col-sm-9">
-                            <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="{{ translate('Choose Products') }}" data-live-search="true" data-selected-text-format="count">
+                            <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="Choose Products" data-live-search="true" data-selected-text-format="count">
                                 @foreach(\App\Models\Product::orderBy('created_at', 'desc')->get() as $product)
                                     <option value="{{$product->id}}">{{ $product->getTranslation('name') }}</option>
                                 @endforeach
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="alert alert-danger">
-                        {{ translate('If any product has discount or exists in another flash deal, the discount will be replaced by this discount & time limit.') }}
+                        If any product has discount or exists in another flash deal, the discount will be replaced by this discount & time limit.
                     </div>
                     <br>
                     

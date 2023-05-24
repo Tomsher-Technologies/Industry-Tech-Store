@@ -14,12 +14,12 @@
             <form action="{{ route('wallet-history.index') }}" method="GET">
                 <div class="card-header row gutters-5">
                     <div class="col text-center text-md-left">
-                        <h5 class="mb-md-0 h6">{{ translate('Wallet Transaction') }}</h5>
+                        <h5 class="mb-md-0 h6">Wallet Transaction</h5>
                     </div>
                     @if(Auth::user()->user_type != 'seller')
                     <div class="col-md-3 ml-auto">
                         <select id="demo-ease" class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="user_id">
-                            <option value="">{{ translate('Choose User') }}</option>
+                            <option value="">Choose User</option>
                             @foreach ($users_with_wallet as $key => $user)
                                 <option value="{{ $user->id }}" @if($user->id == $user_id) selected @endif >
                                     {{ $user->name }}
@@ -30,12 +30,12 @@
                     @endif
                     <div class="col-md-3">
                         <div class="form-group mb-0">
-                            <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="{{ translate('Daterange') }}">
+                            <input type="text" class="form-control form-control-sm aiz-date-range" id="search" name="date_range"@isset($date_range) value="{{ $date_range }}" @endisset placeholder="Daterange">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <button class="btn btn-md btn-primary" type="submit">
-                            {{ translate('Filter') }}
+                            Filter
                         </button>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                                 @if ($wallet->user != null)
                                     <td>{{ $wallet->user->name }}</td>
                                 @else
-                                    <td>{{ translate('User Not found') }}</td>
+                                    <td>User Not found</td>
                                 @endif
                                 <td>{{ date('d-m-Y', strtotime($wallet->created_at)) }}</td>
                                 <td>{{ single_price($wallet->amount) }}</td>

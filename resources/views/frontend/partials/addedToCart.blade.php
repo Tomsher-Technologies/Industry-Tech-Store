@@ -60,7 +60,7 @@
                             </h3>
                             @if (addon_is_activated('club_point'))
                                 <div class="rounded px-2 mt-2 bg-soft-primary border-soft-primary border">
-                                    {{ translate('Club Point') }}:
+                                    Club Point:
                                     <span class="fw-700 float-right">{{ $related_product->earn_point }}</span>
                                 </div>
                             @endif

@@ -4,7 +4,7 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col">
-			<h1 class="h3">{{ translate('Edit Page Information') }}</h1>
+			<h1 class="h3">Edit Page Information</h1>
 		</div>
 	</div>
 </div>
@@ -26,7 +26,7 @@
 		<input type="hidden" name="lang" value="{{ $lang }}">
 
 		<div class="card-header px-0">
-			<h6 class="fw-600 mb-0">{{ translate('Page Content') }}</h6>
+			<h6 class="fw-600 mb-0">Page Content</h6>
 		</div>
 		<div class="card-body px-0">
 			<div class="form-group row">
@@ -43,12 +43,12 @@
 						<div class="input-group d-block d-md-flex">
 							@if($page->type == 'custom_page')
 								<div class="input-group-prepend"><span class="input-group-text flex-grow-1">{{ route('home') }}/</span></div>
-								<input type="text" class="form-control w-100 w-md-auto" placeholder="{{ translate('Slug') }}" name="slug" value="{{ $page->slug }}">
+								<input type="text" class="form-control w-100 w-md-auto" placeholder="Slug" name="slug" value="{{ $page->slug }}">
 							@else
 								<input class="form-control w-100 w-md-auto" value="{{ route('home') }}/{{ $page->slug }}" disabled>
 							@endif
 						</div>
-						<small class="form-text text-muted">{{ translate('Use character, number, hypen only') }}</small>
+						<small class="form-text text-muted">Use character, number, hypen only</small>
 					</div>
 				</div>
 
@@ -68,7 +68,7 @@
 		</div>
 
 		<div class="card-header px-0">
-			<h6 class="fw-600 mb-0">{{ translate('Seo Fields') }}</h6>
+			<h6 class="fw-600 mb-0">Seo Fields</h6>
 		</div>
 		<div class="card-body px-0">
 
@@ -90,7 +90,7 @@
 				<label class="col-sm-2 col-from-label" for="name">{{translate('Keywords')}}</label>
 				<div class="col-sm-10">
 					<textarea class="resize-off form-control" placeholder="{{translate('Keyword, Keyword')}}" name="keywords">{!! $page->keywords !!}</textarea>
-					<small class="text-muted">{{ translate('Separate with coma') }}</small>
+					<small class="text-muted">Separate with coma</small>
 				</div>
 			</div>
 
@@ -99,9 +99,9 @@
 				<div class="col-sm-10">
 					<div class="input-group " data-toggle="aizuploader" data-type="image">
 							<div class="input-group-prepend">
-								<div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse') }}</div>
+								<div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
 						</div>
-						<div class="form-control file-amount">{{ translate('Choose File') }}</div>
+						<div class="form-control file-amount">Choose File</div>
 						<input type="hidden" name="meta_image" class="selected-files" value="{{ $page->meta_image }}">
 					</div>
 					<div class="file-preview">
@@ -110,7 +110,7 @@
 			</div>
 
 			<div class="text-right">
-				<button type="submit" class="btn btn-primary">{{ translate('Update Page') }}</button>
+				<button type="submit" class="btn btn-primary">Update Page</button>
 			</div>
 		</div>
 	</form>

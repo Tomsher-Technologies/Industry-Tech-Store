@@ -3,7 +3,7 @@
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3">{{ translate('Product Reviews') }}</h1>
+            <h1 class="h3">Product Reviews</h1>
         </div>
     </div>
 
@@ -11,7 +11,7 @@
         <div class="card-header">
             <div class="row flex-grow-1">
                 <div class="col">
-                    <h5 class="mb-0 h6">{{ translate('Product Reviews') }}</h5>
+                    <h5 class="mb-0 h6">Product Reviews</h5>
 
                 </div>
                 <div class="col-md-6 col-xl-4 ml-auto mr-0">
@@ -19,9 +19,9 @@
                         <div class="" style="min-width: 200px;">
                             <select class="form-control aiz-selectpicker" name="rating" id="rating"
                                 onchange="filter_by_rating()">
-                                <option value="">{{ translate('Filter by Rating') }}</option>
-                                <option value="rating,desc">{{ translate('Rating (High > Low)') }}</option>
-                                <option value="rating,asc">{{ translate('Rating (Low > High)') }}</option>
+                                <option value="">Filter by Rating</option>
+                                <option value="rating,desc">Rating (High > Low)</option>
+                                <option value="rating,asc">Rating (Low > High)</option>
                             </select>
                         </div>
                     </form>
@@ -33,11 +33,11 @@
                 <thead>
                     <tr>
                         <th data-breakpoints="lg">#</th>
-                        <th>{{ translate('Product') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Customer') }}</th>
-                        <th>{{ translate('Rating') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Comment') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Published') }}</th>
+                        <th>Product</th>
+                        <th data-breakpoints="lg">Customer</th>
+                        <th>Rating</th>
+                        <th data-breakpoints="lg">Comment</th>
+                        <th data-breakpoints="lg">Published</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,9 +85,9 @@
                 status: status
             }, function(data) {
                 if (data == 1) {
-                    AIZ.plugins.notify('success', '{{ translate('Published reviews updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Published reviews updated successfully');
                 } else {
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

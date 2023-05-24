@@ -6,11 +6,11 @@
     <form class="" id="sort_support" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('Support Desk') }}</h5>
+                <h5 class="mb-md-0 h6">Support Desk</h5>
             </div>
             <div class="col-md-2">
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type ticket code & Enter') }}">
+                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type ticket code & Enter">
                 </div>
             </div>
         </div>
@@ -20,13 +20,13 @@
         <table class="aiz-table" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th data-breakpoints="lg">{{ translate('Ticket ID') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Sending Date') }}</th>
-                    <th>{{ translate('Subject') }}</th>
-                    <th data-breakpoints="lg">{{ translate('User') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Status') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Last reply') }}</th>
-                    <th class="text-right">{{ translate('Options') }}</th>
+                    <th data-breakpoints="lg">Ticket ID</th>
+                    <th data-breakpoints="lg">Sending Date</th>
+                    <th>Subject</th>
+                    <th data-breakpoints="lg">User</th>
+                    <th data-breakpoints="lg">Status</th>
+                    <th data-breakpoints="lg">Last reply</th>
+                    <th class="text-right">Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,16 +34,16 @@
                     @if ($ticket->user != null)
                         <tr>
                             <td>#{{ $ticket->code }}</td>
-                            <td>{{ $ticket->created_at }} @if($ticket->viewed == 0) <span class="badge badge-inline badge-info">{{ translate('New') }}</span> @endif</td>
+                            <td>{{ $ticket->created_at }} @if($ticket->viewed == 0) <span class="badge badge-inline badge-info">New</span> @endif</td>
                             <td>{{ $ticket->subject }}</td>
                             <td>{{ $ticket->user->name }}</td>
                             <td>
                                 @if ($ticket->status == 'pending')
-                                    <span class="badge badge-inline badge-danger">{{ translate('Pending') }}</span>
+                                    <span class="badge badge-inline badge-danger">Pending</span>
                                 @elseif ($ticket->status == 'open')
-                                    <span class="badge badge-inline badge-secondary">{{ translate('Open') }}</span>
+                                    <span class="badge badge-inline badge-secondary">Open</span>
                                 @else
-                                    <span class="badge badge-inline badge-success">{{ translate('Solved') }}</span>
+                                    <span class="badge badge-inline badge-success">Solved</span>
                                 @endif
                             </td>
                             <td>
@@ -54,7 +54,7 @@
                                 @endif
                             </td>
                             <td class="text-right">
-                                <a href="{{route('support_ticket.admin_show', encrypt($ticket->id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="{{ translate('View Details') }}">
+                                <a href="{{route('support_ticket.admin_show', encrypt($ticket->id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="View Details">
                                     <i class="las la-eye"></i>
                                 </a>
                             </td>

@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Dashboard') }}</h1>
+                <h1 class="h3">Dashboard</h1>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
                         }
                     @endphp
                     <div class="h3 fw-700">{{ single_price($total) }}</div>
-                    <div class="opacity-50">{{ translate('Total earnings') }}</div>
+                    <div class="opacity-50">Total earnings</div>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                       <path fill="rgba(255,255,255,0.3)" fill-opacity="1" d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path>
@@ -85,7 +85,7 @@
         <div class="col-md-7">
           <div class="card">
               <div class="card-header">
-                  <h5 class="mb-0 h6">{{ translate('Orders') }}</h5>
+                  <h5 class="mb-0 h6">Orders</h5>
               </div>
               <div class="card-body">
                   <table class="table aiz-table mb-0">
@@ -129,7 +129,7 @@
       <div class="col-md-8">
           <div class="card">
               <div class="card-header">
-                  <h6 class="mb-0">{{ translate('Products') }}</h6>
+                  <h6 class="mb-0">Products</h6>
               </div>
     		          <div class="card-body">
                 <table class="table aiz-table mb-0">
@@ -161,14 +161,14 @@
 
               <div class="card">
                   <div class="card-header">
-                      <h6 class="mb-0">{{ translate('Purchased Package') }}</h6>
+                      <h6 class="mb-0">Purchased Package</h6>
                   </div>
                   <div class="card-body text-center">
                       @if(Auth::user()->seller->seller_package)
                         <img src="{{ uploaded_asset(Auth::user()->seller->seller_package->logo) }}" class="img-fluid mb-4 h-110px">
-                        <p class="mb-1 text-muted">{{ translate('Product Upload Limit') }}: {{ Auth::user()->seller->seller_package->product_upload_limit }} {{ translate('Times')}}</p>
-                        <p class="text-muted mb-4">{{ translate('Package Expires at') }}: {{ Auth::user()->seller->invalid_at }}</p>
-                        <h6 class="fw-600 mb-3 text-primary">{{ translate('Current Package') }}: {{ Auth::user()->seller->seller_package->name }}</h6>
+                        <p class="mb-1 text-muted">Product Upload Limit: {{ Auth::user()->seller->seller_package->product_upload_limit }} {{ translate('Times')}}</p>
+                        <p class="text-muted mb-4">Package Expires at: {{ Auth::user()->seller->invalid_at }}</p>
+                        <h6 class="fw-600 mb-3 text-primary">Current Package: {{ Auth::user()->seller->seller_package->name }}</h6>
                       @else
                           <h6 class="fw-600 mb-3 text-primary">{{translate('Package Not Found')}}</h6>
                       @endif

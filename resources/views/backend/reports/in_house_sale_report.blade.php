@@ -23,7 +23,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
@@ -32,8 +32,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ translate('Product Name') }}</th>
-                            <th>{{ translate('Num of Sale') }}</th>
+                            <th>Product Name</th>
+                            <th>Num of Sale</th>
                         </tr>
                     </thead>
                     <tbody>

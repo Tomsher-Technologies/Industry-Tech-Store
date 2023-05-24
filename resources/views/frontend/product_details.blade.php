@@ -118,7 +118,7 @@
                                 </div>
                                 @if ($detailedProduct->est_shipping_days)
                                 <div class="col-auto ml">
-                                    <small class="mr-2 opacity-50">{{ translate('Estimate Shipping Time')}}: </small>{{ $detailedProduct->est_shipping_days }} {{  translate('Days') }}
+                                    <small class="mr-2 opacity-50">Estimate Shipping Time')}}: </small>{{ $detailedProduct->est_shipping_days }} {{  translate('Days
                                 </div>
                                 @endif
                             </div>
@@ -155,9 +155,9 @@
                                 <table class="aiz-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th>{{ translate('Min Qty') }}</th>
-                                            <th>{{ translate('Max Qty') }}</th>
-                                            <th>{{ translate('Unit Price') }}</th>
+                                            <th>Min Qty</th>
+                                            <th>Max Qty</th>
+                                            <th>Unit Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -297,7 +297,7 @@
                                                 @if($detailedProduct->stock_visibility_state == 'quantity')
                                                 (<span id="available-quantity">{{ $qty }}</span> {{ translate('available')}})
                                                 @elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1)
-                                                    (<span id="available-quantity">{{ translate('In Stock') }}</span>)
+                                                    (<span id="available-quantity">In Stock</span>)
                                                 @endif
                                             </div>
                                         </div>
@@ -386,7 +386,7 @@
                                             @else 
                                                 <img src="{{ static_asset('assets/img/refund-sticker.jpg') }}" height="36"> 
                                             @endif</a>
-                                        <a href="{{ route('returnpolicy') }}" class="ml-2" target="_blank">{{ translate('View Policy') }}</a>
+                                        <a href="{{ route('returnpolicy') }}" class="ml-2" target="_blank">View Policy</a>
                                     </div>
                                 </div>
                             @endif
@@ -716,7 +716,7 @@
                                             </h3>
                                             @if (addon_is_activated('club_point'))
                                                 <div class="rounded px-2 mt-2 bg-soft-primary border-soft-primary border">
-                                                    {{ translate('Club Point') }}:
+                                                    Club Point:
                                                     <span class="fw-700 float-right">{{ $related_product->earn_point }}</span>
                                                 </div>
                                             @endif
@@ -749,10 +749,10 @@
                     <input type="hidden" name="product_id" value="{{ $detailedProduct->id }}">
                     <div class="modal-body gry-bg px-3 pt-3">
                         <div class="form-group">
-                            <input type="text" class="form-control mb-3" name="title" value="{{ $detailedProduct->name }}" placeholder="{{ translate('Product Name') }}" required>
+                            <input type="text" class="form-control mb-3" name="title" value="{{ $detailedProduct->name }}" placeholder="Product Name" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}">{{ route('product', $detailedProduct->slug) }}</textarea>
+                            <textarea class="form-control" rows="8" name="message" required placeholder="Your Question">{{ route('product', $detailedProduct->slug) }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -865,9 +865,9 @@
             $temp.val(url).select();
             try {
                 document.execCommand("copy");
-                AIZ.plugins.notify('success', '{{ translate('Link copied to clipboard') }}');
+                AIZ.plugins.notify('success', 'Link copied to clipboard');
             } catch (err) {
-                AIZ.plugins.notify('danger', '{{ translate('Oops, unable to copy') }}');
+                AIZ.plugins.notify('danger', 'Oops, unable to copy');
             }
             $temp.remove();
             // if (document.selection) {

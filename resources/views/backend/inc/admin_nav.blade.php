@@ -13,7 +13,7 @@
                 <div class="aiz-topbar-item">
                     <div class="d-flex align-items-center">
                         <a class="btn btn-icon btn-circle btn-light" href="{{ route('home') }}" target="_blank"
-                            title="{{ translate('Browse Website') }}">
+                            title="Browse Website">
                             <i class="las la-globe"></i>
                         </a>
                     </div>
@@ -24,7 +24,7 @@
                     <div class="aiz-topbar-item">
                         <div class="d-flex align-items-center">
                             <a class="btn btn-icon btn-circle btn-light" href="{{ route('poin-of-sales.index') }}"
-                                target="_blank" title="{{ translate('POS') }}">
+                                target="_blank" title="POS">
                                 <i class="las la-print"></i>
                             </a>
                         </div>
@@ -37,7 +37,7 @@
                         <a class="btn btn-soft-danger btn-sm d-flex align-items-center"
                             href="{{ route('cache.clear') }}">
                             <i class="las la-hdd fs-20"></i>
-                            <span class="fw-500 ml-1 mr-0 d-none d-md-block">{{ translate('Clear Cache') }}</span>
+                            <span class="fw-500 ml-1 mr-0 d-none d-md-block">Clear Cache</span>
                         </a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-lg py-0">
                         <div class="p-3 bg-light border-bottom">
-                            <h6 class="mb-0">{{ translate('Notifications') }}</h6>
+                            <h6 class="mb-0">Notifications</h6>
                         </div>
                         <div class="px-3 c-scrollbar-light overflow-auto " style="max-height:300px;">
                             <ul class="list-group list-group-flush">
@@ -71,7 +71,7 @@
                                             <div class="media-body">
                                                 @if ($notification->type == 'App\Notifications\OrderNotification')
                                                     <p class="mb-1 text-truncate-2">
-                                                        {{ translate('Order code: ') }}
+                                                        Order code: 
                                                         {{ $notification->data['order_code'] }}
                                                         {{ translate('has been ' . ucfirst(str_replace('_', ' ', $notification->data['status']))) }}
                                                     </p>
@@ -85,7 +85,7 @@
                                 @empty
                                     <li class="list-group-item">
                                         <div class="py-4 text-center fs-16">
-                                            {{ translate('No notification found') }}
+                                            No notification found
                                         </div>
                                     </li>
                                 @endforelse
@@ -93,7 +93,7 @@
                         </div>
                         <div class="text-center border-top">
                             <a href="{{ route('admin.all-notification') }}" class="text-reset d-block py-2">
-                                {{ translate('View All Notifications') }}
+                                View All Notifications
                             </a>
                         </div>
                     </div>
@@ -120,12 +120,12 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-md">
                         <a href="{{ route('profile.index') }}" class="dropdown-item">
                             <i class="las la-user-circle"></i>
-                            <span>{{ translate('Profile') }}</span>
+                            <span>Profile</span>
                         </a>
 
                         <a href="{{ route('logout') }}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
-                            <span>{{ translate('Logout') }}</span>
+                            <span>Logout</span>
                         </a>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
-        <h5 class="mb-0 h6">{{ translate('Category Information') }}</h5>
+        <h5 class="mb-0 h6">Category Information</h5>
     </div>
 
     <div class="row">
@@ -15,23 +15,23 @@
                         <input type="hidden" name="lang" value="{{ $lang }}">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Name') }} <i
-                                    class="las la-language text-danger" title="{{ translate('Translatable') }}"></i></label>
+                            <label class="col-md-3 col-form-label">Name <i
+                                    class="las la-language text-danger" title="Translatable"></i></label>
                             <div class="col-md-9">
                                 <input type="text" name="name" value="{{ $category->getTranslation('name', $lang) }}"
-                                    class="form-control" id="name" placeholder="{{ translate('Name') }}" required>
+                                    class="form-control" id="name" placeholder="Name" required>
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Parent Category') }}</label>
+                            <label class="col-md-3 col-form-label">Parent Category</label>
                             <div class="col-md-9">
                                 <select class="select2 form-control aiz-selectpicker" name="parent_id" data-toggle="select2"
                                     data-placeholder="Choose ..."data-live-search="true"
                                     data-selected="{{ $category->parent_id }}">
-                                    <option value="0">{{ translate('No Parent') }}</option>
+                                    <option value="0">No Parent</option>
                                     @foreach ($categories as $acategory)
                                         <option value="{{ $acategory->id }}">{{ $acategory->getTranslation('name') }}
                                         </option>
@@ -46,12 +46,12 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">
-                                {{ translate('Ordering Number') }}
+                                Ordering Number
                             </label>
                             <div class="col-md-9">
                                 <input type="number" name="order_level" value="{{ $category->order_level }}"
-                                    class="form-control" id="order_level" placeholder="{{ translate('Order Level') }}">
-                                <small>{{ translate('Higher number has high priority') }}</small>
+                                    class="form-control" id="order_level" placeholder="Order Level">
+                                <small>Higher number has high priority</small>
                             </div>
                         </div>
 
@@ -62,41 +62,41 @@
 
 
                         <div class="form-group  row">
-                            <label class="col-md-3 col-form-label">{{ translate('Is Featured') }}</label>
+                            <label class="col-md-3 col-form-label">Is Featured</label>
                             <div class="col-md-9">
                                 <select class="select2 form-control" name="featured">
                                     <option {{ old('featured', $category->featured) == 1 ? 'selected' : '' }}
-                                        value="1">{{ translate('Yes') }}
+                                        value="1">Yes
                                     </option>
                                     <option {{ old('featured', $category->featured) == 0 ? 'selected' : '' }}
-                                        value="0">{{ translate('No') }}
+                                        value="0">No
                                     </option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group  row">
-                            <label class="col-md-3 col-form-label">{{ translate('Is Top') }}</label>
+                            <label class="col-md-3 col-form-label">Is Top</label>
                             <div class="col-md-9">
                                 <select class="select2 form-control" name="top">
-                                    <option {{ old('top', $category->top) == 1 ? 'selected' : '' }} value="1">{{ translate('Yes') }}
+                                    <option {{ old('top', $category->top) == 1 ? 'selected' : '' }} value="1">Yes
                                     </option>
-                                    <option {{ old('top', $category->top) == 0 ? 'selected' : '' }} value="0">{{ translate('No') }}
+                                    <option {{ old('top', $category->top) == 0 ? 'selected' : '' }} value="0">No
                                     </option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Banner') }}
-                                <small>({{ translate('200x200') }})</small></label>
+                            <label class="col-md-3 col-form-label" for="signinSrEmail">Banner
+                                <small>(200x200)</small></label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                            {{ translate('Browse') }}</div>
+                                            Browse</div>
                                     </div>
-                                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                    <div class="form-control file-amount">Choose File</div>
                                     <input type="hidden" name="banner" class="selected-files"
                                         value="{{ $category->banner }}">
                                 </div>
@@ -105,15 +105,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Icon') }}
-                                <small>({{ translate('32x32') }})</small></label>
+                            <label class="col-md-3 col-form-label" for="signinSrEmail">Icon
+                                <small>(32x32)</small></label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                            {{ translate('Browse') }}</div>
+                                            Browse</div>
                                     </div>
-                                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                    <div class="form-control file-amount">Choose File</div>
                                     <input type="hidden" name="icon" class="selected-files"
                                         value="{{ $category->icon }}">
                                 </div>
@@ -123,53 +123,53 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('Meta Title') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">Meta Title</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="meta_title"
-                                    placeholder="{{ translate('Meta Title') }}"
+                                    placeholder="Meta Title"
                                     value="{{ old('meta_title', $category->meta_title) }}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('Meta Description') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">Meta Description</label>
                             <div class="col-md-9">
                                 <textarea name="meta_description" rows="5" class="form-control">{{ old('meta_description', $category->meta_description) }}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('Meta Keywords') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">Meta Keywords</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="meta_keywords"
-                                    placeholder="{{ translate('Meta Keywords') }}"
+                                    placeholder="Meta Keywords"
                                     value="{{ old('meta_keywords', $category->meta_keywords) }}">
                             </div>
                         </div>
     
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('OG Title') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">OG Title</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="og_title"
-                                    placeholder="{{ translate('OG Title') }}" value="{{ old('og_title', $category->og_title) }}">
+                                    placeholder="OG Title" value="{{ old('og_title', $category->og_title) }}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('OG Description') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">OG Description</label>
                             <div class="col-md-9">
                                 <textarea name="og_description" rows="5" class="form-control">{{ old('og_description', $category->og_description) }}</textarea>
                             </div>
                         </div>
     
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="name">{{ translate('Twitter Title') }}</label>
+                            <label class="col-md-3 col-form-label" for="name">Twitter Title</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="twitter_title"
-                                    placeholder="{{ translate('Twitter Title') }}"
+                                    placeholder="Twitter Title"
                                     value="{{ old('twitter_title', $category->twitter_title) }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label"
-                                for="name">{{ translate('Twitter Description') }}</label>
+                                for="name">Twitter Description</label>
                             <div class="col-md-9">
                                 <textarea name="twitter_description" rows="5" class="form-control">{{ old('twitter_description', $category->twitter_description) }}</textarea>
                             </div>
@@ -177,22 +177,22 @@
 
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label"
-                                for="name">{{ translate('Footer Title') }}</label>
+                                for="name">Footer Title</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="footer_title"
-                                    placeholder="{{ translate('Footer Title') }}" value="{{ old('footer_title', $category->footer_title) }}">
+                                    placeholder="Footer Title" value="{{ old('footer_title', $category->footer_title) }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label"
-                                for="name">{{ translate('Footer Description') }}</label>
+                                for="name">Footer Description</label>
                             <div class="col-md-9">
                                 <textarea name="footer_description" rows="5" class="form-control aiz-text-editor">{{ old('footer_description', $category->footer_content) }}</textarea>
                             </div>
                         </div>
 
                         {{-- <div class="form-group row">
-                            <label class="col-md-3 col-form-label">{{ translate('Filtering Attributes') }}</label>
+                            <label class="col-md-3 col-form-label">Filtering Attributes</label>
                             <div class="col-md-9">
                                 <select class="select2 form-control aiz-selectpicker" name="filtering_attributes[]"
                                     data-toggle="select2" data-placeholder="Choose ..."data-live-search="true"
@@ -205,7 +205,7 @@
                             </div>
                         </div> --}}
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-primary">{{ translate('Save') }}</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
                 </div>

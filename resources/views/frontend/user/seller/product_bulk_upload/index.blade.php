@@ -5,7 +5,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Bulk Products Upload') }}</h1>
+            <h1 class="h3">Bulk Products Upload</h1>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
                     <td>{{ translate('4. After uploading products you need to edit them and set products images and choices.')}}</td>
                 </tr>
             </table>
-            <a href="{{ static_asset('download/product_bulk_demo.xlsx') }}" download><button class="btn btn-primary mt-2">{{ translate('Download CSV') }}</button></a>
+            <a href="{{ static_asset('download/product_bulk_demo.xlsx') }}" download><button class="btn btn-primary mt-2">Download CSV</button></a>
         </div>
     </div>
 
@@ -48,14 +48,14 @@
     <div class="card">
         <div class="card-header">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('Upload CSV File') }}</h5>
+                <h5 class="mb-md-0 h6">Upload CSV File</h5>
             </div>
         </div>
         <div class="card-body">
             <form class="form-horizontal" action="{{ route('bulk_product_upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">{{ translate('CSV') }}</label>
+                    <label class="col-md-2 col-form-label">CSV</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
     						<label class="custom-file-label">

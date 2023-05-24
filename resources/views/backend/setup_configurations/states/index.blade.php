@@ -14,14 +14,14 @@
                 <form class="" id="sort_cities" action="" method="GET">
                     <div class="card-header row gutters-5">
                         <div class="col text-center text-md-left">
-                            <h5 class="mb-md-0 h6">{{ translate('States') }}</h5>
+                            <h5 class="mb-md-0 h6">States</h5>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" id="sort_state" name="sort_state" @isset($sort_state) value="{{ $sort_state }}" @endisset placeholder="{{ translate('Type state name') }}">
+                            <input type="text" class="form-control" id="sort_state" name="sort_state" @isset($sort_state) value="{{ $sort_state }}" @endisset placeholder="Type state name">
                         </div>
                         <div class="col-md-3">
                             <select class="form-control aiz-selectpicker" data-live-search="true" id="sort_country" name="sort_country">
-                                <option value="">{{ translate('Select Country') }}</option>
+                                <option value="">Select Country</option>
                                 @foreach (\App\Models\Country::where('status', 1)->get() as $country)
                                     <option value="{{ $country->id }}" @if ($sort_country == $country->id) selected @endif {{$sort_country}}>
                                         {{ $country->name }}
@@ -30,7 +30,7 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
@@ -58,7 +58,7 @@
                                         </label>
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('states.edit', $state->id) }}" title="{{ translate('Edit') }}">
+                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('states.edit', $state->id) }}" title="Edit">
                                             <i class="las la-edit"></i>
                                         </a>
                                     </td>
@@ -75,7 +75,7 @@
         <div class="col-md-5">
     		<div class="card">
     			<div class="card-header">
-    				<h5 class="mb-0 h6">{{ translate('Add New State') }}</h5>
+    				<h5 class="mb-0 h6">Add New State</h5>
     			</div>
     			<div class="card-body">
     				<form action="{{ route('states.store') }}" method="POST">
@@ -118,10 +118,10 @@
             }
             $.post('{{ route('states.status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Country status updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Country status updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

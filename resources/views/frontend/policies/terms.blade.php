@@ -42,7 +42,7 @@
                         <a class="text-reset" href="{{ route('home') }}">{{ translate('Home')}}</a>
                     </li>
                     <li class="text-dark fw-600 breadcrumb-item">
-                        <a class="text-reset" href="{{ route('terms') }}">"{{ translate('Terms & conditions') }}"</a>
+                        <a class="text-reset" href="{{ route('terms') }}">"Terms & conditions"</a>
                     </li>
                 </ul>
             </div>

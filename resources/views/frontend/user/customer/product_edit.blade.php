@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Add Your Product') }}</h1>
+            <h1 class="h3">Add Your Product</h1>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="photos" class="selected-files" value="{{ $product->photos }}">
                         </div>
                         <div class="file-preview box sm">
@@ -113,7 +113,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="thumbnail_img" class="selected-files" value="{{ $product->thumbnail_img }}">
                         </div>
                         <div class="file-preview box sm">
@@ -169,7 +169,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="meta_img" class="selected-files" value="{{ $product->meta_img }}">
                         </div>
                         <div class="file-preview box sm">
@@ -224,7 +224,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="pdf" class="selected-files" value="{{ $product->pdf }}">
                         </div>
                         <div class="file-preview box sm">
@@ -234,7 +234,7 @@
             </div>
         </div>
         <div class="mar-all text-right">
-            <button type="submit" name="button" class="btn btn-primary">{{ translate('Update Product') }}</button>
+            <button type="submit" name="button" class="btn btn-primary">Update Product</button>
         </div>
     </form>
 

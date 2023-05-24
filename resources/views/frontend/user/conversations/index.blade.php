@@ -50,7 +50,7 @@
                                                       {{ $conversation->title }}
                                                   </a>
                                                   @if ((Auth::user()->id == $conversation->sender_id && $conversation->sender_viewed == 0) || (Auth::user()->id == $conversation->receiver_id && $conversation->receiver_viewed == 0))
-                                                      <span class="badge badge-inline badge-danger">{{ translate('New') }}</span>
+                                                      <span class="badge badge-inline badge-danger">New</span>
                                                   @endif
                                               </h6>
                                           </div>

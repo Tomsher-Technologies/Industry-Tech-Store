@@ -26,7 +26,7 @@
                                     <div class="media text-inherit">
                                         <div class="media-body">
                                             <p class="mb-1 text-truncate-2">
-                                                {{ translate('Order code: ') }}
+                                                Order code: 
                                                 <a href="{{route('all_orders.show', encrypt($notification->data['order_id']))}}">
                                                     {{$notification->data['order_code']}}
                                                 </a>
@@ -42,7 +42,7 @@
 
                         @empty
                             <li class="list-group-item">
-                                <div class="py-4 text-center fs-16">{{ translate('No notification found') }}</div>
+                                <div class="py-4 text-center fs-16">No notification found</div>
                             </li>
                         @endforelse
                     </ul>

@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
-            <h1 class="h3">{{ translate('Products') }}</h1>
+            <h1 class="h3">Products</h1>
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@
                   <span class="size-60px rounded-circle mx-auto bg-secondary d-flex align-items-center justify-content-center mb-3">
                       <i class="las la-plus la-3x text-white"></i>
                   </span>
-                  <div class="fs-18 text-primary">{{ translate('Add New Digital Product') }}</div>
+                  <div class="fs-18 text-primary">Add New Digital Product</div>
               </div>
             </a>
         </div>
@@ -44,7 +44,7 @@
                 <a href="{{ route('seller_packages_list') }}" class="text-center bg-white shadow-sm hov-shadow-lg text-center d-block p-3 rounded">
                     @if($seller_package != null)
                         <img src="{{ uploaded_asset($seller_package->logo) }}" height="44" class="mw-100 mx-auto">
-                        <span class="d-block sub-title mb-2">{{ translate('Current Package')}}: {{ $seller_package->getTranslation('name') }}</span>
+                        <span class="d-block sub-title mb-2">Current Package')}}: {{ $seller_package->getTranslation('name</span>
                     @else
                         <i class="la la-frown-o mb-2 la-3x"></i>
                         <div class="d-block sub-title mb-2">{{ translate('No Package Found')}}</div>
@@ -58,7 +58,7 @@
     <div class="card">
         <div class="card-header">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('All Products') }}</h5>
+                <h5 class="mb-md-0 h6">All Products</h5>
             </div>
         </div>
         <div class="card-body">
@@ -95,13 +95,13 @@
                                 <span class="slider round"></span></label>
                             </td>
                             <td class="text-right">
-                                <a href="{{route('seller.digitalproducts.edit',  ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{ translate('Edit') }}">
+                                <a href="{{route('seller.digitalproducts.edit',  ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="Edit">
                                   <i class="las la-edit"></i>
                                 </a>
-                                <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($product->id))}}" title="{{ translate('Download') }}">
+                                <a class="btn btn-soft-success btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($product->id))}}" title="Download">
                                     <i class="las la-download"></i>
                                 </a>
-                                <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('digitalproducts.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                                <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('digitalproducts.destroy', $product->id)}}" title="Delete">
                                   <i class="las la-trash"></i>
                                 </a>
                             </td>
@@ -132,10 +132,10 @@
             }
             $.post('{{ route('products.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Featured products updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Featured products updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }
@@ -149,10 +149,10 @@
             }
             $.post('{{ route('products.published') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Published products updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

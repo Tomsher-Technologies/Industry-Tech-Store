@@ -77,7 +77,7 @@
                     @if (!empty($admin_products))
                     <div class="card mb-3 shadow-sm border-0 rounded">
                         <div class="card-header p-3">
-                            <h5 class="fs-16 fw-600 mb-0">{{ get_setting('site_name') }} {{ translate('Products') }}</h5>
+                            <h5 class="fs-16 fw-600 mb-0">{{ get_setting('site_name') }} Products</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -102,7 +102,7 @@
                             
                             <div class="row border-top pt-3">
                                 <div class="col-md-6">
-                                    <h6 class="fs-15 fw-600">{{ translate('Choose Delivery Type') }}</h6>
+                                    <h6 class="fs-15 fw-600">Choose Delivery Type</h6>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row gutters-5">
@@ -172,7 +172,7 @@
                         @foreach ($seller_products as $key => $seller_product)
                             <div class="card mb-3 shadow-sm border-0 rounded">
                                 <div class="card-header p-3">
-                                    <h5 class="fs-16 fw-600 mb-0">{{ \App\Models\Shop::where('user_id', $key)->first()->name }} {{ translate('Products') }}</h5>
+                                    <h5 class="fs-16 fw-600 mb-0">{{ \App\Models\Shop::where('user_id', $key)->first()->name }} Products</h5>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
@@ -197,7 +197,7 @@
                                     
                                     <div class="row border-top pt-3">
                                         <div class="col-md-6">
-                                            <h6 class="fs-15 fw-600">{{ translate('Choose Delivery Type') }}</h6>
+                                            <h6 class="fs-15 fw-600">Choose Delivery Type</h6>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row gutters-5">

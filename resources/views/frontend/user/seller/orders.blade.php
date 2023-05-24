@@ -6,7 +6,7 @@
         <form id="sort_orders" action="" method="GET">
           <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-              <h5 class="mb-md-0 h6">{{ translate('Orders') }}</h5>
+              <h5 class="mb-md-0 h6">Orders</h5>
             </div>
               <div class="col-md-3 ml-auto">
                   <select class="form-control aiz-selectpicker" data-placeholder="{{ translate('Filter by Payment Status')}}" name="payment_status" onchange="sort_orders()">
@@ -27,7 +27,7 @@
               </div>
               <div class="col-md-3">
                 <div class="from-group mb-0">
-                    <input type="text" class="form-control" id="search" name="search" @isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type Order code & hit Enter') }}">
+                    <input type="text" class="form-control" id="search" name="search" @isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type Order code & hit Enter">
                 </div>
               </div>
           </div>
@@ -88,10 +88,10 @@
                                         @endif
                                     </td>
                                     <td class="text-right">
-                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_order_details({{ $order->id }})" title="{{ translate('Order Details') }}">
+                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_order_details({{ $order->id }})" title="Order Details">
                                             <i class="las la-eye"></i>
                                         </a>
-                                        <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-soft-warning btn-icon btn-circle btn-sm" title="{{ translate('Download Invoice') }}">
+                                        <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-soft-warning btn-icon btn-circle btn-sm" title="Download Invoice">
                                             <i class="las la-download"></i>
                                         </a>
                                     </td>

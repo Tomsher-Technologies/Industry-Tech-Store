@@ -16,12 +16,12 @@
                         <label class="col-md-3 col-form-label">{{translate('Sort by verificarion status')}} :</label>
                         <div class="col-md-5">
                             <select class="from-control aiz-selectpicker" name="verification_status" required>
-                               <option value="1" @if($sort_by == '1') selected @endif>{{ translate('Approved') }}</option>
-                               <option value="0" @if($sort_by == '0') selected @endif>{{ translate('Non Approved') }}</option>
+                               <option value="1" @if($sort_by == '1') selected @endif>Approved</option>
+                               <option value="0" @if($sort_by == '0') selected @endif>Non Approved</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
@@ -29,10 +29,10 @@
                 <table class="table table-bordered aiz-table mb-0">
                     <thead>
                         <tr>
-                            <th>{{ translate('Seller Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Shop Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Number of Product Sale') }}</th>
-                            <th>{{ translate('Order Amount') }}</th>
+                            <th>Seller Name</th>
+                            <th data-breakpoints="lg">Shop Name</th>
+                            <th data-breakpoints="lg">Number of Product Sale</th>
+                            <th>Order Amount</th>
                         </tr>
                     </thead>
                     <tbody>

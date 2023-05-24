@@ -1,6 +1,6 @@
 <div class="aiz-card-box border border-light rounded hov-shadow-md mt-1 mb-2 has-transition bg-white">
     @if(discount_in_percentage($product) > 0)
-        <span class="badge-custom">{{ translate('OFF') }}<span class="box ml-1 mr-0">&nbsp;{{discount_in_percentage($product)}}%</span></span>
+        <span class="badge-custom">OFF<span class="box ml-1 mr-0">&nbsp;{{discount_in_percentage($product)}}%</span></span>
     @endif
     <div class="position-relative">
         <a href="{{ route('product', $product->slug) }}" class="d-block">
@@ -14,17 +14,17 @@
         </a>
         @if ($product->wholesale_product)
             <span class="absolute-bottom-left fs-11 text-white fw-600 px-2 lh-1-8" style="background-color: #455a64">
-                {{ translate('Wholesale') }}
+                Wholesale
             </span>
         @endif
         <div class="absolute-top-right aiz-p-hov-icon">
-            <a href="javascript:void(0)" onclick="addToWishList({{ $product->id }})" data-toggle="tooltip" data-title="{{ translate('Add to wishlist') }}" data-placement="left">
+            <a href="javascript:void(0)" onclick="addToWishList({{ $product->id }})" data-toggle="tooltip" data-title="Add to wishlist" data-placement="left">
                 <i class="la la-heart-o"></i>
             </a>
-            <a href="javascript:void(0)" onclick="addToCompare({{ $product->id }})" data-toggle="tooltip" data-title="{{ translate('Add to compare') }}" data-placement="left">
+            <a href="javascript:void(0)" onclick="addToCompare({{ $product->id }})" data-toggle="tooltip" data-title="Add to compare" data-placement="left">
                 <i class="las la-sync"></i>
             </a>
-            <a href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})" data-toggle="tooltip" data-title="{{ translate('Add to cart') }}" data-placement="left">
+            <a href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})" data-toggle="tooltip" data-title="Add to cart" data-placement="left">
                 <i class="las la-shopping-cart"></i>
             </a>
         </div>
@@ -44,7 +44,7 @@
         </h3>
         @if (addon_is_activated('club_point'))
             <div class="rounded px-2 mt-2 bg-soft-primary border-soft-primary border">
-                {{ translate('Club Point') }}:
+                Club Point:
                 <span class="fw-700 float-right">{{ $product->earn_point }}</span>
             </div>
         @endif

@@ -70,7 +70,7 @@
 
     <div class="card mt-4">
         <div class="card-header">
-          <b class="fs-15">{{ translate('Order Summary') }}</b>
+          <b class="fs-15">Order Summary</b>
         </div>
         <div class="card-body">
             <div class="row">
@@ -134,7 +134,7 @@
         <div class="col-lg-9">
             <div class="card mt-4">
                 <div class="card-header">
-                  <b class="fs-15">{{ translate('Order Details') }}</b>
+                  <b class="fs-15">Order Details</b>
                 </div>
                 <div class="card-body pb-0">
                     <table class="table table-borderless table-responsive">
@@ -203,7 +203,7 @@
         <div class="col-lg-3">
             <div class="card mt-4">
                 <div class="card-header">
-                  <b class="fs-15">{{ translate('Order Ammount') }}</b>
+                  <b class="fs-15">Order Ammount</b>
                 </div>
                 <div class="card-body pb-0">
                     <table class="table table-borderless">
@@ -255,7 +255,7 @@
         var status = $('#update_delivery_status').val();
         $.post('{{ route('orders.update_delivery_status') }}', {_token:'{{ @csrf_token() }}',order_id:order_id,status:status}, function(data){
             $('#order_details').modal('hide');
-            AIZ.plugins.notify('success', '{{ translate('Order status has been updated') }}');
+            AIZ.plugins.notify('success', 'Order status has been updated');
             location.reload().setTimeOut(500);
         });
     });
@@ -266,7 +266,7 @@
         $.post('{{ route('orders.update_payment_status') }}', {_token:'{{ @csrf_token() }}',order_id:order_id,status:status}, function(data){
             $('#order_details').modal('hide');
             //console.log(data);
-            AIZ.plugins.notify('success', '{{ translate('Payment status has been updated') }}');
+            AIZ.plugins.notify('success', 'Payment status has been updated');
             location.reload().setTimeOut(500);
         });
     });

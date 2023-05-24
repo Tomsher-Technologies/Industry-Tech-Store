@@ -4,7 +4,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Products') }}</h1>
+                <h1 class="h3">Products</h1>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="file" class="selected-files" value="{{ $product->file_name }}">
                         </div>
                         <div class="file-preview box sm">
@@ -71,7 +71,7 @@
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label">{{translate('Tags')}} <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="text" class="form-control aiz-tag-input" name="tags[]" id="tags" value="{{ $product->tags }}" placeholder="{{ translate('Type to add a tag') }}">
+                        <input type="text" class="form-control aiz-tag-input" name="tags[]" id="tags" value="{{ $product->tags }}" placeholder="Type to add a tag">
                         <small class="text-muted">{{translate('This is used for search. Input those words by which cutomer can find this product.')}}</small>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="photos" value="{{ $product->photos }}" class="selected-files" required>
                         </div>
                         <div class="file-preview box sm">
@@ -105,7 +105,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="thumbnail_img" value="{{ $product->thumbnail_img }}" class="selected-files" required>
                         </div>
                         <div class="file-preview box sm">
@@ -133,13 +133,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-lg-3 col-form-label" for="signinSrEmail">{{ translate('Meta Image') }}</label>
+                    <label class="col-lg-3 col-form-label" for="signinSrEmail">Meta Image</label>
                     <div class="col-lg-9">
                         <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="false">
                             <div class="input-group-prepend">
                                 <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                             </div>
-                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <div class="form-control file-amount">Choose File</div>
                             <input type="hidden" name="meta_img" value="{{ $product->meta_img }}" class="selected-files">
                         </div>
                         <div class="file-preview box sm">

@@ -42,7 +42,7 @@
                                             </div>
 
                                             <div class="form-group text-right">
-                                                <button class="btn btn-link p-0 opacity-50 text-reset" type="button" onclick="toggleEmailPhone(this)">{{ translate('Use Email Instead') }}</button>
+                                                <button class="btn btn-link p-0 opacity-50 text-reset" type="button" onclick="toggleEmailPhone(this)">Use Email Instead</button>
                                             </div>
                                         @else
                                             <div class="form-group">
@@ -197,13 +197,13 @@
                 $('.phone-form-group').addClass('d-none');
                 $('.email-form-group').removeClass('d-none');
                 isPhoneShown = false;
-                $(el).html('{{ translate('Use Phone Instead') }}');
+                $(el).html('Use Phone Instead');
             }
             else{
                 $('.phone-form-group').removeClass('d-none');
                 $('.email-form-group').addClass('d-none');
                 isPhoneShown = true;
-                $(el).html('{{ translate('Use Email Instead') }}');
+                $(el).html('Use Email Instead');
             }
         }
     </script>

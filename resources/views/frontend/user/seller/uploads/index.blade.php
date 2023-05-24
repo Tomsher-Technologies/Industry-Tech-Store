@@ -22,17 +22,17 @@
             </div>
             <div class="col-md-3 ml-auto mr-0">
                 <select class="form-control form-control-xs aiz-selectpicker" name="sort" onchange="sort_uploads()">
-                    <option value="newest" @if($sort_by == 'newest') selected="" @endif>{{ translate('Sort by newest') }}</option>
-                    <option value="oldest" @if($sort_by == 'oldest') selected="" @endif>{{ translate('Sort by oldest') }}</option>
-                    <option value="smallest" @if($sort_by == 'smallest') selected="" @endif>{{ translate('Sort by smallest') }}</option>
-                    <option value="largest" @if($sort_by == 'largest') selected="" @endif>{{ translate('Sort by largest') }}</option>
+                    <option value="newest" @if($sort_by == 'newest') selected="" @endif>Sort by newest</option>
+                    <option value="oldest" @if($sort_by == 'oldest') selected="" @endif>Sort by oldest</option>
+                    <option value="smallest" @if($sort_by == 'smallest') selected="" @endif>Sort by smallest</option>
+                    <option value="largest" @if($sort_by == 'largest') selected="" @endif>Sort by largest</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control form-control-xs" name="search" placeholder="{{ translate('Search your files') }}" value="{{ $search }}">
+                <input type="text" class="form-control form-control-xs" name="search" placeholder="Search your files" value="{{ $search }}">
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary">{{ translate('Search') }}</button>
+                <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>
     </form>
@@ -55,19 +55,19 @@
     						<div class="dropdown-menu dropdown-menu-right">
     							<a href="javascript:void(0)" class="dropdown-item" onclick="detailsInfo(this)" data-id="{{ $file->id }}">
     								<i class="las la-info-circle mr-2"></i>
-    								<span>{{ translate('Details Info') }}</span>
+    								<span>Details Info</span>
     							</a>
     							<a href="{{ storage_asset($file->file_name) }}" target="_blank" download="{{ $file_name }}.{{ $file->extension }}" class="dropdown-item">
     								<i class="la la-download mr-2"></i>
-    								<span>{{ translate('Download') }}</span>
+    								<span>Download</span>
     							</a>
     							<a href="javascript:void(0)" class="dropdown-item" onclick="copyUrl(this)" data-url="{{ storage_asset($file->file_name) }}">
     								<i class="las la-clipboard mr-2"></i>
-    								<span>{{ translate('Copy Link') }}</span>
+    								<span>Copy Link</span>
     							</a>
     							<a href="javascript:void(0)" class="dropdown-item confirm-alert" data-href="{{ route('my_uploads.destroy', $file->id ) }}" data-target="#delete-modal">
     								<i class="las la-trash mr-2"></i>
-    								<span>{{ translate('Delete') }}</span>
+    								<span>Delete</span>
     							</a>
     						</div>
     					</div>
@@ -104,13 +104,13 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title h6">{{ translate('Delete Confirmation') }}</h4>
+                <h4 class="modal-title h6">Delete Confirmation</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body text-center">
-                <p class="mt-1">{{ translate('Are you sure to delete this file?') }}</p>
-                <button type="button" class="btn btn-link mt-2" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                <a href="" class="btn btn-primary mt-2 comfirm-link">{{ translate('Delete') }}</a>
+                <p class="mt-1">Are you sure to delete this file?</p>
+                <button type="button" class="btn btn-link mt-2" data-dismiss="modal">Cancel</button>
+                <a href="" class="btn btn-primary mt-2 comfirm-link">Delete</a>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
 	<div class="modal-dialog modal-dialog-right">
 			<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title h6">{{ translate('File Info') }}</h5>
+				<h5 class="modal-title h6">File Info</h5>
 				<button type="button" class="close" data-dismiss="modal">
 				</button>
 			</div>
@@ -151,9 +151,9 @@
 		    $temp.val(url).select();
 		    try {
 			    document.execCommand("copy");
-			    AIZ.plugins.notify('success', '{{ translate('Link copied to clipboard') }}');
+			    AIZ.plugins.notify('success', 'Link copied to clipboard');
 			} catch (err) {
-			    AIZ.plugins.notify('danger', '{{ translate('Oops, unable to copy') }}');
+			    AIZ.plugins.notify('danger', 'Oops, unable to copy');
 			}
 		    $temp.remove();
 		}
