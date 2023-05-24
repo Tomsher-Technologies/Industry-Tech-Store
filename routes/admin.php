@@ -205,7 +205,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
         Route::get('/header', [WebsiteController::class, 'header'])->name('website.header');
         Route::get('/appearance', [WebsiteController::class, 'appearance'])->name('website.appearance');
         Route::get('/pages', [WebsiteController::class, 'pages'])->name('website.pages');
-        Route::resource('custom-pages', 'PageController');
+        Route::resource('custom-pages', PageController::class);
         Route::get('/custom-pages/edit/{id}', [PageController::class, 'edit'])->name('custom-pages.edit');
         Route::get('/custom-pages/destroy/{id}', [PageController::class, 'destroy'])->name('custom-pages.destroy');
     });
