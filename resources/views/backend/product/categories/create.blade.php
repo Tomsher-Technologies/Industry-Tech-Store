@@ -28,7 +28,7 @@
                                     data-placeholder="Choose ..." data-live-search="true">
                                     <option value="0">No Parent</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @foreach ($category->childrenCategories as $childCategory)
                                             @include('categories.child_category', [
                                                 'child_category' => $childCategory,
@@ -186,7 +186,7 @@
                         <div class="col-md-9">
                             <select class="select2 form-control aiz-selectpicker" name="filtering_attributes[]" data-toggle="select2" data-placeholder="Choose ..."data-live-search="true" multiple>
                                 @foreach (\App\Models\Attribute::all() as $attribute)
-                                    <option value="{{ $attribute->id }}">{{ $attribute->getTranslation('name') }}</option>
+                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
                                 @endforeach
                             </select>
                         </div>

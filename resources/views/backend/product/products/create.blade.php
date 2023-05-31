@@ -31,7 +31,7 @@
                                     <select class="form-control aiz-selectpicker" name="category_id" id="category_id"
                                         data-live-search="true" required>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}
+                                            <option value="{{ $category->id }}">{{ $category->name }}
                                             </option>
                                             @foreach ($category->childrenCategories as $childCategory)
                                                 @include('categories.child_category', [
@@ -49,7 +49,7 @@
                                         data-live-search="true">
                                         <option value="">Select Brand</option>
                                         @foreach (\App\Models\Brand::all() as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->getTranslation('name') }}
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -178,7 +178,7 @@
                                         data-live-search="true" multiple
                                         data-placeholder="Choose Attributes">
                                         @foreach (\App\Models\Attribute::all() as $key => $attribute)
-                                            <option value="{{ $attribute->id }}">{{ $attribute->getTranslation('name') }}
+                                            <option value="{{ $attribute->id }}">{{ $attribute->name }}
                                             </option>
                                         @endforeach
                                     </select>

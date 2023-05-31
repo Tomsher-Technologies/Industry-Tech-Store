@@ -24,7 +24,7 @@ a@extends('backend.layouts.app')
                             <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
                             <td>
                                 <a class="text-reset text-truncate-2" href="{{ route('customer.product', $product->slug) }}"
-                                    target="_blank">{{ $product->getTranslation('name') }}</a>
+                                    target="_blank">{{ $product->name }}</a>
                             </td>
                             <td><img src="{{ uploaded_asset($product->thumbnail_img) }}"
                                     alt="Product Image" class="h-50px"></td>

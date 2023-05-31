@@ -4,7 +4,7 @@
         <select class="form-control aiz-selectpicker" name="link_ref_id" id="link_ref_id" data-live-search="true" required>
             @foreach ($categories as $category)
                 <option {{ $old_data == $category->id ? 'selected' : '' }} value="{{ $category->id }}">
-                    {{ $category->getTranslation('name') }}
+                    {{ $category->name }}
                 </option>
                 @foreach ($category->childrenCategories as $childCategory)
                     @include('categories.child_category', [

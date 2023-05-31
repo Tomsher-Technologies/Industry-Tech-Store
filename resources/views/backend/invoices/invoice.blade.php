@@ -125,7 +125,7 @@
 										Home Delivery
 									@elseif ($order->shipping_type == 'pickup_point')
 										@if ($order->pickup_point != null)
-											{{ $order->pickup_point->getTranslation('name') }} (Pickip Point)
+											{{ $order->pickup_point->name }} (Pickip Point)
 										@endif
 									@endif
 								</td>

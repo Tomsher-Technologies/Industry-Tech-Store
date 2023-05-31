@@ -4,7 +4,7 @@
         $value .= '--';
     }
 @endphp
-<option {{ isset($old_data) ? ( $old_data == $child_category->id ? 'selected' : '' ) : '' }} value="{{ $child_category->id }}">{{ $value . ' ' . $child_category->getTranslation('name') }}</option>
+<option {{ isset($old_data) ? ( $old_data == $child_category->id ? 'selected' : '' ) : '' }} value="{{ $child_category->id }}">{{ $value . ' ' . $child_category->name }}</option>
 @if ($child_category->categories)
     @foreach ($child_category->categories as $childCategory)
         @include('categories.child_category', [

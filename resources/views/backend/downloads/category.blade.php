@@ -84,7 +84,7 @@
 			<tbody class="strong">
                 @foreach ($categories as $key => $category)
 	                <tr class="">
-						<td>{{ $category->getTranslation('name') }}</td>
+						<td>{{ $category->name }}</td>
 						<td>{{ $category->id }}</td>
 					</tr>
 				@endforeach

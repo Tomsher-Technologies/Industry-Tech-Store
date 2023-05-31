@@ -110,7 +110,7 @@
             <div class="modal-body text-center">
                 <p class="mt-1">Are you sure to delete this file?</p>
                 <button type="button" class="btn btn-link mt-2" data-dismiss="modal">Cancel</button>
-                <a href="" class="btn btn-primary mt-2 comfirm-link">Delete</a>
+                <a href="" class="btn btn-primary mt-2 comfirm-link" autofocus>Delete</a>
             </div>
         </div>
     </div>

@@ -145,7 +145,7 @@ class AddressController extends Controller
         $html = '<option value="">'.translate("Select City").'</option>';
         
         foreach ($cities as $row) {
-            $html .= '<option value="' . $row->id . '">' . $row->getTranslation('name') . '</option>';
+            $html .= '<option value="' . $row->id . '">' . $row->name . '</option>';
         }
         
         echo json_encode($html);

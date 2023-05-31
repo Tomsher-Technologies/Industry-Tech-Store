@@ -53,7 +53,7 @@ class ProductDetailCollection extends ResourceCollection
                 if($data->brand != null) {
                     $brand = [
                         'id'=> $data->brand->id,
-                        'name'=> $data->brand->getTranslation('name'),
+                        'name'=> $data->brand->name,
                         'logo'=> api_asset($data->brand->logo),
                     ];
                 }
@@ -61,7 +61,7 @@ class ProductDetailCollection extends ResourceCollection
 
                 return [
                     'id' => (integer)$data->id,
-                    'name' => $data->getTranslation('name'),
+                    'name' => $data->name,
                     'added_by' => $data->added_by,
                     'seller_id' => $data->user->id,
                     'shop_id' => $data->added_by == 'admin' ? 0 : $data->user->shop->id,
@@ -83,7 +83,7 @@ class ProductDetailCollection extends ResourceCollection
                     'rating' => (double)$data->rating,
                     'rating_count' => (integer)Review::where(['product_id' => $data->id])->count(),
                     'earn_point' => (double)$data->earn_point,
-                    'description' => $data->getTranslation('description'),
+                    'description' => $data->description,
                     'video_link' => $data->video_link != null ?  $data->video_link : "",
                     'brand' => $brand,
                     'link' => route('product', $data->slug)
@@ -106,7 +106,7 @@ class ProductDetailCollection extends ResourceCollection
 //        if($data) {
         foreach ($data as $key => $choice) {
             $item['name'] = $choice->attribute_id;
-            $item['title'] = Attribute::find($choice->attribute_id)->getTranslation('name');
+            $item['title'] = Attribute::find($choice->attribute_id)->name;
             $item['options'] = $choice->values;
             array_push($result, $item);
         }

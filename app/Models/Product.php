@@ -7,6 +7,7 @@ use App;
 use App\Models\Products\ProductDetails;
 use App\Models\Products\ProductEnquiries;
 use App\Models\Products\ProductTabs;
+use Cache;
 use Illuminate\Support\Str;
 use Wildside\Userstamps\Userstamps;
 
@@ -44,27 +45,9 @@ class Product extends Model
     // protected $with = ['taxes'];
     // protected $with = ['product_translations', 'taxes'];
 
-    public function getTranslation($field = '', $lang = false)
-    {
-        $lang = $lang == false ? App::getLocale() : $lang;
-        $product_translations = $this->product_translations->where('lang', $lang)->first();
-        return $product_translations != null ? $product_translations->$field : $this->$field;
-    }
-
-    public function product_translations()
-    {
-        return $this->hasMany(ProductTranslation::class);
-    }
-
     public function seo()
     {
         return $this->hasOne(ProductSeo::class);
-    }
-
-    public function getSeoTranslation($lang = "")
-    {
-        $lang = $lang == "" ? App::getLocale() : $lang;
-        return $this->seo->where('lang', $lang)->first();
     }
 
     public function category()
@@ -134,5 +117,18 @@ class Product extends Model
             return "{$slug}-2";
         }
         return $slug;
+    }
+
+    public function banner()
+    {
+        return $this->hasOne(Upload::class, 'id', 'banner');
+    }
+
+    public static function boot()
+    {
+        static::creating(function ($model) {
+            Cache::forget('newest_products');
+        });
+        parent::boot();
     }
 }

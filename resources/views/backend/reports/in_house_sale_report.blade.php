@@ -18,7 +18,7 @@
                         <div class="col-md-5">
                             <select id="demo-ease" class="aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)
-                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif >{{ $category->getTranslation('name') }}</option>
+                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif >{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -40,7 +40,7 @@
                         @foreach ($products as $key => $product)
                             <tr>
                                 <td>{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
-                                <td>{{ $product->getTranslation('name') }}</td>
+                                <td>{{ $product->name }}</td>
                                 <td>{{ $product->num_of_sale }}</td>
                             </tr>
                         @endforeach

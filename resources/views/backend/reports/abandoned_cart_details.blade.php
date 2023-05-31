@@ -40,12 +40,12 @@
                                                 @if ($cart->product != null && $cart->product->auction_product == 0)
                                                     <strong><a href="{{ route('product', $cart->product->slug) }}"
                                                             target="_blank"
-                                                            class="text-muted">{{ $cart->product->getTranslation('name') }}</a></strong>
+                                                            class="text-muted">{{ $cart->product->name }}</a></strong>
                                                     <small>{{ $cart->variation }}</small>
                                                 @elseif ($cart->product != null && $cart->product->auction_product == 1)
                                                     <strong><a href="{{ route('auction-product', $cart->product->slug) }}"
                                                             target="_blank"
-                                                            class="text-muted">{{ $cart->product->getTranslation('name') }}</a></strong>
+                                                            class="text-muted">{{ $cart->product->name }}</a></strong>
                                                 @else
                                                     <strong>Product Unavailable</strong>
                                                 @endif

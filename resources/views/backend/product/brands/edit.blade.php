@@ -18,7 +18,7 @@
                                 class="las la-language text-danger" title="Translatable"></i></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Name" id="name" name="name"
-                                value="{{ $brand->getTranslation('name') }}" class="form-control" required>
+                                value="{{ $brand->name }}" class="form-control" required>
                             @error('name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

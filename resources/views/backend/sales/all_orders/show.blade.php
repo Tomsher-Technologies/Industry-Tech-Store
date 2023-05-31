@@ -181,12 +181,12 @@
                                         @if ($orderDetail->product != null && $orderDetail->product->auction_product == 0)
                                             <strong><a href="{{ route('product', $orderDetail->product->slug) }}"
                                                     target="_blank"
-                                                    class="text-muted">{{ $orderDetail->product->getTranslation('name') }}</a></strong>
+                                                    class="text-muted">{{ $orderDetail->product->name }}</a></strong>
                                             <small>{{ $orderDetail->variation }}</small>
                                         @elseif ($orderDetail->product != null && $orderDetail->product->auction_product == 1)
                                             <strong><a href="{{ route('auction-product', $orderDetail->product->slug) }}"
                                                     target="_blank"
-                                                    class="text-muted">{{ $orderDetail->product->getTranslation('name') }}</a></strong>
+                                                    class="text-muted">{{ $orderDetail->product->name }}</a></strong>
                                         @else
                                             <strong>Product Unavailable</strong>
                                         @endif
@@ -196,7 +196,7 @@
                                             Home Delivery
                                         @elseif ($order->shipping_type == 'pickup_point')
                                             @if ($order->pickup_point != null)
-                                                {{ $order->pickup_point->getTranslation('name') }}
+                                                {{ $order->pickup_point->name }}
                                                 (Pickup Point)
                                             @else
                                                 Pickup Point

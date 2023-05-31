@@ -100,7 +100,7 @@
 
                                 
                                 <div class="col">
-                                    <span class="text-muted text-truncate-2">{{ $product->getTranslation('name') }}</span>
+                                    <span class="text-muted text-truncate-2">{{ $product->name }}</span>
                                 </div>
                             </div>
                         </td>

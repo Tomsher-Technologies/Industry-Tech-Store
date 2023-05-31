@@ -50,7 +50,8 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\Frontend\HomeSliderController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
@@ -60,6 +61,10 @@ Route::get('/' . env('ADMIN_PREFIX'), [AdminController::class, 'admin_dashboard'
     ->name('admin.dashboard')
     ->middleware(['auth', 'admin']);
 
+// Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['guest']], function () {
+//     Route::get('login', [LoginController::class, 'adminLoginView']);
+//     Route::post('login', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
+// });
 
 Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']], function () {
     //Update Routes
@@ -205,6 +210,11 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
         Route::get('/header', [WebsiteController::class, 'header'])->name('website.header');
         Route::get('/appearance', [WebsiteController::class, 'appearance'])->name('website.appearance');
         Route::get('/pages', [WebsiteController::class, 'pages'])->name('website.pages');
+
+        Route::post('/home-slider/update-status', [HomeSliderController::class, 'updateStatus'])->name('home-slider.update-status');
+        Route::get('/home-slider/delete/{id}', [HomeSliderController::class, 'destroy'])->name('home-slider.delete');
+        Route::resource('home-slider', HomeSliderController::class);
+
         Route::resource('custom-pages', PageController::class);
         Route::get('/custom-pages/edit/{id}', [PageController::class, 'edit'])->name('custom-pages.edit');
         Route::get('/custom-pages/destroy/{id}', [PageController::class, 'destroy'])->name('custom-pages.destroy');

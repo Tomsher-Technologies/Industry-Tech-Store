@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Frontend\Banner;
 use App\Models\Product;
+use Cache;
 use Illuminate\Http\Request;
 
 class Bannercontroller extends Controller
@@ -63,6 +64,8 @@ class Bannercontroller extends Controller
             'status' => $request->status,
         ]);
 
+        Cache::forget('smallBanners');
+
         flash(translate('Banner created successfully'))->success();
         return redirect()->route('banners.index');
     }
@@ -111,8 +114,6 @@ class Bannercontroller extends Controller
             'link_ref_id.required_if' => "Please enter an option",
         ]);
 
-        // dd($banner);
-
         $banner->update([
             'name' => $request->name,
             'image' => $request->banner,
@@ -123,6 +124,8 @@ class Bannercontroller extends Controller
             'link' => $request->link,
             'status' => $request->status,
         ]);
+
+        Cache::forget('smallBanners');
 
         flash(translate('Banner updated successfully'))->success();
         return redirect()->route('banners.index');
@@ -137,6 +140,7 @@ class Bannercontroller extends Controller
     public function destroy(Banner $banner)
     {
         $banner->delete();
+        Cache::forget('smallBanners');
         flash(translate('Banner has been deleted successfully'))->success();
         return redirect()->route('banners.index');
     }

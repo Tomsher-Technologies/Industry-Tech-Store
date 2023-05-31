@@ -190,10 +190,8 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-            //CoreComponentRepository::instantiateShopRepository();
             return redirect()->intended('admin.dashboard');
         } else {
-
             if (session('link') != null) {
                 return redirect(session('link'));
             } else {
@@ -240,6 +238,11 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect()->route($redirect_route);
+    }
+
+    public function adminLoginView()
+    {
+        return view('auth.login');
     }
 
     /**

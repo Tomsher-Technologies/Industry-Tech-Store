@@ -334,16 +334,16 @@ if (!function_exists('home_base_price')) {
     function home_base_price($product, $formatted = true)
     {
         $price = $product->unit_price;
-        $tax = 0;
+        // $tax = 0;
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
+        // foreach ($product->taxes as $product_tax) {
+        //     if ($product_tax->tax_type == 'percent') {
+        //         $tax += ($price * $product_tax->tax) / 100;
+        //     } elseif ($product_tax->tax_type == 'amount') {
+        //         $tax += $product_tax->tax;
+        //     }
+        // }
+        // $price += $tax;
         return $formatted ? format_price(convert_price($price)) : $price;
     }
 }
@@ -415,34 +415,32 @@ if (!function_exists('home_discounted_base_price')) {
             }
         }
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
+        // foreach ($product->taxes as $product_tax) {
+        //     if ($product_tax->tax_type == 'percent') {
+        //         $tax += ($price * $product_tax->tax) / 100;
+        //     } elseif ($product_tax->tax_type == 'amount') {
+        //         $tax += $product_tax->tax;
+        //     }
+        // }
+        // $price += $tax;
 
         return $formatted ? format_price(convert_price($price)) : $price;
     }
 }
 
 if (!function_exists('renderStarRating')) {
-    function renderStarRating($rating, $maxRating = 5)
+    function renderStarRating($rating)
     {
-        $fullStar = "<i class = 'las la-star active'></i>";
-        $halfStar = "<i class = 'las la-star half'></i>";
-        $emptyStar = "<i class = 'las la-star'></i>";
-        $rating = $rating <= $maxRating ? $rating : $maxRating;
+        if ($rating == 0) {
+            return null;
+        }
 
-        $fullStarCount = (int)$rating;
-        $halfStarCount = ceil($rating) - $fullStarCount;
-        $emptyStarCount = $maxRating - $fullStarCount - $halfStarCount;
-
-        $html = str_repeat($fullStar, $fullStarCount);
-        $html .= str_repeat($halfStar, $halfStarCount);
-        $html .= str_repeat($emptyStar, $emptyStarCount);
+        $html = '<div class="ps-product__rating"><select class="ps-rating" data-read-only="true">';
+        for ($i = 1; $i <= 5; $i++) {
+            $value = $i <= $rating ? 1 : 2;
+            $html .= '<option value="' . $value . '">' . $i . '</option>';
+        }
+        $html .=  '</select><span>' . $rating . '</span></div>';
         echo $html;
     }
 }
@@ -632,6 +630,20 @@ if (!function_exists('static_asset')) {
     }
 }
 
+if (!function_exists('frontendAsset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param string $path
+     * @param bool|null $secure
+     * @return string
+     */
+    function frontendAsset($path, $secure = null)
+    {
+        return app('url')->asset('assets/' . $path, $secure);
+    }
+}
+
 
 // if (!function_exists('isHttps')) {
 //     function isHttps()
@@ -691,12 +703,8 @@ if (!function_exists('get_setting')) {
             return BusinessSetting::all();
         });
 
-        if ($lang == false) {
-            $setting = $settings->where('type', $key)->first();
-        } else {
-            $setting = $settings->where('type', $key)->where('lang', $lang)->first();
-            $setting = !$setting ? $settings->where('type', $key)->first() : $setting;
-        }
+        $setting = $settings->where('type', $key)->first();
+
         return $setting == null ? $default : $setting->value;
     }
 }
@@ -876,5 +884,17 @@ if (!function_exists('addon_is_activated')) {
 
         $activation = $addons->where('unique_identifier', $identifier)->where('activated', 1)->first();
         return $activation == null ? false : true;
+    }
+}
+
+// Get Image From Uploads
+if (!function_exists('get_uploads_image')) {
+    function get_uploads_image($relation)
+    {
+        if ($relation) {
+            return storage_asset($relation->file_name);
+        }
+
+        return frontendAsset('img/placeholder.webp');
     }
 }

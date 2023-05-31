@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App;
+use Cache;
 
 class Brand extends Model
 {
@@ -24,15 +25,26 @@ class Brand extends Model
     'twitter_description',
   ];
 
-  public function getTranslation($field = '', $lang = false)
+
+  public function logoImage()
   {
-    $lang = $lang == false ? App::getLocale() : $lang;
-    $brand_translation = $this->brand_translations->where('lang', $lang)->first();
-    return $brand_translation != null ? $brand_translation->$field : $this->$field;
+    return $this->hasOne(Upload::class, 'id', 'logo');
   }
 
-  public function brand_translations()
+  public static function boot()
   {
-    return $this->hasMany(BrandTranslation::class);
+    static::creating(function ($model) {
+      Cache::forget('brands');
+    });
+
+    static::updating(function ($model) {
+      Cache::forget('brands');
+    });
+
+    static::deleting(function ($model) {
+      Cache::forget('brands');
+    });
+
+    parent::boot();
   }
 }

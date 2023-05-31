@@ -107,7 +107,7 @@
                             </td>
                             <td>
                                 @if ($orderDetail->product != null)
-                                  <strong><a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank" class="text-muted">{{ $orderDetail->product->getTranslation('name') }}</a></strong>
+                                  <strong><a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank" class="text-muted">{{ $orderDetail->product->name }}</a></strong>
                                   <small>{{ $orderDetail->variation }}</small>
                                 @else
                                   <strong>Product Unavailable</strong>
@@ -118,7 +118,7 @@
                                     Home Delivery
                                 @elseif ($order->shipping_type == 'pickup_point')
                                     @if ($order->pickup_point != null)
-                                        {{ $order->pickup_point->getTranslation('name') }} (Pickup Point)
+                                        {{ $order->pickup_point->name }} (Pickup Point)
                                     @else
                                         Pickup Point
                                     @endif

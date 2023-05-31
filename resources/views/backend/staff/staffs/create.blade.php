@@ -41,7 +41,7 @@
                         <div class="col-sm-9">
                             <select name="role_id" required class="form-control aiz-selectpicker">
                                 @foreach($roles as $role)
-                                    <option value="{{$role->id}}">{{$role->getTranslation('name')}}</option>
+                                    <option value="{{$role->id}}">{{$role->name}}</option>
                                 @endforeach
                             </select>
                         </div>

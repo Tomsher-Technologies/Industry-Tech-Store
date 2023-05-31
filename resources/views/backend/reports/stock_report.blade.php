@@ -18,7 +18,7 @@
                         <div class="col-md-5">
                             <select id="demo-ease" class="from-control aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)
-                                    <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -43,7 +43,7 @@
                                 }
                             @endphp
                             <tr>
-                                <td>{{ $product->getTranslation('name') }}</td>
+                                <td>{{ $product->name }}</td>
                                 <td>{{ $qty }}</td>
                             </tr>
                         @endforeach

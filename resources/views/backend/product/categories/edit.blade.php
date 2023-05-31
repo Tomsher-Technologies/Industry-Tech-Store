@@ -33,7 +33,7 @@
                                     data-selected="{{ $category->parent_id }}">
                                     <option value="0">No Parent</option>
                                     @foreach ($categories as $acategory)
-                                        <option value="{{ $acategory->id }}">{{ $acategory->getTranslation('name') }}
+                                        <option value="{{ $acategory->id }}">{{ $acategory->name }}
                                         </option>
                                         @foreach ($acategory->childrenCategories as $childCategory)
                                             @include('categories.child_category', [
@@ -198,7 +198,7 @@
                                     data-toggle="select2" data-placeholder="Choose ..."data-live-search="true"
                                     data-selected="{{ $category->attributes->pluck('id') }}" multiple>
                                     @foreach (\App\Models\Attribute::all() as $attribute)
-                                        <option value="{{ $attribute->id }}">{{ $attribute->getTranslation('name') }}
+                                        <option value="{{ $attribute->id }}">{{ $attribute->name }}
                                         </option>
                                     @endforeach
                                 </select>

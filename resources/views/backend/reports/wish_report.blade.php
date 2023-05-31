@@ -18,7 +18,7 @@
                         <div class="col-md-5">
                             <select id="demo-ease" class="from-control aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)
-                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif>{{ $category->getTranslation('name') }}</option>
+                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -39,7 +39,7 @@
                         @foreach ($products as $key => $product)
                             @if($product->wishlists != null)
                                 <tr>
-                                    <td>{{ $product->getTranslation('name') }}</td>
+                                    <td>{{ $product->name }}</td>
                                     <td>{{ $product->wishlists->count() }}</td>
                                 </tr>
                             @endif

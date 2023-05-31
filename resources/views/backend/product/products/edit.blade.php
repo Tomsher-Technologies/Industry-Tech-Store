@@ -193,7 +193,7 @@
                                         @foreach (\App\Models\Attribute::all() as $key => $attribute)
                                             <option value="{{ $attribute->id }}"
                                                 @if ($product->attributes != null && in_array($attribute->id, json_decode($product->attributes, true))) selected @endif>
-                                                {{ $attribute->getTranslation('name') }}</option>
+                                                {{ $attribute->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -212,7 +212,7 @@
                                             <input type="hidden" name="choice_no[]"
                                                 value="{{ $choice_option->attribute_id }}">
                                             <input type="text" class="form-control" name="choice[]"
-                                                value="{{ optional(\App\Models\Attribute::find($choice_option->attribute_id))->getTranslation('name') }}"
+                                                value="{{ optional(\App\Models\Attribute::find($choice_option->attribute_id))->name }}"
                                                 placeholder="Choice Title" disabled>
                                         </div>
                                         <div class="col-lg-8">
@@ -330,7 +330,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">Description </label>
                                 <div class="col-lg-9">
-                                    <textarea class="aiz-text-editor" name="description">{{ $product->getTranslation('description', $lang) }}</textarea>
+                                    <textarea class="aiz-text-editor" name="description">{{ $product->description }}</textarea>
                                 </div>
                             </div>
                         </div>

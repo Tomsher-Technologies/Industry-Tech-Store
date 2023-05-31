@@ -2,10 +2,21 @@
 
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
-        <div class="align-items-center">
-            <h1 class="h3">All Brands</h1>
+
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h3">All Brands</h1>
+            </div>
+            <div class="col-md-6 text-md-right">
+                <a href="{{ route('brands.create') }}" class="btn btn-primary">
+                    <span>Add new brand</span>
+                </a>
+            </div>
         </div>
     </div>
+
+    
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -38,7 +49,7 @@
                             @foreach ($brands as $key => $brand)
                                 <tr>
                                     <td>{{ $key + 1 + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
-                                    <td>{{ $brand->getTranslation('name') }}</td>
+                                    <td>{{ $brand->name }}</td>
                                     <td>
                                         <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand"
                                             class="h-50px">

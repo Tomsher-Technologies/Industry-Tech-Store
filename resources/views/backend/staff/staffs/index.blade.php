@@ -41,7 +41,7 @@
                             <td>{{$staff->user->phone}}</td>
                             <td>
 								@if ($staff->role != null)
-									{{ $staff->role->getTranslation('name') }}
+									{{ $staff->role->name }}
 								@endif
 							</td>
                             <td class="text-right">

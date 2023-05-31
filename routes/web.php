@@ -17,7 +17,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
@@ -57,10 +57,12 @@ Route::post('/users/login/cart', [HomeController::class, 'cart_login'])->name('c
 
 //Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::post('/home/section/featured', [HomeController::class, 'load_featured_section'])->name('home.section.featured');
-Route::post('/home/section/best_selling', [HomeController::class, 'load_best_selling_section'])->name('home.section.best_selling');
-Route::post('/home/section/home_categories', [HomeController::class, 'load_home_categories_section'])->name('home.section.home_categories');
-Route::post('/home/section/best_sellers', [HomeController::class, 'load_best_sellers_section'])->name('home.section.best_sellers');
+Route::post('/home/section/brands', [HomeController::class, 'load_brands_section'])->name('home.section.brands');
+Route::post('/home/section/large_banner', [HomeController::class, 'load_large_banner_section'])->name('home.section.large_banner');
+// Route::post('/home/section/featured', [HomeController::class, 'load_featured_section'])->name('home.section.featured');
+// Route::post('/home/section/best_selling', [HomeController::class, 'load_best_selling_section'])->name('home.section.best_selling');
+// Route::post('/home/section/home_categories', [HomeController::class, 'load_home_categories_section'])->name('home.section.home_categories');
+// Route::post('/home/section/best_sellers', [HomeController::class, 'load_best_sellers_section'])->name('home.section.best_sellers');
 //category dropdown menu ajax call
 Route::post('/category/nav-element-list', [HomeController::class, 'get_category_items'])->name('category.elements');
 
@@ -88,6 +90,8 @@ Route::post('/ajax-search', [SearchController::class, 'ajax_search'])->name('sea
 Route::get('/category/{category_slug}', [SearchController::class, 'listingByCategory'])->name('products.category');
 Route::get('/brand/{brand_slug}', [SearchController::class, 'listingByBrand'])->name('products.brand');
 
+// Quick view
+Route::get('/product/quick_view', [HomeController::class, 'productQuickView'])->name('product.quick_view');
 Route::get('/product/{slug}', [HomeController::class, 'product'])->name('product');
 Route::post('/product/variant_price', [HomeController::class, 'variant_price'])->name('products.variant_price');
 Route::get('/shop/{slug}', [HomeController::class, 'shop'])->name('shop.visit');
@@ -158,6 +162,7 @@ Route::get('/return-policy', [HomeController::class, 'returnpolicy'])->name('ret
 Route::get('/support-policy', [HomeController::class, 'supportpolicy'])->name('supportpolicy');
 Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
 Route::get('/privacy-policy', [HomeController::class, 'privacypolicy'])->name('privacypolicy');
+
 
 Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');

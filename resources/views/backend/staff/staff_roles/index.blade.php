@@ -32,7 +32,7 @@
                 @foreach($roles as $key => $role)
                     <tr>
                         <td>{{ ($key+1) + ($roles->currentPage() - 1)*$roles->perPage() }}</td>
-                        <td>{{ $role->getTranslation('name')}}</td>
+                        <td>{{ $role->name}}</td>
                         <td class="text-right">
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('roles.edit', ['id'=>$role->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                 <i class="las la-edit"></i>

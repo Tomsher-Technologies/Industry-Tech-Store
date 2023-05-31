@@ -28,7 +28,7 @@
 						@foreach($attributes as $key => $attribute)
 							<tr>
 								<td>{{$key+1}}</td>
-								<td>{{$attribute->getTranslation('name')}}</td>
+								<td>{{$attribute->name}}</td>
 								<td>
 									@foreach($attribute->attribute_values as $key => $value)
 									<span class="badge badge-inline badge-md bg-soft-dark">{{ $value->value }}</span>

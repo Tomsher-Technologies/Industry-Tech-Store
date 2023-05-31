@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App;
+use Cache;
 
 class Category extends Model
 {
@@ -29,22 +30,26 @@ class Category extends Model
         'footer_content',
     ];
 
-    public function getTranslation($field = '', $lang = false){
+    public function getTranslation($field = '', $lang = false)
+    {
         $lang = $lang == false ? App::getLocale() : $lang;
         $category_translation = $this->category_translations->where('lang', $lang)->first();
         return $category_translation != null ? $category_translation->$field : $this->$field;
     }
 
-    public function category_translations(){
-    	return $this->hasMany(CategoryTranslation::class);
+    public function category_translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
     }
 
-    public function products(){
-    	return $this->hasMany(Product::class);
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
-    public function classified_products(){
-    	return $this->hasMany(CustomerProduct::class);
+    public function classified_products()
+    {
+        return $this->hasMany(CustomerProduct::class);
     }
 
     public function categories()
@@ -65,5 +70,31 @@ class Category extends Model
     public function attributes()
     {
         return $this->belongsToMany(Attribute::class);
+    }
+
+    public function banner()
+    {
+        return $this->hasOne(Upload::class, 'id', 'banner');
+    }
+    public function icon()
+    {
+        return $this->hasOne(Upload::class, 'id', 'icon');
+    }
+
+    public static function boot()
+    {
+        static::creating(function ($model) {
+            Cache::forget('categories');
+        });
+
+        static::updating(function ($model) {
+            Cache::forget('categories');
+        });
+
+        static::deleting(function ($model) {
+            Cache::forget('categories');
+        });
+
+        parent::boot();
     }
 }

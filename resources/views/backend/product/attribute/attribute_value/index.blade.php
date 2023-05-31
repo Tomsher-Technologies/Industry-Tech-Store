@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <strong class="card-title">
-                    {{ $attribute->getTranslation('name') }}
+                    {{ $attribute->name }}
                 </strong>
             </div>
 

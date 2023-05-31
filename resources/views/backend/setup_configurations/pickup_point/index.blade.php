@@ -45,7 +45,7 @@
                 @foreach($pickup_points as $key => $pickup_point)
                     <tr>
 						<td>{{ ($key+1) + ($pickup_points->currentPage() - 1)*$pickup_points->perPage() }}</td>
-                        <td>{{$pickup_point->getTranslation('name')}}</td>
+                        <td>{{$pickup_point->name}}</td>
                         @if ($pickup_point->staff != null && $pickup_point->staff->user != null)
                             <td>{{$pickup_point->staff->user->name}}</td>
                         @else
@@ -53,7 +53,7 @@
                                 No Manager
                             </div></td>
                         @endif
-                        <td>{{$pickup_point->getTranslation('address')}}</td>
+                        <td>{{$pickup_point->address}}</td>
                         <td>{{$pickup_point->phone}}</td>
                         <td>
                             @if ($pickup_point->pick_up_status != 1)

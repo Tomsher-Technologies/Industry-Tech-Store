@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessSetting;
+use App\Models\Category;
+use App\Models\Frontend\Banner;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\PageTranslation;
-
+use Cache;
 
 class PageController extends Controller
 {
@@ -80,14 +83,22 @@ class PageController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $lang = $request->lang;
         $page_name = $request->page;
         $page = Page::where('slug', $id)->first();
         if ($page != null) {
             if ($page_name == 'home') {
-                return view('backend.website_settings.pages.home_page_edit', compact('page', 'lang'));
+                $banners = Banner::where('status', 1)->get();
+                $current_banners = BusinessSetting::whereIn('type', array('home_banner', 'home_ads_banner', 'home_large_banner'))->get()->keyBy('type');
+
+                $categories = Cache::rememberForever('categories', function () {
+                    return Category::where('parent_id', 0)->with('childrenCategories')->get();
+                });
+
+                // dd($categories);
+
+                return view('backend.website_settings.pages.home_page_edit', compact('page', 'banners', 'current_banners', 'categories'));
             } else {
-                return view('backend.website_settings.pages.edit', compact('page', 'lang'));
+                return view('backend.website_settings.pages.edit', compact('page'));
             }
         }
         abort(404);

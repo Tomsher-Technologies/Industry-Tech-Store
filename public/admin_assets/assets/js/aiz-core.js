@@ -6,6 +6,22 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
         else self.attr(attr, attr1);
     });
 };
+
+
+const togglePassword = $('.passwordToggle');
+
+togglePassword.on('click', function (e) {
+    var i = $(this).find('.las');
+    i.toggleClass('la-eye-slash')
+
+    $(this).toggleClass('active')
+
+    const parent = $(this).closest('.input-group');
+    const password = parent.find('.password')
+    const type = password.attr('type') === 'password' ? 'text' : 'password';
+    password.attr('type', type);
+});
+
 (function ($) {
     // USE STRICT
     "use strict";
