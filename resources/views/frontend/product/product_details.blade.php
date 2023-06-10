@@ -1,14 +1,10 @@
 @extends('frontend.layouts.app')
 
-@section('meta_title'){{ $detailedProduct->meta_title ?? $detailedProduct->name }}@endsection
-
-@section('meta_description'){{ $detailedProduct->meta_description }}@endsection
-
-@section('meta_keywords'){{ $detailedProduct->tags }}@endsection
-
 @section('meta')
+    <meta name="product-id" content="{{ $product->id }}">
+
     <!-- Schema.org markup for Google+ -->
-    <meta itemprop="name" content="{{ $detailedProduct->meta_title }}">
+    {{-- <meta itemprop="name" content="{{ $detailedProduct->meta_title }}">
     <meta itemprop="description" content="{{ $detailedProduct->meta_description }}">
     <meta itemprop="image" content="{{ uploaded_asset($detailedProduct->meta_img) }}">
 
@@ -31,7 +27,7 @@
     <meta property="og:site_name" content="{{ get_setting('meta_title') }}" />
     <meta property="og:price:amount" content="{{ single_price($detailedProduct->unit_price) }}" />
     <meta property="product:price:currency" content="{{ \App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code }}" />
-    <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
+    <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}"> --}}
 @endsection
 
 @section('content')
@@ -42,15 +38,7 @@
 
     <div class="ps-breadcrumb">
         <div class="ps-container">
-            <ul class="breadcrumb">
-                <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="shop-default.html">Consumer Electrics</a></li>
-                <li><a href="shop-default.html">Refrigerators</a></li>
-                <li>
-                    SHD Bulb Revolving Warning light and Electric Horn Combination for
-                    Vessels and Heavy Industry Applications
-                </li>
-            </ul>
+            {{ Breadcrumbs::render('product', $product) }}
         </div>
     </div>
     <div class="ps-page--product">
@@ -59,7 +47,7 @@
                 <div class="ps-page__left">
                     <div class="ps-product--detail ps-product--fullwidth">
                         <div class="ps-product__header">
-                            <div class="ps-product__thumbnail" data-vertical="true">
+                            {{-- <div class="ps-product__thumbnail" data-vertical="true">
                                 <figure>
                                     <div class="ps-wrapper">
                                         <div class="ps-product__gallery" data-arrow="true">
@@ -90,45 +78,31 @@
                                         <img src="img/products/detail/fullwidth/03.jpg" alt="" />
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="ps-product__info">
                                 <h1>
-                                    Qlight SHD-WS Weatherproof Warning Light with Siren –
-                                    SHD-24VDC
+                                    {{ $product->name }}
                                 </h1>
                                 <div class="ps-product__meta">
-                                    <p>Brand:<a href="shop-default.html">Qlight</a></p>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>(1 review)</span>
+                                    @if ($product->brand)
+                                        <p>Brand:<a href="{{ route('products.brand', $product->brand->slug) }}"
+                                                title="{{ $product->brand->name }}">{{ $product->brand->name }}</a></p>
+                                    @endif
+
+                                    {{ renderStarRating($product->rating) }}
+                                </div>
+                                <h4 class="ps-product__price">
+                                    {{ home_discounted_base_price($product) }}
+                                    @if (home_base_price($product) != home_discounted_base_price($product))
+                                        <del>{{ home_base_price($product) }}</del>
+                                    @endif
+                                </h4>
+
+                                @if ($product->short_description)
+                                    <div class="ps-product__desc">
+                                        {{ $product->short_description }}
                                     </div>
-                                </div>
-                                <h4 class="ps-product__price">AED1000</h4>
-                                <div class="ps-product__desc">
-                                    <ul class="ps-list--dot">
-                                        <li>
-                                            Warning light and electric horn combination models for
-                                            vessels and heavy industries applications
-                                        </li>
-                                        <li>
-                                            Aluminum housing and polycarbonate lens material
-                                            provides excellent durability under seismic conditions
-                                        </li>
-                                        <li>
-                                            Can adjust sound volume and select sound pattern with
-                                            the switches built inside the products
-                                        </li>
-                                        <li>
-                                            You can select a variety of sound and light
-                                            sources(bulb, LED and xenon)
-                                        </li>
-                                    </ul>
-                                </div>
+                                @endif
 
                                 <div class="ps-product__shopping">
                                     <figure>
@@ -145,289 +119,180 @@
                                     <a class="ps-btn ps-btn--orange" href="#">Buy Now</a>
 
                                     <div class="ps-product__actions">
-                                        <a href="#"><i class="icon-heart"></i></a><a href="#"><i
-                                                class="icon-chart-bars"></i></a>
+                                        <a href="#">
+                                            <i class="icon-heart"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="ps-product__specification">
-                                    <p><strong>SKU:</strong> SHD-WS-123456</p>
-                                    <p class="categories">
-                                        <strong> Categories:</strong><a href="#">Qlight</a>,<a href="#">
-                                            Signal Light</a>,<a href="#">Electric Horn</a>
-                                    </p>
-                                    <p class="tags">
-                                        <strong> Tags</strong><a href="#">Aluminum </a>,<a
-                                            href="#">Polycarbonate </a>,<a href="#">Shock resistance</a>
-                                    </p>
+
+                                    @if ($product->sku)
+                                        <p><strong>SKU:</strong> {{ $product->sku }}</p>
+                                    @endif
+
+                                    @if ($product->category)
+                                        <p class="categories">
+                                            <strong> Category:</strong>
+                                            <a
+                                                href="{{ route('products.category', $product->category->slug) }}">{{ $product->category->name }}</a>
+                                        </p>
+                                    @endif
+
+                                    @if ($product->tags)
+                                        <p class="tags">
+                                            <strong> Tags</strong>
+                                            @foreach (explode(',', $product->tags) as $tag)
+                                                <a href="{{ route('suggestion.search', $tag) }}">{{ $tag }} </a>
+                                                @unless ($loop->last)
+                                                    ,
+                                                @endunless
+                                            @endforeach
+                                        </p>
+                                    @endif
+
+
                                 </div>
                                 <div class="ps-product__sharing">
-                                    <a class="facebook" href="#">
-                                        <i class="fab fa-facebook"></i></a>
-                                    <a class="twitter" href="#">
-                                        <i class="fab fa-twitter"></i></a>
-                                    <a class="linkedin" href="#">
-                                        <i class="fab fa-linkedin"></i></a>
-                                    <a class="instagram" href="#">
-                                        <i class="fab fa-instagram"></i></a>
+
+                                    @php
+                                        $c_url = url()->current();
+                                    @endphp
+
+                                    <a class="facebook"
+                                        href="https://www.facebook.com/sharer/sharer.php?u={{ $c_url }}"
+                                        target="new">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                    <a class="twitter"
+                                        href="https://twitter.com/intent/tweet?text={{ rawurlencode($product->name) }}&url={{ $c_url }}"
+                                        target="new">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a class="linkedin" href="https://wa.me?text={{ $c_url }}" target="new">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                    <a class="instagram" href="mailto:?body={{ $c_url }}" target="new">
+                                        <i class="fa fa-envelope"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="ps-product__content ps-tab-root">
                             <ul class="ps-tab-list">
                                 <li class="active"><a href="#tab-1">Description</a></li>
-                                <li><a href="#tab-2">Specification</a></li>
-                                <li><a href="#tab-3">Vendor</a></li>
-                                <li><a href="#tab-4">Reviews (1)</a></li>
-                                <li><a href="#tab-5">Questions and Answers</a></li>
-                                <li><a href="#tab-6">More Offers</a></li>
+                                @if ($product->tabs)
+                                    @foreach ($product->tabs as $tab)
+                                        <li><a href="#tabd-{{ $tab->id }}">{{ $tab->heading }}</a></li>
+                                    @endforeach
+                                @endif
+
+                                @if ($product->video_link)
+                                    <li><a href="#tab-video">Video</a></li>
+                                @endif
+
+                                @if ($product->pdf)
+                                    <li><a href="#tab-datasheet">Datasheet</a></li>
+                                @endif
+
+                                <li><a href="#tab-4">Reviews
+                                        {{ $product->reviews->count() > 0 ? '(' . $product->reviews->count() . ')' : '' }}</a>
+                                </li>
                             </ul>
                             <div class="ps-tabs">
                                 <div class="ps-tab active" id="tab-1">
                                     <div class="ps-document">
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
-                                        <img class="mb-30" src="img/products/detail/content/description.jpg"
-                                            alt="" />
-                                        <h5>What do you get</h5>
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
-                                        <h5>Perfectly Done</h5>
-                                        <p>
-                                            Meanwhile, the IP68 water resistance has improved from
-                                            the S5, allowing submersion of up to five feet for 30
-                                            minutes, plus there’s no annoying flap covering the
-                                            charging port
-                                        </p>
-                                        <ul class="pl-0">
-                                            <li>
-                                                No FM radio (except for T-Mobile units in the US, so
-                                                far)
-                                            </li>
-                                            <li>No IR blaster</li>
-                                            <li>No stereo speakers</li>
-                                        </ul>
-                                        <p>
-                                            Qlight SHD-WS Warning/Signal Light and Electric Horn
-                                            combinations with excellent durability and perfectly
-                                            enclosed structure, designed for vessels and heavy
-                                            industry applications. Aluminum housing and
-                                            polycarbonate lens material provide excellent durability
-                                            under seismic conditions. Adjustable sound volume and
-                                            selectable sound pattern with the switches built inside
-                                            the products.
-                                        </p>
+                                        {!! $product->description !!}
                                     </div>
                                 </div>
-                                <div class="ps-tab" id="tab-2">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered ps-table ps-table--specification">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Product</td>
-                                                    <td>Warning/Signal Light</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Brand</td>
-                                                    <td>Qlight</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Model</td>
-                                                    <td>SHD-WS</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Materials</td>
-                                                    <td>
-                                                        Lens-PC, Housing-Al, Protection cage-SUS316L,
-                                                        Reflector-PC, Multi-tiered reflector-Heat
-                                                        resistance ABS
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Standard housing color</td>
-                                                    <td>MUNSELL No. 7.5BG 7/2</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cable entry</td>
-                                                    <td>1/2′′PF</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Protection rating</td>
-                                                    <td>IP66</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Certificates</td>
-                                                    <td>KIMM, ABS, CE Compliant</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="ps-tab" id="tab-3">
-                                    <h4>GoPro</h4>
-                                    <p>
-                                        Digiworld US, New York’s no.1 online retailer was
-                                        established in May 2012 with the aim and vision to become
-                                        the one-stop shop for retail in New York with
-                                        implementation of best practices both online
-                                    </p>
-                                    <a href="#">More Products from gopro</a>
-                                </div>
-                                <div class="ps-tab" id="tab-4">
-                                    <div class="row">
-                                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
-                                            <div class="ps-block--average-rating">
-                                                <div class="ps-block__header">
-                                                    <h3>4.00</h3>
-                                                    <select class="ps-rating" data-read-only="true">
-                                                        <option value="1">1</option>
-                                                        <option value="1">2</option>
-                                                        <option value="1">3</option>
-                                                        <option value="1">4</option>
-                                                        <option value="2">5</option>
-                                                    </select><span>1 Review</span>
-                                                </div>
-                                                <div class="ps-block__star">
-                                                    <span>5 Star</span>
-                                                    <div class="ps-progress" data-value="100">
-                                                        <span></span>
-                                                    </div>
-                                                    <span>100%</span>
-                                                </div>
-                                                <div class="ps-block__star">
-                                                    <span>4 Star</span>
-                                                    <div class="ps-progress" data-value="0">
-                                                        <span></span>
-                                                    </div>
-                                                    <span>0</span>
-                                                </div>
-                                                <div class="ps-block__star">
-                                                    <span>3 Star</span>
-                                                    <div class="ps-progress" data-value="0">
-                                                        <span></span>
-                                                    </div>
-                                                    <span>0</span>
-                                                </div>
-                                                <div class="ps-block__star">
-                                                    <span>2 Star</span>
-                                                    <div class="ps-progress" data-value="0">
-                                                        <span></span>
-                                                    </div>
-                                                    <span>0</span>
-                                                </div>
-                                                <div class="ps-block__star">
-                                                    <span>1 Star</span>
-                                                    <div class="ps-progress" data-value="0">
-                                                        <span></span>
-                                                    </div>
-                                                    <span>0</span>
-                                                </div>
+
+                                @if ($product->tabs)
+                                    @foreach ($product->tabs as $tab)
+                                        <div class="ps-tab" id="tabd-{{ $tab->id }}">
+                                            <div class="ps-document">
+                                                {!! $tab->content !!}
                                             </div>
                                         </div>
+                                    @endforeach
+                                @endif
+
+                                @if ($product->video_link)
+                                    <div class="ps-tab" id="tab-video">
+                                        <div class="ps-document">
+                                            @if ($product->video_provider == 'youtube' && isset(explode('=', $product->video_link)[1]))
+                                                <iframe title="Product Video" height="450" class="embed-responsive-item"
+                                                    src="https://www.youtube.com/embed/{{ explode('=', $product->video_link)[1] }}"></iframe>
+                                            @elseif ($product->video_provider == 'dailymotion' && isset(explode('video/', $product->video_link)[1]))
+                                                <iframe title="Product Video" class="embed-responsive-item"
+                                                    src="https://www.dailymotion.com/embed/video/{{ explode('video/', $product->video_link)[1] }}"></iframe>
+                                            @elseif ($product->video_provider == 'vimeo' && isset(explode('vimeo.com/', $product->video_link)[1]))
+                                                <iframe title="Product Video"
+                                                    src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $product->video_link)[1] }}"
+                                                    width="500" height="281" webkitallowfullscreen mozallowfullscreen
+                                                    allowfullscreen></iframe>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if ($product->pdf)
+                                    <div class="ps-tab" id="tab-datasheet">
+                                        <div class="ps-document text-center">
+                                            <a class="ps-btn" href="{{ uploaded_asset($product->pdf) }}">Download
+                                                Datasheet</a>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="ps-tab" id="tab-4">
+                                    <div class="row">
+
+                                        @if ($product->reviews->count())
+                                            @php
+                                                $total_rating = $product->reviews->sum('rating') / $product->reviews->count();
+                                            @endphp
+
+                                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                                                <div class="ps-block--average-rating">
+                                                    <div class="ps-block__header">
+                                                        <h3>{{ number_format((float) $total_rating, 2, '.', '') }}</h3>
+                                                        <select class="ps-rating" data-read-only="true">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <option value="{{ $i <= $total_rating ? 1 : 2 }}">
+                                                                    {{ $i }}</option>
+                                                            @endfor
+                                                        </select>
+                                                        <span>{{ $product->reviews->count() }}
+                                                            {{ Str::plural('Review', $product->reviews->count()) }}</span>
+                                                    </div>
+
+                                                    @for ($i = 5; $i > 0; $i--)
+                                                        @php
+                                                            $rateTot = $product->reviews->where('rating', $i)->count();
+                                                            $perc = ($rateTot / $product->reviews->count()) * 100;
+                                                        @endphp
+
+                                                        <div class="ps-block__star">
+                                                            <span>{{ $i }} Star</span>
+                                                            <div class="ps-progress" data-value="{{ $perc }}">
+                                                                <span></span>
+                                                            </div>
+                                                            <span>{{ $perc }}%</span>
+                                                        </div>
+                                                    @endfor
+
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
-                                            <form class="ps-form--review" action="index.html" method="get">
-                                                <h4>Submit Your Review</h4>
-                                                <p>
-                                                    Your email address will not be published. Required
-                                                    fields are marked<sup>*</sup>
-                                                </p>
-                                                <div class="form-group form-group__rating">
-                                                    <label>Your rating of this product</label>
-                                                    <select class="ps-rating" data-read-only="false">
-                                                        <option value="0">0</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <textarea class="form-control" rows="6" placeholder="Write your review here"></textarea>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="text"
-                                                                placeholder="Your Name" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="email"
-                                                                placeholder="Your Email" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group submit">
-                                                    <button class="ps-btn">Submit Review</button>
-                                                </div>
-                                            </form>
+                                            @livewire('frontend.review-form', ['product' => $product->id])
                                         </div>
                                     </div>
-                                </div>
-                                <div class="ps-tab" id="tab-5">
-                                    <div class="ps-block--questions-answers">
-                                        <h3>Questions and Answers</h3>
-                                        <div class="form-group">
-                                            <input class="form-control" type="text"
-                                                placeholder="Have a question? Search for answer?" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ps-tab active" id="tab-6">
-                                    <p>Sorry no more offers available</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ps-page__right">
+                {{-- <div class="ps-page__right">
                     <aside class="widget widget_same-brand">
                         <h3>Same Brand</h3>
                         <div class="widget__content">
@@ -537,9 +402,9 @@
                             </div>
                         </div>
                     </aside>
-                </div>
+                </div> --}}
             </div>
-            <div class="ps-section--default ps-customer-bought">
+            {{-- <div class="ps-section--default ps-customer-bought">
                 <div class="ps-section__header">
                     <h3>Customers who bought this item also bought</h3>
                 </div>
@@ -1118,7 +983,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
+@endsection
+@section('header')
+    @livewireScripts
+    @livewireStyles
 @endsection

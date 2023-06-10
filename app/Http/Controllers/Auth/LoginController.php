@@ -190,7 +190,8 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-            return redirect()->intended('admin.dashboard');
+            // return redirect()->intended('admin.dashboard');
+            return app('redirect')->setIntendedUrl(route('admin.dashboard'));
         } else {
             if (session('link') != null) {
                 return redirect(session('link'));

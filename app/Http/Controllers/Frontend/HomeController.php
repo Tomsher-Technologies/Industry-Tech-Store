@@ -25,6 +25,7 @@ use App\Models\AffiliateConfig;
 use App\Models\Frontend\Banner;
 use App\Models\Frontend\HomeSlider;
 use App\Models\Page;
+use App\Models\Upload;
 use Mail;
 use Illuminate\Auth\Events\PasswordReset;
 use Cache;
@@ -45,6 +46,7 @@ class HomeController extends Controller
 
         $small_banners = Cache::rememberForever('smallBanners', function () {
             $banners = get_setting('home_banner');
+
             if ($banners) {
                 return Banner::whereStatus(1)
                     ->whereIn('id', json_decode($banners))
@@ -309,9 +311,9 @@ class HomeController extends Controller
 
     public function product(Request $request, $slug)
     {
-        $detailedProduct = Product::with('reviews', 'brand', 'stocks', 'seo', 'category')->where('slug', $slug)->firstOrFail();
-        // dd($detailedProduct);
-        return view('frontend.product.product_details', compact('detailedProduct'));
+        $product = Product::with('reviews', 'brand', 'reviews', 'seo', 'category', 'tabs')->where('slug', $slug)->firstOrFail();
+        load_seo_tags($product->seo);
+        return view('frontend.product.product_details', compact('product'));
     }
 
     public function shop($slug)

@@ -124,6 +124,18 @@ class Product extends Model
         return $this->hasOne(Upload::class, 'id', 'banner');
     }
 
+    // public function allCategories()
+    // {
+    //     $parents = collect([]);
+    //     $parent = $this->parentCategory;
+    //     while (!is_null($parent)) {
+    //         $parents->push($parent);
+    //         $parent = $parent->parent;
+    //     }
+
+    //     return $parents;
+    // }
+
     public static function boot()
     {
         static::creating(function ($model) {

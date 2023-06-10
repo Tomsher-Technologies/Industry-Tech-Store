@@ -1269,18 +1269,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li>
-                        <div class="ps-dropdown language"><a href="#"><img
-                                    src="{{ frontendAsset('img/flag/en.png') }}" alt="" />English</a>
-                            <ul class="ps-dropdown-menu">
-                                <li><a href="#"><img src="{{ frontendAsset('img/flag/germany.png') }}"
-                                            alt="" />
-                                        Germany</a></li>
-                                <li><a href="#"><img src="{{ frontendAsset('img/flag/fr.png') }}"
-                                            alt="" /> France</a></li>
-                            </ul>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -1373,7 +1361,6 @@
             </div>
         </div>
     </div>
-
     <div class="ps-panel--sidebar" id="navigation-mobile">
         <div class="ps-panel__header">
             <h3>Categories</h3>

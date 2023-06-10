@@ -2,18 +2,13 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {!! SEO::generate() !!}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ getBaseURL() }}">
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
-
-    <title>@yield('meta_title', get_setting('website_name') . ' | ' . get_setting('site_motto'))</title>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="@yield('meta_description', get_setting('meta_description'))" />
-    <meta name="keywords" content="@yield('meta_keywords', get_setting('meta_keywords'))">
+    {{-- <meta name="robots" content="index, follow"> --}}
 
     @yield('meta')
 
@@ -44,14 +39,17 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
 
+    <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet"> --}}
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
 
-    <link rel="stylesheet" href="{{ frontendAsset('fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}">
+    {{-- <link rel="stylesheet" href="{{ frontendAsset('fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}"> --}}
     <link rel="stylesheet" href="{{ frontendAsset('css/bulk-style.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/owl-carousel/assets/owl.carousel.min.css') }}">
@@ -60,7 +58,7 @@
     <link rel="stylesheet" href="{{ frontendAsset('plugins/nouislider/nouislider.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/lightGallery-master/dist/css/lightgallery.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}">
-    <link rel="stylesheet" href="{{ frontendAsset('plugins/select2/dist/css/select2.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ frontendAsset('plugins/select2/dist/css/select2.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ frontendAsset('css/style.css') }}">
  
 
@@ -105,7 +103,7 @@
 <body>
     <!-- aiz-main-wrapper -->
 
-      @include('frontend.inc.header')
+      {{-- @include('frontend.inc.header') --}}
 
         @yield('content')
 
@@ -127,8 +125,8 @@
         <script src="{{ frontendAsset('plugins/slick-animation.min.js') }}"></script>
         <script src="{{ frontendAsset('plugins/lightGallery-master/dist/js/lightgallery-all.min.js') }}"></script>
         <script src="{{ frontendAsset('plugins/sticky-sidebar/dist/sticky-sidebar.min.js') }}"></script>
-        <script src="{{ frontendAsset('plugins/select2/dist/js/select2.full.min.js') }}"></script>
-        <script src="{{ frontendAsset('plugins/gmap3.min.js') }}"></script>
+        {{-- <script src="{{ frontendAsset('plugins/select2/dist/js/select2.full.min.js') }}"></script> --}}
+        {{-- <script src="{{ frontendAsset('plugins/gmap3.min.js') }}"></script> --}}
         <script src="{{ frontendAsset('js/main.js') }}"></script>
 
         @yield('script')

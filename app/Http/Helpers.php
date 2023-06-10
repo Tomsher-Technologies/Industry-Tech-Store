@@ -21,6 +21,12 @@ use App\Models\Shop;
 use App\Utility\SendSMSUtility;
 use App\Utility\NotificationUtility;
 
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\TwitterCard;
+use Artesaos\SEOTools\Facades\JsonLd;
+use Artesaos\SEOTools\Facades\JsonLdMulti;
+
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
     function sendSMS($to, $from, $text, $template_id)
@@ -584,6 +590,21 @@ if (!function_exists('uploaded_asset')) {
     }
 }
 
+//return file uploaded via uploader with name
+if (!function_exists('uploaded_asset_with_name')) {
+    function uploaded_asset_with_name($id)
+    {
+        if ($id && ($asset = \App\Models\Upload::find($id)) != null) {
+            return array(
+                'link' => $asset->external_link == null ? storage_asset($asset->file_name) : $asset->external_link,
+                'name' => $asset->file_original_name
+            );
+        }
+
+        return null;
+    }
+}
+
 if (!function_exists('my_asset')) {
     /**
      * Generate an asset path for the application.
@@ -697,15 +718,20 @@ if (!function_exists('isUnique')) {
 }
 
 if (!function_exists('get_setting')) {
-    function get_setting($key, $default = null, $lang = false)
+    function get_setting($key, $default = null)
     {
         $settings = Cache::remember('business_settings', 86400, function () {
-            return BusinessSetting::all();
+            return BusinessSetting::select(['type', 'value'])->get()->keyBy('type')->toArray();
+            // return BusinessSetting::select(['type', 'value'])->get()->toArray();
         });
 
-        $setting = $settings->where('type', $key)->first();
+        if (isset($settings[$key])) {
+            return $settings[$key]['value'];
+        }
 
-        return $setting == null ? $default : $setting->value;
+        return $default;
+        // $setting = $settings->where('type', $key)->first();
+        // return $setting == null ? $default : $setting->value;
     }
 }
 
@@ -896,5 +922,51 @@ if (!function_exists('get_uploads_image')) {
         }
 
         return frontendAsset('img/placeholder.webp');
+    }
+}
+
+// Load SEO details
+if (!function_exists('load_seo_tags')) {
+    function load_seo_tags($seo, $image = '')
+    {
+
+        if ($image == '') {
+            $image = frontendAsset('img/logo_new.webp');
+        }
+
+        if ($seo) {
+            SEOMeta::setTitle($seo->meta_title);
+            SEOMeta::setDescription($seo->meta_description);
+            SEOMeta::setKeywords($seo->meta_keywords);
+
+            OpenGraph::setTitle($seo->og_title);
+            OpenGraph::setDescription($seo->og_title);
+
+            OpenGraph::addProperty('type', 'articles')
+                ->addImage($image)
+                ->setTitle($seo->og_title)
+                ->setDescription($seo->og_description)
+                ->setSiteName(env('APP_NAME', 'Industry Tech Store'));
+
+            TwitterCard::setType('summary_large_image')
+                ->setImage($image)
+                ->setTitle($seo->twitter_title)
+                ->setDescription($seo->twitter_description)
+                ->setSite('@ind');
+
+            JsonLd::setImage($image)
+                ->setTitle($seo->meta_title)
+                ->setDescription($seo->meta_description)
+                ->setSite(env('APP_NAME', 'Industry Tech Store'));
+
+            JsonLdMulti::setImage($image)
+                ->setTitle($seo->meta_title)
+                ->setDescription($seo->meta_description)
+                ->setSite(env('APP_NAME', 'Industry Tech Store'));
+
+            // JsonLd::setTitle($seo->meta_title);
+            // JsonLd::setDescription($seo->meta_description);
+        } else {
+        }
     }
 }
