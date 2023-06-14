@@ -211,25 +211,13 @@
                     </a>
                 </div>
                 <div class="header__center">
-                    <form class="ps-form--quick-search" action="index.html" method="get">
+                    <form class="ps-form--quick-search" action="" method="get">
                         <div class="form-group--icon"><i class="icon-chevron-down"></i>
                             <select class="form-control">
                                 <option value="0" selected="selected">All</option>
-                                <option class="level-0" value="babies-moms">Gas Detection</option>
-                                <option class="level-0" value="books-office">Calibration</option>
-                                <option class="level-0" value="cars-motocycles">Airloop System</option>
-                                <option class="level-0" value="clothing-apparel">Sounders & Beacons</option>
-                                <option class="level-1" value="accessories-clothing-apparel">Automation and Control
-                                </option>
-                                <option class="level-1" value="bags">Light Fixtures</option>
-                                <option class="level-1" value="kids-fashion">Personal Protective Equipment</option>
-                                <option class="level-1" value="mens">Communication System</option>
-                                <option class="level-1" value="shoes">Communication System</option>
-                                <option class="level-1" value="sunglasses">UTI Level Gauges</option>
-                                <option class="level-1" value="womens">Temperature</option>
-                                <option class="level-0" value="computers-technologies">Alcohol Test Kits</option>
-                                <option class="level-1" value="desktop-pc">Electrical </option>
-
+                                @foreach (getAllCategories()->where('parent_id', 0) as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <input class="form-control" type="text" placeholder="I'm shopping for..."
@@ -243,9 +231,9 @@
                             <i class="iconly-Swap icli"></i>
                             <span class="count"><i>0</i></span>
                         </a>
-                        <a class="header__extra" href="wishlist.html">
+                        <a class="header__extra" href="{{ route('wishlists.index') }}">
                             <i class="iconly-Heart icli"></i>
-                            <span class="count"><i>0</i></span></a>
+                            <span class="count"><i>{{ wishListCount() }}</i></span></a>
 
                         <div class="ps-cart--mini"><a class="header__extra" href="shopping-cart.html">
                                 <i class="iconly-Bag-2 icli"></i>
@@ -299,7 +287,9 @@
                                     <a href="{{ route('logout') }}" title="Logout">Logout</a>
                                 @else
                                     <a href="{{ route('user.login') }}" title="Login">Login</a>
-                                    <a href="{{ route('user.registration') }}" title="Register">Register</a>
+                                    <a href="{{ route('user.login',[
+                                        'register' => true
+                                    ]) }}" title="Register">Register</a>
                                 @endauth
                             </div>
                         </div>

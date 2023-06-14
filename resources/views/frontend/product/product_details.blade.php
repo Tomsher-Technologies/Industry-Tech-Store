@@ -47,38 +47,34 @@
                 <div class="ps-page__left">
                     <div class="ps-product--detail ps-product--fullwidth">
                         <div class="ps-product__header">
-                            {{-- <div class="ps-product__thumbnail" data-vertical="true">
+                            <div class="ps-product__thumbnail" data-vertical="true">
                                 <figure>
                                     <div class="ps-wrapper">
                                         <div class="ps-product__gallery" data-arrow="true">
-                                            <div class="item">
-                                                <a href="img/products/detail/fullwidth/01.jpg"><img
-                                                        src="img/products/detail/fullwidth/01.jpg" alt="" /></a>
-                                            </div>
-                                            <div class="item">
-                                                <a href="img/products/detail/fullwidth/02.jpg"><img
-                                                        src="img/products/detail/fullwidth/02.jpg" alt="" /></a>
-                                            </div>
-                                            <div class="item">
-                                                <a href="img/products/detail/fullwidth/03.jpg"><img
-                                                        src="img/products/detail/fullwidth/03.jpg" alt="" /></a>
-                                            </div>
+                                            @if ($gallery)
+                                                @foreach ($gallery as $photo)
+                                                    <div class="item">
+                                                        <a href="{{ storage_asset($photo->file_name) }}">
+                                                            <img src="{{ storage_asset($photo->file_name) }}"
+                                                                alt="" />
+                                                        </a>
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </figure>
                                 <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4"
                                     data-arrow="false">
-                                    <div class="item">
-                                        <img src="img/products/detail/fullwidth/01.jpg" alt="" />
-                                    </div>
-                                    <div class="item">
-                                        <img src="img/products/detail/fullwidth/02.jpg" alt="" />
-                                    </div>
-                                    <div class="item">
-                                        <img src="img/products/detail/fullwidth/03.jpg" alt="" />
-                                    </div>
+                                    @if ($gallery)
+                                        @foreach ($gallery as $photo)
+                                            <div class="item">
+                                                <img src="{{ storage_asset($photo->file_name) }}" alt="" />
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="ps-product__info">
                                 <h1>
                                     {{ $product->name }}
@@ -100,7 +96,7 @@
 
                                 @if ($product->short_description)
                                     <div class="ps-product__desc">
-                                        {{ $product->short_description }}
+                                        {!! $product->short_description !!}
                                     </div>
                                 @endif
 
@@ -194,9 +190,12 @@
                                     <li><a href="#tab-datasheet">Datasheet</a></li>
                                 @endif
 
-                                <li><a href="#tab-4">Reviews
-                                        {{ $product->reviews->count() > 0 ? '(' . $product->reviews->count() . ')' : '' }}</a>
-                                </li>
+                                @if ($product->reviews->count() > 0)
+                                    <li>
+                                        <a href="#tab-reviews">Reviews
+                                            {{ $product->reviews->count() > 0 ? '(' . $product->reviews->count() . ')' : '' }}</a>
+                                    </li>
+                                @endif
                             </ul>
                             <div class="ps-tabs">
                                 <div class="ps-tab active" id="tab-1">
@@ -243,10 +242,11 @@
                                     </div>
                                 @endif
 
-                                <div class="ps-tab" id="tab-4">
-                                    <div class="row">
+                                @if ($product->reviews->count())
+                                    <div class="ps-tab" id="tab-reviews">
+                                        <div class="row">
 
-                                        @if ($product->reviews->count())
+
                                             @php
                                                 $total_rating = $product->reviews->sum('rating') / $product->reviews->count();
                                             @endphp
@@ -269,6 +269,7 @@
                                                         @php
                                                             $rateTot = $product->reviews->where('rating', $i)->count();
                                                             $perc = ($rateTot / $product->reviews->count()) * 100;
+                                                            $perc = floor($perc);
                                                         @endphp
 
                                                         <div class="ps-block__star">
@@ -282,318 +283,33 @@
 
                                                 </div>
                                             </div>
-                                        @endif
-                                        <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
-                                            @livewire('frontend.review-form', ['product' => $product->id])
+                                            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                                                @livewire('frontend.review-form', ['product' => $product->id])
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="ps-page__right">
+                <div class="ps-page__right">
                     <aside class="widget widget_same-brand">
                         <h3>Same Brand</h3>
                         <div class="widget__content">
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/5.jpg"
-                                            alt="" /></a>
-                                    <div class="ps-product__badge">-37%</div>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Robert's Store</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Grand Slam Indoor Of Show
-                                            Jumping Novel</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>01</span>
-                                        </div>
-                                        <p class="ps-product__price sale">
-                                            AED32.99 <del>AED41.00 </del>
-                                        </p>
-                                    </div>
-                                    <div class="ps-product__content hover">
-                                        <a class="ps-product__title" href="product-default.html">Grand Slam Indoor Of Show
-                                            Jumping Novel</a>
-                                        <p class="ps-product__price sale">
-                                            AED32.99 <del>AED41.00 </del>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/6.jpg"
-                                            alt="" /></a>
-                                    <div class="ps-product__badge">-5%</div>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Danfoss</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Motometer Temperature
-                                            Gauge - 641 011 7019</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>01</span>
-                                        </div>
-                                        <p class="ps-product__price sale">
-                                            AED100.99 <del>AED106.00 </del>
-                                        </p>
-                                    </div>
-                                    <div class="ps-product__content hover">
-                                        <a class="ps-product__title" href="product-default.html">Motometer Temperature
-                                            Gauge - 641 011 7019</a>
-                                        <p class="ps-product__price sale">
-                                            AED100.99 <del>AED106.00 </del>
-                                        </p>
-                                    </div>
-                                </div>
+                            <div id="brand_section">
                             </div>
                         </div>
                     </aside>
-                </div> --}}
+                </div>
             </div>
-            {{-- <div class="ps-section--default ps-customer-bought">
+            <div class="ps-section--default ps-customer-bought">
                 <div class="ps-section__header">
                     <h3>Customers who bought this item also bought</h3>
                 </div>
                 <div class="ps-section__content">
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/4.jpg"
-                                            alt="" /></a>
-                                    <div class="ps-product__badge hot">hot</div>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Global Office</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Xbox One Wireless
-                                            Controller Black Color</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>01</span>
-                                        </div>
-                                        <p class="ps-product__price">AED55.99</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/5.jpg"
-                                            alt="" /></a>
-                                    <div class="ps-product__badge">-37%</div>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Robert's Store</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Grand Slam Indoor Of Show
-                                            Jumping Novel</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>01</span>
-                                        </div>
-                                        <p class="ps-product__price sale">
-                                            AED32.99 <del>AED41.00 </del>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/6.jpg"
-                                            alt="" /></a>
-                                    <div class="ps-product__badge">-5%</div>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Danfoss</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Motometer Temperature
-                                            Gauge - 641 011 7019</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>01</span>
-                                        </div>
-                                        <p class="ps-product__price sale">
-                                            AED100.99 <del>AED106.00 </del>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="also_bought_section">
 
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
-                            <div class="ps-product">
-                                <div class="ps-product__thumbnail">
-                                    <a href="product-default.html"><img src="img/products/shop/9.jpg"
-                                            alt="" /></a>
-                                    <ul class="ps-product__actions">
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add To Cart"><i class="icon-bag2"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-placement="top" title="Quick View"
-                                                data-toggle="modal" data-target="#product-quickview"><i
-                                                    class="icon-eye"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Compare"><i class="icon-chart-bars"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="ps-product__container">
-                                    <a class="ps-product__vendor" href="#">Tyco</a>
-                                    <div class="ps-product__content">
-                                        <a class="ps-product__title" href="product-default.html">Deckma OMD-24 Bilge Alarm
-                                            Unit - 79550</a>
-                                        <div class="ps-product__rating">
-                                            <select class="ps-rating" data-read-only="true">
-                                                <option value="1">1</option>
-                                                <option value="1">2</option>
-                                                <option value="1">3</option>
-                                                <option value="1">4</option>
-                                                <option value="2">5</option>
-                                            </select><span>02</span>
-                                        </div>
-                                        <p class="ps-product__price">AED35.89</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -602,388 +318,10 @@
                     <h3>Related products</h3>
                 </div>
                 <div class="ps-section__content">
-                    <div class="ps-carousel--nav owl-slider" data-owl-auto="true" data-owl-loop="true"
-                        data-owl-speed="10000" data-owl-gap="30" data-owl-nav="true" data-owl-dots="true"
-                        data-owl-item="6" data-owl-item-xs="2" data-owl-item-sm="2" data-owl-item-md="3"
-                        data-owl-item-lg="4" data-owl-item-xl="5" data-owl-duration="1000" data-owl-mousedrag="on">
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/11.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">BW Technologies</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">Deckma OMD-24 Bilge Alarm
-                                        Unit - 79550</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price">AED13.43</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/12.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">Apollo</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">SELCO Engine Controller. 24V
-                                        DC - H2000.0020</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price">AED75.44</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/13.jpg" alt="" /></a>
-                                <div class="ps-product__badge">-7%</div>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">Tyco</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">SELCO Engine Controller. 24V
-                                        DC - H2000.0020</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price sale">
-                                        AED57.99 <del>AED62.99 </del>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/14.jpg" alt="" /></a>
-                                <div class="ps-product__badge">-7%</div>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">Apollo</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">Beat Spill 2.0 Wireless
-                                        Speaker – White</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price sale">
-                                        AED57.99 <del>AED62.99 </del>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/15.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">Tyco</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">ASUS Chromebook Flip – 10.2
-                                        Inch</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price sale">AED332.38</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/16.jpg" alt="" /></a>
-                                <div class="ps-product__badge">-7%</div>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">Tyco</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">Apple Macbook Retina Display
-                                        12&quot;</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price sale">
-                                        AED1200.00 <del>AED1362.99 </del>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/10.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">BW Technologies</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">Samsung UHD TV 24inch</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price">AED599.00</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/11.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">BW Technologies</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">EPSION Plaster Printer</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price">AED233.28</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ps-product">
-                            <div class="ps-product__thumbnail">
-                                <a href="product-default.html"><img src="img/products/shop/12.jpg" alt="" /></a>
-                                <ul class="ps-product__actions">
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add To Cart"><i class="icon-bag2"></i></a>
-                                    </li>
-                                    <li>
-                                        <a type="button" class="" data-bs-toggle="modal"
-                                            data-bs-target="#product-quickview">
-                                            <i class="icon-eye"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="Add to Whishlist"><i class="icon-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i
-                                                class="icon-chart-bars"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="#">BW Technologies</a>
-                                <div class="ps-product__content">
-                                    <a class="ps-product__title" href="product-default.html">EPSION Plaster Printer</a>
-                                    <div class="ps-product__rating">
-                                        <select class="ps-rating" data-read-only="true">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                            <option value="1">4</option>
-                                            <option value="2">5</option>
-                                        </select><span>01</span>
-                                    </div>
-                                    <p class="ps-product__price">AED233.28</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="related_section">
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 @endsection
@@ -991,3 +329,42 @@
     @livewireScripts
     @livewireStyles
 @endsection
+@push('scripts')
+    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
+    <script>
+        function getParts() {
+            // Same brand
+            $.post('{{ route('product.details.same_brand') }}', {
+                _token: '{{ csrf_token() }}',
+                'brand_id': {{ $product->brand_id }},
+                'product_id': {{ $product->id }}
+            }, function(data) {
+                $('#brand_section').html(data);
+            });
+
+            // Related products
+            $.post('{{ route('product.details.related_products') }}', {
+                _token: '{{ csrf_token() }}',
+                'product_id': {{ $product->id }}
+            }, function(data) {
+                $('#related_section').html(data);
+                owlCarouselConfig2()
+            });
+
+            // Also bought
+            $.post('{{ route('product.details.also_bought') }}', {
+                _token: '{{ csrf_token() }}',
+                'product_id': {{ $product->id }}
+            }, function(data) {
+                $('#also_bought_section').html(data);
+                // owlCarouselConfig2()
+            });
+        }
+
+        $(document).ready(function() {
+            setTimeout(function() {
+                getParts()
+            }, 3000);
+        });
+    </script>
+@endpush

@@ -85,14 +85,17 @@ class Category extends Model
     {
         static::creating(function ($model) {
             Cache::forget('categories');
+            Cache::forget('categoriesTree');
         });
 
         static::updating(function ($model) {
             Cache::forget('categories');
+            Cache::forget('categoriesTree');
         });
 
         static::deleting(function ($model) {
             Cache::forget('categories');
+            Cache::forget('categoriesTree');
         });
 
         parent::boot();

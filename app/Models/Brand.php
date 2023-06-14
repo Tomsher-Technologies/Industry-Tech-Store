@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App;
 use Cache;
 
 class Brand extends Model
@@ -25,6 +24,10 @@ class Brand extends Model
     'twitter_description',
   ];
 
+  public function products()
+  {
+    return $this->hasMany(Product::class, 'brand_id');
+  }
 
   public function logoImage()
   {
@@ -35,14 +38,17 @@ class Brand extends Model
   {
     static::creating(function ($model) {
       Cache::forget('brands');
+      Cache::forget('brandsWithCount');
     });
 
     static::updating(function ($model) {
       Cache::forget('brands');
+      Cache::forget('brandsWithCount');
     });
 
     static::deleting(function ($model) {
       Cache::forget('brands');
+      Cache::forget('brandsWithCount');
     });
 
     parent::boot();

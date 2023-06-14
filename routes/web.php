@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 
@@ -37,7 +38,10 @@ Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
 
-Auth::routes(['verify' => true]);
+Auth::routes([
+    'verify' => false,
+    'reset' => true
+]);
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 Route::get('/verification-confirmation/{code}', 'Auth\VerificationController@verification_confirmation')->name('email.verification.confirmation');
@@ -50,10 +54,10 @@ Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('c
 
 Route::get('/social-login/redirect/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
 Route::get('/social-login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
-Route::get('/users/login', [HomeController::class, 'login'])->name('user.login');
-Route::get('/users/registration', [HomeController::class, 'registration'])->name('user.registration');
+Route::get('/signin', [HomeController::class, 'login'])->name('user.login');
+Route::get('/registration', [HomeController::class, 'registration'])->name('user.registration');
 //Route::post('/users/login', [HomeController::class,'user_login'])->name('user.login.submit');
-Route::post('/users/login/cart', [HomeController::class, 'cart_login'])->name('cart.login.submit');
+Route::post('/signin/cart', [HomeController::class, 'cart_login'])->name('cart.login.submit');
 
 //Home Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -92,6 +96,9 @@ Route::get('/brand/{brand_slug}', [SearchController::class, 'listingByBrand'])->
 
 // Quick view
 Route::get('/product/quick_view', [HomeController::class, 'productQuickView'])->name('product.quick_view');
+Route::post('/product/details/same_brand', [HomeController::class, 'productSameBrandView'])->name('product.details.same_brand');
+Route::post('/product/details/related_products', [HomeController::class, 'productRelatedProductsView'])->name('product.details.related_products');
+Route::post('/product/details/also_bought', [HomeController::class, 'productAlsoBoughtView'])->name('product.details.also_bought');
 Route::get('/product/{slug}', [HomeController::class, 'product'])->name('product');
 Route::post('/product/variant_price', [HomeController::class, 'variant_price'])->name('products.variant_price');
 Route::get('/shop/{slug}', [HomeController::class, 'shop'])->name('shop.visit');
@@ -164,7 +171,7 @@ Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
 Route::get('/privacy-policy', [HomeController::class, 'privacypolicy'])->name('privacypolicy');
 
 
-Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
+Route::group(['middleware' => ['user']], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
     Route::post('/new-user-verification', [HomeController::class, 'new_verify'])->name('user.new.verify');

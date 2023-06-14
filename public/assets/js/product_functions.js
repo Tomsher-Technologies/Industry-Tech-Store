@@ -1,8 +1,6 @@
 function productQuickView($id) {
     if ($('#product-quickview').length) {
-
-        console.log(config.routes.prodcut_quick_view)
-
+        
         $('#product-quickview').modal('show');
         $('#product-quickview .ps-product--detail').hide();
         $('#product-quickview .loadingIcon').show();
@@ -104,10 +102,3 @@ function owlCarouselConfig2() {
         });
     }
 }
-
-(function ($) {
-    'use strict';
-
-
-
-})(jQuery);

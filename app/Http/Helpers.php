@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\Addon;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\Wishlist;
 use App\Utility\SendSMSUtility;
 use App\Utility\NotificationUtility;
 
@@ -966,7 +967,23 @@ if (!function_exists('load_seo_tags')) {
 
             // JsonLd::setTitle($seo->meta_title);
             // JsonLd::setDescription($seo->meta_description);
-        } else {
         }
+    }
+
+
+    function getAllCategories()
+    {
+        return Cache::rememberForever('categoriesTree', function () {
+            return CategoryUtility::getSidebarCategoryTree();
+        });
+    }
+
+    function wishListCount(): int
+    {
+        if (Auth::check()) {
+            return Wishlist::where('user_id', Auth::user()->id)->count();
+        }
+
+        return 0;
     }
 }

@@ -1,6 +1,6 @@
 <div class="ps-newsletter">
     <div class="ps-container">
-        <form class="ps-form--newsletter" action="do_action" method="post">
+        <div class="ps-form--newsletter">
             <div class="row">
 
                 <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 ">
@@ -66,14 +66,18 @@
                 <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 ">
                     <div class="ps-form__right">
                         <h3>NEWS LETTER</h3>
-                        <div class="form-group--nest">
-                            <input class="form-control" type="email" placeholder="Email address">
-                            <button class="ps-btn">Subscribe</button>
-                        </div>
+                        <form id="newsletter" method="POST">
+                            <div class="form-group--nest">
+                                <input name="email" class="form-control" type="email" placeholder="Email address">
+                                <button type="submit" class="ps-btn">Subscribe</button>
+                            </div>
+                            <div class="newsletter_notice p-3 mt-3 rounded" style="display: none">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 <footer class="ps-footer">
@@ -125,7 +129,8 @@
         <div class="ps-footer__copyright">
             <p>{!! get_setting('frontend_copyright_text', '&copy; 2023 ITS All Rights Reserved | WEBSITE BY TOMSHER', false) !!} </p>
             <p>
-                <img alt="Our payment gateways" src="{{ frontendAsset('img/payment-method/1.jpg') }}" height="30" class="mw-100 h-auto" style="max-height: 30px">
+                <img alt="Our payment gateways" src="{{ frontendAsset('img/payment-method/1.jpg') }}" height="30"
+                    class="mw-100 h-auto" style="max-height: 30px">
             </p>
         </div>
     </div>

@@ -142,14 +142,6 @@
 
 
 @section('script')
-    <script>
-        var config = {
-            routes: {
-                prodcut_quick_view: "{{ route('product.quick_view') }}"
-            }
-        };
-    </script>
-
     <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
 
     <script>

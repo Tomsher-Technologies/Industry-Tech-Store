@@ -119,9 +119,20 @@ class Product extends Model
         return $slug;
     }
 
-    public function banner()
+    public function thumbnail()
     {
-        return $this->hasOne(Upload::class, 'id', 'banner');
+        return $this->hasOne(Upload::class, 'id', 'thumbnail_img');
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(Upload::class, 'id', 'photos');
+    }
+
+    public function getGalleryAttributes()
+    {
+        $photos = $this->getOriginal('photos');
+        return Upload::whereIn('id', explode(',', $photos))->get();
     }
 
     // public function allCategories()

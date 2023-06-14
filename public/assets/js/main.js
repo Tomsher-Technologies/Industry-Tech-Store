@@ -822,34 +822,7 @@
     }
 
     function filterSlider() {
-        var nonLinearSlider = document.getElementById('nonlinear');
-        if (typeof nonLinearSlider != 'undefined' && nonLinearSlider != null) {
-            noUiSlider.create(nonLinearSlider, {
-                connect: true,
-                behaviour: 'tap',
-                start: [0, 1000],
-                range: {
-                    min: 0,
-                    '10%': 100,
-                    '20%': 200,
-                    '30%': 300,
-                    '40%': 400,
-                    '50%': 500,
-                    '60%': 600,
-                    '70%': 700,
-                    '80%': 800,
-                    '90%': 900,
-                    max: 1000,
-                },
-            });
-            var nodes = [
-                document.querySelector('.ps-slider__min'),
-                document.querySelector('.ps-slider__max'),
-            ];
-            nonLinearSlider.noUiSlider.on('update', function (values, handle) {
-                nodes[handle].innerHTML = Math.round(values[handle]);
-            });
-        }
+
     }
 
     function handleLiveSearch() {
@@ -913,4 +886,38 @@
         $('body').addClass('loaded');
         subscribePopup();
     });
+
+    // Newsletter subscribe
+
+    $('#newsletter').on('submit', function (e) {
+        e.preventDefault();
+        var formData = $('#newsletter').serializeArray();
+        formData.push({ name: "_token", value: config.csrf, });
+
+        $('.newsletter_notice').html('');
+        $('.newsletter_notice').hide();
+        $('.newsletter_notice').removeClass('badge-soft-danger');
+        $('.newsletter_notice').removeClass('badge-soft-success');
+
+        $.ajax({
+            type: "POST",
+            url: config.routes.newsletter,
+            data: formData,
+            success: function (data) {
+                if(data.status == 400){
+                    $('.newsletter_notice').html(data.errors[0]);
+                    $('.newsletter_notice').addClass('badge-soft-danger');
+                }else{
+                    var rdata = JSON.parse(data);
+                    $('.newsletter_notice').html(rdata.msg);
+                    $('.newsletter_notice').addClass('badge-soft-success');
+                }
+
+                $('#newsletter').trigger("reset");
+
+                $('.newsletter_notice').show();
+            }
+        });
+    });
+
 })(jQuery);

@@ -123,7 +123,7 @@
                             <span>Profile</span>
                         </a>
 
-                        <a href="{{ route('logout') }}" class="dropdown-item">
+                        <a href="{{ route('admin.logout') }}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
                             <span>Logout</span>
                         </a>

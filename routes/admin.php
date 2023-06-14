@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\AddonController;
 use App\Http\Controllers\Admin\AbandonedCartController;
+use App\Http\Controllers\Admin\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Admin\Frontend\Bannercontroller;
 use App\Http\Controllers\Admin\Products\EnquiriesController;
 use App\Http\Controllers\AdminController;
@@ -61,12 +62,16 @@ Route::get('/' . env('ADMIN_PREFIX'), [AdminController::class, 'admin_dashboard'
     ->name('admin.dashboard')
     ->middleware(['auth', 'admin']);
 
-// Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['guest']], function () {
-//     Route::get('login', [LoginController::class, 'adminLoginView']);
-//     Route::post('login', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
-// });
+Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['guest']], function () {
+    Route::get('login', [AuthLoginController::class, 'adminLoginView'])->name('admin.login');
+    Route::post('login', [AuthLoginController::class, 'login']);
+});
 
 Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']], function () {
+
+    // Logout
+    Route::get('/logout', [AuthLoginController::class, 'logout'])->name('admin.logout');
+
     //Update Routes
     Route::resource('categories', CategoryController::class);
     Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit');

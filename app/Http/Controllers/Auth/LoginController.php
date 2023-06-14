@@ -43,7 +43,7 @@ class LoginController extends Controller
      */
     public function redirectToProvider($provider)
     {
-        if(request()->get('query') == 'mobile_app'){
+        if (request()->get('query') == 'mobile_app') {
             request()->session()->put('login_from', 'mobile_app');
         }
         return Socialite::driver($provider)->redirect();
@@ -76,8 +76,7 @@ class LoginController extends Controller
         if ($existingUserByProviderId) {
             //proceed to login
             auth()->login($existingUserByProviderId, true);
-        }
-        else {
+        } else {
             //check if email exist
             $existingUser = User::where('email', $user->email)->first();
 
@@ -129,7 +128,7 @@ class LoginController extends Controller
     {
         $return_provider = '';
         $result = false;
-        if($provider) {
+        if ($provider) {
             $return_provider = $provider;
             $result = true;
         }
@@ -150,8 +149,7 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'email'    => 'required_without:phone',
-            'phone'    => 'required_without:email',
+            'email'    => 'required',
             'password' => 'required|string',
         ]);
     }
@@ -165,9 +163,17 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         if ($request->get('phone') != null) {
-            return ['phone' => "+{$request['country_code']}{$request['phone']}", 'password' => $request->get('password')];
+            return [
+                'phone' => "+{$request['country_code']}{$request['phone']}",
+                'password' => $request->get('password')
+            ];
         } elseif ($request->get('email') != null) {
-            return $request->only($this->username(), 'password');
+            return  [
+                'email' => $request->email,
+                'password' => $request->password,
+                'user_type' => 'customer'
+            ];
+            // $request->only($this->username(), 'password');
         }
     }
 
@@ -185,20 +191,25 @@ class LoginController extends Controller
                         'temp_user_id' => null
                     ]
                 );
-
             Session::forget('temp_user_id');
         }
 
-        if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-            // return redirect()->intended('admin.dashboard');
-            return app('redirect')->setIntendedUrl(route('admin.dashboard'));
+        if (session('link') != null) {
+            return redirect(session('link'));
         } else {
-            if (session('link') != null) {
-                return redirect(session('link'));
-            } else {
-                return redirect()->route('dashboard');
-            }
+            return redirect()->route('dashboard');
         }
+
+        // if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+        //     // return redirect()->intended('admin.dashboard');
+        //     return app('redirect')->setIntendedUrl(route('admin.dashboard'));
+        // } else {
+        //     if (session('link') != null) {
+        //         return redirect(session('link'));
+        //     } else {
+        //         return redirect()->route('dashboard');
+        //     }
+        // }
     }
 
     /**
@@ -211,8 +222,9 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        flash(translate('Invalid login credentials'))->error();
-        return back();
+        return back()->withErrors([
+            'login' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email', 'remember');
     }
 
     /**
@@ -223,16 +235,16 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
-            $redirect_route = 'login';
+        if (auth()->user() != null) {
+            $redirect_route = 'user.login';
         } else {
             $redirect_route = 'home';
         }
 
         //User's Cart Delete
-        if (auth()->user()) {
-            Cart::where('user_id', auth()->user()->id)->delete();
-        }
+        // if (auth()->user()) {
+        //     Cart::where('user_id', auth()->user()->id)->delete();
+        // }
 
         $this->guard()->logout();
 
@@ -243,7 +255,7 @@ class LoginController extends Controller
 
     public function adminLoginView()
     {
-        return view('auth.login');
+        return view('frontend.auth.login');
     }
 
     /**

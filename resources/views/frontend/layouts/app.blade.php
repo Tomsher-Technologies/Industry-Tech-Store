@@ -49,7 +49,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
 
-    {{-- <link rel="stylesheet" href="{{ frontendAsset('fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}"> --}}
+    <link rel="stylesheet" href="{{ frontendAsset('fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('css/bulk-style.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/owl-carousel/assets/owl.carousel.min.css') }}">
@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="{{ frontendAsset('plugins/nouislider/nouislider.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/lightGallery-master/dist/css/lightgallery.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('plugins/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}">
-    {{-- <link rel="stylesheet" href="{{ frontendAsset('plugins/select2/dist/css/select2.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ frontendAsset('plugins/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('css/style.css') }}">
  
 
@@ -103,7 +103,7 @@
 <body>
     <!-- aiz-main-wrapper -->
 
-      {{-- @include('frontend.inc.header') --}}
+      @include('frontend.inc.header')
 
         @yield('content')
 
@@ -125,13 +125,25 @@
         <script src="{{ frontendAsset('plugins/slick-animation.min.js') }}"></script>
         <script src="{{ frontendAsset('plugins/lightGallery-master/dist/js/lightgallery-all.min.js') }}"></script>
         <script src="{{ frontendAsset('plugins/sticky-sidebar/dist/sticky-sidebar.min.js') }}"></script>
-        {{-- <script src="{{ frontendAsset('plugins/select2/dist/js/select2.full.min.js') }}"></script> --}}
+        <script src="{{ frontendAsset('plugins/select2/dist/js/select2.full.min.js') }}"></script>
         {{-- <script src="{{ frontendAsset('plugins/gmap3.min.js') }}"></script> --}}
         <script src="{{ frontendAsset('js/main.js') }}"></script>
 
         @yield('script')
 
+        @stack('scripts')
+
         {{ get_setting('footer_script') }}
+
+        <script>
+            var config = {
+                routes: {
+                    prodcut_quick_view: "{{ route('product.quick_view') }}",
+                    newsletter: "{{ route('subscribers.store') }}",
+                },
+                csrf: "{{ csrf_token() }}",
+            };
+        </script>
 
         </body>
 

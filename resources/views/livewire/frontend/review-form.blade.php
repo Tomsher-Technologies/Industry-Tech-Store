@@ -30,7 +30,7 @@
             emptyValue: '0',
             onSelect: function(value, text, event) {
                 if (typeof(event) !== 'undefined') {
-                    console.log(event.target);
+                    @this.set('rating', $(event.target).data('rating-value'));
                 }
             }
         });

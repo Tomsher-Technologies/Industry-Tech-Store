@@ -16,8 +16,12 @@ class WishlistController extends Controller
      */
     public function index()
     {
-        $wishlists = Wishlist::where('user_id', Auth::user()->id)->paginate(9);
-        return view('frontend.user.view_wishlist', compact('wishlists'));
+        if (Auth::check()) {
+            $wishlists = Wishlist::where('user_id', Auth::user()->id)->paginate(9);
+            return view('frontend.user.view_wishlist', compact('wishlists'));
+        }
+
+        return redirect()->route('user.login');
     }
 
     /**
@@ -38,9 +42,9 @@ class WishlistController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $wishlist = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->first();
-            if($wishlist == null){
+            if ($wishlist == null) {
                 $wishlist = new Wishlist;
                 $wishlist->user_id = Auth::user()->id;
                 $wishlist->product_id = $request->id;
@@ -54,8 +58,8 @@ class WishlistController extends Controller
     public function remove(Request $request)
     {
         $wishlist = Wishlist::findOrFail($request->id);
-        if($wishlist!=null){
-            if(Wishlist::destroy($request->id)){
+        if ($wishlist != null) {
+            if (Wishlist::destroy($request->id)) {
                 return view('frontend.partials.wishlist');
             }
         }

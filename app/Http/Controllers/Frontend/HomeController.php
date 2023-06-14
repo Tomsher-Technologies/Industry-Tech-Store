@@ -109,7 +109,7 @@ class HomeController extends Controller
         if (Auth::check()) {
             return redirect()->route('home');
         }
-        return view('frontend.user_login');
+        return view('frontend.auth.login');
     }
 
     public function registration(Request $request)
@@ -178,15 +178,20 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        if (Auth::user()->user_type == 'seller') {
-            return view('frontend.user.seller.dashboard');
-        } elseif (Auth::user()->user_type == 'customer') {
-            return view('frontend.user.customer.dashboard');
-        } elseif (Auth::user()->user_type == 'delivery_boy') {
-            return view('delivery_boys.frontend.dashboard');
+        if (Auth::user()->user_type == 'customer') {
+            return view('frontend.user.dashboard');
         } else {
             abort(404);
         }
+        // if (Auth::user()->user_type == 'seller') {
+        //     return view('frontend.user.seller.dashboard');
+        // } elseif (Auth::user()->user_type == 'customer') {
+        //     return view('frontend.user.dashboard');
+        // } elseif (Auth::user()->user_type == 'delivery_boy') {
+        //     return view('delivery_boys.frontend.dashboard');
+        // } else {
+        //     abort(404);
+        // }
     }
 
     public function profile(Request $request)
@@ -312,8 +317,9 @@ class HomeController extends Controller
     public function product(Request $request, $slug)
     {
         $product = Product::with('reviews', 'brand', 'reviews', 'seo', 'category', 'tabs')->where('slug', $slug)->firstOrFail();
+        $gallery = Upload::whereIn('id', explode(',', $product->photos))->get();
         load_seo_tags($product->seo);
-        return view('frontend.product.product_details', compact('product'));
+        return view('frontend.product.product_details', compact('product', 'gallery'));
     }
 
     public function shop($slug)
@@ -744,5 +750,74 @@ class HomeController extends Controller
     {
         $product = Product::with('brand')->find($request->id);
         return view('frontend.inc.product_quick_view_content', compact('product'));
+    }
+
+    public function productSameBrandView(Request $request)
+    {
+        $html = '';
+
+        if ($request->brand_id) {
+            $products = Product::where([
+                'brand_id' => $request->brand_id,
+                'published' => 1,
+            ])
+                ->where('id', '!=', $request->product_id)
+                ->limit(3)->with('brand')->get();
+
+            foreach ($products as $product) {
+                $html .= view('frontend.inc.product_box', [
+                    'product' => $product
+                ]);
+            }
+        }
+
+        return $html;
+    }
+
+    public function productRelatedProductsView(Request $request)
+    {
+        $html = '<div class="ps-carousel--nav owl-slider owl-slider2" data-owl-auto="true" data-owl-loop="true"
+        data-owl-speed="10000" data-owl-gap="30" data-owl-nav="true" data-owl-dots="true"
+        data-owl-item="6" data-owl-item-xs="2" data-owl-item-sm="2" data-owl-item-md="3"
+        data-owl-item-lg="4" data-owl-item-xl="5" data-owl-duration="1000" data-owl-mousedrag="on">';
+
+        if ($request->product_id) {
+            $products = Product::where([
+                'published' => 1,
+            ])
+                ->where('id', '!=', $request->product_id)
+                ->limit(3)->with('brand')->get();
+
+            foreach ($products as $product) {
+                $html .= view('frontend.inc.product_box', [
+                    'product' => $product
+                ]);
+            }
+        }
+        $html .= '</div>';
+        return $html;
+    }
+
+    public function productAlsoBoughtView(Request $request)
+    {
+        $html = '<div class="row">';
+
+        if ($request->product_id) {
+            $products = Product::where([
+                'published' => 1,
+            ])
+                ->where('id', '!=', $request->product_id)
+                ->limit(7)->with('brand')->get();
+
+            foreach ($products as $product) {
+                $html .= '<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">';
+                $html .= view('frontend.inc.product_box', [
+                    'product' => $product
+                ]);
+                $html .= '</div>';
+            }
+        }
+        $html .= '</div>';
+        return $html;
     }
 }

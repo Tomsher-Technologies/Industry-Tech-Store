@@ -20,6 +20,17 @@ Breadcrumbs::for('category', function (BreadcrumbTrail $trail, Category $categor
     $trail->push($category->name, route('products.category', $category->slug));
 });
 
+// Home > Category
+Breadcrumbs::for('category_byid', function (BreadcrumbTrail $trail, $category_id) {
+    $category = Category::find($category_id);
+    if ($category->parent_id !== 0 && $category->parentCategory) {
+        $trail->parent('category', $category->parentCategory);
+    } else {
+        $trail->parent('home');
+    }
+    $trail->push($category->name, route('products.category', $category->slug));
+});
+
 // Product
 Breadcrumbs::for('product', function (BreadcrumbTrail $trail, Product $product) {
     $trail->parent('category', $product->category);
