@@ -20,6 +20,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PurchaseHistoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriberController;
@@ -80,13 +81,13 @@ Route::get('/sitemap.xml', function () {
 });
 
 
-Route::get('/customer-products', [CustomerProductController::class, 'customer_products_listing'])->name('customer.products');
-Route::get('/customer-products?category={category_slug}', [CustomerProductController::class, 'search'])->name('customer_products.category');
-Route::get('/customer-products?city={city_id}', [CustomerProductController::class, 'search'])->name('customer_products.city');
-Route::get('/customer-products?q={search}', [CustomerProductController::class, 'search'])->name('customer_products.search');
-Route::get('/customer-products/admin', [IyzicoController::class, 'initPayment'])->name('profile.edit');
-Route::get('/customer-product/{slug}', [CustomerProductController::class, 'customer_product'])->name('customer.product');
-Route::get('/customer-packages', [HomeController::class, 'premium_package_index'])->name('customer_packages_list_show');
+// Route::get('/customer-products', [CustomerProductController::class, 'customer_products_listing'])->name('customer.products');
+// Route::get('/customer-products?category={category_slug}', [CustomerProductController::class, 'search'])->name('customer_products.category');
+// Route::get('/customer-products?city={city_id}', [CustomerProductController::class, 'search'])->name('customer_products.city');
+// Route::get('/customer-products?q={search}', [CustomerProductController::class, 'search'])->name('customer_products.search');
+// Route::get('/customer-products/admin', [IyzicoController::class, 'initPayment'])->name('profile.edit');
+// Route::get('/customer-product/{slug}', [CustomerProductController::class, 'customer_product'])->name('customer.product');
+// Route::get('/customer-packages', [HomeController::class, 'premium_package_index'])->name('customer_packages_list_show');
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/search?keyword={search}', [SearchController::class, 'index'])->name('suggestion.search');
@@ -174,13 +175,15 @@ Route::get('/privacy-policy', [HomeController::class, 'privacypolicy'])->name('p
 Route::group(['middleware' => ['user']], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+    Route::get('/profile/password', [HomeController::class, 'profilePassword'])->name('profile.password');
+    Route::post('/profile/password', [HomeController::class, 'profilePasswordUpdate']);
     Route::post('/new-user-verification', [HomeController::class, 'new_verify'])->name('user.new.verify');
     Route::post('/new-user-email', [HomeController::class, 'update_email'])->name('user.change.email');
 
     Route::post('/user/update-profile', [HomeController::class, 'userProfileUpdate'])->name('user.profile.update');
 
-    Route::resource('purchase_history', 'PurchaseHistoryController');
-    Route::post('/purchase_history/details', [PurchaseHistoryController::class, 'purchase_history_details'])->name('purchase_history.details');
+    Route::resource('purchase_history', PurchaseHistoryController::class);
+    Route::get('/purchase_history/details/{order_id}', [PurchaseHistoryController::class, 'purchase_history_details'])->name('purchase_history.details');
     Route::get('/purchase_history/destroy/{id}', [PurchaseHistoryController::class, 'destroy'])->name('purchase_history.destroy');
 
     Route::resource('wishlists', WishlistController::class);

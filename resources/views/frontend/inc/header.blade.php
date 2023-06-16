@@ -233,7 +233,7 @@
                         </a>
                         <a class="header__extra" href="{{ route('wishlists.index') }}">
                             <i class="iconly-Heart icli"></i>
-                            <span class="count"><i>{{ wishListCount() }}</i></span></a>
+                            <span class="count"><i class="headerWishlistCount">{{ wishListCount() }}</i></span></a>
 
                         <div class="ps-cart--mini"><a class="header__extra" href="shopping-cart.html">
                                 <i class="iconly-Bag-2 icli"></i>

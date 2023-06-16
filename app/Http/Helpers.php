@@ -27,6 +27,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
+use Carbon\Carbon;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -40,9 +41,10 @@ if (!function_exists('sendSMS')) {
 if (!function_exists('areActiveRoutes')) {
     function areActiveRoutes(array $routes, $output = "active")
     {
-        foreach ($routes as $route) {
-            if (Route::currentRouteName() == $route) return $output;
-        }
+        return in_array(Route::currentRouteName(), $routes) ? $output : '';
+        // foreach ($routes as $route) {
+        //     return Route::currentRouteName() == $route ? $output : '';
+        // }
     }
 }
 
@@ -981,9 +983,52 @@ if (!function_exists('load_seo_tags')) {
     function wishListCount(): int
     {
         if (Auth::check()) {
-            return Wishlist::where('user_id', Auth::user()->id)->count();
+            return Cache::remember('user_wishlist_count_' . Auth::id(), '3600', function () {
+                return Wishlist::where('user_id', Auth::user()->id)->count();
+            });
         }
 
         return 0;
+    }
+
+    function formatDate($date): String
+    {
+        if ($date->lessThan(Carbon::now()->subHours(12))) {
+            return $date->format('d F, Y');
+        }
+        return $date->diffForHumans();
+    }
+
+    function deliveryBadge($status)
+    {
+        $html = '';
+
+        switch ($status) {
+            case 'pending':
+                $html = '<span class="badge badge badge-soft-danger">Pending</span>';
+                break;
+            case 'confirmed':
+                $html = '<span class="badge badge-soft-warning">Confirmed</span>';
+                break;
+            case 'picked_up':
+                $html = '<span class="badge badge-soft-warning">Picked Up</span>';
+                break;
+            case 'on_the_way':
+                $html = '<span class="badge badge-soft-warning">On The Way</span>';
+                break;
+            case 'delivered':
+                $html = '<span class="badge badge-soft-success">Delivered</span>';
+                break;
+            default:
+                $html = '-';
+                break;
+        }
+
+        return $html;
+    }
+
+    function getDeliveryStatusText($status)
+    {
+        return Str::title(str_replace('_', ' ', $status));
     }
 }

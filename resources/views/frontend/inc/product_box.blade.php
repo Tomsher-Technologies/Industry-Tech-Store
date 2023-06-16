@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)" onclick="addToWishList({{ $product->id }})" data-toggle="tooltip"
+                <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" data-toggle="tooltip"
                     data-placement="top" title="Add to Whishlist">
                     <i class="icon-heart"></i>
                 </a>

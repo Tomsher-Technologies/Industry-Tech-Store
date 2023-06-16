@@ -1,6 +1,6 @@
 function productQuickView($id) {
     if ($('#product-quickview').length) {
-        
+
         $('#product-quickview').modal('show');
         $('#product-quickview .ps-product--detail').hide();
         $('#product-quickview .loadingIcon').show();
@@ -18,6 +18,32 @@ function productQuickView($id) {
             }
         });
     }
+}
+
+
+function addToWishList(slug) {
+    $.ajax({
+        type: "POST",
+        url: config.routes.wishlist_ad,
+        data: {
+            'slug': slug,
+            '_token': config.csrf
+        },
+        success: function (data, status, xhr) {
+            if(xhr.status == 200){
+                alert(data.message);
+                $('.headerWishlistCount').html(data.count)
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status == 401) {
+                alert('Please login first');
+            }
+            if (xhr.status == 404) {
+                alert('Something went wrong, please try again');
+            }
+        },
+    });
 }
 
 

@@ -5,20 +5,15 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Cart;
-use App\Models\BusinessSetting;
-use App\OtpConfiguration;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OTPVerificationController;
-use App\Notifications\EmailVerificationNotification;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Cookie;
+use Illuminate\Validation\Rules\Password;
 use Session;
-use Nexmo;
-use Twilio\Rest\Client;
 
 class RegisterController extends Controller
 {
@@ -63,7 +58,15 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required',
+                'confirmed',
+                'different:current_password',
+                Password::min(6)
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised()
+            ],
         ]);
     }
 

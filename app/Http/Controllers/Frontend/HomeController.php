@@ -29,7 +29,7 @@ use App\Models\Upload;
 use Mail;
 use Illuminate\Auth\Events\PasswordReset;
 use Cache;
-
+use Illuminate\Validation\Rules\Password;
 
 class HomeController extends Controller
 {
@@ -179,7 +179,12 @@ class HomeController extends Controller
     public function dashboard()
     {
         if (Auth::user()->user_type == 'customer') {
-            return view('frontend.user.dashboard');
+
+            $orders = Auth::user()->orders()->get();
+            $total_orders = $orders->where('delivery_status', 'delivered')->count();
+            $pending_orders = $orders->where('delivery_status', 'pending')->count();
+
+            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders'));
         } else {
             abort(404);
         }
@@ -196,51 +201,78 @@ class HomeController extends Controller
 
     public function profile(Request $request)
     {
-        if (Auth::user()->user_type == 'delivery_boy') {
-            return view('delivery_boys.frontend.profile');
-        } else {
-            return view('frontend.user.profile');
+        return view('frontend.user.profile');
+    }
+
+    public function profilePassword(Request $request)
+    {
+        return view('frontend.user.profilePassword');
+    }
+
+    public function profilePasswordUpdate(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => [
+                'required',
+                'confirmed',
+                'different:current_password',
+                Password::min(6)
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised()
+            ],
+        ], [
+            'current_password.required' => 'Please enter your current password',
+            'password.required' => 'Please enter your new password',
+            'password.confirmed' => 'Password and confirm password does not match',
+            'password.different' => 'New password and old password cannot be same',
+        ]);
+
+        if (Hash::check($request->current_password, Auth::user()->password)) {
+
+            Auth()->user()->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            return back()->with([
+                'status' => 'Your Profile has been updated successfully!'
+            ]);
         }
+
+        return back()->withErrors([
+            'invalid' => 'Sorry, your current password does not match'
+        ]);
     }
 
     public function userProfileUpdate(Request $request)
     {
-        if (env('DEMO_MODE') == 'On') {
-            flash(translate('Sorry! the action is not permitted in demo '))->error();
-            return back();
-        }
+
+        $request->validate([
+            'name' => 'required'
+        ], [
+            'name.required' => 'Please enter your name'
+        ]);
 
         $user = Auth::user();
         $user->name = $request->name;
-        $user->address = $request->address;
-        $user->country = $request->country;
-        $user->city = $request->city;
-        $user->postal_code = $request->postal_code;
-        $user->phone = $request->phone;
+        // $user->address = $request->address;
+        // $user->country = $request->country;
+        // $user->city = $request->city;
+        // $user->postal_code = $request->postal_code;
+        // $user->phone = $request->phone;
 
-        if ($request->new_password != null && ($request->new_password == $request->confirm_password)) {
-            $user->password = Hash::make($request->new_password);
-        }
+        // if ($request->new_password != null && ($request->new_password == $request->confirm_password)) {
+        //     $user->password = Hash::make($request->new_password);
+        // }
 
-        $user->avatar_original = $request->photo;
-
-        $seller = $user->seller;
-
-        if ($seller) {
-            $seller->cash_on_delivery_status = $request->cash_on_delivery_status;
-            $seller->bank_payment_status = $request->bank_payment_status;
-            $seller->bank_name = $request->bank_name;
-            $seller->bank_acc_name = $request->bank_acc_name;
-            $seller->bank_acc_no = $request->bank_acc_no;
-            $seller->bank_routing_no = $request->bank_routing_no;
-
-            $seller->save();
-        }
+        // $user->avatar_original = $request->photo;
 
         $user->save();
 
-        flash(translate('Your Profile has been updated successfully!'))->success();
-        return back();
+        return back()->with([
+            'status' => 'Your Profile has been updated successfully!'
+        ]);
     }
 
     public function flash_deal_details($slug)

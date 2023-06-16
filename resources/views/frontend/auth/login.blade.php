@@ -75,7 +75,7 @@
 
                                     <div class="form-group">
                                         <input name="name" value="{{ old('name') }}" class="form-control"
-                                            type="text" placeholder="Your Name"  />
+                                            type="text" placeholder="Your Name" />
                                         @error('name')
                                             <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="form-group">
                                         <input name="email" value="{{ old('email') }}" class="form-control"
-                                            type="email" placeholder="Email address"  />
+                                            type="email" placeholder="Email address" />
                                         @error('email')
                                             <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -92,8 +92,10 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="password" placeholder="Password" 
+                                        <input class="form-control" type="password" placeholder="Password"
                                             name="password" />
+                                        <small>The password must be at least 6 characters and must contain at least one
+                                            number.</small>
                                     </div>
                                     @error('password')
                                         <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
@@ -101,7 +103,7 @@
                                         </span>
                                     @enderror
                                     <div class="form-group">
-                                        <input class="form-control" type="password" placeholder="Password" 
+                                        <input class="form-control" type="password" placeholder="Confirm Password"
                                             name="password_confirmation" />
                                     </div>
                                     <div class="form-group submtit">

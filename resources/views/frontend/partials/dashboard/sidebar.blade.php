@@ -16,7 +16,7 @@
             </div>
             <ul class="nav nav-pills user-nav-pills">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link active">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ areActiveRoutes(['dashboard']) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="feather feather-home">
@@ -25,7 +25,7 @@
                         </svg> DashBoard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="order.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    <a href="{{ route('purchase_history.index') }}" class="nav-link {{ areActiveRoutes(['purchase_history.index','purchase_history.details']) }}"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -34,7 +34,7 @@
                         </svg>Order</a>
                 </li>
                 <li class="nav-item">
-                    <a href="wishlist.html" class="nav-link">
+                    <a href="{{ route('wishlists.index') }}" class="nav-link {{ areActiveRoutes(['wishlists.index']) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="feather feather-heart">
@@ -44,15 +44,7 @@
                         </svg>
                         Wishlist</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card">
-                            <rect x="1" y="4" width="22" height="16" rx="2"
-                                ry="2"></rect>
-                            <line x1="1" y1="10" x2="23" y2="10"></line>
-                        </svg> Saved Card</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -63,22 +55,17 @@
                         Address</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                    <a class="nav-link {{ areActiveRoutes(['profile', 'profile.password']) }}"
+                        href="{{ route('profile') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-user">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                         Profile</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                        Privacy</a>
-                </li>
+
             </ul>
         </div>
     </div>

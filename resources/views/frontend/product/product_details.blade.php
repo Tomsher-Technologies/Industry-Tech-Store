@@ -115,7 +115,7 @@
                                     <a class="ps-btn ps-btn--orange" href="#">Buy Now</a>
 
                                     <div class="ps-product__actions">
-                                        <a href="#">
+                                        <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" title="Add to wishlist">
                                             <i class="icon-heart"></i>
                                         </a>
                                     </div>
