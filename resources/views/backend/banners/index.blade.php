@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <th data-breakpoints="lg">Name</th>
-                                    <th data-breakpoints="lg">Image</th>
+                                    {{-- <th data-breakpoints="lg">Image</th> --}}
                                     {{-- <th data-breakpoints="lg">Banner Position</th> --}}
                                     <th data-breakpoints="lg">Link Type</th>
                                     <th data-breakpoints="lg">Status</th>
@@ -37,16 +37,6 @@
                                     <tr>
                                         <td>
                                            {{ $banner->name }} 
-                                        </td>
-                                        <td>
-                                            <div class="row gutters-5 w-200px w-md-300px mw-100">
-                                                @if ($banner->image)
-                                                    <div class="col-auto">
-                                                        <img src="{{ uploaded_asset($banner->image) }}" alt="Image"
-                                                            class="size-50px img-fit">
-                                                    </div>
-                                                @endif
-                                            </div>
                                         </td>
                                         <td>
                                             <span class="text-capitalize">{{ $banner->link_type }} </span>

@@ -13,8 +13,8 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Name</label>
                             <div class="col-md-9">
-                                <input type="text" placeholder="Name" value="{{ old('name') }}"
-                                    id="name" name="name" class="form-control" required>
+                                <input type="text" placeholder="Name" value="{{ old('name') }}" id="name"
+                                    name="name" class="form-control" required>
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
@@ -22,77 +22,23 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="signinSrEmail">
-                                Banner
-                                <small>(1300x650)</small>
-                            </label>
+                            <label class="col-md-3 col-form-label">Layout</label>
                             <div class="col-md-9">
-                                <div class="input-group" data-toggle="aizuploader" data-type="image">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                            Browse
-                                        </div>
-                                    </div>
-                                    <div class="form-control file-amount">Choose File</div>
-                                    <input value="{{ old('banner') }}" type="hidden" name="banner" class="selected-files"
-                                        required>
-                                </div>
-                                <div class="file-preview box sm">
-                                </div>
-                                @error('banner')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="signinSrEmail">
-                                Mobile Banner
-                                <small>(1300x650)</small>
-                            </label>
-                            <div class="col-md-9">
-                                <div class="input-group" data-toggle="aizuploader" data-type="image">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                            Browse
-                                        </div>
-                                    </div>
-                                    <div class="form-control file-amount">Choose File</div>
-                                    <input value="{{ old('mobile_banner') }}" type="hidden" name="mobile_banner"
-                                        class="selected-files" required>
-                                </div>
-                                <div class="file-preview box sm">
-                                </div>
-                                @error('mobile_banner')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Link Type</label>
-                            <div class="col-md-9">
-                                <select onchange="banner_form()" class="form-control aiz-selectpicker" name="link_type"
-                                    id="link_type" data-live-search="true" required>
-                                    <option {{ old('link_type') == 'external' ? 'selected' : '' }} value="external">External
-                                    </option>
-                                    <option {{ old('link_type') == 'product' ? 'selected' : '' }} value="product">Product</option>
-                                    <option {{ old('link_type') == 'category' ? 'selected' : '' }} value="category">Category</option>
+                                <select onchange="get_layout()" class="select2 form-control aiz-selectpicker" id="layout"
+                                    name="layout" data-toggle="select2" data-placeholder="Choose ..."
+                                    data-live-search="true">
+                                    @foreach ($layouts as $key => $layout)
+                                        <option value="{{ $key }}">{{ $layout['name'] }}</option>
+                                    @endforeach
                                 </select>
-                                @error('link_type')
+                                @error('layout')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        <div id="banner_form">
+                        <div id="layout_form">
                         </div>
-                        @error('link')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        @error('link_ref_id')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
 
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Status</label>
@@ -121,8 +67,18 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function() {
-            banner_form();
+            get_layout();
         });
+
+        function get_layout() {
+            var layout = $('#layout').val();
+            $.post('{{ route('banners.get_layout') }}', {
+                _token: '{{ csrf_token() }}',
+                layout_type: layout,
+            }, function(data) {
+                $('#layout_form').html(data);
+            });
+        }
 
         function banner_form() {
             var link_type = $('#link_type').val();

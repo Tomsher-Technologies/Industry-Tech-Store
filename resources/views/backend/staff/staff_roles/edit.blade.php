@@ -26,7 +26,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-from-label" for="name">{{translate('Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
                     <div class="col-md-9">
-                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" value="{{ $role->getTranslation('name', $lang) }}" required>
+                        <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" value="{{ $role->name }}" required>
                     </div>
                 </div>
                 <div class="card-header">

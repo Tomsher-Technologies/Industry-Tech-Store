@@ -13,6 +13,8 @@
 
 use App\Http\Controllers\AddonController;
 use App\Http\Controllers\Admin\AbandonedCartController;
+use App\Http\Controllers\Admin\Classifieds\CalssifiedsCategoryController;
+use App\Http\Controllers\Admin\Classifieds\CalssifiedsController;
 use App\Http\Controllers\Admin\Frontend\Bannercontroller;
 use App\Http\Controllers\Admin\Products\EnquiriesController;
 use App\Http\Controllers\AdminController;
@@ -52,6 +54,7 @@ use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Frontend\HomeSliderController;
 use App\Http\Controllers\Auth\LoginController;
+use Razorpay\Api\Resource;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
@@ -278,7 +281,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     //Reports
     Route::get('/stock_report', [ReportController::class, 'stock_report'])->name('stock_report.index');
-    Route::get('/in_house_sa le_report', [ReportController::class, 'in_house_sale_report'])->name('in_house_sale_report.index');
+    Route::get('/in_house_sale_report', [ReportController::class, 'in_house_sale_report'])->name('in_house_sale_report.index');
     // Route::get('/seller_sale_report', [ReportController::class, 'seller_sale_report'])->name('seller_sale_report.index');
     Route::get('/wish_report', [ReportController::class, 'wish_report'])->name('wish_report.index');
     Route::get('/user_search_report', [ReportController::class, 'user_search_report'])->name('user_search_report.index');
@@ -383,6 +386,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/all-notification', [NotificationController::class, 'index'])->name('admin.all-notification');
 
     Route::post('/banners/get_form', [Bannercontroller::class, 'get_form'])->name('banners.get_form');
+    Route::post('/banners/get_layout', [Bannercontroller::class, 'get_layout'])->name('banners.get_layout');
     Route::get('/banners/destroy/{banner}', [Bannercontroller::class, 'destroy'])->name('banners.destroy');
     Route::resource('banners', Bannercontroller::class)->except(['show', 'destroy']);
 
@@ -394,4 +398,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     // Cache
     Route::get('/cache-cache/{type?}', [AdminController::class, 'clearCache'])->name('cache.clear');
+
+    // Classifieds categories
+    Route::resource('classifides_categories', CalssifiedsCategoryController::class);
+    Route::resource('classifides', CalssifiedsController::class);
 });

@@ -29,7 +29,8 @@ class Bannercontroller extends Controller
      */
     public function create()
     {
-        return view('backend.banners.create');
+        $layouts = bannerLayouts();
+        return view('backend.banners.create', compact('layouts'));
     }
 
     /**
@@ -143,6 +144,13 @@ class Bannercontroller extends Controller
         Cache::forget('smallBanners');
         flash(translate('Banner has been deleted successfully'))->success();
         return redirect()->route('banners.index');
+    }
+
+    function get_layout(Request $request)
+    {
+        if ($request->layout_type) {
+            return view('backend.banners.layouts.' . $request->layout_type);
+        }
     }
 
     public function get_form(Request $request)

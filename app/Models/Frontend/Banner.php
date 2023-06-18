@@ -20,13 +20,4 @@ class Banner extends Model
         'link',
         'status',
     ];
-
-    public function mainImage()
-    {
-        return $this->hasOne(Upload::class, 'id', 'image');
-    }
-    public function mobileImage()
-    {
-        return $this->hasOne(Upload::class, 'id', 'mobile_image');
-    }
 }

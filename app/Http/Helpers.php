@@ -969,4 +969,99 @@ if (!function_exists('load_seo_tags')) {
         } else {
         }
     }
+
+    function bannerLayouts(): array
+    {
+        return [
+            'layout_1' => array(
+                'name' => 'Single image',
+                'no_images' => array(
+                    'img_1'
+                )
+            ),
+            'layout_2' => array(
+                'name' => 'Two equal image',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                )
+            ),
+            'layout_3' => array(
+                'name' => 'Three equal image',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                )
+            ),
+            'layout_4' => array(
+                'name' => 'Four equal image',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                    'img_4',
+                )
+            ),
+            'layout_6' => array(
+                'name' => 'Six equal image',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                    'img_4',
+                    'img_5',
+                    'img_6',
+                )
+            ),
+            'layout_12' => array(
+                'name' => 'Twelve equal image',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                    'img_4',
+                    'img_5',
+                    'img_6',
+                    'img_7',
+                    'img_8',
+                    'img_9',
+                    'img_10',
+                    'img_11',
+                    'img_12',
+                )
+            ),
+            'layout_2_1' => array(
+                'name' => '2, big - small',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                )
+            ),
+            'layout_2_2' => array(
+                'name' => '2, small - big',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                )
+            ),
+            'layout_3_1' => array(
+                'name' => '3, small - small - small',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                )
+            ),
+            'layout_4_1' => array(
+                'name' => '4, small - big/big - small',
+                'no_images' => array(
+                    'img_1',
+                    'img_2',
+                    'img_3',
+                    'img_4',
+                )
+            ),
+        ];
+    }
 }

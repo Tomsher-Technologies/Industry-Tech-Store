@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Coupon;
+use App\Models\Product;
 use App\Models\User;
 use Auth;
 
@@ -204,13 +205,7 @@ class CouponController extends Controller
     public function get_coupon_form(Request $request)
     {
         if ($request->coupon_type == "product_base") {
-            if (Auth::user()->user_type == 'seller') {
-                $products = filter_products(\App\Models\Product::where('user_id', Auth::user()->id))->get();
-            } else {
-                $admin_id = \App\Models\User::where('user_type', 'admin')->first()->id;
-                $products = filter_products(\App\Models\Product::where('user_id', $admin_id))->get();
-            }
-
+            $products = Product::wherePublished(1)->get();
             return view('partials.coupons.product_base_coupon', compact('products'));
         } elseif ($request->coupon_type == "cart_base") {
             return view('partials.coupons.cart_base_coupon');

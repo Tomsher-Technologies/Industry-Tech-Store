@@ -124,7 +124,7 @@
         }
 
         $('.slug_title').on('change', function() {
-            console.log($(this).val());
+            
             Livewire.emit('titleChanged', $(this).val())
         });
     </script>

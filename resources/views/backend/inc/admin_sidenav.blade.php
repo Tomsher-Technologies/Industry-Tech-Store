@@ -14,8 +14,7 @@
         <div class="aiz-side-nav-wrap">
             <div class="px-20px mb-3">
                 <input class="form-control bg-soft-secondary border-0 form-control-sm text-white" type="text"
-                    name="" placeholder="Search in menu" id="menu-search"
-                    onkeyup="menuSearch()">
+                    name="" placeholder="Search in menu" id="menu-search" onkeyup="menuSearch()">
             </div>
             <ul class="aiz-side-nav-list" id="search-menu">
             </ul>
@@ -173,8 +172,7 @@
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a class="aiz-side-nav-link" href="{{ route('wholesale_product_create.admin') }}">
-                                    <span
-                                        class="aiz-side-nav-text">Add New Wholesale Product</span>
+                                    <span class="aiz-side-nav-text">Add New Wholesale Product</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
@@ -186,15 +184,13 @@
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wholesale_products.in_house') }}"
                                     class="aiz-side-nav-link {{ areActiveRoutes(['wholesale_product_edit.admin']) }}">
-                                    <span
-                                        class="aiz-side-nav-text">In House Wholesale Products</span>
+                                    <span class="aiz-side-nav-text">In House Wholesale Products</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wholesale_products.seller') }}"
                                     class="aiz-side-nav-link {{ areActiveRoutes(['wholesale_product_edit.admin']) }}">
-                                    <span
-                                        class="aiz-side-nav-text">Seller Wholesale Products</span>
+                                    <span class="aiz-side-nav-text">Seller Wholesale Products</span>
                                 </a>
                             </li>
                         </ul>
@@ -349,9 +345,7 @@
                 @endif
 
                 <!-- Sellers -->
-                {{-- @if (
-                    (Auth::user()->user_type == 'admin' || in_array('9', json_decode(Auth::user()->staff->role->permissions))) &&
-                        get_setting('vendor_system_activation') == 1)
+                {{-- @if ((Auth::user()->user_type == 'admin' || in_array('9', json_decode(Auth::user()->staff->role->permissions))) && get_setting('vendor_system_activation') == 1)
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user aiz-side-nav-icon"></i>
@@ -419,6 +413,31 @@
                         </a>
                     </li>
                 @endif
+
+                @if (Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-file-alt aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">Classifieds Listing</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('classifides.index') }}"
+                                    class="aiz-side-nav-link {{ areActiveRoutes(['classifides.index']) }}">
+                                    <span class="aiz-side-nav-text">Classifieds</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('classifides_categories.index') }}"
+                                    class="aiz-side-nav-link {{ areActiveRoutes(['classifides_categories.index']) }}">
+                                    <span class="aiz-side-nav-text">Classifieds Category</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 <!-- Reports -->
                 @if (Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
@@ -613,14 +632,12 @@
                             <ul class="aiz-side-nav-list level-2">
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('affiliate.configs') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Affiliate Registration Form</span>
+                                        <span class="aiz-side-nav-text">Affiliate Registration Form</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('affiliate.index') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Affiliate Configurations</span>
+                                        <span class="aiz-side-nav-text">Affiliate Configurations</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
@@ -636,8 +653,7 @@
                                 </li>
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('affiliate.withdraw_requests') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Affiliate Withdraw Requests</span>
+                                        <span class="aiz-side-nav-text">Affiliate Withdraw Requests</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
@@ -666,23 +682,20 @@
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('manual_payment_methods.index') }}"
                                         class="aiz-side-nav-link {{ areActiveRoutes(['manual_payment_methods.index', 'manual_payment_methods.create', 'manual_payment_methods.edit']) }}">
-                                        <span
-                                            class="aiz-side-nav-text">Manual Payment Methods</span>
+                                        <span class="aiz-side-nav-text">Manual Payment Methods</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('offline_wallet_recharge_request.index') }}"
                                         class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Offline Wallet Recharge</span>
+                                        <span class="aiz-side-nav-text">Offline Wallet Recharge</span>
                                     </a>
                                 </li>
                                 @if (get_setting('classified_product') == 1)
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('offline_customer_package_payment_request.index') }}"
                                             class="aiz-side-nav-link">
-                                            <span
-                                                class="aiz-side-nav-text">Offline Customer Package Payments</span>
+                                            <span class="aiz-side-nav-text">Offline Customer Package Payments</span>
                                         </a>
                                     </li>
                                 @endif
@@ -690,8 +703,7 @@
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('offline_seller_package_payment_request.index') }}"
                                             class="aiz-side-nav-link">
-                                            <span
-                                                class="aiz-side-nav-text">Offline Seller Package Payments</span>
+                                            <span class="aiz-side-nav-text">Offline Seller Package Payments</span>
                                             @if (env('DEMO_MODE') == 'On')
                                                 <span class="badge badge-inline badge-danger">Addon</span>
                                             @endif
@@ -718,8 +730,7 @@
                             <ul class="aiz-side-nav-list level-2">
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('paytm.index') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Set Asian PG Credentials</span>
+                                        <span class="aiz-side-nav-text">Set Asian PG Credentials</span>
                                     </a>
                                 </li>
                             </ul>
@@ -742,8 +753,7 @@
                             <ul class="aiz-side-nav-list level-2">
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('club_points.configs') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Club Point Configurations</span>
+                                        <span class="aiz-side-nav-text">Club Point Configurations</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
@@ -801,8 +811,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="#" class="aiz-side-nav-link">
                                 <i class="las la-phone aiz-side-nav-icon"></i>
-                                <span
-                                    class="aiz-side-nav-text">African Payment Gateway Addon</span>
+                                <span class="aiz-side-nav-text">African Payment Gateway Addon</span>
                                 @if (env('DEMO_MODE') == 'On')
                                     <span class="badge badge-inline badge-danger">Addon</span>
                                 @endif
@@ -811,14 +820,12 @@
                             <ul class="aiz-side-nav-list level-2">
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('african.configuration') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">African PG Configurations</span>
+                                        <span class="aiz-side-nav-text">African PG Configurations</span>
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
                                     <a href="{{ route('african_credentials.index') }}" class="aiz-side-nav-link">
-                                        <span
-                                            class="aiz-side-nav-text">Set African PG Credentials</span>
+                                        <span class="aiz-side-nav-text">Set African PG Credentials</span>
                                     </a>
                                 </li>
                             </ul>
@@ -830,7 +837,7 @@
                 @if (Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#"
-                            class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header','banners.*']) }}">
+                            class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header', 'banners.*']) }}">
                             <i class="las la-desktop aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">Website Setup</span>
                             <span class="aiz-side-nav-arrow"></span>
@@ -859,12 +866,14 @@
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('home-slider.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['home-slider.index','home-slider.create','home-slider.edit']) }}">
+                                <a href="{{ route('home-slider.index') }}"
+                                    class="aiz-side-nav-link {{ areActiveRoutes(['home-slider.index', 'home-slider.create', 'home-slider.edit']) }}">
                                     <span class="aiz-side-nav-text">Home Page Sliders</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('banners.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['banners.index','banners.create','banners.edit']) }}">
+                                <a href="{{ route('banners.index') }}"
+                                    class="aiz-side-nav-link {{ areActiveRoutes(['banners.index', 'banners.create', 'banners.edit']) }}">
                                     <span class="aiz-side-nav-text">Banners</span>
                                 </a>
                             </li>
@@ -928,8 +937,7 @@
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">
-                                    <span
-                                        class="aiz-side-nav-text">File System & Cache Configuration</span>
+                                    <span class="aiz-side-nav-text">File System & Cache Configuration</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
@@ -951,8 +959,7 @@
                                     </li>
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">
-                                            <span
-                                                class="aiz-side-nav-text">Facebook Comment</span>
+                                            <span class="aiz-side-nav-text">Facebook Comment</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -971,8 +978,7 @@
                                     </li>
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
-                                            <span
-                                                class="aiz-side-nav-text">Google reCAPTCHA</span>
+                                            <span class="aiz-side-nav-text">Google reCAPTCHA</span>
                                         </a>
                                     </li>
                                     <li class="aiz-side-nav-item">
@@ -1000,15 +1006,13 @@
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('shipping_configuration.index') }}"
                                             class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index', 'shipping_configuration.edit', 'shipping_configuration.update']) }}">
-                                            <span
-                                                class="aiz-side-nav-text">Shipping Configuration</span>
+                                            <span class="aiz-side-nav-text">Shipping Configuration</span>
                                         </a>
                                     </li>
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('countries.index') }}"
                                             class="aiz-side-nav-link {{ areActiveRoutes(['countries.index', 'countries.edit', 'countries.update']) }}">
-                                            <span
-                                                class="aiz-side-nav-text">Shipping Countries</span>
+                                            <span class="aiz-side-nav-text">Shipping Countries</span>
                                         </a>
                                     </li>
                                     <li class="aiz-side-nav-item">

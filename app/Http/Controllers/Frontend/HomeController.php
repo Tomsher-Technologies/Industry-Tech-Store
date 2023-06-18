@@ -40,6 +40,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        dd("Home");
+
         $sliders = Cache::rememberForever('homeSlider', function () {
             return HomeSlider::whereStatus(1)->with(['mainImage', 'mobileImage'])->orderBy('sort_order')->get();
         });
