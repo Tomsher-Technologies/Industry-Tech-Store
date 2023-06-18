@@ -913,6 +913,7 @@
     });
 
 
+
     $('#newsletter').on('submit', function (e) {
         e.preventDefault();
         var formData = $('#newsletter').serializeArray();
@@ -938,6 +939,53 @@
                 $('.newsletter_notice').show();
             }
         });
+    });
+
+
+    var correctValue = function (min, max, value) {
+        var checkMin = min != null && !isNaN(0 + min);
+        var checkMax = max != null && !isNaN(0 + max);
+        if (value > max && checkMax) {
+            return max;
+        }
+        if (value < min && checkMin) {
+            return min;
+        }
+        return value;
+    }
+
+    $('.quantity-input').on('blur', function () {
+        var current = $(this).val();
+        var min = $(this).data('min');
+        var max = $(this).data('max');
+        $(this).val( correctValue(min,max,current) );
+    });
+
+    function changeQuantity(that, action) {
+        var inputField = $(that).siblings('.quantity-input')[0];
+        var current = inputField.value;
+        var min = $(inputField).data('min');
+        var max = $(inputField).data('max');
+
+        if (action == 1) {
+            if (current < max) {
+                inputField.value = parseInt(inputField.value) + 1;
+            }
+        } else {
+            if (min < current) {
+                inputField.value = parseInt(inputField.value) - 1;
+            }
+        }
+
+        // inputField.value = correctValue(min,max,current);
+    }
+
+    $('.quantity-plus').on('click', function () {
+        changeQuantity($(this), 1)
+    });
+
+    $('.quantity-minus').on('click', function () {
+        changeQuantity($(this), 2)
     });
 
 })(jQuery);

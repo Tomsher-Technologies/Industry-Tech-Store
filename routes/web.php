@@ -106,13 +106,13 @@ Route::get('/shop/{slug}', [HomeController::class, 'shop'])->name('shop.visit');
 Route::get('/shop/{slug}/{type}', [HomeController::class, 'filter_shop'])->name('shop.visit.type');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/show-cart-modal', [CartController::class, 'showCartModal'])->name('cart.showCartModal');
+// Route::post('/cart/show-cart-modal', [CartController::class, 'showCartModal'])->name('cart.showCartModal');
 Route::post('/cart/addtocart', [CartController::class, 'addToCart'])->name('cart.addToCart');
-Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
-Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+// Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+// Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 //Checkout Routes
-Route::group(['prefix' => 'checkout', 'middleware' => ['user', 'verified', 'unbanned']], function () {
+Route::group(['prefix' => 'checkout', 'middleware' => ['user']], function () {
     Route::get('/', [CheckoutController::class, 'get_shipping_info'])->name('checkout.shipping_info');
     Route::any('/delivery_info', [CheckoutController::class, 'store_shipping_info'])->name('checkout.store_shipping_infostore');
     Route::post('/payment_select', [CheckoutController::class, 'store_delivery_info'])->name('checkout.store_delivery_info');
@@ -189,21 +189,26 @@ Route::group(['middleware' => ['user']], function () {
     Route::resource('wishlists', WishlistController::class);
     Route::post('/wishlists/remove', [WishlistController::class, 'remove'])->name('wishlists.remove');
 
-    Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
-    Route::post('/recharge', [WalletController::class, 'recharge'])->name('wallet.recharge');
+    // Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+    // Route::post('/recharge', [WalletController::class, 'recharge'])->name('wallet.recharge');
 
     Route::resource('support_ticket', 'SupportTicketController');
     Route::post('support_ticket/reply', [SupportTicketController::class, 'seller_store'])->name('support_ticket.seller_store');
 
-    Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
-    Route::resource('customer_products', 'CustomerProductController');
-    Route::get('/customer_products/{id}/edit', [CustomerProductController::class, 'edit'])->name('customer_products.edit');
-    Route::post('/customer_products/published', [CustomerProductController::class, 'updatePublished'])->name('customer_products.published');
-    Route::post('/customer_products/status', [CustomerProductController::class, 'updateStatus'])->name('customer_products.update.status');
+    // Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
+    // Route::resource('customer_products', 'CustomerProductController');
+    // Route::get('/customer_products/{id}/edit', [CustomerProductController::class, 'edit'])->name('customer_products.edit');
+    // Route::post('/customer_products/published', [CustomerProductController::class, 'updatePublished'])->name('customer_products.published');
+    // Route::post('/customer_products/status', [CustomerProductController::class, 'updateStatus'])->name('customer_products.update.status');
 
-    Route::get('digital_purchase_history', [PurchaseHistoryController::class, 'digital_index'])->name('digital_purchase_history.index');
+    // Route::get('digital_purchase_history', [PurchaseHistoryController::class, 'digital_index'])->name('digital_purchase_history.index');
 
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
+
+    Route::resource('addresses', AddressController::class);
+    Route::post('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::get('/addresses/destroy/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('/addresses/set_default', [AddressController::class, 'set_default'])->name('addresses.set_default');
 });
 
 Route::get('/customer_products/destroy/{id}', [CustomerProductController::class, 'destroy'])->name('customer_products.destroy');
@@ -307,10 +312,6 @@ Route::post('/get-city', [CityController::class, 'get_city'])->name('get-city');
 //Address
 Route::post('/get-states', [AddressController::class, 'getStates'])->name('get-state');
 Route::post('/get-cities', [AddressController::class, 'getCities'])->name('get-city');
-Route::resource('addresses', AddressController::class);
-Route::post('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
-Route::get('/addresses/destroy/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
-Route::get('/addresses/set_default/{id}', [AddressController::class, 'set_default'])->name('addresses.set_default');
 
 //payhere below
 Route::get('/payhere/checkout/testing', [PayhereController::class, 'checkout_testing'])->name('payhere.checkout.testing');

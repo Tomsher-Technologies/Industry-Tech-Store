@@ -39,8 +39,7 @@
 
     @auth
     <meta property="user" content="{{ auth()->user()->id }}" />
-    <meta property="user" content="{{ auth()->user()->email }}" />
-     @endauth
+    <meta property="user" content="{{ auth()->user()->email }}" /> @endauth
 
     <!-- Favicon -->
     <link rel="icon"
@@ -120,6 +119,8 @@
 
         <script src="{{ frontendAsset('plugins/jquery.min.js') }}"></script>
 
+        @livewireStyles
+
         @yield('header')
 
 </head>
@@ -164,11 +165,14 @@
             routes: {
                 prodcut_quick_view: "{{ route('product.quick_view') }}",
                 newsletter: "{{ route('subscribers.store') }}",
-                wishlist_ad: "{{ route('wishlists.store') }}",
+                wishlist_add: "{{ route('wishlists.store') }}",
+                cart_add: "{{ route('cart.addToCart') }}",
             },
             csrf: "{{ csrf_token() }}",
         };
     </script>
+
+    @livewireScripts
 
 </body>
 

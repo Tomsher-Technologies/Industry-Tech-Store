@@ -14,6 +14,7 @@ use App\Models\Attribute;
 use App\Models\AttributeCategory;
 use App\Utility\CategoryUtility;
 use Cache;
+use Session;
 
 class SearchController extends Controller
 {

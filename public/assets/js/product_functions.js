@@ -20,17 +20,41 @@ function productQuickView($id) {
     }
 }
 
+function addToCart(slug, qty = 1) {
+    $.ajax({
+        type: "POST",
+        url: config.routes.cart_add,
+        data: {
+            'slug': slug,
+            'quantity': qty,
+            '_token': config.csrf
+        },
+        success: function (data, status, xhr) {
+            console.log(data);
+            if (xhr.status == 200) {
+                alert(data.message);
+                $('.headerCartCount').html(data.count)
+                Livewire.emit('cartUpdated')
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status == 404) {
+                alert('Something went wrong, please try again');
+            }
+        },
+    });
+}
 
 function addToWishList(slug) {
     $.ajax({
         type: "POST",
-        url: config.routes.wishlist_ad,
+        url: config.routes.wishlist_add,
         data: {
             'slug': slug,
             '_token': config.csrf
         },
         success: function (data, status, xhr) {
-            if(xhr.status == 200){
+            if (xhr.status == 200) {
                 alert(data.message);
                 $('.headerWishlistCount').html(data.count)
             }
@@ -128,3 +152,7 @@ function owlCarouselConfig2() {
         });
     }
 }
+
+window.addEventListener('updateCartCount', event => {
+    $('.headerCartCount').html(event.detail.count);
+})

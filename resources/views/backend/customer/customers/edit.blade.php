@@ -22,8 +22,8 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Name</label>
                             <div class="col-md-9">
-                                <input type="text" placeholder="Name" id="name" name="name"
-                                    class="form-control" value="{{ $customer->name }}" required>
+                                <input type="text" placeholder="Name" id="name" name="name" class="form-control"
+                                    value="{{ $customer->name }}" required>
                             </div>
                         </div>
 
@@ -100,6 +100,10 @@
                                 <div class="col-lg-6">
                                     <div class="border p-3 pr-5 rounded mb-3 position-relative">
                                         <div>
+                                            <span class="w-50 fw-600">Name:</span>
+                                            <span class="ml-2">{{ $address->name }}</span>
+                                        </div>
+                                        <div>
                                             <span class="w-50 fw-600">Address:</span>
                                             <span class="ml-2">{{ $address->address }}</span>
                                         </div>
@@ -125,8 +129,7 @@
                                         </div>
                                         @if ($address->set_default)
                                             <div class="position-absolute right-0 bottom-0 pr-2 pb-3">
-                                                <span
-                                                    class="badge badge-inline badge-primary">Default</span>
+                                                <span class="badge badge-inline badge-primary">Default</span>
                                             </div>
                                         @endif
                                         <div class="dropdown position-absolute right-0 top-0">
@@ -140,10 +143,11 @@
                                                 </a>
                                                 @if (!$address->set_default)
                                                     <a class="dropdown-item"
-                                                        href="{{ route('admin.addresses.set_default', [$customer, $address->id]) }}">Make This Default</a>
+                                                        href="{{ route('admin.addresses.set_default', [$customer, $address->id]) }}">Make
+                                                        This Default</a>
                                                 @endif
                                                 <a class="dropdown-item"
-                                                    href="{{ route('addresses.destroy', $address->id) }}">Delete</a>
+                                                    href="{{ route('admin.addresses.destroy', [$customer, $address->id]) }}">Delete</a>
                                             </div>
                                         </div>
                                     </div>
@@ -187,8 +191,7 @@
                                     <label>Address</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address"
-                                        required></textarea>
+                                    <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address" required></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -198,8 +201,7 @@
                                 <div class="col-md-10">
                                     <div class="mb-3">
                                         <select class="form-control aiz-selectpicker" data-live-search="true"
-                                            data-placeholder="Select your country" name="country_id"
-                                            required>
+                                            data-placeholder="Select your country" name="country_id" required>
                                             <option value="">Select your country</option>
                                             @foreach ($country as $key => $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -271,9 +273,8 @@
                                     <label>Postal code</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3"
-                                        placeholder="Your Postal Code" name="postal_code"
-                                        value="" required>
+                                    <input type="text" class="form-control mb-3" placeholder="Your Postal Code"
+                                        name="postal_code" value="" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -281,8 +282,8 @@
                                     <label>Phone</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3"
-                                        placeholder="+880" name="phone" value="" required>
+                                    <input type="text" class="form-control mb-3" placeholder="+880" name="phone"
+                                        value="" required>
                                 </div>
                             </div>
                             <div class="form-group text-right">

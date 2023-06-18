@@ -141,6 +141,9 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/customers/destroy/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::post('/bulk-customer-delete', [CustomerController::class, 'bulk_customer_delete'])->name('bulk-customer-delete');
 
+    Route::post('/addresses/add/{customer}', [CustomerController::class, 'create_address'])->name('admin.addresses.create');
+    Route::post('/addresses/update/{customer}/{id}', [CustomerController::class, 'update_address'])->name('admin.addresses.update');
+    Route::get('/addresses/destroy/{customer}/{id}', [CustomerController::class, 'delete_address'])->name('admin.addresses.destroy');
     Route::get('/addresses/set_default/{customer}/{id}', [CustomerController::class, 'address_set_default'])->name('admin.addresses.set_default');
 
     Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletters.index');

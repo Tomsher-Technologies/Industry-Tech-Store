@@ -54,9 +54,10 @@
                             <figure>
                                 <h4 class="widget-title">Search</h4>
                                 <div class="ps-form--widget-search ">
-                                    <input name="keyword" class="form-control" type="text" value="{{ $query }}"
+                                    <label for="sidebar-search" class="d-none">Search</label>
+                                    <input id="sidebar-search" name="keyword" class="form-control" type="text" value="{{ $query }}"
                                         placeholder="">
-                                    <button><i class="icon-magnifier"></i></button>
+                                    <button aria-label="Search"><i class="icon-magnifier"></i></button>
                                 </div>
                             </figure>
                             <figure class="ps-custom-scrollbar" data-height="250">
@@ -126,9 +127,8 @@
                                 </div>
                                 <div class="ps-checkbox">
                                     <input class="form-control" type="checkbox" id="review-5" name="review">
-                                    <label for="review-5"><span><i class="fa fa-star rate"></i><i
+                                    <label for="review-5"><span><i class="fa fa-star rate"></i><i class="fa fa-star"></i><i
                                                 class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                                class="fa fa-star"></i><i
                                                 class="fa fa-star"></i></span><small>(1)</small></label>
                                 </div>
                             </figure>
@@ -186,14 +186,20 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <div class="list-group"><a class="list-group-item list-group-item-action" href="#">Sort
-                                    by</a><a class="list-group-item list-group-item-action" href="#">Sort by average
-                                    rating</a><a class="list-group-item list-group-item-action" href="#">Sort by
-                                    latest</a><a class="list-group-item list-group-item-action" href="#">Sort by
-                                    price: low to
-                                    high</a><a class="list-group-item list-group-item-action" href="#">Sort by
-                                    price: high to low</a><a class="list-group-item list-group-item-action text-center"
-                                    href="#" data-dismiss="modal"><strong>Close</strong></a></div>
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-action" href="#">Sort by</a>
+                                <a class="list-group-item list-group-item-action" href="#">Sort by average
+                                    rating</a>
+                                <a class="list-group-item list-group-item-action" href="#">Sort by latest</a>
+                                <a class="list-group-item list-group-item-action" href="#">Sort by price: low to
+                                    high</a>
+                                <a class="list-group-item list-group-item-action" href="#">Sort by price: high to
+                                    low</a>
+                                <a class="list-group-item list-group-item-action text-center" href="#"
+                                    data-dismiss="modal">
+                                    <strong>Close</strong>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

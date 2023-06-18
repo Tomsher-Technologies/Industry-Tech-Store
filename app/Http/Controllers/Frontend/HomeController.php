@@ -21,6 +21,7 @@ use App\Models\Coupon;
 use Cookie;
 use Illuminate\Support\Str;
 use App\Mail\SecondEmailVerifyMailManager;
+use App\Models\Address;
 use App\Models\AffiliateConfig;
 use App\Models\Frontend\Banner;
 use App\Models\Frontend\HomeSlider;
@@ -179,24 +180,20 @@ class HomeController extends Controller
     public function dashboard()
     {
         if (Auth::user()->user_type == 'customer') {
-
             $orders = Auth::user()->orders()->get();
             $total_orders = $orders->where('delivery_status', 'delivered')->count();
             $pending_orders = $orders->where('delivery_status', 'pending')->count();
 
-            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders'));
+            $default_address = Address::whereUserId(Auth::id())->whereSetDefault(1)->with([
+                'country',
+                'state',
+                'city',
+            ])->first();
+
+            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders', 'default_address'));
         } else {
             abort(404);
         }
-        // if (Auth::user()->user_type == 'seller') {
-        //     return view('frontend.user.seller.dashboard');
-        // } elseif (Auth::user()->user_type == 'customer') {
-        //     return view('frontend.user.dashboard');
-        // } elseif (Auth::user()->user_type == 'delivery_boy') {
-        //     return view('delivery_boys.frontend.dashboard');
-        // } else {
-        //     abort(404);
-        // }
     }
 
     public function profile(Request $request)
@@ -348,7 +345,7 @@ class HomeController extends Controller
 
     public function product(Request $request, $slug)
     {
-        $product = Product::with('reviews', 'brand', 'reviews', 'seo', 'category', 'tabs')->where('slug', $slug)->firstOrFail();
+        $product = Product::with('reviews', 'brand', 'reviews', 'seo', 'category', 'tabs', 'stocks')->where('slug', $slug)->firstOrFail();
         $gallery = Upload::whereIn('id', explode(',', $product->photos))->get();
         load_seo_tags($product->seo);
         return view('frontend.product.product_details', compact('product', 'gallery'));

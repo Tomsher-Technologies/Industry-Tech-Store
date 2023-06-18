@@ -52,12 +52,15 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center" data-label="actions-add">
-                                                    <a class="ps-btn" href="checkout.html">Add to cart</a>
+                                                    <a class="ps-btn" title="Add to cart" data-loop-id={{ $key }}
+                                                        href="javascript:void(0)"
+                                                        onclick="moveToCart(this,'{{ $wishlist->product->slug }}')">Add to
+                                                        cart</a>
                                                 </td>
                                                 <td class="text-center" data-label="Actions">
-                                                    <button data-loop-id={{ $key }}
-                                                        data-list-id={{ $wishlist->id }} class="wishlistRemove"><i
-                                                            class="icon-cross"></i></button>
+                                                    <button id="wishlistRemove{{ $key }}"
+                                                        data-loop-id={{ $key }} data-list-id={{ $wishlist->id }}
+                                                        class="wishlistRemove"><i class="icon-cross"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -88,6 +91,15 @@
     </style>
 @endsection
 @section('script')
+    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
+    <script>
+        function moveToCart(that, slug) {
+            loop_id = $(that).data('loop-id');
+            addToCart(slug);
+            $('#wishlistRemove' + loop_id).trigger('click');
+        }
+    </script>
+
     <script>
         $('.wishlistRemove').on('click', function() {
             loop_id = $(this).data('loop-id');

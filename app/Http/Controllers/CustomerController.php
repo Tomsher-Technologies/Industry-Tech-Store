@@ -191,17 +191,32 @@ class CustomerController extends Controller
         return back();
     }
 
+
+    public function create_address($user_id)
+    {
+    }
+
+    public function delete_address($user_id, $id)
+    {
+        Address::where([
+            'id' => $id,
+            'user_id' => $user_id
+        ])->delete();
+
+        flash('Address deleted.')->success();
+        return back();
+    }
+
+    public function update_address($user_id, $id)
+    {
+    }
+
     public function address_set_default($user_id, $id)
     {
-
         Address::where('user_id', $user_id)->update([
             'set_default' => 0
         ]);
 
-        // foreach (Auth::user()->addresses as $key => $address) {
-        //     $address->set_default = 0;
-        //     $address->save();
-        // }
         $address = Address::findOrFail($id);
         $address->set_default = 1;
         $address->save();

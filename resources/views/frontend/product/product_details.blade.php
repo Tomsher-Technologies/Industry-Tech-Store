@@ -104,11 +104,11 @@
                                     <figure>
                                         <figcaption>Quantity</figcaption>
                                         <div class="form-group--number">
-                                            <button class="up"><i class="fa fa-plus"></i></button>
-                                            <button class="down">
+                                            <button class="up quantity-plus"><i class="fa fa-plus"></i></button>
+                                            <button class="down quantity-minus">
                                                 <i class="fa fa-minus"></i>
                                             </button>
-                                            <input class="form-control" type="text" placeholder="1" />
+                                            <input class="form-control quantity-input" data-min="{{ $product->min_qty ?? 1 }}" data-max="{{ $product->stocks->first()->qty }}" type="number" value="{{ $product->min_qty ?? 1 }}" />
                                         </div>
                                     </figure>
                                     <a class="ps-btn" href="#">Add to cart</a>
@@ -145,7 +145,6 @@
                                             @endforeach
                                         </p>
                                     @endif
-
 
                                 </div>
                                 <div class="ps-product__sharing">
@@ -245,12 +244,9 @@
                                 @if ($product->reviews->count())
                                     <div class="ps-tab" id="tab-reviews">
                                         <div class="row">
-
-
                                             @php
                                                 $total_rating = $product->reviews->sum('rating') / $product->reviews->count();
                                             @endphp
-
                                             <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
                                                 <div class="ps-block--average-rating">
                                                     <div class="ps-block__header">
@@ -326,8 +322,6 @@
     </div>
 @endsection
 @section('header')
-    @livewireScripts
-    @livewireStyles
 @endsection
 @push('scripts')
     <script src="{{ frontendAsset('js/product_functions.js') }}"></script>

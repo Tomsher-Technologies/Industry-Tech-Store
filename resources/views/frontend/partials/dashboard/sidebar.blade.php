@@ -25,16 +25,19 @@
                         </svg> DashBoard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('purchase_history.index') }}" class="nav-link {{ areActiveRoutes(['purchase_history.index','purchase_history.details']) }}"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
+                    <a href="{{ route('purchase_history.index') }}"
+                        class="nav-link {{ areActiveRoutes(['purchase_history.index', 'purchase_history.details']) }}"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-shopping-bag">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <path d="M16 10a4 4 0 0 1-8 0"></path>
                         </svg>Order</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('wishlists.index') }}" class="nav-link {{ areActiveRoutes(['wishlists.index']) }}">
+                    <a href="{{ route('wishlists.index') }}"
+                        class="nav-link {{ areActiveRoutes(['wishlists.index']) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="feather feather-heart">
@@ -46,9 +49,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin">
+                    <a class="nav-link {{ areActiveRoutes(['addresses.index']) }}" href="{{ route('addresses.index') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-map-pin">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                         </svg>

@@ -13,7 +13,7 @@
 
         <ul class="ps-product__actions">
             <li>
-                <a href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})" data-toggle="tooltip"
+                <a href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')" data-toggle="tooltip"
                     data-placement="top" title="Add To Cart">
                     <i class="icon-bag2"></i>
                 </a>

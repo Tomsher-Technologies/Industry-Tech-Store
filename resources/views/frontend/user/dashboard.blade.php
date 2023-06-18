@@ -76,7 +76,7 @@
                                         <div class="row g-4">
                                             <div class="col-xxl-12">
                                                 <div class="dashboard-contant-title">
-                                                    <h4>Contact Information 
+                                                    <h4>Contact Information
                                                         <a href="{{ route('profile') }}">Edit</a>
                                                     </h4>
                                                 </div>
@@ -96,8 +96,37 @@
                                                     <div class="col-xxl-12">
                                                         <div class="dashboard-detail">
                                                             <h6 class="text-content">Default Shipping Address</h6>
-                                                            <h6 class="text-content">You have not set a default shipping
-                                                                address.</h6>
+
+                                                            @if ($default_address)
+                                                                <h6 class="text-content">
+                                                                    @isset($default_address->name)
+                                                                        {{ $default_address->name }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->address)
+                                                                        {{ $default_address->address }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->country->name)
+                                                                        {{ $default_address->country->name }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->city->name)
+                                                                        {{ $default_address->city->name }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->state->name)
+                                                                        {{ $default_address->state->name }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->postal_code)
+                                                                        {{ $default_address->postal_code }} <br>
+                                                                    @endisset
+                                                                    @isset($default_address->phone)
+                                                                        {{ $default_address->phone }} <br>
+                                                                    @endisset
+                                                                </h6>
+                                                            @else
+                                                                <h6 class="text-content">You have not set a default shipping
+                                                                    address.</h6>
+                                                            @endif
+
+
                                                             <a href="javascript:void(0)" data-bs-toggle="modal"
                                                                 data-bs-target="#editProfile">Edit Address</a>
                                                         </div>

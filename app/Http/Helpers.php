@@ -16,6 +16,7 @@ use App\Models\Wallet;
 use App\Models\CombinedOrder;
 use App\Models\User;
 use App\Models\Addon;
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Wishlist;
@@ -972,6 +973,16 @@ if (!function_exists('load_seo_tags')) {
         }
     }
 
+    function getTempUserId()
+    {
+        if (Session::has('temp_user_id')) {
+            $user_id = Session::get('temp_user_id');
+        } else {
+            $user_id = bin2hex(random_bytes(10));
+            Session::put('temp_user_id', $user_id);
+        }
+        return $user_id;
+    }
 
     function getAllCategories()
     {
@@ -989,6 +1000,19 @@ if (!function_exists('load_seo_tags')) {
         }
 
         return 0;
+    }
+
+    function cartCount(): int
+    {
+        if (Auth::check()) {
+            return Cache::remember('user_cart_count_' . Auth::id(), '3600', function () {
+                return Cart::where('user_id', Auth::user()->id)->count();
+            });
+        } else {
+            return Cache::remember('user_cart_count_' . getTempUserId(), '3600', function () {
+                return Cart::where('temp_user_id', getTempUserId())->count();
+            });
+        }
     }
 
     function formatDate($date): String
@@ -1031,4 +1055,11 @@ if (!function_exists('load_seo_tags')) {
     {
         return Str::title(str_replace('_', ' ', $status));
     }
+
+    // function echoIfSet($string, $br = false)
+    // {
+    //     if ($string) {
+    //         return 
+    //     }
+    // }
 }
