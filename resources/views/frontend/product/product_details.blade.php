@@ -108,14 +108,19 @@
                                             <button class="down quantity-minus">
                                                 <i class="fa fa-minus"></i>
                                             </button>
-                                            <input class="form-control quantity-input" data-min="{{ $product->min_qty ?? 1 }}" data-max="{{ $product->stocks->first()->qty }}" type="number" value="{{ $product->min_qty ?? 1 }}" />
+                                            <input class="form-control quantity-input"
+                                                data-min="{{ $product->min_qty ?? 1 }}"
+                                                data-max="{{ $product->stocks->first()->qty }}" type="number"
+                                                value="{{ $product->min_qty ?? 1 }}" />
                                         </div>
                                     </figure>
-                                    <a class="ps-btn" href="#">Add to cart</a>
+                                    <a class="ps-btn" href="javascript:void(0)"
+                                        onclick="addCart('{{ $product->slug }}')">Add to cart</a>
                                     <a class="ps-btn ps-btn--orange" href="#">Buy Now</a>
 
                                     <div class="ps-product__actions">
-                                        <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" title="Add to wishlist">
+                                        <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')"
+                                            title="Add to wishlist">
                                             <i class="icon-heart"></i>
                                         </a>
                                     </div>
@@ -326,6 +331,11 @@
 @push('scripts')
     <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
     <script>
+        function addCart(slug) {
+            count = parseInt($('.quantity-input').val());
+            addToCart(slug, count);
+        }
+
         function getParts() {
             // Same brand
             $.post('{{ route('product.details.same_brand') }}', {

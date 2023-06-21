@@ -167,6 +167,7 @@
                 newsletter: "{{ route('subscribers.store') }}",
                 wishlist_add: "{{ route('wishlists.store') }}",
                 cart_add: "{{ route('cart.addToCart') }}",
+                cart_remove: "{{ route('cart.removeFromCart') }}",
             },
             csrf: "{{ csrf_token() }}",
         };
@@ -174,6 +175,12 @@
 
     @livewireScripts
 
+    <script>
+        window.addEventListener('updateCartCount', event => {
+            console.log(event.detail.count);
+            $('.headerCartCount').html(event.detail.count);
+        })
+    </script>
 </body>
 
 </html>

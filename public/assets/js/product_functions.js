@@ -30,7 +30,6 @@ function addToCart(slug, qty = 1) {
             '_token': config.csrf
         },
         success: function (data, status, xhr) {
-            console.log(data);
             if (xhr.status == 200) {
                 alert(data.message);
                 $('.headerCartCount').html(data.count)
@@ -152,7 +151,3 @@ function owlCarouselConfig2() {
         });
     }
 }
-
-window.addEventListener('updateCartCount', event => {
-    $('.headerCartCount').html(event.detail.count);
-})

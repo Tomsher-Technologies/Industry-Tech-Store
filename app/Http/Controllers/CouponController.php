@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Coupon;
+use App\Models\Product;
 use App\Models\User;
 use Auth;
 
@@ -17,7 +18,7 @@ class CouponController extends Controller
      */
     public function index()
     {
-        $coupons = Coupon::where('user_id', User::where('user_type', 'admin')->first()->id)->orderBy('id', 'desc')->get();
+        $coupons = Coupon::orderBy('id', 'desc')->get();
         return view('backend.marketing.coupons.index', compact('coupons'));
     }
 
@@ -56,7 +57,7 @@ class CouponController extends Controller
         }
 
         $coupon = new Coupon;
-        $coupon->user_id = User::where('user_type', 'admin')->first()->id;
+        // $coupon->user_id = User::where('user_type', 'admin')->first()->id;
         $coupon = $this->setCouponData($request, $coupon);
         $coupon->save();
 
@@ -72,7 +73,7 @@ class CouponController extends Controller
         }
 
         $coupon = new Coupon;
-        $coupon->user_id = Auth::user()->id;
+        // $coupon->user_id = Auth::user()->id;
         $coupon = $this->setCouponData($request, $coupon);
         $coupon->save();
 
@@ -204,13 +205,7 @@ class CouponController extends Controller
     public function get_coupon_form(Request $request)
     {
         if ($request->coupon_type == "product_base") {
-            if (Auth::user()->user_type == 'seller') {
-                $products = filter_products(\App\Models\Product::where('user_id', Auth::user()->id))->get();
-            } else {
-                $admin_id = \App\Models\User::where('user_type', 'admin')->first()->id;
-                $products = filter_products(\App\Models\Product::where('user_id', $admin_id))->get();
-            }
-
+            $products = Product::all();
             return view('partials.coupons.product_base_coupon', compact('products'));
         } elseif ($request->coupon_type == "cart_base") {
             return view('partials.coupons.cart_base_coupon');
@@ -222,12 +217,7 @@ class CouponController extends Controller
         if ($request->coupon_type == "product_base") {
             $coupon = Coupon::findOrFail($request->id);
 
-            if (Auth::user()->user_type == 'seller') {
-                $products = filter_products(\App\Models\Product::where('user_id', Auth::user()->id))->get();
-            } else {
-                $admin_id = \App\Models\User::where('user_type', 'admin')->first()->id;
-                $products = filter_products(\App\Models\Product::where('user_id', $admin_id))->get();
-            }
+            $products = Product::all();
 
             return view('partials.coupons.product_base_coupon_edit', compact('coupon', 'products'));
         } elseif ($request->coupon_type == "cart_base") {

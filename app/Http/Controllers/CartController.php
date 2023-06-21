@@ -25,7 +25,6 @@ class CartController extends Controller
                             'temp_user_id' => null
                         ]
                     );
-
                 Session::forget('temp_user_id');
             }
             $carts = Cart::where('user_id', $user_id)->get();
@@ -34,8 +33,9 @@ class CartController extends Controller
             // $carts = Cart::where('temp_user_id', $temp_user_id)->get();
             $carts = ($temp_user_id != null) ? Cart::where('temp_user_id', $temp_user_id)->get() : [];
         }
+        $carts->load(['product', 'product.stocks']);
 
-        return view('frontend.view_cart', compact('carts'));
+        return view('frontend.cart', compact('carts'));
     }
 
     public function showCartModal(Request $request)
@@ -85,7 +85,7 @@ class CartController extends Controller
         ])->first();
 
         if ($carts) {
-            $carts->increment('quantity');
+            $carts->quantity += $request->quantity;
             $carts->save();
             $rtn_msg = 'Cart updated successfully';
         } else {
@@ -361,20 +361,36 @@ class CartController extends Controller
     //removes from Cart
     public function removeFromCart(Request $request)
     {
-        Cart::destroy($request->id);
+        // Cart::destroy($request->id);
+
         if (auth()->user() != null) {
             $user_id = Auth::user()->id;
-            $carts = Cart::where('user_id', $user_id)->get();
+
+            Cart::where([
+                'user_id' => Auth::id(),
+                'id' => $request->id
+            ])->delete();
+
+            $carts = Cart::where('user_id', $user_id)->count();
+
+            Cache::forget('user_cart_count_' . $user_id);
         } else {
             $temp_user_id = $request->session()->get('temp_user_id');
-            $carts = Cart::where('temp_user_id', $temp_user_id)->get();
+
+            Cart::where([
+                'temp_user_id' => $temp_user_id,
+                'id' => $request->id
+            ])->delete();
+
+            $carts = Cart::where('temp_user_id', $temp_user_id)->count();
+
+            Cache::forget('user_cart_count_' . $temp_user_id);
         }
 
-        return array(
-            'cart_count' => count($carts),
-            'cart_view' => view('frontend.partials.cart_details', compact('carts'))->render(),
-            'nav_cart_view' => view('frontend.partials.cart')->render(),
-        );
+        return response()->json([
+            'message' => 'Item removed from product',
+            'count' => $carts,
+        ], 200);
     }
 
     //updated the quantity for a cart item

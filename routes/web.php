@@ -25,6 +25,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Livewire\Frontend\Cart;
 
 Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
@@ -105,10 +106,10 @@ Route::post('/product/variant_price', [HomeController::class, 'variant_price'])-
 Route::get('/shop/{slug}', [HomeController::class, 'shop'])->name('shop.visit');
 Route::get('/shop/{slug}/{type}', [HomeController::class, 'filter_shop'])->name('shop.visit.type');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::get('/cart', Cart::class)->name('cart');
 // Route::post('/cart/show-cart-modal', [CartController::class, 'showCartModal'])->name('cart.showCartModal');
 Route::post('/cart/addtocart', [CartController::class, 'addToCart'])->name('cart.addToCart');
-// Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 // Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 //Checkout Routes
@@ -238,7 +239,7 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
     Route::patch('/coupons/update/{id}', [CouponController::class, 'sellerUpdate'])->name('seller.coupon.update');
 
     //Upload
-    Route::any('/uploads/', [AizUploadController::class, 'index'])->name('my_uploads.all');
+    Route::any('/uploads', [AizUploadController::class, 'index'])->name('my_uploads.all');
     Route::any('/uploads/new', [AizUploadController::class, 'create'])->name('my_uploads.new');
     Route::any('/uploads/file-info', [AizUploadController::class, 'file_info'])->name('my_uploads.info');
     Route::get('/uploads/destroy/{id}', [AizUploadController::class, 'destroy'])->name('my_uploads.destroy');

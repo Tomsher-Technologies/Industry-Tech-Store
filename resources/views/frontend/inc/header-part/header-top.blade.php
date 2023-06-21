@@ -210,6 +210,14 @@
                         <option value="0" selected="selected">All</option>
                         @foreach (getAllCategories()->where('parent_id', 0) as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @if ($item->child)
+                                @foreach ($item->child as $cat)
+                                    @include('frontend.product.categories.menu_child_category', [
+                                        'category' => $cat,
+                                        'selected_id' => 0,
+                                    ])
+                                @endforeach
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -234,7 +242,7 @@
                 </a>
 
                 <div class="ps-cart--mini">
-                    <a class="header__extra" href="shopping-cart.html" title="Cart">
+                    <a class="header__extra" href="{{ route('cart') }}" title="Cart">
                         <i class="iconly-Bag-2 icli"></i>
                         <span class="count"><i class="headerCartCount">{{ cartCount() }}</i></span>
                     </a>

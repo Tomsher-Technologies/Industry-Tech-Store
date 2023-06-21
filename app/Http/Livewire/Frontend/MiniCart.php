@@ -13,7 +13,9 @@ class MiniCart extends Component
     public $user_col;
     public $user_id;
 
-    protected $listeners = ['cartUpdated' => 'cartUpdated'];
+    public $cart_quality = array();
+
+    protected $listeners = ['cartUpdated' => 'cartUpdateView'];
 
     public function mount()
     {
@@ -40,15 +42,34 @@ class MiniCart extends Component
         ]);
     }
 
+    public function increment($id)
+    {
+        $product_id = $this->cart_quality[$id]['id'];
+        $this->cart_quality[$id]['qty'] += 1;
+    }
+
+    public function decrement($id)
+    {
+        $product_id = $this->cart_quality[$id]['id'];
+        $this->cart_quality[$id]['qty'] -= 1;
+    }
+
     public function render()
     {
-        $this->carts = Cart::where($this->user_col, $this->user_id)->get();
-        $this->carts->load('product');
+        $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
+
+        foreach ($this->carts as $cart) {
+            array_push($this->cart_quality, [
+                "id" => $cart->id,
+                "qty" => $cart->quantity,
+            ]);
+        }
+
         return view('livewire.frontend.mini-cart');
     }
 
-    public function cartUpdated()
+    public function cartUpdateView()
     {
-        $this->render();
+        // $this->render();
     }
 }
