@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -26,7 +27,15 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     /**
      * Where to redirect users after login.
@@ -197,7 +206,8 @@ class LoginController extends Controller
         if (session('link') != null) {
             return redirect(session('link'));
         } else {
-            return redirect()->route('dashboard');
+            return redirect()->intended(route('dashboard'));
+            // return redirect()->route('dashboard');
         }
 
         // if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
@@ -256,15 +266,5 @@ class LoginController extends Controller
     public function adminLoginView()
     {
         return view('frontend.auth.login');
-    }
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
     }
 }

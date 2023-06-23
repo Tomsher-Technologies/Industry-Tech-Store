@@ -64,6 +64,58 @@ class AddressController extends Controller
         $address->phone         = $request->phone;
         $address->save();
 
+        $address->load([
+            'country',
+            'state',
+            'city'
+        ]);
+
+        $html = "<div class='col-lg-6'>
+        <label class='addressLabel w-100' for='address-$address->id'>
+          <input
+            type='radio'
+            name='address'
+            id='address-$address->id'
+            value='$address->id'
+            class='addressCheckbox d-none'
+            required
+          />
+          <div class='border p-3 pr-5 rounded mb-3 position-relative'>
+            <div>
+              <span class='w-50 fw-600'>Address:</span>
+              <span class='ml-2'>$address->address</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Postal code:</span>
+              <span class='ml-2'>$address->postal_code</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>City:</span>
+              <span class='ml-2'>" . $address->city->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>State:</span>
+              <span class='ml-2'>" . $address->state->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Country:</span>
+              <span class='ml-2'>" . $address->country->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Phone:</span>
+              <span class='ml-2'>$address->phone</span>
+            </div>
+          </div>
+        </label>
+      </div>";
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response([
+                'msg' => 'success',
+                'data' => $html,
+            ], 200);
+        }
+
         return back();
     }
 

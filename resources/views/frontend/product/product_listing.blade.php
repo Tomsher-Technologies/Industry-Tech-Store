@@ -55,8 +55,8 @@
                                 <h4 class="widget-title">Search</h4>
                                 <div class="ps-form--widget-search ">
                                     <label for="sidebar-search" class="d-none">Search</label>
-                                    <input id="sidebar-search" name="keyword" class="form-control" type="text" value="{{ $query }}"
-                                        placeholder="">
+                                    <input id="sidebar-search" name="keyword" class="form-control" type="text"
+                                        value="{{ $query }}" placeholder="">
                                     <button aria-label="Search"><i class="icon-magnifier"></i></button>
                                 </div>
                             </figure>
@@ -66,7 +66,7 @@
                                     @foreach ($category as $cat)
                                         @include('frontend.product.categories.child_category', [
                                             'category' => $cat,
-                                            'selected_id' => $category_id,
+                                            'selected_id' => $side_categories,
                                         ])
                                     @endforeach
                                 </ul>
@@ -127,8 +127,9 @@
                                 </div>
                                 <div class="ps-checkbox">
                                     <input class="form-control" type="checkbox" id="review-5" name="review">
-                                    <label for="review-5"><span><i class="fa fa-star rate"></i><i class="fa fa-star"></i><i
+                                    <label for="review-5"><span><i class="fa fa-star rate"></i><i
                                                 class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
                                                 class="fa fa-star"></i></span><small>(1)</small></label>
                                 </div>
                             </figure>
@@ -210,6 +211,11 @@
 
 @section('script')
     <script>
+        $(document).ready(function(){
+            $('#input-search').val('{{ $query }}')
+            $('#search-category').val({{ $selected_category }})
+        });
+
         $('.sort_by_select').on('select2:select', function(e) {
             var currentUrl = '{!! request()->fullUrl() !!}';
             var url = new URL(currentUrl);

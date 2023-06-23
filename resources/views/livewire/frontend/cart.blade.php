@@ -36,7 +36,7 @@
                                         <form action="">
                                             @foreach ($carts as $index => $cart)
                                                 @php
-                                                    $row_total = home_discounted_base_price($cart->product, false) * $cart->quantity;
+                                                    $row_total = $cart->price * $cart->quantity;
                                                     $item_total += $row_total;
                                                     if ($cart->coupon_applied) {
                                                         $coupon_total += $cart->discount;

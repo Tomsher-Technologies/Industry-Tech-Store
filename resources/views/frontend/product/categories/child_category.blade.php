@@ -1,6 +1,7 @@
 <li class="{{ $category->child ? 'menu-item-has-children' : '' }}">
     <div class="ps-checkbox">
-        <input {{ $selected_id == $category->id ? 'checked' : '' }} value="{{ $category->id }}" class="form-control" type="checkbox" id="category-{{ $category->slug }}" name="category" />
+        <input {{ in_array($category->id, $selected_id) ? 'checked' : '' }} value="{{ $category->id }}"
+            class="form-control" type="checkbox" id="category-{{ $category->slug }}" name="categories" />
         <label for="category-{{ $category->slug }}">{{ $category->name }}</label>
     </div>
     @if ($category->child)

@@ -1055,9 +1055,4 @@ if (!function_exists('load_seo_tags')) {
     {
         return Str::title(str_replace('_', ' ', $status));
     }
-
-    function applyCoupon()
-    {
-        
-    }
 }

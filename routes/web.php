@@ -113,7 +113,7 @@ Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->
 // Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 //Checkout Routes
-Route::group(['prefix' => 'checkout', 'middleware' => ['user']], function () {
+Route::group(['prefix' => 'checkout'], function () {
     Route::get('/', [CheckoutController::class, 'get_shipping_info'])->name('checkout.shipping_info');
     Route::any('/delivery_info', [CheckoutController::class, 'store_shipping_info'])->name('checkout.store_shipping_infostore');
     Route::post('/payment_select', [CheckoutController::class, 'store_delivery_info'])->name('checkout.store_delivery_info');

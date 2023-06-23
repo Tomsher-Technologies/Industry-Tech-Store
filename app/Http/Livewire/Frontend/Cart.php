@@ -65,10 +65,9 @@ class Cart extends Component
 
         $can_use_coupon = false;
 
-
         if ($coupon) {
             if (strtotime(date('d-m-Y')) >= $coupon->start_date && strtotime(date('d-m-Y')) <= $coupon->end_date) {
-                $coupon_used = CouponUsage::where('user_id', $this->user_id)->where('coupon_id', $coupon->id)->first();
+                $coupon_used = CouponUsage::where($this->user_col, $this->user_id)->where('coupon_id', $coupon->id)->first();
 
                 if ($coupon->one_time_use && $coupon_used != null) {
                     $this->addError('coupon_code', "You already used this coupon!");
@@ -176,7 +175,6 @@ class Cart extends Component
             $cart->increment('quantity');
             $this->emit('cartUpdated');
         }
-        
     }
     public function decrement($id)
     {

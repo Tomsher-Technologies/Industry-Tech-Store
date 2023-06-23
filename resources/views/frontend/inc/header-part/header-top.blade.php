@@ -206,7 +206,7 @@
         <div class="header__center">
             <form class="ps-form--quick-search" action="{{ route('search') }}" method="get">
                 <div class="form-group--icon"><i class="icon-chevron-down"></i>
-                    <select name="category" class="form-control">
+                    <select id="search-category" name="category" class="form-control">
                         <option value="0" selected="selected">All</option>
                         @foreach (getAllCategories()->where('parent_id', 0) as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>

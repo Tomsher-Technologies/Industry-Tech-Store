@@ -3,18 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Search;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\FlashDeal;
 use App\Models\Brand;
-use App\Models\Color;
 use App\Models\Shop;
-use App\Models\Attribute;
-use App\Models\AttributeCategory;
 use App\Utility\CategoryUtility;
 use Cache;
-use Session;
 
 class SearchController extends Controller
 {
@@ -32,24 +26,24 @@ class SearchController extends Controller
         if ($brand_id != null) {
             $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
         } elseif ($request->brand != null) {
-            $brands_slugs = explode(',', $request->brand);
-            // dd($brands_slugs);
-            $brand_ids = Brand::whereIn('slug', $brands_slugs)->select('id')->get()->toArray();
+            $brand_ids = explode(',', $request->brand);
             $products->whereIn('brand_id', $brand_ids);
-            // $brand_id = (Brand::where('slug', $request->brand)->first() != null) ? Brand::where('slug', $request->brand)->first()->id : null;
-            // $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
         }
 
-
+        if ($request->categories) {
+            $categoryids = explode(',', $request->categories);
+            $category_ids[] = $categoryids;
+        }
+        if ($request->category) {
+            $category_ids[] = $request->category;
+        }
 
         if ($category_id != null) {
-            // $category_ids = CategoryUtility::children_ids($category_id);
             $category_ids[] = $category_id;
+        }
 
+        if (!empty($category_ids)) {
             $products->whereIn('category_id', $category_ids);
-
-            // $attribute_ids = AttributeCategory::whereIn('category_id', $category_ids)->pluck('attribute_id')->toArray();
-            // $attributes = Attribute::whereIn('id', $attribute_ids)->get();
         }
 
         if ($min_price != null && $max_price != null) {
@@ -124,7 +118,10 @@ class SearchController extends Controller
             return CategoryUtility::getSidebarCategoryTree();
         });
 
-        return view('frontend.product.product_listing', compact('products', 'category', 'query', 'category_id', 'brand_id', 'sort_by', 'min_price', 'max_price', 'min_price_slider', 'max_price_slider', 'brands'));
+        $selected_category = $request->category ?? 0;
+        $side_categories = $request->categories ?? 0;
+
+        return view('frontend.product.product_listing', compact('products', 'category', 'query', 'category_id', 'side_categories', 'selected_category', 'brand_id', 'sort_by', 'min_price', 'max_price', 'min_price_slider', 'max_price_slider', 'brands'));
     }
 
     public function listing(Request $request)
