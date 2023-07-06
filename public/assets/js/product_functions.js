@@ -20,6 +20,27 @@ function productQuickView($id) {
     }
 }
 
+function addEnquiry(slug) {
+    $.ajax({
+        type: "POST",
+        url: config.routes.enquiry_add,
+        data: {
+            'slug': slug,
+            '_token': config.csrf
+        },
+        success: function (data, status, xhr) {
+            if (xhr.status == 200) {
+                console.log(data);
+                alert(data.message);
+                $('.headerEnquiryCount').html(data.count)
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert('Something went wrong, please try again');
+        },
+    });
+}
+
 function addToCart(slug, qty = 1) {
     $.ajax({
         type: "POST",

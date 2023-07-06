@@ -43,33 +43,23 @@
                         <th width="20%">Customer</th>
                         <th data-breakpoints="lg">Num. of Products</th>
                         <th data-breakpoints="lg">Created At</th>
-                        <th data-breakpoints="lg">Status</th>
                         <th class="text-right" width="15%">Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($enquiries as $enquiry)
+                    @foreach ($enquiries as $key => $enquiry)
                         <tr>
                             <td>
                                 {{ $key + 1 + ($enquiries->currentPage() - 1) * $enquiries->perPage() }}
                             </td>
                             <td>
-                                {{ $enquiry->user->name }}
+                                {{ $enquiry->name }}
                             </td>
                             <td>
                                 {{ $enquiry->products_count }}
                             </td>
                             <td>
                                 {{ $enquiry->created_at->format('d-m-Y') }}
-                            </td>
-                            <td>
-                                @if ($enquiry->status)
-                                    <span
-                                        class="badge badge-inline badge-success text-capitalize">viewed</span>
-                                @else
-                                    <span
-                                        class="badge badge-inline badge-danger text-capitalize">New</span>
-                                @endif
                             </td>
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"

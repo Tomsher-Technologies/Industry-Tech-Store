@@ -91,7 +91,6 @@
     </style>
 @endsection
 @section('script')
-    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
     <script>
         function moveToCart(that, slug) {
             loop_id = $(that).data('loop-id');

@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\Addon;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Products\ProductEnquiries;
 use App\Models\Shop;
 use App\Models\Wishlist;
 use App\Utility\SendSMSUtility;
@@ -1013,6 +1014,25 @@ if (!function_exists('load_seo_tags')) {
                 return Cart::where('temp_user_id', getTempUserId())->count();
             });
         }
+    }
+
+    function enquiryCount(): int
+    {
+        if (Auth::check()) {
+            $user_col = "user_id";
+            $user_id = Auth::id();
+        } else {
+            $user_col = "temp_user_id";
+            $user_id = getTempUserId();
+        }
+
+        return Cache::remember('user_enquiry_count_' . $user_id, '3600', function () use ($user_col, $user_id) {
+            $enquiries = ProductEnquiries::whereStatus(0)->where($user_col, $user_id)->withCount('products')->latest()->first();
+            if ($enquiries) {
+                return $enquiries->products_count;
+            }
+            return 0;
+        });
     }
 
     function formatDate($date): String

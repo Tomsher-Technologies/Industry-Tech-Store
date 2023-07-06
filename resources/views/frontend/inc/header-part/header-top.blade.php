@@ -1,9 +1,9 @@
 <div class="header__top">
     <div class="ps-container align-items-center">
         <div class="header__left">
-            <div class="menu--product-categories">
+            {{-- <div class="menu--product-categories">
                 <div class="menu__toggle"><i class="icon-menu"></i>
-                    <span> Shop by Categories</span>
+                    <span> Shop by Categories 1</span>
                 </div>
                 <div class="menu__content">
                     <ul class="menu--dropdown">
@@ -197,7 +197,7 @@
                         <li><a href="#.html"> Electrical</a>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
 
             <a class="ps-logo" href="{{ route('home') }}" title="Home">
                 <img src="{{ frontendAsset('img/logo_new.webp') }}" alt="{{ env('APP_NAME') }}" width="150">
@@ -228,10 +228,10 @@
         </div>
         <div class="header__right">
             <div class="header__actions">
-                <a class="header__extra" href="compare.html" title="Get A Quote">
+                <a class="header__extra" href="{{ route('enquiry.index') }}" title="Get A Quote">
                     <i class="iconly-Swap icli"></i>
                     <span class="count">
-                        <i>0</i>
+                        <i class="headerEnquiryCount">{{ enquiryCount() }}</i>
                     </span>
                 </a>
                 <a class="header__extra" href="{{ route('wishlists.index') }}" title="Wishlist">

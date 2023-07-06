@@ -32,8 +32,8 @@
 
 @section('content')
     <nav class="navigation--mobile-product">
-        <a class="ps-btn ps-btn--black" href="shopping-cart.html">Add to cart</a>
-        <a class="ps-btn" href="checkout.html">Buy Now</a>
+        <a class="ps-btn ps-btn--black" href="javascript:void(0)" onclick="addCart('{{ $product->slug }}')">Add to cart</a>
+        <a class="ps-btn" href="javascript:void(0)" onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
     </nav>
 
     <div class="ps-breadcrumb">
@@ -116,7 +116,8 @@
                                     </figure>
                                     <a class="ps-btn" href="javascript:void(0)"
                                         onclick="addCart('{{ $product->slug }}')">Add to cart</a>
-                                    <a class="ps-btn ps-btn--orange" href="#">Buy Now</a>
+                                    <a class="ps-btn ps-btn--orange" href="javascript:void(0)"
+                                        onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
 
                                     <div class="ps-product__actions">
                                         <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')"
@@ -222,7 +223,8 @@
                                     <div class="ps-tab" id="tab-video">
                                         <div class="ps-document">
                                             @if ($product->video_provider == 'youtube' && isset(explode('=', $product->video_link)[1]))
-                                                <iframe title="Product Video" height="450" class="embed-responsive-item"
+                                                <iframe title="Product Video" height="450"
+                                                    class="embed-responsive-item"
                                                     src="https://www.youtube.com/embed/{{ explode('=', $product->video_link)[1] }}"></iframe>
                                             @elseif ($product->video_provider == 'dailymotion' && isset(explode('video/', $product->video_link)[1]))
                                                 <iframe title="Product Video" class="embed-responsive-item"
@@ -329,7 +331,6 @@
 @section('header')
 @endsection
 @push('scripts')
-    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
     <script>
         function addCart(slug) {
             count = parseInt($('.quantity-input').val());

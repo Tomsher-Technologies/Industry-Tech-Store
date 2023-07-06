@@ -13,8 +13,24 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Customer</label>
                         <div class="col-md-9">
-                            <input type="text" placeholder="Customer" id="name" name="name"
-                                class="form-control" value="{{ $enquiry->user->name }}" disabled>
+                            <input type="text" placeholder="Customer" id="name" name="name" class="form-control"
+                                value="{{ $enquiry->name }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Email</label>
+                        <div class="col-md-9">
+                            <input type="text" placeholder="Email" id="name" name="name" class="form-control"
+                                value="{{ $enquiry->email }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Phone Number</label>
+                        <div class="col-md-9">
+                            <input type="text" placeholder="Phone Number" id="name" name="name" class="form-control"
+                                value="{{ $enquiry->phone_number }}" disabled>
                         </div>
                     </div>
 

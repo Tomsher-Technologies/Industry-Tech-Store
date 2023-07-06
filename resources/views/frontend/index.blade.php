@@ -142,8 +142,6 @@
 
 
 @section('script')
-    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $.post('{{ route('home.section.brands') }}', {
@@ -161,8 +159,4 @@
             @endif
         });
     </script>
-@endsection
-
-@section('modal')
-    @include('frontend.inc.product_quick_view')
 @endsection

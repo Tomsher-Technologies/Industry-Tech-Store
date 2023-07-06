@@ -45,102 +45,8 @@
     <div class="ps-page--shop">
         <div class="ps-container">
             <div class="ps-layout--shop">
-                <div class="ps-layout__left sidebar">
-                    <aside class="widget widget_shop">
-                        <form action="" method="get">
-                            @isset($sort_by)
-                                <input type="hidden" name="sort_by" value="{{ $sort_by }}">
-                            @endisset
-                            <figure>
-                                <h4 class="widget-title">Search</h4>
-                                <div class="ps-form--widget-search ">
-                                    <label for="sidebar-search" class="d-none">Search</label>
-                                    <input id="sidebar-search" name="keyword" class="form-control" type="text"
-                                        value="{{ $query }}" placeholder="">
-                                    <button aria-label="Search"><i class="icon-magnifier"></i></button>
-                                </div>
-                            </figure>
-                            <figure class="ps-custom-scrollbar" data-height="250">
-                                <h4 class="widget-title">Categories</h4>
-                                <ul class="ps-list--categories">
-                                    @foreach ($category as $cat)
-                                        @include('frontend.product.categories.child_category', [
-                                            'category' => $cat,
-                                            'selected_id' => $side_categories,
-                                        ])
-                                    @endforeach
-                                </ul>
-                            </figure>
-                            <figure class="ps-custom-scrollbar" data-height="250">
-                                <h4 class="widget-title">BY BRANDS</h4>
-                                @foreach ($brands as $key => $brand)
-                                    <div class="ps-checkbox">
-                                        <input value="{{ $brand->slug }}" {{ $brand_id == $brand->id ? 'checked' : '' }}
-                                            class="form-control" type="checkbox" id="brand-{{ $key }}"
-                                            name="brand" />
-                                        <label for="brand-{{ $key }}">
-                                            {{ $brand->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </figure>
-                            <figure>
-                                <h4 class="widget-title">By Price</h4>
-                                <div id="nonlinear"></div>
-
-                                <input type="hidden" id="price_min">
-                                <input type="hidden" id="price_max">
-
-                                <p class="ps-slider__meta">Price:<span class="ps-slider__value">AED<span
-                                            class="ps-slider__min"></span></span>-<span class="ps-slider__value">AED<span
-                                            class="ps-slider__max"></span></span></p>
-                            </figure>
-                            <figure>
-                                <h4 class="widget-title">By Rating</h4>
-                                <div class="ps-checkbox">
-                                    <input class="form-control" type="checkbox" id="review-1" name="review">
-                                    <label for="review-1"><span><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i></span><small>(13)</small></label>
-                                </div>
-                                <div class="ps-checkbox">
-                                    <input class="form-control" type="checkbox" id="review-2" name="review">
-                                    <label for="review-2"><span><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i
-                                                class="fa fa-star"></i></span><small>(13)</small></label>
-                                </div>
-                                <div class="ps-checkbox">
-                                    <input class="form-control" type="checkbox" id="review-3" name="review">
-                                    <label for="review-3"><span><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star"></i><i
-                                                class="fa fa-star"></i></span><small>(5)</small></label>
-                                </div>
-                                <div class="ps-checkbox">
-                                    <input class="form-control" type="checkbox" id="review-4" name="review">
-                                    <label for="review-4"><span><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star rate"></i><i class="fa fa-star"></i><i
-                                                class="fa fa-star"></i><i
-                                                class="fa fa-star"></i></span><small>(5)</small></label>
-                                </div>
-                                <div class="ps-checkbox">
-                                    <input class="form-control" type="checkbox" id="review-5" name="review">
-                                    <label for="review-5"><span><i class="fa fa-star rate"></i><i
-                                                class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                                class="fa fa-star"></i><i
-                                                class="fa fa-star"></i></span><small>(1)</small></label>
-                                </div>
-                            </figure>
-                            <figure>
-                                <button type="submit" class="ps-btn">Filter</button>
-                                <button type="button" class="ps-btn filterClear">Clear</button>
-                            </figure>
-
-                        </form>
-                    </aside>
-                </div>
+                
+                @include('frontend.product.listing_sidebar')
 
                 <div class="ps-layout__right">
                     <div class="ps-shopping ps-tab-root">
@@ -240,10 +146,21 @@
     <script>
         var nonLinearSlider = document.getElementById('nonlinear');
         if (typeof nonLinearSlider != 'undefined' && nonLinearSlider != null) {
+
+            let searchParams = new URLSearchParams(window.location.search)
+            price_min = 0
+            price_max = 1000
+            if(searchParams.has('min_price')){
+                price_min = searchParams.get('min_price')
+            }
+            if(searchParams.has('max_price')){
+                price_max = searchParams.get('max_price')
+            }
+
             noUiSlider.create(nonLinearSlider, {
                 connect: true,
                 behaviour: 'tap',
-                start: [0, 1000],
+                start: [price_min, price_max],
                 range: {
                     min: {{ $min_price_slider ?? 0 }},
                     max: {{ $max_price_slider ?? 1000 }},

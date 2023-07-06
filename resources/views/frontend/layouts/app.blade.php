@@ -136,6 +136,8 @@
 
     @yield('modal')
 
+    @include('frontend.inc.product_quick_view')
+
     <!-- SCRIPTS -->
     <script src="{{ frontendAsset('plugins/nouislider/nouislider.min.js') }}"></script>
     <script src="{{ frontendAsset('plugins/popper.min.js') }}"></script>
@@ -153,6 +155,7 @@
     <script src="{{ frontendAsset('plugins/select2/dist/js/select2.full.min.js') }}"></script>
     {{-- <script src="{{ frontendAsset('plugins/gmap3.min.js') }}"></script> --}}
     <script src="{{ frontendAsset('js/main.js') }}"></script>
+    <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
 
     @yield('script')
 
@@ -165,6 +168,8 @@
             routes: {
                 prodcut_quick_view: "{{ route('product.quick_view') }}",
                 newsletter: "{{ route('subscribers.store') }}",
+                enquiry_add: "{{ route('enquiry.add') }}",
+                enquiry_remove: "{{ route('enquiry.remove') }}",
                 wishlist_add: "{{ route('wishlists.store') }}",
                 cart_add: "{{ route('cart.addToCart') }}",
                 cart_remove: "{{ route('cart.removeFromCart') }}",

@@ -17,7 +17,7 @@ class EnquiriesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ProductEnquiries::withCount('products')->latest();
+        $query = ProductEnquiries::whereStatus(1)->withCount('products')->latest();
 
         $date = '';
 
@@ -76,10 +76,10 @@ class EnquiriesController extends Controller
             $query->without(['product_translations', 'taxes']);
         }, 'user'])->findOrFail(decrypt($id));
 
-        if ($enquiry->status == 0) {
-            $enquiry->status = 1;
-            $enquiry->save();
-        }
+        // if ($enquiry->status == 0) {
+        //     $enquiry->status = 1;
+        //     $enquiry->save();
+        // }
         return view('backend.sales.enquiries.show', compact('enquiry'));
     }
 

@@ -17,6 +17,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Frontend\EnquiryContoller;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
@@ -112,6 +113,9 @@ Route::post('/cart/addtocart', [CartController::class, 'addToCart'])->name('cart
 Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 // Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
+
+// 
+
 //Checkout Routes
 Route::group(['prefix' => 'checkout'], function () {
     Route::get('/', [CheckoutController::class, 'get_shipping_info'])->name('checkout.shipping_info');
@@ -127,6 +131,13 @@ Route::group(['prefix' => 'checkout'], function () {
     //Club point
     Route::post('/apply-club-point', [CheckoutController::class, 'apply_club_point'])->name('checkout.apply_club_point');
     Route::post('/remove-club-point', [CheckoutController::class, 'remove_club_point'])->name('checkout.remove_club_point');
+});
+
+Route::group(['prefix' => 'enquiry'], function () {
+    Route::get('/', [EnquiryContoller::class, 'index'])->name('enquiry.index');
+    Route::post('/', [EnquiryContoller::class, 'submit']);
+    Route::post('/add', [EnquiryContoller::class, 'add'])->name('enquiry.add');
+    Route::post('/remove', [EnquiryContoller::class, 'remove'])->name('enquiry.remove');
 });
 
 //Paypal START
@@ -308,9 +319,8 @@ Route::get('/vogue-pay/failure/{id}', [VoguePayController::class, 'paymentFailur
 //Iyzico
 Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
 
-Route::post('/get-city', [CityController::class, 'get_city'])->name('get-city');
-
 //Address
+Route::post('/get-city', [CityController::class, 'get_city'])->name('get-city');
 Route::post('/get-states', [AddressController::class, 'getStates'])->name('get-state');
 Route::post('/get-cities', [AddressController::class, 'getCities'])->name('get-city');
 

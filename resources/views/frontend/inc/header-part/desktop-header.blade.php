@@ -1,8 +1,6 @@
     <!-- header start -->
     <header class="header header--1 header--standards" data-sticky="true">
-
         @include('frontend.inc.header-part.header-top')
-
         <nav class="navigation navbar">
             <div class="ps-container">
                 <div class="navigation__left">
@@ -11,9 +9,106 @@
                         <div class="menu__content">
                             <ul class="menu--dropdown">
 
+                                @foreach (getAllCategories()->where('parent_id', 0) as $item)
+                                    @if ($item->child->count())
+                                        <li class="menu-item-has-children has-mega-menu">
+                                            <a title="{{ $item->name }}"
+                                                href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
+                                            <span class="sub-toggle"></span>
+                                            <div class="mega-menu mega-menu-large">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <h4>Engine/Steering Controls<span class="sub-toggle"></span>
+                                                        </h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html">Engine/Steering Controls</a>
+                                                            </li>
+                                                            <li><a href="#.html">Steering Control System</a>
+                                                            </li>
+                                                            <li><a href="#.html">Engine Control System</a>
+                                                            </li>
+                                                            <li><a href="#.html">Steering Gear Alarm</a>
+                                                            </li>
+                                                            <li><a href="#.html">Steering Gear System</a>
+                                                            </li>
+                                                        </ul>
+                                                        <h4>Sensors<span class="sub-toggle"></span></h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html"> Sensors</a></li>
+                                                        </ul>
 
+                                                        <h4>Inverters<span class="sub-toggle"></span></h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html"> Inverters</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h4>Valve Positioners<span class="sub-toggle"></span></h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html"> Air Filter Regulator</a>
+                                                            </li>
+                                                            <li><a href="#.html"> Air Filter Regulator</a>
+                                                            </li>
+                                                            <li><a href="#.html">Air Volume Booster</a></li>
+                                                            <li><a href="#.html">Electro Pneumatic Positioners</a></li>
+                                                            <li><a href="#.html">I/P Converter</a></li>
+                                                            <li><a href="#.html">Lock up Valve</a></li>
+                                                            <li><a href="#.html">Pneumatic Positioners</a></li>
+                                                            <li><a href="#.html">Position Transmitter</a></li>
+                                                            <li><a href="#.html">Smart Valve positioner</a></li>
+                                                            <li><a href="#.html">Solenoid Valve</a></li>
+                                                            <li><a href="#.html">Relay</a></li>
+                                                            <li><a href="#.html">Valve Positioner Motor</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h4>Measuring & Control Instruments<span
+                                                                class="sub-toggle"></span>
+                                                        </h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html">Bargraph digital display</a></li>
+                                                            <li><a href="#.html">Cable float switch </a></li>
+                                                            <li><a href="#.html">Cooling Water Monitor </a></li>
+                                                            <li><a href="#.html">Float Level Switch </a></li>
+                                                            <li><a href="#.html">Level Transmitter </a></li>
+                                                            <li><a href="#.html">Oil Content Monitor </a></li>
+                                                            <li><a href="#.html">Oil Discharge Monitor </a></li>
+                                                            <li><a href="#.html">Pressure Switch </a></li>
+                                                            <li><a href="#.html">Pressure Transmitter </a></li>
+                                                            <li><a href="#.html">Side Mounting Float Switch </a></li>
+                                                            <li><a href="#.html">Temperature Controller </a></li>
+                                                            <li><a href="#.html">Temperature Switch </a></li>
+                                                            <li><a href="#.html">Temperature Transmitter </a></li>
+                                                            <li><a href="#.html">Thermocouple and RTD </a></li>
+                                                            <li><a href="#.html">Vertical Float Switch </a></li>
+                                                            <li><a href="#.html">Wash Water Monitor </a></li>
+                                                            <li><a href="#.html">Alarm Monitor </a></li>
+                                                            <li><a href="#.html">RPM Meter </a></li>
+                                                            <li><a href="#.html">Level Switch </a></li>
+                                                            <li><a href="#.html">Magnetic Float Level Switch </a></li>
+                                                            <li><a href="#.html">Bilge Level Switch </a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h4>Gauges<span class="sub-toggle"></span></h4>
+                                                        <ul class="mega-menu__list">
+                                                            <li><a href="#.html"> Pressure Gauges </a></li>
+                                                            <li><a href="#.html"> Temperature Gauges </a></li>
+                                                            <li><a href="#.html"> Hour Meters </a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <a
+                                                href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
 
-                                <li class="menu-item-has-children has-mega-menu"><a href="#">Automation and
+                                {{-- <li class="menu-item-has-children has-mega-menu"><a href="#">Automation and
                                         Control</a><span class="sub-toggle"></span>
                                     <div class="mega-menu mega-menu-large">
                                         <div class="row">
@@ -98,7 +193,6 @@
                                         </div>
                                     </div>
                                 </li>
-
                                 <li class="menu-item-has-children has-mega-menu"><a href="#"> Gas
                                         Detection</a><span class="sub-toggle"></span>
                                     <div class="mega-menu mega-menu-medium">
@@ -206,25 +300,16 @@
                                 <li><a href="#.html"> Life Safety Products</a>
                                 <li><a href="#.html"> Temperature/Pressure Calibrators</a>
                                 <li><a href="#.html"> Alcohol Test Kits</a>
-                                <li><a href="#.html"> Electrical</a>
-
-
-
-
+                                <li><a href="#.html"> Electrical</a> --}}
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="navigation__right">
                     <ul class="menu">
-
-
-
-
                         <li class="menu-item-has-children has-mega-menu"><a> Fire Detection</a><span
                                 class="sub-toggle"></span>
                             <div class="mega-menu">
-
                                 <div class="mega-menu__columnone">
                                     <h4>Categories<span class="sub-toggle"></span></h4>
                                     <ul class="mega-menu__list">
@@ -242,7 +327,6 @@
                                         <li><a href="shop-default.html">Other Accessories</a></li>
                                     </ul>
                                 </div>
-
                                 <div class="mega-menu__columntwo">
                                     <img class="w-100 h-100"
                                         src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}" alt="">

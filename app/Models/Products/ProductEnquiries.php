@@ -11,6 +11,16 @@ class ProductEnquiries extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'temp_user_id',
+        'comment',
+        'status',
+        'name',
+        'email',
+        'phone_number',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -18,6 +28,6 @@ class ProductEnquiries extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_product_enquiry', 'product_id', 'product_enquiry_id')->withPivot(['sku', 'varient']);
+        return $this->belongsToMany(Product::class, 'product_product_enquiry', 'product_enquiry_id','product_id');
     }
 }

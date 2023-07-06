@@ -56,6 +56,11 @@
                                                                     <div
                                                                         class="border p-3 pr-5 rounded mb-3 position-relative">
                                                                         <div>
+                                                                            <span class="w-50 fw-600">Name:</span>
+                                                                            <span
+                                                                                class="ml-2">{{ $address->name }}</span>
+                                                                        </div>
+                                                                        <div>
                                                                             <span class="w-50 fw-600">Address:</span>
                                                                             <span
                                                                                 class="ml-2">{{ $address->address }}</span>

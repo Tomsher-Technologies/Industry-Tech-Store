@@ -8,8 +8,10 @@ use Socialite;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Cart;
+use App\Models\Products\ProductEnquiries;
 use Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 // use CoreComponentRepository;
 use Illuminate\Support\Str;
 
@@ -200,6 +202,27 @@ class LoginController extends Controller
                         'temp_user_id' => null
                     ]
                 );
+
+            // Product enquiry change
+            // $temp_user_enquiry = ProductEnquiries::where('temp_user_id', session('temp_user_id'))->where('status', 0)->select('id')->first();
+            // $user_enquiry = ProductEnquiries::where('user_id', auth()->user()->id)->where('status', 0)->select('id')->first();
+
+            // if ($user_enquiry) {
+            //     DB::table('product_product_enquiry')
+            //         ->where('product_enquiry_id', $temp_user_enquiry->id)
+            //         ->update([
+            //             'product_enquiry_id' => $user_enquiry->id
+            //         ]);
+            // }
+
+            // $temp_user_enquiry
+            //     ->update(
+            //         [
+            //             'user_id' => auth()->user()->id,
+            //             'temp_user_id' => null
+            //         ]
+            //     );
+
             Session::forget('temp_user_id');
         }
 

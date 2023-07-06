@@ -14,20 +14,37 @@ class SearchController extends Controller
 {
     public function index(Request $request, $category_id = null, $brand_id = null)
     {
+        // dd($request);
         $query = $request->keyword;
         $sort_by = $request->sort_by;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
 
-        $conditions = ['published' => 1];
+        $conditions = [
+            'published' => 1
+        ];
 
         $products = Product::where($conditions);
 
         if ($brand_id != null) {
             $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
-        } elseif ($request->brand != null) {
-            $brand_ids = explode(',', $request->brand);
+        }
+
+        if ($request->brands != null) {
+            $brand_ids = explode(',', $request->brands);
             $products->whereIn('brand_id', $brand_ids);
+        }
+
+        if ($request->rating != null) {
+            $ratings = explode(',', $request->rating);
+
+            foreach ($ratings as $rating) {
+                $r = array(
+                    $rating,
+                    $rating + 1
+                );
+                $products->whereBetween('rating',$r);
+            }
         }
 
         if ($request->categories) {
@@ -103,8 +120,8 @@ class SearchController extends Controller
             'discount_start_date',
         ])->with('brand')->paginate(35)->appends(request()->query());
 
-        $min_price_slider = $products->min('unit_price');
-        $max_price_slider = $products->max('unit_price');
+        $min_price_slider = Product::min('unit_price');
+        $max_price_slider = Product::max('unit_price');
 
         $brands = Cache::rememberForever('brandsWithCount', function () {
             return Brand::select([
@@ -119,9 +136,11 @@ class SearchController extends Controller
         });
 
         $selected_category = $request->category ?? 0;
-        $side_categories = $request->categories ?? 0;
+        $side_categories = $request->categories ? explode(',', $request->categories) : [];
+        $side_brands = $request->brands ? explode(',', $request->brands) : [];
+        $side_rating = $request->rating ? explode(',', $request->rating) : [];
 
-        return view('frontend.product.product_listing', compact('products', 'category', 'query', 'category_id', 'side_categories', 'selected_category', 'brand_id', 'sort_by', 'min_price', 'max_price', 'min_price_slider', 'max_price_slider', 'brands'));
+        return view('frontend.product.product_listing', compact('products', 'category', 'query', 'category_id', 'side_categories', 'side_brands', 'side_rating', 'selected_category', 'brand_id', 'sort_by', 'min_price', 'max_price', 'min_price_slider', 'max_price_slider', 'brands'));
     }
 
     public function listing(Request $request)

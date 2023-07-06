@@ -11,7 +11,7 @@ class ReviewForm extends Component
 {
     public $commentable = false;
 
-    public $rating = 0;
+    public $rating = 1;
     public $comment = '';
     public $product_id;
     public $user_id;
@@ -49,13 +49,15 @@ class ReviewForm extends Component
                 'viewed' => 0,
             ]);
         }
+        $this->commentable = false;
+        
     }
 
     public function render()
     {
-        if (Auth::check() && Auth::user()->user_type == 'customer') {
-            $this->commentable = true;
-        }
+        // if (Auth::check() && Auth::user()->user_type == 'customer') {
+        //     $this->commentable = true;
+        // }
         return view('livewire.frontend.review-form');
     }
 }

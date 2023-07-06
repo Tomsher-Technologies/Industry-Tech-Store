@@ -255,9 +255,8 @@ class CheckoutController extends Controller
         // Get Address
         if ($carts->count() && Auth::check()) {
             $addresses = Address::whereUserId($user_id)->orderBy('set_default', 'desc')->get();
-            $country = Country::all();
         }
-
+        $country = Country::all();
 
         return view('frontend.shipping_info', compact('carts', 'addresses', 'country'));
     }
