@@ -515,9 +515,15 @@ class BusinessSettingsController extends Controller
 
     public function shipping_configuration_update(Request $request)
     {
-        $business_settings = BusinessSetting::where('type', $request->type)->first();
-        $business_settings->value = $request[$request->type];
-        $business_settings->save();
+        // $business_settings = BusinessSetting::where()->first();
+        // $business_settings->value = ;
+        // $business_settings->save();
+
+        BusinessSetting::updateOrCreate([
+            'type' => $request->type
+        ], [
+            'value' => $request[$request->type]
+        ]);
 
         Artisan::call('cache:clear');
         return back();

@@ -16,7 +16,7 @@ class CountryController extends Controller
     {
         $sort_country = $request->sort_country;
         $country_queries = Country::query();
-        if($request->sort_country) {
+        if ($request->sort_country) {
             $country_queries->where('name', 'like', "%$sort_country%");
         }
         $countries = $country_queries->orderBy('status', 'desc')->paginate(15);
@@ -90,10 +90,23 @@ class CountryController extends Controller
         //
     }
 
-    public function updateStatus(Request $request){
+    public function updateStatus(Request $request)
+    {
         $country = Country::findOrFail($request->id);
         $country->status = $request->status;
-        if($country->save()){
+        if ($country->save()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public function updateRate(Request $request)
+    {
+        parse_str($request->data, $data);
+        $country = Country::findOrFail($data['country_id']);
+        $country->rate = $data['rate'];
+        
+        if ($country->save()) {
             return 1;
         }
         return 0;

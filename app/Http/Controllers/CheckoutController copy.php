@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Utility\PayfastUtility;
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\Category;
 use App\Models\Cart;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\InstamojoController;
@@ -171,7 +172,7 @@ class CheckoutController extends Controller
         return redirect()->route('order_confirmed');
     }
 
-    public function checkout_page(Request $request)
+    public function get_shipping_info(Request $request)
     {
         $user_col = "";
         $user_id = "";
@@ -274,6 +275,7 @@ class CheckoutController extends Controller
         }
 
         return view('frontend.delivery_info', compact('carts'));
+        // return view('frontend.payment_select', compact('total'));
     }
 
     public function store_delivery_info(Request $request)
@@ -442,6 +444,28 @@ class CheckoutController extends Controller
         $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
 
         return view('frontend.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'));
+    }
+
+    public function apply_club_point(Request $request)
+    {
+        if (addon_is_activated('club_point')) {
+
+            $point = $request->point;
+
+            if (Auth::user()->point_balance >= $point) {
+                $request->session()->put('club_point', $point);
+                flash(translate('Point has been redeemed'))->success();
+            } else {
+                flash(translate('Invalid point!'))->warning();
+            }
+        }
+        return back();
+    }
+
+    public function remove_club_point(Request $request)
+    {
+        $request->session()->forget('club_point');
+        return back();
     }
 
     public function order_confirmed()

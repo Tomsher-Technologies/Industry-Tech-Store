@@ -118,7 +118,7 @@ Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->
 
 //Checkout Routes
 Route::group(['prefix' => 'checkout'], function () {
-    Route::get('/', [CheckoutController::class, 'get_shipping_info'])->name('checkout.shipping_info');
+    Route::get('/', [CheckoutController::class, 'checkout_page'])->name('checkout.checkout_page');
     Route::any('/delivery_info', [CheckoutController::class, 'store_shipping_info'])->name('checkout.store_shipping_infostore');
     Route::post('/payment_select', [CheckoutController::class, 'store_delivery_info'])->name('checkout.store_delivery_info');
 

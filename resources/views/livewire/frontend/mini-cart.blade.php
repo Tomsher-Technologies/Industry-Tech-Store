@@ -57,7 +57,7 @@
             <h3>Sub Total:<strong>{{ single_price($price) }}</strong></h3>
             <figure>
                 <a class="ps-btn" href="{{ route('cart') }}">View Cart</a>
-                <a class="ps-btn" href="{{ route('checkout.shipping_info') }}">Checkout</a>
+                <a class="ps-btn" href="{{ route('checkout.checkout_page') }}">Checkout</a>
             </figure>
         </div>
     @else

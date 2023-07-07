@@ -371,6 +371,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     Route::resource('countries', CountryController::class);
     Route::post('/countries/status', [CountryController::class, 'updateStatus'])->name('countries.status');
+    Route::post('/countries/rate', [CountryController::class, 'updateRate'])->name('countries.rate');
 
     Route::resource('states', StateController::class);
     Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
