@@ -254,9 +254,9 @@ class CheckoutController extends Controller
         if ($carts->count() && Auth::check()) {
             $addresses = Address::whereUserId($user_id)->orderBy('set_default', 'desc')->get();
         }
-        $country = Country::all();
+        $country = Country::whereStatus(1);
 
-        return view('frontend.shipping_info', compact('carts', 'addresses', 'country'));
+        return view('frontend.checkout', compact('carts', 'addresses', 'country'));
     }
 
     public function store_shipping_info(Request $request)
@@ -459,5 +459,49 @@ class CheckoutController extends Controller
         }
 
         return view('frontend.order_confirmed', compact('combined_order'));
+    }
+
+    public function get_shipping_methods(Request $request)
+    {
+        $shipping_methods = array();
+
+        if (get_setting('free_shipping_status')) {
+            $user_col = "";
+            $user_id = "";
+
+            if (Auth::check()) {
+                $user_col = "user_id";
+                $user_id = Auth::id();
+            } else {
+                $user_col = "temp_user_id";
+                $user_id = getTempUserId();
+            }
+
+            $carts = Cart::where($user_col, $user_id)->with('product')->get();
+
+            
+ 
+            $cart_total = 0;
+            foreach ($carts as $cart) {
+                $cart_total += $cart->quantity * $cart->price;
+            }
+
+            if (
+                $cart_total > get_setting('free_shipping_min_amount') &&
+                $cart_total <= get_setting('free_shipping_max_amount')
+            ) {
+                $shipping_methods['free_shipping'] = get_setting('free_shipping_min_amount');
+            }
+        }
+
+        if (get_setting('shipping_type') == 'flat_rate') {
+            $shipping_methods['flat_rate'] = get_setting('flat_rate_shipping_cost');
+        } elseif (get_setting('shipping_type') == 'area_wise_shipping') {
+            $shipping_methods['flat_rate'] = get_setting('flat_rate_shipping_cost');
+        }
+
+        return response()->json([
+            'shipping_methods' => $shipping_methods,
+        ], 200);
     }
 }

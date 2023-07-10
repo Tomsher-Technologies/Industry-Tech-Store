@@ -13,11 +13,13 @@ class MiniCart extends Component
     public $user_col;
     public $user_id;
 
+    public $layout;
+
     public $cart_quality = array();
 
     protected $listeners = ['cartUpdated' => 'cartUpdateView'];
 
-    public function mount()
+    public function mount($layout = 1)
     {
         if (Auth::check()) {
             $this->user_col = 'user_id';
@@ -26,6 +28,8 @@ class MiniCart extends Component
             $this->user_col = 'temp_user_id';
             $this->user_id = getTempUserId();
         }
+
+        $this->layout = $layout;
     }
 
     public function remove($id)
@@ -63,6 +67,10 @@ class MiniCart extends Component
                 "id" => $cart->id,
                 "qty" => $cart->quantity,
             ]);
+        }
+
+        if($this->layout == 2){
+            return view('livewire.frontend.mini-cart-mobile');
         }
 
         return view('livewire.frontend.mini-cart');

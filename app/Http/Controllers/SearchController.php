@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Search;
 use App\Models\Shop;
 use App\Utility\CategoryUtility;
+use Auth;
 use Cache;
 
 class SearchController extends Controller
@@ -43,7 +45,7 @@ class SearchController extends Controller
                     $rating,
                     $rating + 1
                 );
-                $products->whereBetween('rating',$r);
+                $products->whereBetween('rating', $r);
             }
         }
 
@@ -169,47 +171,53 @@ class SearchController extends Controller
     //Suggestional Search
     public function ajax_search(Request $request)
     {
-        $keywords = array();
-        $query = $request->search;
-        $products = Product::where('published', 1)->where('tags', 'like', '%' . $query . '%')->get();
-        foreach ($products as $key => $product) {
-            foreach (explode(',', $product->tags) as $key => $tag) {
-                if (stripos($tag, $query) !== false) {
-                    if (sizeof($keywords) > 5) {
-                        break;
-                    } else {
-                        if (!in_array(strtolower($tag), $keywords)) {
-                            array_push($keywords, strtolower($tag));
-                        }
-                    }
-                }
-            }
-        }
+        $query = $request->keyword;
 
-        $products = filter_products(Product::query());
+        $searchController = new SearchController;
+        $searchController->store($request);
+
+        $products = Product::query();
 
         $products = $products->where('published', 1)
+            ->select([
+                'id',
+                'name',
+                'sku',
+                'category_id',
+                'brand_id',
+                'thumbnail_img',
+                'unit_price',
+                'purchase_price',
+                'rating',
+                'slug',
+                'discount',
+                'discount_type',
+                'discount_end_date',
+                'discount_start_date',
+            ])
             ->where(function ($q) use ($query) {
                 foreach (explode(' ', trim($query)) as $word) {
                     $q->where('name', 'like', '%' . $word . '%')
                         ->orWhere('tags', 'like', '%' . $word . '%')
-                        ->orWhereHas('product_translations', function ($q) use ($word) {
-                            $q->where('name', 'like', '%' . $word . '%');
-                        })
                         ->orWhereHas('stocks', function ($q) use ($word) {
                             $q->where('sku', 'like', '%' . $word . '%');
                         });
                 }
             })
-            ->limit(3)
+            ->limit(8)
             ->get();
 
         $categories = Category::where('name', 'like', '%' . $query . '%')->get()->take(3);
 
-        $shops = Shop::whereIn('user_id', verified_sellers_id())->where('name', 'like', '%' . $query . '%')->get()->take(3);
+        if (sizeof($categories) > 0 || sizeof($products) > 0) {
+            // return compact('products', 'categories');
 
-        if (sizeof($keywords) > 0 || sizeof($categories) > 0 || sizeof($products) > 0 || sizeof($shops) > 0) {
-            return view('frontend.partials.search_content', compact('products', 'categories', 'keywords', 'shops'));
+            return response()->json([
+                'products' => $products,
+                'categories' => $categories,
+            ], 200);
+
+            // return view('frontend.partials.search_content', compact('products', 'categories', 'keywords', 'shops'));
         }
         return '0';
     }
@@ -223,13 +231,19 @@ class SearchController extends Controller
     public function store(Request $request)
     {
         // $search = Search::where('query', $request->keyword)->first();
-        // if ($search != null) {
-        //     $search->count = $search->count + 1;
-        //     $search->save();
+
+        // if (Auth::check()) {
+        //     $user_id = Auth::id();
         // } else {
-        //     $search = new Search;
-        //     $search->query = $request->keyword;
-        //     $search->save();
+        //     $user_id = null;
+        //     $temp_user_id = getTempUserId();
         // }
+
+        Search::create([
+            'query' => $request->keyword,
+            'ip_address' => $request->ip(),
+            'user_id' => Auth::id(),
+            'temp_user_id' => Auth::check() ? null : getTempUserId(),
+        ]);
     }
 }

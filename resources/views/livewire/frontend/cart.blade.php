@@ -37,7 +37,7 @@
                                             @foreach ($carts as $index => $cart)
                                                 @php
                                                     $row_total = $cart->price * $cart->quantity;
-                                                    $item_total += $row_total;
+                                                    $item_total +=  $row_total;
                                                     if ($cart->coupon_applied) {
                                                         $coupon_total += $cart->discount;
                                                     }
@@ -79,7 +79,7 @@
                                                         </div>
                                                     </td>
                                                     <td data-label="Total">
-                                                        {{ format_price($row_total) }}
+                                                        {{ format_price(convert_price($row_total)) }}
                                                     </td>
                                                     <td data-label="Actions">
                                                         <a href="#"
@@ -150,18 +150,18 @@
                                 <div class="ps-block__header">
                                     <h3 class="pb-3">Order Summary</h3>
                                     <p>Sub Total ({{ $carts->count() }} {{ Str::plural('Item', $carts->count()) }})
-                                        <span> {{ format_price($item_total) }}</span>
+                                        <span> {{ format_price(convert_price($item_total)) }}</span>
                                     </p>
                                     @if ($coupon_total > 0)
-                                        <p>Coupon discount <span>{{ format_price($coupon_total) }}</span></p>
+                                        <p>Coupon discount <span>{{ format_price(convert_price($coupon_total)) }}</span></p>
                                     @endif
                                 </div>
                                 <div class="ps-block__content">
-                                    <h3>Total <span>{{ format_price($cart_total) }}</span></h3>
+                                    <h3>Total <span>{{ format_price(convert_price($cart_total)) }}</span></h3>
                                 </div>
                             </div>
                             <a wire:loading.attr="disabled" class="ps-btn ps-btn--fullwidth"
-                                href="checkout.html">Proceed to checkout</a>
+                                href="{{ route('checkout.checkout_page') }}">Proceed to checkout</a>
                         </div>
                     @else
                         <div class="col-12">

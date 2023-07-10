@@ -229,7 +229,7 @@ class LoginController extends Controller
         if (session('link') != null) {
             return redirect(session('link'));
         } else {
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended();
             // return redirect()->route('dashboard');
         }
 

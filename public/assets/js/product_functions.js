@@ -172,3 +172,8 @@ function owlCarouselConfig2() {
         });
     }
 }
+
+// (function ($) {
+//     'use strict';
+
+// })(jQuery);

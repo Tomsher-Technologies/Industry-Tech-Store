@@ -17,6 +17,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\Frontend\EnquiryContoller;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
+use App\Http\Livewire\Frontend\Checkout;
 
 Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
@@ -118,9 +120,10 @@ Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->
 
 //Checkout Routes
 Route::group(['prefix' => 'checkout'], function () {
-    Route::get('/', [CheckoutController::class, 'checkout_page'])->name('checkout.checkout_page');
+    Route::get('/', Checkout::class)->name('checkout.checkout_page');
     Route::any('/delivery_info', [CheckoutController::class, 'store_shipping_info'])->name('checkout.store_shipping_infostore');
     Route::post('/payment_select', [CheckoutController::class, 'store_delivery_info'])->name('checkout.store_delivery_info');
+    Route::get('/shipping_methods', [CheckoutController::class, 'get_shipping_methods'])->name('checkout.shipping_methods');
 
     Route::get('/order-confirmed', [CheckoutController::class, 'order_confirmed'])->name('order_confirmed');
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');

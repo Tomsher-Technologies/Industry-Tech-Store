@@ -31,80 +31,192 @@
                                         <div class="card-header">
                                             <nav class="nav nav-pills nav-fill">
                                                 <a class="nav-link tab-pills" href="#">Shipping Address</a>
-                                                <a class="nav-link tab-pills" href="#">Address Details</a>
-                                                <a class="nav-link tab-pills" href="#">Company Details</a>
+                                                <a class="nav-link tab-pills" href="#">Shipping Method</a>
                                                 <a class="nav-link tab-pills" href="#">Finish</a>
                                             </nav>
                                         </div>
                                         <div class="card-body">
                                             <div class="tab d-none">
 
-                                                <div class="row g-sm-4 g-3">
-                                                    @if ($addresses && $addresses->count())
-                                                        @foreach ($addresses as $address)
-                                                            <div class="col-lg-6">
-                                                                <label
-                                                                    class="addressLabel w-100 {{ $address->set_default ? 'checked' : '' }}"
-                                                                    for="address-{{ $address->id }}">
-                                                                    {{-- {{ $address->set_default ? 'checked' : '' }} --}}
-                                                                    <input 
-                                                                        type="radio" name="address"
-                                                                        id="address-{{ $address->id }}"
-                                                                        value="{{ $address->id }}"
-                                                                        class="addressCheckbox d-none" required>
+                                                @auth
+                                                    <div class="row g-sm-4 g-3">
+                                                        @if ($addresses && $addresses->count())
+                                                            @foreach ($addresses as $address)
+                                                                <div class="col-lg-6">
+                                                                    <label
+                                                                        class="addressLabel w-100 {{ $address->set_default ? 'checked' : '' }}"
+                                                                        for="address-{{ $address->id }}">
+                                                                        {{-- {{ $address->set_default ? 'checked' : '' }} --}}
+                                                                        <input type="radio" name="address"
+                                                                            {{ $address->set_default ? 'checked' : '' }}
+                                                                            id="address-{{ $address->id }}"
+                                                                            value="{{ $address->id }}"
+                                                                            class="addressCheckbox d-none" required>
 
-                                                                    <div
-                                                                        class="border p-3 pr-5 rounded mb-3 position-relative">
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">Name:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->name }}</span>
+                                                                        <div
+                                                                            class="border p-3 pr-5 rounded mb-3 position-relative">
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">Name:</span>
+                                                                                <span class="ml-2">{{ $address->name }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">Address:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->address }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">Postal
+                                                                                    code:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->postal_code }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">City:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->city->name }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">State:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->state->name }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">Country:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->country->name }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span class="w-50 fw-600">Phone:</span>
+                                                                                <span
+                                                                                    class="ml-2">{{ $address->phone }}</span>
+                                                                            </div>
                                                                         </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">Address:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->address }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">Postal
-                                                                                code:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->postal_code }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">City:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->city->name }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">State:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->state->name }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">Country:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->country->name }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="w-50 fw-600">Phone:</span>
-                                                                            <span
-                                                                                class="ml-2">{{ $address->phone }}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </label>
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+
+                                                        <div class="col-lg-6 mx-auto" id="addAddressContaniner"
+                                                            onclick="add_new_address()">
+                                                            <div class="border p-3 rounded mb-3 c-poniter text-center bg-light">
+                                                                <i class="iconly-Plus icli fs-1"></i>
+                                                                <div class="alpha-7 user-select-none">Add New Address</div>
                                                             </div>
-                                                        @endforeach
-                                                    @endif
-
-                                                    <div class="col-lg-6 mx-auto" id="addAddressContaniner"
-                                                        onclick="add_new_address()">
-                                                        <div class="border p-3 rounded mb-3 c-poniter text-center bg-light">
-                                                            <i class="iconly-Plus icli fs-1"></i>
-                                                            <div class="alpha-7 user-select-none">Add New Address</div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @else
+                                                    <form class="form-default" role="form" id="addressAddForm">
+                                                        <div class="modal-body">
+                                                            <div class="p-3">
+                                                                <div class=" row">
+                                                                    <label class="col-md-2">Location</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control"
+                                                                            id="us3-address" />
+                                                                    </div>
+                                                                    <div class="col-sm-12 mt-3">
+                                                                        <div id="us3" style="height: 400px;"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <input type="hidden" name="latitude" class="form-control"
+                                                                    id="us3-lat" />
+                                                                <input type="hidden" name="longitude" class="form-control"
+                                                                    id="us3-lon" />
+
+                                                                <div class="row mt-3">
+                                                                    <div class="col-md-2">
+                                                                        <label>Name</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" class="form-control mb-3"
+                                                                            placeholder="Your Name" name="name"
+                                                                            value="{{ auth()->user() ? auth()->user()->name : '' }}"
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>Address</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address" required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>Country</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <div class="mb-3">
+                                                                            <select class="form-control aiz-selectpicker"
+                                                                                data-live-search="true"
+                                                                                data-placeholder="Select your country"
+                                                                                name="country_id" required>
+                                                                                <option value="">Select your country
+                                                                                </option>
+                                                                                @if ($country)
+                                                                                    @foreach ($country as $key => $coun)
+                                                                                        <option value="{{ $coun->id }}">
+                                                                                            {{ $coun->name }}</option>
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>State</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <select class="form-control mb-3 aiz-selectpicker"
+                                                                            data-live-search="true" name="state_id" required>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>City</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <select class="form-control mb-3 aiz-selectpicker"
+                                                                            data-live-search="true" name="city_id" required>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>Postal code</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" class="form-control mb-3"
+                                                                            placeholder="Your Postal Code" name="postal_code"
+                                                                            value="" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <label>Phone</label>
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" class="form-control mb-3"
+                                                                            placeholder="+971" name="phone" value=""
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group text-right">
+                                                                    <button type="submit" id="addressAddFormSubmit"
+                                                                        class="ps-btn ps-btn--fullwidth">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                @endauth
 
                                                 <div class="form-group">
                                                     <div class="ps-checkbox">
@@ -171,43 +283,11 @@
                                             </div>
 
                                             <div class="tab d-none">
-                                                <div class="mb-3">
-                                                    <label for="name" class="form-label">Address 1</label>
-                                                    <input type="text" class="form-control" name="name" id="name"
-                                                        placeholder="Please enter address 1">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Address 2</label>
-                                                    <input type="email" class="form-control" name="email"
-                                                        id="email" placeholder="Please enter address 2">
-                                                </div>
-                                                <div class="row">
-                                                    <div class="mb-3 col-md-6">
-                                                        <label for="city" class="form-label">City</label>
-                                                        <input type="text" class="form-control" name="city"
-                                                            id="city" placeholder="Please enter city">
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label for="state" class="form-label">State</label>
-                                                        <input type="state" class="form-control" name="state"
-                                                            id="state" placeholder="Please enter state">
-                                                    </div>
+                                                <div id="shipping_charges">
+                                                    
                                                 </div>
                                             </div>
 
-                                            <div class="tab d-none">
-                                                <div class="mb-3">
-                                                    <label for="company_name" class="form-label">Company Name</label>
-                                                    <input type="text" class="form-control" name="company_name"
-                                                        id="company_name" placeholder="Please enter company name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="company_address" class="form-label">Company
-                                                        Address</label>
-                                                    <textarea class="form-control" name="company_address" id="company_address"
-                                                        placeholder="Please enter company address"></textarea>
-                                                </div>
-                                            </div>
 
                                             <div class="tab d-none">
                                                 <p>All Set! Please submit to continue. Thank you</p>
@@ -406,8 +486,8 @@
                                     <label>Postal code</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3" placeholder="Your Postal Code"
-                                        name="postal_code" value="" required>
+                                    <input type="text" class="form-control mb-3 numbers-only"
+                                        placeholder="Your Postal Code" name="postal_code" value="" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -415,8 +495,8 @@
                                     <label>Phone</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3" placeholder="+971" name="phone"
-                                        value="" required>
+                                    <input type="text" class="form-control mb-3 numbers-only" placeholder="+971"
+                                        name="phone" value="" required>
                                 </div>
                             </div>
                             <div class="form-group text-right">
@@ -436,6 +516,7 @@
         $(document).on('change', '.addressCheckbox', function() {
             $('.addressLabel').removeClass('checked');
             $('.addressCheckbox:checked').parent('label').addClass('checked');
+            get_shipping_rate()
         }).trigger('change');
         $('#billing_address_same').on('change', function() {
             if ($(this).is(':checked')) {
@@ -444,10 +525,39 @@
                 $('#billingAddressContainer').addClass('d-none');
             }
         }).trigger('change');
-    </script>
 
-    {{-- add New address --}}
-    <script>
+        // Get shipping rate
+        function get_shipping_rate() {
+            address_id = $('.addressCheckbox:checked').val();
+
+            // if (address_id) {
+            //     console.log(address_id);
+            // } else {
+            //     console.log('guest');
+            // }
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: "{{ route('checkout.shipping_methods') }}",
+                data: $('#addressAddForm').serialize(),
+                type: 'GET',
+                success: function(response) {
+                    shipping_methods = JSON.stringify(response.shipping_methods)
+                    
+                    console.log(shipping_methods);
+                    // shipping_methods.forEach(element => {
+                    //     console.log(element);
+                    // });
+                }
+            });
+        }
+
+        get_shipping_rate();
+
+
+        // add New address
         function add_new_address() {
             $('#new-address-modal').modal('show');
         }
@@ -640,7 +750,7 @@
 
             // if (!errors) {
 
-            
+
 
             $(tabs[current]).addClass("d-none");
             $(tabs_pill[current]).removeClass("active");
@@ -657,8 +767,4 @@
             loadFormData(current);
         }
     </script>
-@endsection
-
-@section('modal')
-    {{-- @include('frontend.partials.address_modal') --}}
 @endsection

@@ -465,12 +465,12 @@ class BusinessSettingsController extends Controller
         if ($request->type == 'FORCE_HTTPS' && $request->value == '1') {
             $this->overWriteEnvFile($request->type, 'On');
 
-            if (strpos(env('APP_URL'), 'http:') !== FALSE) {
+            if (strpos(env('APP_URL'), 'http:') !== false) {
                 $this->overWriteEnvFile('APP_URL', str_replace("http:", "https:", env('APP_URL')));
             }
         } elseif ($request->type == 'FORCE_HTTPS' && $request->value == '0') {
             $this->overWriteEnvFile($request->type, 'Off');
-            if (strpos(env('APP_URL'), 'https:') !== FALSE) {
+            if (strpos(env('APP_URL'), 'https:') !== false) {
                 $this->overWriteEnvFile('APP_URL', str_replace("https:", "http:", env('APP_URL')));
             }
         } elseif ($request->type == 'FILESYSTEM_DRIVER' && $request->value == '1') {
@@ -524,6 +524,32 @@ class BusinessSettingsController extends Controller
         ], [
             'value' => $request[$request->type]
         ]);
+
+        Artisan::call('cache:clear');
+        return back();
+    }
+
+    public function freeshipping_settings(Request $request)
+    {
+        BusinessSetting::updateOrCreate([
+            'type' => 'free_shipping_status'
+        ], [
+            'value' => $request->free_shipping_status ? 1 : 0
+        ]);
+
+        BusinessSetting::updateOrCreate([
+            'type' => 'free_shipping_min_amount'
+        ], [
+            'value' => $request->free_shipping_min_amount ?? 0
+        ]);
+
+        BusinessSetting::updateOrCreate([
+            'type' => 'free_shipping_max_amount'
+        ], [
+            'value' => $request->free_shipping_max_amount ?? 0
+        ]);
+
+        flash(translate('Settings updated successfully'))->success();
 
         Artisan::call('cache:clear');
         return back();

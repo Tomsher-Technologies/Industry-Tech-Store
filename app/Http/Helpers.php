@@ -506,7 +506,7 @@ function remove_invalid_charcaters($str)
     return str_ireplace(array('"'), '\"', $str);
 }
 
-function getShippingCost($carts, $index)
+function getShippingCost2($carts, $index)
 {
     $admin_products = array();
     $seller_products = array();
@@ -1074,5 +1074,14 @@ if (!function_exists('load_seo_tags')) {
     function getDeliveryStatusText($status)
     {
         return Str::title(str_replace('_', ' ', $status));
+    }
+
+    function getCurrentCurrency()
+    {
+        if (Session::has('currency_code')) {
+            return Currency::where('code', Session::get('currency_code'))->first();
+        } else {
+            return  Currency::find(get_setting('system_default_currency'));
+        }
     }
 }

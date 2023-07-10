@@ -42,8 +42,7 @@
     <meta property="user" content="{{ auth()->user()->email }}" /> @endauth
 
     <!-- Favicon -->
-    <link rel="icon"
-            href="{{ uploaded_asset(get_setting('site_icon')) }}">
+    <link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
 
         <link rel='dns-prefetch' href='//fonts.googleapis.com' />
         <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
@@ -123,6 +122,12 @@
 
         @yield('header')
 
+        <style>
+            .menu--mobile .sub-menu{
+                padding-left: 15px;
+            }
+        </style>
+
 </head>
 
 <body>
@@ -173,16 +178,33 @@
                 wishlist_add: "{{ route('wishlists.store') }}",
                 cart_add: "{{ route('cart.addToCart') }}",
                 cart_remove: "{{ route('cart.removeFromCart') }}",
+                ajax_search: "{{ route('search.ajax') }}",
             },
             csrf: "{{ csrf_token() }}",
         };
+
+        if ($('#currency-change').length > 0) {
+            $('#currency-change .ps-dropdown-menu a').each(function() {
+                $(this).on('click', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var currency_code = $this.data('currency');
+                    $.post('{{ route('currency.change') }}', {
+                        _token: "{{ csrf_token() }}",
+                        currency_code: currency_code
+                    }, function(data) {
+                        location.reload();
+                    });
+
+                });
+            });
+        }
     </script>
 
     @livewireScripts
 
     <script>
         window.addEventListener('updateCartCount', event => {
-            console.log(event.detail.count);
             $('.headerCartCount').html(event.detail.count);
         })
     </script>

@@ -611,8 +611,6 @@
                             </div>
                         </li>
 
-
-
                         <li class="menu-item-has-children has-mega-menu"><a> Airloop System</a><span
                                 class="sub-toggle"></span>
                             <div class="mega-menu">
@@ -1026,6 +1024,32 @@
 
 
 
+
+                    @if (get_setting('show_currency_switcher') == 'on')
+                        @php
+                            $currentCurrency = getCurrentCurrency();
+                            // dd($currentCurrency);
+                        @endphp
+                        <ul class="navigation__extra" id="currency-change">
+                            <li>
+                                <div class="ps-dropdown">
+                                    <a
+                                        href="#">{{ $currentCurrency->name }}{{ $currentCurrency->symbol }}</a>
+                                    <ul class="ps-dropdown-menu">
+                                        @foreach (\App\Models\Currency::where('status', 1)->get() as $key => $currency)
+                                            <li>
+                                                <a class=" @if ($currentCurrency->code == $currency->code) active @endif"
+                                                    href="javascript:void(0)"
+                                                    data-currency="{{ $currency->code }}">{{ $currency->name }}
+                                                    ({{ $currency->symbol }})
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </nav>
