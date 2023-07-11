@@ -307,722 +307,124 @@
                 </div>
                 <div class="navigation__right">
                     <ul class="menu">
-                        <li class="menu-item-has-children has-mega-menu"><a> Fire Detection</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html">Addressable Control Panel </a></li>
-                                        <li><a href="shop-default.html">Audible and Visual Alarm </a></li>
-                                        <li><a href="shop-default.html">Base </a></li>
-                                        <li><a href="shop-default.html">Conventional Control Panel </a></li>
-                                        <li><a href="shop-default.html">Detector Testers </a></li>
-                                        <li><a href="shop-default.html">Firebell </a></li>
-                                        <li><a href="shop-default.html">Flame Detector </a></li>
-                                        <li><a href="shop-default.html">Heat Detector </a></li>
-                                        <li><a href="shop-default.html">Manual Call Point </a></li>
-                                        <li><a href="shop-default.html">Optical Smoke & Heat Detector</a></li>
-                                        <li><a href="shop-default.html">Smoke Detector</a></li>
-                                        <li><a href="shop-default.html">Other Accessories</a></li>
-                                    </ul>
-                                </div>
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}" alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href="">
-                                                    <img class="w-100" src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href="">
-                                                    <img class="w-100" src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
 
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
+                        @php
+                            $header_menu = getMenu(1);
+                        @endphp
+
+                        @foreach ($header_menu as $menu)
+                            @if ($menu['child'])
+                                <li class="menu-item-has-children has-mega-menu">
+                                    <a title="{{ $menu['label'] }}">{{ $menu['label'] }}</a>
+                                    <span class="sub-toggle"></span>
+                                    <div class="mega-menu">
+                                        <div class="mega-menu__columnone">
+                                            <h4>Categories<span class="sub-toggle"></span></h4>
+                                            <ul class="mega-menu__list">
+
+                                                @foreach ($menu['child'] as $child)
+                                                    <li class="">
+                                                        <a href="{{ $child['link'] }}" title="{{ $child['label'] }}">
+                                                            {{ $child['label'] }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+
+                                            </ul>
+                                        </div>
+                                        <div class="mega-menu__columntwo">
+                                            <img class="w-100 h-100"
+                                                src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}"
+                                                alt="">
+                                        </div>
+                                        <div class="mega-menu__columnthree">
+                                            <div class="menu-shop-brands">
+                                                <div class="row">
+                                                    <div class="brand col-lg-4"><a href="">
+                                                            <img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/01.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href="">
+                                                            <img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/02.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/03.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/04.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/05.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/07.jpg') }}"
+                                                                alt=""></a></div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/08.jpg') }}"
+                                                                alt=""></a></div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/09.jpg') }}"
+                                                                alt=""></a></div>
+
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/01.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/02.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/03.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/04.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/05.jpg') }}"
+                                                                alt=""></a>
+                                                    </div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/07.jpg') }}"
+                                                                alt=""></a></div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/08.jpg') }}"
+                                                                alt=""></a></div>
+                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
+                                                                src="{{ frontendAsset('img/brand/09.jpg') }}"
+                                                                alt=""></a></div>
+                                                </div>
                                             </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
+                                        </div>
+                                        <div class="mega-menu__columnfour">
+                                            <div class="row">
+                                                <div class="col-md-12 pb-5"> <img class="w-100"
+                                                        src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
+                                                        alt="" />
+                                                </div>
+                                                <div class="col-md-12"> <img class="w-100"
+                                                        src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
+                                                        alt="" />
+                                                </div>
                                             </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Gas Detection</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Fixed Gas Detection Systems</a></li>
-                                        <li><a href="shop-default.html"> Portable Gas Detectors</a></li>
-                                        <li><a href="shop-default.html"> Gas Detection Tubes</a></li>
-                                        <li><a href="shop-default.html"> Wireless Gas Detectors</a></li>
-                                        <li><a href="shop-default.html"> Accessories</a></li>
-
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-02.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Calibration Gas</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories <span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Calibration Gas – Airproducts, Portagas</a>
-                                        </li>
-                                        <li><a href="shop-default.html"> Carry Case</a></li>
-
-
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-02.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Airloop System</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Breathing Apparatus</a></li>
-
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-02.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Sounders & Beacons</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Signal Light and Horn </a></li>
-                                        <li><a href="shop-default.html"> Weatherproof Signal Beacon </a></li>
-                                        <li><a href="shop-default.html"> Heavy Duty Sounder </a></li>
-                                        <li><a href="shop-default.html"> Alarm Bell & Beacon </a></li>
-                                        <li><a href="shop-default.html"> Warning lights </a></li>
-                                        <li><a href="shop-default.html"> Electronic Sounders </a></li>
-                                        <li><a href="shop-default.html"> Electric Horn </a></li>
-                                        <li><a href="shop-default.html"> Ex ploof sounder beacons </a></li>
-                                        <li><a href="shop-default.html">Signal Beacon </a></li>
-                                        <li><a href="shop-default.html">Limit switches </a></li>
-                                        <li><a href="shop-default.html">Air Horn </a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-02.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Automation and Control</a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Engine/Steering Controls </a></li>
-                                        <li><a href="shop-default.html"> Valve Positioners </a></li>
-                                        <li><a href="shop-default.html"> Inverters </a></li>
-                                        <li><a href="shop-default.html"> Measuring & Control Instruments </a></li>
-                                        <li><a href="shop-default.html"> Gauges </a></li>
-                                        <li><a href="shop-default.html"> Sensors </a></li>
-
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="menu-item-has-children has-mega-menu"><a> Light Fixtures </a><span
-                                class="sub-toggle"></span>
-                            <div class="mega-menu">
-
-                                <div class="mega-menu__columnone">
-                                    <h4>Categories<span class="sub-toggle"></span></h4>
-                                    <ul class="mega-menu__list">
-                                        <li><a href="shop-default.html"> Bed lamp </a></li>
-                                        <li><a href="shop-default.html"> Ceiling Lights </a></li>
-                                        <li><a href="shop-default.html"> Explosion Proof Tubelights </a></li>
-                                        <li><a href="shop-default.html"> Flood Lights </a></li>
-                                        <li><a href="shop-default.html"> Navigation lights </a></li>
-                                        <li><a href="shop-default.html"> Pendant lights </a></li>
-                                        <li><a href="shop-default.html"> Searchlights </a></li>
-                                        <li><a href="shop-default.html"> Spot Lights </a></li>
-                                        <li><a href="shop-default.html"> Electric Connectors </a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="mega-menu__columntwo">
-                                    <img class="w-100 h-100"
-                                        src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="mega-menu__columnthree">
-                                    <div class="menu-shop-brands">
-                                        <div class="row">
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                        alt=""></a>
-                                            </div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                        alt=""></a></div>
-                                            <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                        src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                        alt=""></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mega-menu__columnfour">
-                                    <div class="row">
-                                        <div class="col-md-12 pb-5"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                alt="" /> </div>
-                                        <div class="col-md-12"> <img class="w-100"
-                                                src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                                </li>
+                            @endif
+                        @endforeach
                     </ul>
-
-
 
 
                     @if (get_setting('show_currency_switcher') == 'on')
@@ -1033,8 +435,7 @@
                         <ul class="navigation__extra" id="currency-change">
                             <li>
                                 <div class="ps-dropdown">
-                                    <a
-                                        href="#">{{ $currentCurrency->name }}{{ $currentCurrency->symbol }}</a>
+                                    <a href="#">{{ $currentCurrency->name }}{{ $currentCurrency->symbol }}</a>
                                     <ul class="ps-dropdown-menu">
                                         @foreach (\App\Models\Currency::where('status', 1)->get() as $key => $currency)
                                             <li>

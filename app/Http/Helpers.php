@@ -31,6 +31,8 @@ use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
 use Carbon\Carbon;
 
+use Harimayco\Menu\Facades\Menu;
+
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
     function sendSMS($to, $from, $text, $template_id)
@@ -1083,5 +1085,17 @@ if (!function_exists('load_seo_tags')) {
         } else {
             return  Currency::find(get_setting('system_default_currency'));
         }
+    }
+
+    function getMenu($id)
+    {
+        return Cache::rememberForever('menu_' . $id,  function () use ($id) {
+            return Menu::get($id);
+        });
+    }
+
+    function allProducts()
+    {
+        return Product::wherePublished(1)->latest()->get();
     }
 }

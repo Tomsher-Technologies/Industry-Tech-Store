@@ -80,48 +80,55 @@
         </div>
     </div>
 </div>
+
+@php
+    $footer_menu_1 = getMenu(2);
+    $footer_menu_2 = getMenu(3);
+    $footer_menu_3 = getMenu(4);
+    $footer_menu_4 = getMenu(5);
+@endphp
+
 <footer class="ps-footer">
     <div class="ps-container">
         <div class="ps-footer__widgets">
-            <aside class="widget widget_footer widget_contact-us">
+            <aside aria-label="Footer menu 1" class="widget widget_footer widget_contact-us">
                 <h4 class="widget-title">Company</h4>
                 <ul class="ps-list--link">
-                    <li><a href=""> About us</a></li>
-                    <li><a href="">Contact us</a></li>
-                    <li><a href="">Resources</a></li>
-                    <li><a href="">Career</a></li>
-                    <li><a href="">Feedback</a></li>
+                    @foreach ($footer_menu_1 as $menu)
+                        <li>
+                            <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                        </li>
+                    @endforeach
                 </ul>
             </aside>
-            <aside class="widget widget_footer">
+            <aside aria-label="Footer menu 2" class="widget widget_footer">
                 <h4 class="widget-title">Quick links</h4>
                 <ul class="ps-list--link">
-                    <li><a href="">My Account </a></li>
-                    <li><a href="">Login </a></li>
-                    <li><a href="">Register </a></li>
-                    <li><a href="">Cart </a></li>
-                    <li><a href="">Check out </a></li>
+                    @foreach ($footer_menu_2 as $menu)
+                        <li>
+                            <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                        </li>
+                    @endforeach
                 </ul>
             </aside>
-            <aside class="widget widget_footer">
+            <aside aria-label="Footer menu 3" class="widget widget_footer">
                 <h4 class="widget-title">Help</h4>
                 <ul class="ps-list--link">
-                    <li><a href="">Payments</a></li>
-                    <li><a href="">Shipping</a></li>
-                    <li><a href="">Request for Quotation</a></li>
-                    <li><a href="">FAQ</a></li>
-                    <li><a href="">Report Infringement </a></li>
-
+                    @foreach ($footer_menu_3 as $menu)
+                        <li>
+                            <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                        </li>
+                    @endforeach
                 </ul>
             </aside>
-            <aside class="widget widget_footer">
+            <aside aria-label="Footer menu 4" class="widget widget_footer">
                 <h4 class="widget-title">Terms</h4>
                 <ul class="ps-list--link">
-                    <li><a href="">Terms of Use</a></li>
-                    <li><a href="">Privacy Policy</a></li>
-                    <li><a href="">Consumer Rights</a></li>
-                    <li><a href="">Cancellation & Returns</a></li>
-
+                    @foreach ($footer_menu_4 as $menu)
+                        <li>
+                            <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                        </li>
+                    @endforeach
                 </ul>
             </aside>
         </div>

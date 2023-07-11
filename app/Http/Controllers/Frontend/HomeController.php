@@ -345,7 +345,7 @@ class HomeController extends Controller
 
     public function product(Request $request, $slug)
     {
-        $product = Product::with('reviews', 'brand', 'reviews', 'seo', 'category', 'tabs', 'stocks')->where('slug', $slug)->firstOrFail();
+        $product = Product::with('reviews', 'reviews.user', 'brand', 'seo', 'category', 'tabs', 'stocks')->where('slug', $slug)->firstOrFail();
         $gallery = Upload::whereIn('id', explode(',', $product->photos))->get();
         load_seo_tags($product->seo);
         return view('frontend.product.product_details', compact('product', 'gallery'));

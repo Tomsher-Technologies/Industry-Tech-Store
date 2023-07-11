@@ -287,6 +287,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                                                @include('frontend.product.product_review_listing')
                                                 @livewire('frontend.review-form', ['product' => $product->id])
                                             </div>
                                         </div>
