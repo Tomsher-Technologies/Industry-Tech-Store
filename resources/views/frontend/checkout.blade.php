@@ -284,7 +284,7 @@
 
                                             <div class="tab d-none">
                                                 <div id="shipping_charges">
-                                                    
+
                                                 </div>
                                             </div>
 
@@ -545,7 +545,7 @@
                 type: 'GET',
                 success: function(response) {
                     shipping_methods = JSON.stringify(response.shipping_methods)
-                    
+
                     console.log(shipping_methods);
                     // shipping_methods.forEach(element => {
                     //     console.log(element);
@@ -578,7 +578,7 @@
                         $(response.data).insertBefore("#addAddressContaniner");
                         $('#new-address-modal').modal('hide');
                     } else {
-                        alert('Somting went wrong, please try again');
+                        launchToast('Somting went wrong, please try again', 'error');
                     }
                 }
             });

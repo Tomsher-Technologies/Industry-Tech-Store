@@ -30,6 +30,7 @@ use App\Models\Upload;
 use Mail;
 use Illuminate\Auth\Events\PasswordReset;
 use Cache;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Password;
 
 class HomeController extends Controller
@@ -101,6 +102,7 @@ class HomeController extends Controller
             return Product::latest()->with('brand')->limit(12)->get();
         });
 
+        // load_seo_tags(null, '', 'Home');
 
         return view('frontend.index', compact('sliders', 'small_banners', 'ads_banners', 'trending_categories', 'newest_products', 'best_selling_products'));
     }

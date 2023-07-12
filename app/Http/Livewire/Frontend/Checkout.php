@@ -2,27 +2,65 @@
 
 namespace App\Http\Livewire\Frontend;
 
+use App\Http\Controllers\CheckoutController;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\CombinedOrder;
+use App\Models\Country;
 use App\Models\Coupon;
 use App\Models\CouponUsage;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Auth;
 use Livewire\Component;
+use Mpdf\Tag\Th;
 
 class Checkout extends Component
 {
+    public $current_step = 1;
 
     public $user_col = "";
     public $user_id = "";
     public $carts;
-    public $country;
+    protected $country_list;
     public $addresses;
+    public $shipping_rates;
+    public $payment_methods;
+
+    public $btn_disabled = 0;
 
     public $sub_total = 0;
     public $coupon_rate = 0;
     public $shipping_rate = 0;
     public $copupn_applied = false;
     public $total = 0;
+
+
+    // New Address field
+    public $new_address_lat;
+    public $new_address_long;
+    public $new_address_name;
+    public $new_address_address;
+    public $new_address_country;
+    public $new_address_state;
+    public $new_address_city;
+    public $new_address_pincode;
+    public $new_address_phone;
+
+    // Billing address
+    public $billing_address_name;
+    public $billing_address_address;
+    public $billing_address_country;
+    public $billing_address_state;
+    public $billing_address_city;
+    public $billing_address_pincode;
+    public $billing_address_phone;
+
+    // Checkout data
+    public $shipping_address;
+    public $diffrent_billing_address = false;
+    public $shipping_method;
+    public $payment_method;
 
     public function mount()
     {
@@ -47,8 +85,6 @@ class Checkout extends Component
                     $this->copupn_applied  = true;
                 }
             }
-
-            
 
             if ($coupon_code) {
                 $coupon = Coupon::whereCode($coupon_code)->first();
@@ -110,20 +146,269 @@ class Checkout extends Component
                 'city',
                 'state',
             ])->whereUserId($this->user_id)->orderBy('set_default', 'desc')->get();
+
+            $this->shipping_address = $this->addresses->where('set_default', true)->first()->id;
         }
 
-        // dd($this->copupn_applied);
+        if (get_setting('free_shipping_status')) {
+            if (
+                $this->sub_total > get_setting('free_shipping_min_amount') &&
+                $this->sub_total <= get_setting('free_shipping_max_amount')
+            ) {
+                $this->shipping_rates['free_shipping']['name'] = "Free Shipping";
+                $this->shipping_rates['free_shipping']['rate'] = 0;
+            }
+        }
 
-        $this->total = ($this->sub_total - $this->coupon_rate) + $this->shipping_rate;
+        if (get_setting('shipping_type') == 'flat_rate') {
+            $this->shipping_rates['falt_rate']['name'] = "Flat Rate Shipping";
+            $this->shipping_rates['falt_rate']['rate'] = get_setting('flat_rate_shipping_cost');
+        }
 
-        // $country = Country::whereStatus(1);
+        if (get_setting('cod_status')) {
+            $this->payment_methods['cod']['name'] = "Cash On Delivery";
+            $this->payment_methods['cod']['type'] = 'cash_on_delivery';
+        }
+
+
+        $this->payment_method = $this->payment_methods[key($this->payment_methods)]['type'];
+        $this->shipping_method = key($this->shipping_rates);
+
+        $this->shipping_rate = $this->shipping_rates[$this->shipping_method]['rate'];
+
+        $this->country_list = Country::whereStatus(1)->get();
     }
 
 
+    public function saveAddress()
+    {
+
+        $validatedData = $this->validate([
+            'new_address_lat' => 'required',
+            'new_address_long' => 'required',
+            'new_address_name' => 'required',
+            'new_address_address' => 'required',
+            'new_address_country' => 'required',
+            'new_address_state' => 'required',
+            'new_address_city' => 'required',
+            'new_address_pincode' => 'required',
+            'new_address_phone' => 'required',
+        ], [
+            'new_address_lat.required' => "Please choose your location",
+            'new_address_long.required' => "Please choose your location",
+            'new_address_name.required' => "Please enter a name",
+            'new_address_address.required' => "Please enter your address",
+            'new_address_country.required' => "Please choose a country",
+            'new_address_state.required' => "Please choose a state",
+            'new_address_city.required' => "Please choose a city",
+            'new_address_pincode.required' => "Please enter a pincode",
+            'new_address_phone.required' => "Please enter your phone number",
+        ]);
+
+        $address = Address::create([
+            'user_id' => Auth::user()->id,
+            'name' => $this->new_address_name,
+            'address' => $this->new_address_address,
+            'country_id' => $this->new_address_country,
+            'state_id' => $this->new_address_state,
+            'city_id' => $this->new_address_city,
+            'longitude' => $this->new_address_lat,
+            'latitude' => $this->new_address_long,
+            'postal_code' => $this->new_address_pincode,
+            'phone' => $this->new_address_phone,
+            'set_default' => 0,
+        ]);
+
+        $this->dispatchBrowserEvent('addressAdded');
+
+        $this->reset([
+            'new_address_lat',
+            'new_address_long',
+            'new_address_name',
+            'new_address_address',
+            'new_address_country',
+            'new_address_state',
+            'new_address_city',
+            'new_address_pincode',
+            'new_address_phone',
+        ]);
+
+        $this->addresses = Address::with([
+            'country',
+            'city',
+            'state',
+        ])->whereUserId($this->user_id)->orderBy('set_default', 'desc')->get();
+    }
+
+    public function step1()
+    {
+        $this->current_step = 1;
+        // $this->dispatchBrowserEvent('showStep', 1);
+    }
+
+    public function step2()
+    {
+        $this->current_step = 2;
+
+        $validatedData = $this->validate([
+            'shipping_address' => 'required',
+        ], [
+            'shipping_address.required' => "Please select a shipping address",
+        ]);
+
+        if ($this->diffrent_billing_address) {
+            $this->current_step = 2;
+            // $this->dispatchBrowserEvent('showStep', 2);
+        } else {
+            $this->current_step = 3;
+            // $this->dispatchBrowserEvent('showStep', 3);
+        }
+    }
+
+    public function step3()
+    {
+        $validatedData = $this->validate([
+            'billing_address_name' => 'required',
+            'billing_address_address' => 'required',
+            'billing_address_country' => 'required',
+            'billing_address_state' => 'required',
+            'billing_address_city' => 'required',
+            'billing_address_pincode' => 'required',
+            'billing_address_phone' => 'required',
+        ], [
+            'billing_address_name.required' => "Please enter a name",
+            'billing_address_address.required' => "Please enter your address",
+            'billing_address_country.required' => "Please choose a country",
+            'billing_address_state.required' => "Please choose a state",
+            'billing_address_city.required' => "Please choose a city",
+            'billing_address_pincode.required' => "Please enter a pincode",
+            'billing_address_phone.required' => "Please enter your phone number",
+        ]);
+
+        $this->current_step = 3;
+
+        // $this->dispatchBrowserEvent('showStep', 3);
+    }
+
+    public function step4()
+    {
+        $this->current_step = 4;
+
+        $validatedData = $this->validate([
+            'shipping_method' => 'required',
+        ], [
+            'shipping_method.required' => "Please select a shipping method",
+        ]);
+
+        // $this->dispatchBrowserEvent('showStep', 4);
+    }
+
+    public function checkout()
+    {
+        $shipping_address_json = [];
+        $billing_address_json = [];
+
+        if (Auth::check()) {
+            $address = $this->addresses->where('id', $this->shipping_address)->first();
+
+            $shipping_address_json['name']        = $address->name;
+            $shipping_address_json['email']       = Auth::user()->email;
+            $shipping_address_json['address']     = $address->address;
+            $shipping_address_json['country']     = $address->country->name;
+            $shipping_address_json['state']       = $address->state->name;
+            $shipping_address_json['city']        = $address->city->name;
+            $shipping_address_json['postal_code'] = $address->postal_code;
+            $shipping_address_json['phone']       = $address->phone;
+            $shipping_address_json['longitude']   = $address->longitude;
+            $shipping_address_json['latitude']    = $address->latitude;
+        } else {
+            $address = $this->addresses->where('id', $this->shipping_address)->first();
+
+            $shipping_address_json['name']        = $address->name;
+            $shipping_address_json['email']       = Auth::user()->email;
+            $shipping_address_json['address']     = $address->address;
+            $shipping_address_json['country']     = $address->country->name;
+            $shipping_address_json['state']       = $address->state->name;
+            $shipping_address_json['city']        = $address->city->name;
+            $shipping_address_json['postal_code'] = $address->postal_code;
+            $shipping_address_json['phone']       = $address->phone;
+            $shipping_address_json['longitude']   = $address->longitude;
+            $shipping_address_json['latitude']    = $address->latitude;
+        }
+
+        if ($this->diffrent_billing_address) {
+            $billing_address_json['name']        = $this->billing_address_name;
+            $billing_address_json['address']     = $this->billing_address_address;
+            $billing_address_json['country']     = $this->billing_address_country;
+            $billing_address_json['state']       = $this->billing_address_state;
+            $billing_address_json['city']        = $this->billing_address_city;
+            $billing_address_json['postal_code'] = $this->billing_address_pincode;
+            $billing_address_json['phone']       = $this->billing_address_phone;
+        } else {
+            $billing_address_json = $shipping_address_json;
+        }
+
+        $shipping_address_json = json_encode($shipping_address_json);
+        $billing_address_json = json_encode($billing_address_json);
+
+        $combined_order = CombinedOrder::create([
+            'user_id' => $this->user_id,
+            'shipping_address' => $shipping_address_json,
+            'grand_total' => $this->total,
+        ]);
+
+        $order = Order::create([
+            'user_id' => Auth::check() ? $this->user_id : null,
+            'guest_id' => Auth::check() ? null : $this->user_id,
+            'seller_id' =>  0,
+            'combined_order_id' => $combined_order->id,
+            'shipping_address' => $shipping_address_json,
+            'billing_address' => $billing_address_json,
+            'shipping_type' => $this->shipping_method,
+            'shipping_cost' => $this->shipping_rate,
+            'pickup_point_id' => 0,
+            'delivery_status' => 'pending',
+            'payment_type' => $this->payment_method,
+            'grand_total' =>  $this->total,
+            'coupon_discount' => $this->coupon_rate,
+            'code' => date('Ymd-His') . rand(10, 99),
+            'date' => strtotime('now'),
+            'delivery_viewed' => 0
+        ]);
+
+        foreach ($this->carts as $cart) {
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $cart->product_id,
+                'variation' => $cart->variation,
+                'og_price' => $cart->price,
+                'price' => $cart->price * $cart->quantity,
+                'quantity' => $cart->quantity,
+            ]);
+        }
+
+        return redirect()->route('payment.checkout', [
+            'order' => $order
+        ]);
+    }
 
     public function render()
     {
-        
-        return view('livewire.frontend.checkout')->extends('frontend.layouts.app');
+        $this->total = ($this->sub_total - $this->coupon_rate) + $this->shipping_rate;
+
+        $country = $this->country_list;
+        return view('livewire.frontend.checkout', [
+            'country' => $country
+        ])->extends('frontend.layouts.app');
+    }
+
+
+    // public function updating($name, $value)
+    // {
+    // }
+
+    public function updatedShippingMethod($value)
+    {
+        $this->shipping_rate = $this->shipping_rates[$value]['rate'];
     }
 }

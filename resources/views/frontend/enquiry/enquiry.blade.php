@@ -149,7 +149,7 @@
                 success: function(data, status, xhr) {
                     // console.log(data);
                     if (xhr.status == 200) {
-                        alert(data.message);
+                        launchToast(data.message);
                         $('.headerEnquiryCount').html(data.count)
                         $('#list-item-' + id).remove()
 
@@ -158,12 +158,12 @@
                                 "<p>You dont have any items to enquire</p>");
                         }
                     } else {
-                        alert('Something went wrong, please try again');
+                        launchToast('Something went wrong, please try again', 'error');
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     if (xhr.status == 404) {
-                        alert('Something went wrong, please try again');
+                        launchToast('Something went wrong, please try again', 'error');
                     }
                 },
             });
@@ -190,11 +190,11 @@
                         $('.table-responsive').html(
                             "<p>You dont have any items to enquire</p>");
                     } else {
-                        alert('Something went wrong, please try again');
+                        launchToast('Something went wrong, please try again', 'error');
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    alert('Something went wrong, please try again');
+                    launchToast('Something went wrong, please try again', 'error');
                 },
             });
 

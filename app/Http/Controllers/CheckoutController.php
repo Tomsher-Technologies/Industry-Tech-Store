@@ -18,9 +18,11 @@ use App\Models\CouponUsage;
 use App\Models\Address;
 use App\Models\CombinedOrder;
 use App\Models\Country;
+use App\Models\OrderDetail;
 use Session;
 use App\Utility\PayhereUtility;
 use App\Utility\NotificationUtility;
+use Cache;
 
 class CheckoutController extends Controller
 {
@@ -31,128 +33,168 @@ class CheckoutController extends Controller
     }
 
     //check the selected payment gateway and redirect to that controller accordingly
-    public function checkout(Request $request)
+    public function checkout(Order $order)
     {
-        if ($request->payment_option != null) {
-            (new OrderController)->store($request);
 
-            $request->session()->put('payment_type', 'cart_payment');
+        $order_success = false;
 
-            $data['combined_order_id'] = $request->session()->get('combined_order_id');
-            $request->session()->put('payment_data', $data);
-
-            if ($request->session()->get('combined_order_id') != null) {
-                if ($request->payment_option == 'paypal') {
-                    $paypal = new PaypalController;
-                    return $paypal->getCheckout();
-                } elseif ($request->payment_option == 'stripe') {
-                    $stripe = new StripePaymentController;
-                    return $stripe->stripe();
-                } elseif ($request->payment_option == 'mercadopago') {
-                    $mercadopago = new MercadopagoController;
-                    return $mercadopago->paybill();
-                } elseif ($request->payment_option == 'sslcommerz') {
-                    $sslcommerz = new PublicSslCommerzPaymentController;
-                    return $sslcommerz->index($request);
-                } elseif ($request->payment_option == 'instamojo') {
-                    $instamojo = new InstamojoController;
-                    return $instamojo->pay($request);
-                } elseif ($request->payment_option == 'razorpay') {
-                    $razorpay = new RazorpayController;
-                    return $razorpay->payWithRazorpay($request);
-                } elseif ($request->payment_option == 'payku') {
-                    return (new PaykuController)->create($request);
-                } elseif ($request->payment_option == 'voguepay') {
-                    $voguePay = new VoguePayController;
-                    return $voguePay->customer_showForm();
-                } elseif ($request->payment_option == 'ngenius') {
-                    $ngenius = new NgeniusController();
-                    return $ngenius->pay();
-                } elseif ($request->payment_option == 'iyzico') {
-                    $iyzico = new IyzicoController();
-                    return $iyzico->pay();
-                } elseif ($request->payment_option == 'nagad') {
-                    $nagad = new NagadController;
-                    return $nagad->getSession();
-                } elseif ($request->payment_option == 'bkash') {
-                    $bkash = new BkashController;
-                    return $bkash->pay();
-                } elseif ($request->payment_option == 'aamarpay') {
-                    $aamarpay = new AamarpayController;
-                    return $aamarpay->index();
-                } elseif ($request->payment_option == 'flutterwave') {
-                    $flutterwave = new FlutterwaveController();
-                    return $flutterwave->pay();
-                } elseif ($request->payment_option == 'mpesa') {
-                    $mpesa = new MpesaController();
-                    return $mpesa->pay();
-                } elseif ($request->payment_option == 'paystack') {
-                    if (addon_is_activated('otp_system') && !Auth::user()->email) {
-                        flash(translate('Your email should be verified before order'))->warning();
-                        return redirect()->route('cart')->send();
-                    }
-                    $paystack = new PaystackController;
-                    return $paystack->redirectToGateway($request);
-                } elseif ($request->payment_option == 'payhere') {
-                    $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
-
-                    $combined_order_id = $combined_order->id;
-                    $amount = $combined_order->grand_total;
-                    $first_name = json_decode($combined_order->shipping_address)->name;
-                    $last_name = 'X';
-                    $phone = json_decode($combined_order->shipping_address)->phone;
-                    $email = json_decode($combined_order->shipping_address)->email;
-                    $address = json_decode($combined_order->shipping_address)->address;
-                    $city = json_decode($combined_order->shipping_address)->city;
-
-                    return PayhereUtility::create_checkout_form($combined_order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
-                } elseif ($request->payment_option == 'payfast') {
-                    $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
-
-                    $combined_order_id = $combined_order->id;
-                    $amount = $combined_order->grand_total;
-
-                    return PayfastUtility::create_checkout_form($combined_order_id, $amount);
-                } elseif ($request->payment_option == 'paytm') {
-                    if (Auth::user()->phone == null) {
-                        flash('Please add phone number to your profile')->warning();
-                        return redirect()->route('profile');
-                    }
-
-                    $paytm = new PaytmController;
-                    return $paytm->index();
-                } elseif ($request->payment_option == 'toyyibpay') {
-                    return (new ToyyibpayController)->createbill();
-                } else if ($request->payment_option == 'authorizenet') {
-                    $authorize_net = new AuthorizeNetController();
-                    return $authorize_net->pay();
-                } elseif ($request->payment_option == 'cash_on_delivery') {
-                    flash(translate("Your order has been placed successfully"))->success();
-                    return redirect()->route('order_confirmed');
-                } elseif ($request->payment_option == 'wallet') {
-                    $user = Auth::user();
-                    $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
-                    if ($user->balance >= $combined_order->grand_total) {
-                        $user->balance -= $combined_order->grand_total;
-                        $user->save();
-                        return $this->checkout_done($request->session()->get('combined_order_id'), null);
-                    }
-                } else {
-                    $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
-                    foreach ($combined_order->orders as $order) {
-                        $order->manual_payment = 1;
-                        $order->save();
-                    }
-                    flash(translate('Your order has been placed successfully. Please submit payment information from purchase history'))->success();
-                    return redirect()->route('order_confirmed');
-                }
-            }
+        if (Auth::check()) {
+            $user_col = "user_id";
+            $user_id = Auth::id();
         } else {
-            flash(translate('Select Payment Option.'))->warning();
-            return back();
+            $user_col = "temp_user_id";
+            $user_id = getTempUserId();
         }
-    }
 
+        if ($order->payment_type == 'cash_on_delivery') {
+            $order->delivery_status = 'confirmed';
+            $order->save();
+            OrderDetail::where('order_id',  $order->id)->update([
+                'delivery_status' => 'confirmed'
+            ]);
+
+            Cart::where($user_col, $user_id)
+                ->delete();
+
+            Cache::forget('user_cart_count_' . $user_id);
+
+            $order_success = true;
+        }
+
+
+        if ($order_success) {
+            NotificationUtility::sendOrderPlacedNotification($order);
+
+            return redirect()->route('order_confirmed', [
+                'order' => $order
+            ]);
+        }
+
+        return redirect()->route('order_failed', [
+            'order' => $order
+        ]);
+    }
+    // public function checkout(Request $request)
+    // {
+    //     if ($request->payment_option != null) {
+    //         (new OrderController)->store($request);
+
+    //         $request->session()->put('payment_type', 'cart_payment');
+
+    //         $data['combined_order_id'] = $request->session()->get('combined_order_id');
+    //         $request->session()->put('payment_data', $data);
+
+    //         if ($request->session()->get('combined_order_id') != null) {
+    //             if ($request->payment_option == 'paypal') {
+    //                 $paypal = new PaypalController;
+    //                 return $paypal->getCheckout();
+    //             } elseif ($request->payment_option == 'stripe') {
+    //                 $stripe = new StripePaymentController;
+    //                 return $stripe->stripe();
+    //             } elseif ($request->payment_option == 'mercadopago') {
+    //                 $mercadopago = new MercadopagoController;
+    //                 return $mercadopago->paybill();
+    //             } elseif ($request->payment_option == 'sslcommerz') {
+    //                 $sslcommerz = new PublicSslCommerzPaymentController;
+    //                 return $sslcommerz->index($request);
+    //             } elseif ($request->payment_option == 'instamojo') {
+    //                 $instamojo = new InstamojoController;
+    //                 return $instamojo->pay($request);
+    //             } elseif ($request->payment_option == 'razorpay') {
+    //                 $razorpay = new RazorpayController;
+    //                 return $razorpay->payWithRazorpay($request);
+    //             } elseif ($request->payment_option == 'payku') {
+    //                 return (new PaykuController)->create($request);
+    //             } elseif ($request->payment_option == 'voguepay') {
+    //                 $voguePay = new VoguePayController;
+    //                 return $voguePay->customer_showForm();
+    //             } elseif ($request->payment_option == 'ngenius') {
+    //                 $ngenius = new NgeniusController();
+    //                 return $ngenius->pay();
+    //             } elseif ($request->payment_option == 'iyzico') {
+    //                 $iyzico = new IyzicoController();
+    //                 return $iyzico->pay();
+    //             } elseif ($request->payment_option == 'nagad') {
+    //                 $nagad = new NagadController;
+    //                 return $nagad->getSession();
+    //             } elseif ($request->payment_option == 'bkash') {
+    //                 $bkash = new BkashController;
+    //                 return $bkash->pay();
+    //             } elseif ($request->payment_option == 'aamarpay') {
+    //                 $aamarpay = new AamarpayController;
+    //                 return $aamarpay->index();
+    //             } elseif ($request->payment_option == 'flutterwave') {
+    //                 $flutterwave = new FlutterwaveController();
+    //                 return $flutterwave->pay();
+    //             } elseif ($request->payment_option == 'mpesa') {
+    //                 $mpesa = new MpesaController();
+    //                 return $mpesa->pay();
+    //             } elseif ($request->payment_option == 'paystack') {
+    //                 if (addon_is_activated('otp_system') && !Auth::user()->email) {
+    //                     flash(translate('Your email should be verified before order'))->warning();
+    //                     return redirect()->route('cart')->send();
+    //                 }
+    //                 $paystack = new PaystackController;
+    //                 return $paystack->redirectToGateway($request);
+    //             } elseif ($request->payment_option == 'payhere') {
+    //                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+
+    //                 $combined_order_id = $combined_order->id;
+    //                 $amount = $combined_order->grand_total;
+    //                 $first_name = json_decode($combined_order->shipping_address)->name;
+    //                 $last_name = 'X';
+    //                 $phone = json_decode($combined_order->shipping_address)->phone;
+    //                 $email = json_decode($combined_order->shipping_address)->email;
+    //                 $address = json_decode($combined_order->shipping_address)->address;
+    //                 $city = json_decode($combined_order->shipping_address)->city;
+
+    //                 return PayhereUtility::create_checkout_form($combined_order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city);
+    //             } elseif ($request->payment_option == 'payfast') {
+    //                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+
+    //                 $combined_order_id = $combined_order->id;
+    //                 $amount = $combined_order->grand_total;
+
+    //                 return PayfastUtility::create_checkout_form($combined_order_id, $amount);
+    //             } elseif ($request->payment_option == 'paytm') {
+    //                 if (Auth::user()->phone == null) {
+    //                     flash('Please add phone number to your profile')->warning();
+    //                     return redirect()->route('profile');
+    //                 }
+
+    //                 $paytm = new PaytmController;
+    //                 return $paytm->index();
+    //             } elseif ($request->payment_option == 'toyyibpay') {
+    //                 return (new ToyyibpayController)->createbill();
+    //             } else if ($request->payment_option == 'authorizenet') {
+    //                 $authorize_net = new AuthorizeNetController();
+    //                 return $authorize_net->pay();
+    //             } elseif ($request->payment_option == 'cash_on_delivery') {
+    //                 flash(translate("Your order has been placed successfully"))->success();
+    //                 return redirect()->route('order_confirmed');
+    //             } elseif ($request->payment_option == 'wallet') {
+    //                 $user = Auth::user();
+    //                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+    //                 if ($user->balance >= $combined_order->grand_total) {
+    //                     $user->balance -= $combined_order->grand_total;
+    //                     $user->save();
+    //                     return $this->checkout_done($request->session()->get('combined_order_id'), null);
+    //                 }
+    //             } else {
+    //                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+    //                 foreach ($combined_order->orders as $order) {
+    //                     $order->manual_payment = 1;
+    //                     $order->save();
+    //                 }
+    //                 flash(translate('Your order has been placed successfully. Please submit payment information from purchase history'))->success();
+    //                 return redirect()->route('order_confirmed');
+    //             }
+    //         }
+    //     } else {
+    //         flash(translate('Select Payment Option.'))->warning();
+    //         return back();
+    //     }
+    // }
     //redirects to this method after a successfull checkout
     public function checkout_done($combined_order_id, $payment)
     {
@@ -444,21 +486,13 @@ class CheckoutController extends Controller
         return view('frontend.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'));
     }
 
-    public function order_confirmed()
+    public function order_confirmed(Order $order)
     {
-        $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
-
-        Cart::where('user_id', $combined_order->user_id)
-            ->delete();
-
-        //Session::forget('club_point');
-        //Session::forget('combined_order_id');
-
-        foreach ($combined_order->orders as $order) {
-            NotificationUtility::sendOrderPlacedNotification($order);
-        }
-
-        return view('frontend.order_confirmed', compact('combined_order'));
+        return view('frontend.order_confirmed', compact('order'));
+    }
+    public function order_failed(Order $order)
+    {
+        return view('frontend.order_failed', compact('order'));
     }
 
     public function get_shipping_methods(Request $request)
@@ -479,8 +513,8 @@ class CheckoutController extends Controller
 
             $carts = Cart::where($user_col, $user_id)->with('product')->get();
 
-            
- 
+
+
             $cart_total = 0;
             foreach ($carts as $cart) {
                 $cart_total += $cart->quantity * $cart->price;

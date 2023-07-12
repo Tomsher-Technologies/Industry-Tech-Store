@@ -32,11 +32,12 @@
             {!! $product->description !!}
         </div>
         <div class="ps-product__shopping">
-            <a class="ps-btn" href="javascript:void(0)" onclick="showAddToCartModal({{ $product->id }})">Add to
+            <a class="ps-btn" href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')">Add to
                 cart</a>
-            <a class="ps-btn ps-btn--orange" href="javascript:void(0)" onclick="buyNow({{ $product->id }})">Buy Now</a>
+            <a class="ps-btn ps-btn--orange" href="javascript:void(0)" onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
             <div class="ps-product__actions">
-                <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" title="Add to wishlist"><i class="icon-heart"></i></a>
+                <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" title="Add to wishlist"><i
+                        class="icon-heart"></i></a>
             </div>
         </div>
     </div>

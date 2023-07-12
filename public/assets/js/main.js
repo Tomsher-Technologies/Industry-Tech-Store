@@ -989,3 +989,21 @@
     });
 
 })(jQuery);
+
+
+function launchToast(msg, status = 'success') {
+    let color = {
+        success: '#50dc6c',
+        info: '#3186ea',
+        warning: '#fec022',
+        error: '#fc5758',
+    }
+    Toastify({
+        text: msg,
+        duration: 3000,
+        close: true,
+        style: {
+            background: color[status],
+        }
+    }).showToast();
+}

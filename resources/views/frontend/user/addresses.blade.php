@@ -109,7 +109,7 @@
                         location.reload();
                     }
                     if (xhr.status == 401) {
-                        alert("Please try again");
+                        launchToast("Please try again", 'error');
                     }
                 },
             });

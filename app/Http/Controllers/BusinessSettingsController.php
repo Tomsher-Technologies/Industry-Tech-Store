@@ -100,20 +100,33 @@ class BusinessSettingsController extends Controller
      */
     public function payment_method_update(Request $request)
     {
-        foreach ($request->types as $key => $type) {
-            $this->overWriteEnvFile($type, $request[$type]);
+
+        // $business_settings = BusinessSetting::where()->first();
+
+        BusinessSetting::updateOrCreate([
+            'type' => $request->payment_method . '_status'
+        ], [
+            'value' => $request->has($request->payment_method . '_status') ? 1 : 0
+        ]);
+
+        foreach ($request->types as $type) {
+            BusinessSetting::updateOrCreate([
+                'type' => $type
+            ], [
+                'value' => $request[$type]
+            ]);
         }
 
-        $business_settings = BusinessSetting::where('type', $request->payment_method . '_sandbox')->first();
-        if ($business_settings != null) {
-            if ($request->has($request->payment_method . '_sandbox')) {
-                $business_settings->value = 1;
-                $business_settings->save();
-            } else {
-                $business_settings->value = 0;
-                $business_settings->save();
-            }
-        }
+        // $business_settings = BusinessSetting::where('type', $request->payment_method . '_sandbox')->first();
+        // if ($business_settings != null) {
+        //     if ($request->has($request->payment_method . '_sandbox')) {
+        //         $business_settings->value = 1;
+        //         $business_settings->save();
+        //     } else {
+        //         $business_settings->value = 0;
+        //         $business_settings->save();
+        //     }
+        // }
 
         Artisan::call('cache:clear');
 

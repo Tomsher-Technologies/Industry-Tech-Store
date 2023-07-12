@@ -134,7 +134,7 @@
                 },
                 success: function(data, status, xhr) {
                     if (xhr.status == 200) {
-                        alert(data.message);
+                        launchToast(data.message);
                         $('.headerCartCount').html(data.count)
                         Livewire.emit('cartUpdated');
                         $('#cart-item-' + id).remove()
@@ -142,7 +142,7 @@
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     if (xhr.status == 404) {
-                        alert('Something went wrong, please try again');
+                        launchToast('Something went wrong, please try again', 'error');
                     }
                 },
             });

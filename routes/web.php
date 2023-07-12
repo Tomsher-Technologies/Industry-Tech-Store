@@ -29,6 +29,7 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
 use App\Http\Livewire\Frontend\Checkout;
+use App\Models\Order;
 
 Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
@@ -41,6 +42,17 @@ Route::get('/migrate_attribute_values', [DemoController::class, 'migrate_attribu
 
 Route::get('/refresh-csrf', function () {
     return csrf_token();
+});
+
+Route::get('/test', function () {
+    $order = Order::find(1);
+
+    $array['view'] = 'emails.invoice';
+    $array['subject'] = translate('A new order has been placed') . ' - ' . $order->code;
+    $array['from'] = env('MAIL_FROM_ADDRESS');
+    $array['order'] = $order;
+
+    return new App\Mail\InvoiceEmailManager($array);
 });
 
 Auth::routes([
@@ -125,8 +137,9 @@ Route::group(['prefix' => 'checkout'], function () {
     Route::post('/payment_select', [CheckoutController::class, 'store_delivery_info'])->name('checkout.store_delivery_info');
     Route::get('/shipping_methods', [CheckoutController::class, 'get_shipping_methods'])->name('checkout.shipping_methods');
 
-    Route::get('/order-confirmed', [CheckoutController::class, 'order_confirmed'])->name('order_confirmed');
-    Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/order-confirmed/{order}', [CheckoutController::class, 'order_confirmed'])->name('order_confirmed');
+    Route::get('/order-failed/{order}', [CheckoutController::class, 'order_failed'])->name('order_failed');
+    Route::get('/payment/{order}', [CheckoutController::class, 'checkout'])->name('payment.checkout');
     Route::post('/get_pick_up_points', [HomeController::class, 'get_pick_up_points'])->name('shipping_info.get_pick_up_points');
     Route::get('/payment-select', [CheckoutController::class, 'get_payment_info'])->name('checkout.payment_info');
     Route::post('/apply_coupon_code', [CheckoutController::class, 'apply_coupon_code'])->name('checkout.apply_coupon_code');

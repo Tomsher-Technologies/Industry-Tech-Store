@@ -698,7 +698,7 @@ if (!function_exists('getFileBaseURL')) {
             return env('AWS_URL') . '/';
         } else {
             return app('url')->asset('storage') . '/';
-            return getBaseURL();
+            // return getBaseURL();
         }
     }
 }
@@ -849,8 +849,9 @@ if (!function_exists('checkout_done')) {
 
             try {
                 NotificationUtility::sendOrderPlacedNotification($order);
-                calculateCommissionAffilationClubPoint($order);
+                // calculateCommissionAffilationClubPoint($order);
             } catch (\Exception $e) {
+                // Do nothing
             }
         }
     }
@@ -934,9 +935,8 @@ if (!function_exists('get_uploads_image')) {
 
 // Load SEO details
 if (!function_exists('load_seo_tags')) {
-    function load_seo_tags($seo, $image = '')
+    function load_seo_tags($seo = null, $image = '')
     {
-
         if ($image == '') {
             $image = frontendAsset('img/logo_new.webp');
         }
@@ -970,9 +970,6 @@ if (!function_exists('load_seo_tags')) {
                 ->setTitle($seo->meta_title)
                 ->setDescription($seo->meta_description)
                 ->setSite(env('APP_NAME', 'Industry Tech Store'));
-
-            // JsonLd::setTitle($seo->meta_title);
-            // JsonLd::setDescription($seo->meta_description);
         }
     }
 

@@ -45,7 +45,10 @@ class LoginController extends Controller
      * @var string
      */
     /*protected $redirectTo = '/';*/
-
+    public function showLoginForm()
+    {
+        return redirect()->route('user.login');
+    }
 
     /**
      * Redirect the user to the Google authentication page.

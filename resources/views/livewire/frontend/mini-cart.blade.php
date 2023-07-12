@@ -60,8 +60,6 @@
                 <a class="ps-btn" href="{{ route('checkout.checkout_page') }}">Checkout</a>
             </figure>
         </div>
-    @else
-        <p>No Items in cart</p>
     @endif
 
 

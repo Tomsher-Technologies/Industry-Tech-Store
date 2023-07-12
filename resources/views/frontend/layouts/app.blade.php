@@ -10,14 +10,13 @@
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
     @yield('meta')
 
-
     @auth
         <meta property="user" content="{{ auth()->user()->id }}" />
         <meta property="user" content="{{ auth()->user()->email }}" />
     @endauth
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
+    <link rel="icon" href="{{ frontendAsset('css/bulk-style.css') }}">
 
     <link rel='dns-prefetch' href='//fonts.googleapis.com' />
     <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
@@ -41,7 +40,7 @@
     <link rel="stylesheet" href="{{ frontendAsset('plugins/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ frontendAsset('css/style.css') }}">
 
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     @if (get_setting('google_analytics') == 1)
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('TRACKING_ID') }}"></script>
@@ -135,6 +134,8 @@
     {{-- <script src="{{ frontendAsset('plugins/gmap3.min.js') }}"></script> --}}
     <script src="{{ frontendAsset('js/main.js') }}"></script>
     <script src="{{ frontendAsset('js/product_functions.js') }}"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     @yield('script')
 

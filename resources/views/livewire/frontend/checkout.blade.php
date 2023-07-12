@@ -1,4 +1,4 @@
-@section('content')
+<div>
     <div class="ps-breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
@@ -9,378 +9,447 @@
     </div>
     <div class="ps-section--shopping ps-shopping-cart">
         <div class="container">
-            <div class="ps-section__content">
-                @if ($carts->count())
-                    <form class="ps-form--checkout" id="checkoutForm" action="do_action" method="post">
-                        <div class="row">
-                            <div class="col-xl-7 col-lg-8 col-md-12 col-sm-12  ">
-                                <div class="ps-form__billing-info">
 
-                                    {{-- Wizard --}}
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <nav class="nav nav-pills nav-fill">
-                                                <a class="nav-link tab-pills" href="#">Shipping Address</a>
-                                                <a class="nav-link tab-pills" href="#">Shipping Method</a>
-                                                <a class="nav-link tab-pills" href="#">Finish</a>
-                                            </nav>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="tab d-none">
+            @if ($carts->count())
+                <div id="checkout-steps" class="step-checkout">
+                    <ul class="step-checkout_list" id="checkoutList">
+                        <!-- Checkout items/tabs -->
+                        <li role="button" class="step-checkout_item {{ $current_step == 1 ? 'active' : '' }}"
+                            wire:click.prevent="step1()" id="stepCheckoutItem1" tabindex="1">
+                            <span>Shipping Address</span>
+                        </li>
+                        <li role="button" class="step-checkout_item {{ $current_step == 2 ? 'active' : '' }}"
+                            wire:click.prevent="step2()" id="stepCheckoutItem2" tabindex="1">
+                            <span> Billing Address</span>
+                        </li>
+                        <li role="button" class="step-checkout_item {{ $current_step == 3 ? 'active' : '' }}"
+                            id="stepCheckoutItem3" wire:click.prevent="step3()" tabindex="1">
+                            <span>SHIPPING </span>
+                        </li>
+                        <li role="button" class="step-checkout_item {{ $current_step == 4 ? 'active' : '' }}"
+                            id="stepCheckoutItem4" wire:click.prevent="step4()" tabindex="1">
+                            <span>Payment</span>
+                        </li>
+                        <li class="step-checkout_content">
+                            <!-- Split Checkout steps from the Summary -->
+                            <div class="grid-x">
+                                <!-- Checkout step content here -->
+                                <div class="col">
+                                    <div class="step-checkout_item_content" id="stepCheckoutContent1">
+                                        <div id="checkout-steps" class="checkout-steps-accordion">
+                                            <div class="step-box">
+                                                <h2>Shipping Address</h2>
+                                                <div class="row g-4 position-relative" id="address-list">
 
-                                                @auth
-                                                    <div class="row g-sm-4 g-3">
-                                                        @if ($addresses && $addresses->count())
-                                                            @foreach ($addresses as $address)
-                                                                <div class="col-lg-6">
-                                                                    <label
-                                                                        class="addressLabel w-100 {{ $address->set_default ? 'checked' : '' }}"
-                                                                        for="address-{{ $address->id }}">
-                                                                        {{-- {{ $address->set_default ? 'checked' : '' }} --}}
-                                                                        <input type="radio" name="address"
-                                                                            {{ $address->set_default ? 'checked' : '' }}
-                                                                            id="address-{{ $address->id }}"
+                                                    {{-- <div class="position-absolute h-100 w-100 start-0 top-0 z-1020"
+                                                    style="z-index: 999" wire:loading>
+                                                    <img class="h-100 w-100" style="object-fit: cover;opacity: .6"
+                                                        src="{{ frontendAsset('img/Loading_icon.gif') }}"
+                                                        alt="Loading">
+                                                </div> --}}
+
+                                                    @if ($addresses && $addresses->count())
+                                                        @foreach ($addresses as $address)
+                                                            <div class="col-lg-6">
+                                                                <div class="ship-address-box">
+                                                                    <div class="form-check card-radio">
+                                                                        <input wire:model="shipping_address"
+                                                                            id="shippingAddress{{ $address->id }}"
+                                                                            name="shippingAddress" type="radio"
                                                                             value="{{ $address->id }}"
-                                                                            class="addressCheckbox d-none" required>
-
-                                                                        <div
-                                                                            class="border p-3 pr-5 rounded mb-3 position-relative">
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">Name:</span>
-                                                                                <span class="ml-2">{{ $address->name }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">Address:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->address }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">Postal
-                                                                                    code:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->postal_code }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">City:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->city->name }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">State:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->state->name }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">Country:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->country->name }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <span class="w-50 fw-600">Phone:</span>
-                                                                                <span
-                                                                                    class="ml-2">{{ $address->phone }}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>
-                                                            @endforeach
-                                                        @endif
-
-                                                        <div class="col-lg-6 mx-auto" id="addAddressContaniner"
-                                                            onclick="add_new_address()">
-                                                            <div class="border p-3 rounded mb-3 c-poniter text-center bg-light">
-                                                                <i class="iconly-Plus icli fs-1"></i>
-                                                                <div class="alpha-7 user-select-none">Add New Address</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <form class="form-default" role="form" id="addressAddForm">
-                                                        <div class="modal-body">
-                                                            <div class="p-3">
-                                                                <div class=" row">
-                                                                    <label class="col-md-2">Location</label>
-                                                                    <div class="col-sm-10">
-                                                                        <input type="text" class="form-control"
-                                                                            id="us3-address" />
+                                                                            class="form-check-input">
+                                                                        <label class="form-check-label"
+                                                                            for="shippingAddress{{ $address->id }}">
+                                                                            <span
+                                                                                class="mb-4 fw-semibold fs-12 d-block text-muted text-uppercase">
+                                                                                {{ $address->name ?? auth()->user()->name }}
+                                                                            </span>
+                                                                            <span
+                                                                                class="text-muted fw-normal text-wrap mb-1 d-block">
+                                                                                {{ $address->address }}, <br>
+                                                                                {{ $address->postal_code }}, <br>
+                                                                                {{ $address->city->name }}, <br>
+                                                                                {{ $address->state->name }}, <br>
+                                                                                {{ $address->country->name }}
+                                                                            </span>
+                                                                            <span class="text-muted fw-normal d-block">
+                                                                                {{ $address->phone }}
+                                                                            </span>
+                                                                        </label>
                                                                     </div>
-                                                                    <div class="col-sm-12 mt-3">
-                                                                        <div id="us3" style="height: 400px;"></div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input type="hidden" name="latitude" class="form-control"
-                                                                    id="us3-lat" />
-                                                                <input type="hidden" name="longitude" class="form-control"
-                                                                    id="us3-lon" />
-
-                                                                <div class="row mt-3">
-                                                                    <div class="col-md-2">
-                                                                        <label>Name</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <input type="text" class="form-control mb-3"
-                                                                            placeholder="Your Name" name="name"
-                                                                            value="{{ auth()->user() ? auth()->user()->name : '' }}"
-                                                                            required>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>Address</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address" required></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>Country</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <div class="mb-3">
-                                                                            <select class="form-control aiz-selectpicker"
-                                                                                data-live-search="true"
-                                                                                data-placeholder="Select your country"
-                                                                                name="country_id" required>
-                                                                                <option value="">Select your country
-                                                                                </option>
-                                                                                @if ($country)
-                                                                                    @foreach ($country as $key => $coun)
-                                                                                        <option value="{{ $coun->id }}">
-                                                                                            {{ $coun->name }}</option>
-                                                                                    @endforeach
-                                                                                @endif
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>State</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <select class="form-control mb-3 aiz-selectpicker"
-                                                                            data-live-search="true" name="state_id" required>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>City</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <select class="form-control mb-3 aiz-selectpicker"
-                                                                            data-live-search="true" name="city_id" required>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>Postal code</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <input type="text" class="form-control mb-3"
-                                                                            placeholder="Your Postal Code" name="postal_code"
-                                                                            value="" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-2">
-                                                                        <label>Phone</label>
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <input type="text" class="form-control mb-3"
-                                                                            placeholder="+971" name="phone" value=""
-                                                                            required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group text-right">
-                                                                    <button type="submit" id="addressAddFormSubmit"
-                                                                        class="ps-btn ps-btn--fullwidth">Save</button>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </form>
-                                                @endauth
-
-                                                <div class="form-group">
-                                                    <div class="ps-checkbox">
-                                                        <input class="form-control" type="checkbox"
-                                                            id="billing_address_same">
-                                                        <label for="billing_address_same">Use a different billing
-                                                            address</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="ps-form__billing-info d-none" id="billingAddressContainer">
-                                                    <h3 class="ps-form__heading">Billing Details</h3>
-                                                    <div class="form-group">
-                                                        <label>First Name<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            {{-- <input name="billing_name" class="form-control" type="text"> --}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Last Name<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="text">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Company Name<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="text">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Email Address<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="email">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Country<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="text">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Phone<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="text">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Address<sup>*</sup>
-                                                        </label>
-                                                        <div class="form-group__content">
-                                                            <input class="form-control" type="text">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="tab d-none">
-                                                <div id="shipping_charges">
-
-                                                </div>
-                                            </div>
-
-
-                                            <div class="tab d-none">
-                                                <p>All Set! Please submit to continue. Thank you</p>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer text-end">
-                                            <div class="d-flex justify-content-between">
-                                                <button type="button" id="back_button" class="btn btn-link"
-                                                    onclick="back()">Back</button>
-                                                <button type="button" id="next_button" class="ps-btn"
-                                                    onclick="next()">Next</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- Wizard --}}
-
-
-                                </div>
-                            </div>
-                            <div class="col-xl-5 col-lg-4 col-md-12 col-sm-12  ">
-                                <div class="ps-form__total">
-                                    <h3 class="ps-form__heading">Order Details</h3>
-                                    <div class="content">
-                                        <div class="ps-block--checkout-total">
-                                            <div class="ps-block__header">
-                                                <p>Product</p>
-                                                <p>Total</p>
-                                            </div>
-                                            <div class="ps-block__content">
-                                                <table class="table ps-block__products">
-                                                    <tbody>
-                                                        @foreach ($carts as $cart)
-                                                            <tr>
-                                                                <td>
-                                                                    <a title="{{ $cart->product->name }}"
-                                                                        href="{{ route('product', $cart->product->slug) }}">{{ $cart->product->name }}</a>
-                                                                    <p>Quantity:<strong>{{ $cart->quantity }}</strong></p>
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    {{ format_price(convert_price($cart->quantity * $cart->price)) }}
-                                                                </td>
-                                                            </tr>
                                                         @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <h4 class="ps-block__title">Subtotal
-                                                    <span>{{ format_price(convert_price($sub_total)) }}</span>
-                                                </h4>
-                                                @if ($copupn_applied)
-                                                    <h4 class="ps-block__title">Coupon discount
-                                                        <span>{{ format_price(convert_price($coupon_rate)) }}</span>
-                                                    </h4>
-                                                @endif
-                                                <h3>Total <span>{{ format_price(convert_price($total)) }}</span></h3>
+                                                    @endif
+
+
+                                                    <div class="col-lg-6">
+                                                        <div
+                                                            class="text-center p-4 rounded-3 border border-2 border-dashed">
+                                                            <div class="avatar-md mx-auto mb-4">
+                                                                <div
+                                                                    class="avatar-title bg-success-subtle text-success rounded-circle display-6">
+                                                                    <i class="fa fa-map-pin"></i>
+                                                                </div>
+                                                            </div>
+                                                            <h5 class="fs-16 mb-3">Add New Address</h5>
+                                                            <button {{ $btn_disabled ? 'disabled' : '' }}
+                                                                type="button"
+                                                                class="btn btn-success-add-ad btn-sm  addAddress-modal"
+                                                                id="addAddressContaniner"
+                                                                onclick="add_new_address()">Add</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group mb-1">
+                                                            <div class="ps-checkbox">
+                                                                <input wire:model="diffrent_billing_address"
+                                                                    class="form-control" type="checkbox" id="cb01">
+                                                                <label for="cb01">Use a different billing
+                                                                    address?</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                @error('shipping_address')
+                                                    <div class="alert alert-danger">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+
+                                                <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end pt-4">
+                                                    <div class="ms-md-auto">
+                                                        <button wire:loading.attr="disabled"
+                                                            wire:click.prevent="step2()"
+                                                            class="ps-btn action-btn">Next</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-checkout_item_content" id="stepCheckoutContent2">
+                                        <div class="step-box position-relative">
+
+                                            <h2>Billing Address</h2>
+
+                                            <div class="ps-form__billing-info">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Name<sup>*</sup>
+                                                            </label>
+                                                            <div class="form-group__content">
+                                                                <input wire:model.lazy='billing_address_name'
+                                                                    class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        @error('billing_address_name')
+                                                            <div class="alert alert-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Address<sup>*</sup>
+                                                            </label>
+                                                            <div class="form-group__content">
+                                                                <textarea wire:model.lazy='billing_address_address' class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        @error('billing_address_address')
+                                                            <div class="alert alert-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Country<sup>*</sup>
+                                                                </label>
+                                                                <div class="form-group__content" wire:ignore>
+                                                                    <select wire:model="billing_address_country"
+                                                                        class="form-control aiz-selectpicker"
+                                                                        data-live-search="true"
+                                                                        data-placeholder="Select your country"
+                                                                        name="country_id" required>
+                                                                        <option value="">Select your country
+                                                                        </option>
+                                                                        @if ($country)
+                                                                            @foreach ($country as $key => $coun)
+                                                                                <option value="{{ $coun->id }}">
+                                                                                    {{ $coun->name }}</option>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            @error('billing_address_country')
+                                                                <div class="alert alert-danger">
+                                                                    {{ $message }}
+                                                                </div>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>State<sup>*</sup>
+                                                                </label>
+                                                                <div class="form-group__content" wire:ignore>
+                                                                    <select wire:model="billing_address_state"
+                                                                        class="form-control mb-3 aiz-selectpicker"
+                                                                        data-live-search="true" name="state_id"
+                                                                        required>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            @error('billing_address_state')
+                                                                <div class="alert alert-danger">
+                                                                    {{ $message }}
+                                                                </div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>City<sup>*</sup>
+                                                            </label>
+                                                            <div class="form-group__content" wire:ignore>
+                                                                <select wire:model="billing_address_city"
+                                                                    class="form-control mb-3 aiz-selectpicker"
+                                                                    data-live-search="true" name="city_id" required>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        @error('billing_address_city')
+                                                            <div class="alert alert-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Pin Code<sup>*</sup>
+                                                            </label>
+                                                            <div class="form-group__content">
+                                                                <input wire:model.lazy='billing_address_pincode'
+                                                                    class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        @error('billing_address_pincode')
+                                                            <div class="alert alert-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Phone<sup>*</sup>
+                                                            </label>
+                                                            <div class="form-group__content">
+                                                                <input wire:model.lazy='billing_address_phone'
+                                                                    class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        @error('billing_address_phone')
+                                                            <div class="alert alert-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end pt-4">
+                                                <div class="ms-md-auto">
+                                                    @if ($btn_disabled)
+                                                        <img class="loadingImage"
+                                                            src="{{ frontendAsset('img/Loading_icon.gif') }}"
+                                                            alt="Loading">
+                                                    @endif
+
+                                                    <button wire:loading.attr="disabled" wire:click.prevent="step1()"
+                                                        class="ps-btn ps-btn--black action-btn">Back</button>
+                                                    <button wire:loading.attr="disabled" wire:click.prevent="step3()"
+                                                        class="ps-btn ">Next</button>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <button class="ps-btn ps-btn--fullwidth" disabled>
-                                            Checkout
-                                        </button>
+
+                                    </div>
+                                    <div class="step-checkout_item_content" id="stepCheckoutContent3">
+                                        <div class="step-box">
+                                            <h2>Shipping</h2>
+                                            <div class="shipping-charge">
+
+                                                @foreach ($shipping_rates as $key => $shp_rate)
+                                                    <label class="card shipping-charge-box">
+                                                        <input wire:model="shipping_method" name="plan"
+                                                            value="{{ $key }}" class="radio"
+                                                            type="radio" {{ $loop->index == 0 ? 'checked' : '' }}>
+                                                        <span class="plan-details">
+                                                            <span class="plan-type">{{ $shp_rate['name'] }}</span>
+                                                            <span
+                                                                class="plan-cost">{{ format_price(convert_price($shp_rate['rate'])) }}</span>
+                                                        </span>
+                                                    </label>
+                                                @endforeach
+
+                                                @error('shipping_method')
+                                                    <div class="alert alert-danger">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+
+                                            </div>
+
+                                            <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end pt-4">
+                                                <div class="ms-md-auto">
+                                                    <button wire:loading.attr="disabled"
+                                                        wire:click.prevent="{{ $diffrent_billing_address ? 'step2()' : 'step1()' }}"
+                                                        class="ps-btn ps-btn--black action-btn">Back</button>
+                                                    <button wire:loading.attr="disabled" wire:click.prevent="step4()"
+                                                        class="ps-btn ">Next</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="step-checkout_item_content" id="stepCheckoutContent4">
+                                        <div class="step-box">
+                                            <h2>PAYMENT</h2>
+                                            <div class="payment-methods">
+                                                <ul class="payment-methods__list">
+                                                    @foreach ($payment_methods as $payment_met)
+                                                        <li
+                                                            class="payment-methods__item payment-methods__item{{ $payment_method == $payment_met['type'] ? '--active' : '' }}">
+                                                            <label class="payment-methods__item-header">
+                                                                <span class="payment-methods__item-radio input-radio">
+                                                                    <span class="input-radio__body">
+                                                                        <input wire:model='payment_method'
+                                                                            class="input-radio__input"
+                                                                            name="checkout_payment_method"
+                                                                            value="{{ $payment_met['type'] }}"
+                                                                            type="radio" checked="checked">
+                                                                        <span class="input-radio__circle"></span>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="payment-methods__item-title">
+                                                                    {{ $payment_met['name'] }}
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+
+
+                                            <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end pt-4">
+                                                <div class="w-100">
+                                                    <button wire:loading.attr="disabled" wire:click.prevent="step3()"
+                                                        class="ps-btn ps-btn--black action-btn">Back</button>
+
+                                                    <button wire:loading.attr="disabled"
+                                                        wire:click.prevent="checkout()"
+                                                        class="ps-btn action-btn float-end">Proceed to Payment</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!-- Summary content here -->
+                                <div class="col">
+                                    <div class="step-checkout_summary">
+                                        <div class="summary-box">
+                                            <div class="ps-form__total">
+                                                <h3 class="ps-form__heading">Order Details</h3>
+                                                <div class="content">
+                                                    <div class="ps-block--checkout-total">
+                                                        <div class="ps-block__header">
+                                                            <p>Product</p>
+                                                            <p>Total</p>
+                                                        </div>
+                                                        <div class="ps-block__content">
+                                                            <table class="table ps-block__products">
+                                                                <tbody>
+
+                                                                    @foreach ($carts as $cart)
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{ $cart->product->name }} x
+                                                                                {{ $cart->quantity }}
+                                                                            </td>
+                                                                            <td class="text-end">
+                                                                                {{ format_price(convert_price($cart->quantity * $cart->price)) }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+
+
+                                                            <h4 class="ps-block__title">Subtotal:
+                                                                <span>
+                                                                    {{ format_price(convert_price($sub_total)) }}</span>
+                                                            </h4>
+
+
+                                                            @if ($copupn_applied)
+                                                                <h4 class="ps-block__title">
+                                                                    Coupon:
+                                                                    <span>
+                                                                        -{{ format_price(convert_price($coupon_rate)) }}
+                                                                    </span>
+                                                                </h4>
+                                                            @endif
+
+                                                            <h4 class="ps-block__title">Shipping Charge:
+                                                                <span>
+                                                                    {{ format_price(convert_price($shipping_rate)) }}
+                                                                </span>
+                                                            </h4>
+
+
+                                                            <h3>
+                                                                Total:
+                                                                <span>
+                                                                    {{ format_price(convert_price($total)) }}
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                @else
-                    <p>
-                        You dont have any items in your cart.
-                    </p>
-                @endif
-            </div>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <p>
+                    You dont have products in cart.
+                </p>
+            @endif
+
         </div>
     </div>
-@endsection
 
-@section('header')
-    <style>
-        .accordion-button {
-            font-size: inherit;
-        }
 
-        .addressLabel.checked .border {
-            border-color: #eb6228 !important;
-            box-shadow: 0px 0px 5px 0px #eb6228;
-        }
-
-        .c-poniter,
-        .addressLabel:hover {
-            cursor: pointer;
-        }
-
-        .modal {
-            --bs-modal-width: 630px;
-        }
-
-        .pac-container {
-            z-index: 99999;
-        }
-    </style>
-@endsection
-@section('script')
-    <div class="modal fade" id="new-address-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="new-address-modal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -389,10 +458,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-default" role="form" id="addressAddForm">
+                <form wire:submit.prevent="saveAddress()" class="form-default" role="form" id="addressAddForm">
                     <div class="modal-body">
                         <div class="p-3">
-                            <div class=" row">
+                            <div wire:ignore class=" row">
                                 <label class="col-md-2">Location</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="us3-address" />
@@ -402,8 +471,10 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="latitude" class="form-control" id="us3-lat" />
-                            <input type="hidden" name="longitude" class="form-control" id="us3-lon" />
+                            <input type="hidden" wire:model="new_address_lat" name="latitude" class="form-control"
+                                id="us3-lat" />
+                            <input type="hidden" wire:model="new_address_lat" name="longitude" class="form-control"
+                                id="us3-lon" />
 
                             <div class="row mt-3">
                                 <div class="col-md-2">
@@ -411,7 +482,13 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control mb-3" placeholder="Your Name"
-                                        name="name" value="{{ auth()->user() ? auth()->user()->name : '' }}" required>
+                                        name="name" wire:model.lazy="new_address_name"
+                                        value="{{ auth()->user() ? auth()->user()->name : '' }}" required>
+                                    @error('new_address_name')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -420,7 +497,8 @@
                                     <label>Address</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea class="form-control mb-3" placeholder="Your Address" rows="2" name="address" required></textarea>
+                                    <textarea wire:model.lazy="new_address_address" class="form-control mb-3" placeholder="Your Address" rows="2"
+                                        name="address" required></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -428,9 +506,10 @@
                                     <label>Country</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <div class="mb-3">
-                                        <select class="form-control aiz-selectpicker" data-live-search="true"
-                                            data-placeholder="Select your country" name="country_id" required>
+                                    <div class="mb-3" wire:ignore>
+                                        <select wire:model="new_address_country" class="form-control aiz-selectpicker"
+                                            data-live-search="true" data-placeholder="Select your country"
+                                            name="country_id" required>
                                             <option value="">Select your country</option>
                                             @if ($country)
                                                 @foreach ($country as $key => $coun)
@@ -446,9 +525,9 @@
                                 <div class="col-md-2">
                                     <label>State</label>
                                 </div>
-                                <div class="col-md-10">
-                                    <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
-                                        name="state_id" required>
+                                <div class="col-md-10" wire:ignore>
+                                    <select wire:model="new_address_state" class="form-control mb-3 aiz-selectpicker"
+                                        data-live-search="true" name="state_id" required>
                                     </select>
                                 </div>
                             </div>
@@ -457,9 +536,9 @@
                                 <div class="col-md-2">
                                     <label>City</label>
                                 </div>
-                                <div class="col-md-10">
-                                    <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
-                                        name="city_id" required>
+                                <div class="col-md-10" wire:ignore>
+                                    <select wire:model="new_address_city" class="form-control mb-3 aiz-selectpicker"
+                                        data-live-search="true" name="city_id" required>
                                     </select>
                                 </div>
                             </div>
@@ -469,8 +548,9 @@
                                     <label>Postal code</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3 numbers-only"
-                                        placeholder="Your Postal Code" name="postal_code" value="" required>
+                                    <input wire:model.lazy="new_address_pincode" type="text"
+                                        class="form-control mb-3 numbers-only" placeholder="Your Postal Code"
+                                        name="postal_code" value="" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -478,13 +558,13 @@
                                     <label>Phone</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control mb-3 numbers-only" placeholder="+971"
-                                        name="phone" value="" required>
+                                    <input wire:model.lazy="new_address_phone" type="text"
+                                        class="form-control mb-3 numbers-only" placeholder="+971" name="phone"
+                                        value="" required>
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="submit" id="addressAddFormSubmit"
-                                    class="ps-btn ps-btn--fullwidth">Save</button>
+                                <button type="submit" class="ps-btn ps-btn--fullwidth">Save</button>
                             </div>
                         </div>
                     </div>
@@ -493,261 +573,279 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 
-    <script>
-        $(document).on('change', '.addressCheckbox', function() {
-            $('.addressLabel').removeClass('checked');
-            $('.addressCheckbox:checked').parent('label').addClass('checked');
-            get_shipping_rate()
-        }).trigger('change');
-        $('#billing_address_same').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#billingAddressContainer').removeClass('d-none');
-            } else {
-                $('#billingAddressContainer').addClass('d-none');
-            }
-        }).trigger('change');
+    @section('script')
+        <script>
+            // Add active class to the current list tem (highlight it)
 
-        // Get shipping rate
-        function get_shipping_rate() {
-            address_id = $('.addressCheckbox:checked').val();
+            // var checkoutList = document.getElementById("checkoutList");
+            // var checkoutItems = checkoutList.getElementsByClassName("step-checkout_item");
+            // for (var i = 0; i < checkoutItems.length; i++) {
+            //     checkoutItems[i].addEventListener("click", function() {
 
-            // if (address_id) {
-            //     console.log(address_id);
-            // } else {
-            //     console.log('guest');
+            //         var current = checkoutList.getElementsByClassName("active");
+            //         current[0].className = current[0].className.replace(" active", "");
+            //         this.className += " active";
+            //     });
             // }
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                url: "{{ route('checkout.shipping_methods') }}",
-                data: $('#addressAddForm').serialize(),
-                type: 'GET',
-                success: function(response) {
-                    shipping_methods = JSON.stringify(response.shipping_methods)
+            /*
+              // Checkout payment methods
+              */
+            $(function() {
+                $('[name="checkout_payment_method"]').on('change', function() {
+                    const currentItem = $(this).closest('.payment-methods__item');
 
-                    console.log(shipping_methods);
-                    // shipping_methods.forEach(element => {
-                    //     console.log(element);
-                    // });
-                }
-            });
-        }
+                    $(this).closest('.payment-methods__list').find('.payment-methods__item').each(function(i,
+                        element) {
+                        const links = $(element);
+                        const linksContent = links.find('.payment-methods__item-container');
 
-        get_shipping_rate();
+                        if (element !== currentItem[0]) {
+                            const startHeight = linksContent.height();
 
+                            linksContent.css('height', startHeight + 'px');
+                            links.removeClass('payment-methods__item--active');
+                            linksContent.height(); // force reflow
 
-        // add New address
-        function add_new_address() {
-            $('#new-address-modal').modal('show');
-        }
+                            linksContent.css('height', '');
+                        } else {
+                            const startHeight = linksContent.height();
 
+                            links.addClass('payment-methods__item--active');
 
-        $('#addressAddForm').on('submit', function(e) {
-            e.preventDefault();
+                            const endHeight = linksContent.height();
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('addresses.store') }}",
-                data: $('#addressAddForm').serialize(),
-                type: 'POST',
-                success: function(response) {
-                    if (response.msg && response.msg == 'success') {
-                        $(response.data).insertBefore("#addAddressContaniner");
-                        $('#new-address-modal').modal('hide');
-                    } else {
-                        alert('Somting went wrong, please try again');
+                            linksContent.css('height', startHeight + 'px');
+                            linksContent.height(); // force reflow
+                            linksContent.css('height', endHeight + 'px');
+                        }
+                    });
+                });
+
+                $('.payment-methods__item-container').on('transitionend', function(event) {
+                    if (event.originalEvent.propertyName === 'height') {
+                        $(this).css('height', '');
                     }
-                }
+                });
             });
-        });
+        </script>
 
+        <script>
+            window.addEventListener('addressAdded', event => {
+                $('#new-address-modal').modal('hide');
+                launchToast('Address added');
+            })
 
-        function edit_address(address) {
-            var url = '{{ route('addresses.edit', ':id') }}';
-            url = url.replace(':id', address);
+            // window.addEventListener('showStep', event => {
+            //     var checkoutList = document.getElementById("checkoutList");
+            //     var checkoutItems = checkoutList.getElementsByClassName("step-checkout_item");
+            //     var current = checkoutList.getElementsByClassName("active");
+            //     current[0].className = current[0].className.replace(" active", "");
+            //     checkoutItems[event.detail - 1].className += " active";
+            // })
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: url,
-                type: 'GET',
-                success: function(response) {
-                    $('#edit_modal_body').html(response.html);
-                    $('#edit-address-modal').modal('show');
-                }
+            function add_new_address() {
+                $('#new-address-modal').modal('show');
+            }
+
+            $(document).on('change', '[name=country_id]', function() {
+                var country_id = $(this).val();
+                get_states(country_id);
             });
-        }
 
-        $(document).on('change', '[name=country_id]', function() {
-            var country_id = $(this).val();
-            get_states(country_id);
-        });
+            $(document).on('change', '[name=state_id]', function() {
+                var state_id = $(this).val();
+                get_city(state_id);
+            });
 
-        $(document).on('change', '[name=state_id]', function() {
-            var state_id = $(this).val();
-            get_city(state_id);
-        });
+            function get_states(country_id) {
+                $('[name="state"]').html("");
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('get-state') }}",
+                    type: 'POST',
+                    data: {
+                        country_id: country_id
+                    },
+                    success: function(response) {
+                        var obj = JSON.parse(response);
+                        if (obj != '') {
+                            $('[name="state_id"]').html(obj);
 
-        function get_states(country_id) {
-            $('[name="state"]').html("");
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('get-state') }}",
-                type: 'POST',
-                data: {
-                    country_id: country_id
-                },
-                success: function(response) {
-                    var obj = JSON.parse(response);
-                    if (obj != '') {
-                        $('[name="state_id"]').html(obj);
-
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        function get_city(state_id) {
-            $('[name="city"]').html("");
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('get-city') }}",
-                type: 'POST',
-                data: {
-                    state_id: state_id
-                },
-                success: function(response) {
-                    var obj = JSON.parse(response);
-                    if (obj != '') {
-                        $('[name="city_id"]').html(obj);
+            function get_city(state_id) {
+                $('[name="city"]').html("");
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('get-city') }}",
+                    type: 'POST',
+                    data: {
+                        state_id: state_id
+                    },
+                    success: function(response) {
+                        var obj = JSON.parse(response);
+                        if (obj != '') {
+                            $('[name="city_id"]').html(obj);
 
+                        }
                     }
-                }
-            });
-        }
-    </script>
+                });
+            }
+        </script>
 
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&v=weekly"></script>
-    <script src="https://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
-    <script>
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
-            loadMap(lat, lng)
-        }
 
-        function showPositionerror() {
-            loadMap(25.2048, 55.2708)
-        }
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&v=weekly"></script>
+        <script src="https://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
+        <script>
+            function showPosition(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                loadMap(lat, lng)
+            }
 
-        function loadMap(lat, lng) {
-            $('#us3').locationpicker({
-                location: {
-                    latitude: lat,
-                    longitude: lng
-                },
-                radius: 0,
-                inputBinding: {
-                    latitudeInput: $('#us3-lat'),
-                    longitudeInput: $('#us3-lon'),
-                    radiusInput: $('#us3-radius'),
-                    locationNameInput: $('#us3-address')
-                },
-                enableAutocomplete: true,
-                onchanged: function(currentLocation, radius, isMarkerDropped) {
-                    // Uncomment line below to show alert on each Location Changed event
-                    //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(showPosition, showPositionerror);
-            } else {
+            function showPositionerror() {
                 loadMap(25.2048, 55.2708)
             }
-        });
-    </script>
 
-    {{-- Wizard --}}
-    <script>
-        var current = 0;
-        var tabs = $(".tab");
-        var tabs_pill = $(".tab-pills");
-
-        loadFormData(current);
-
-        function loadFormData(n) {
-            $(tabs_pill[n]).addClass("active");
-            $(tabs[n]).removeClass("d-none");
-            $("#back_button").attr("disabled", n == 0 ? true : false);
-            n == tabs.length - 1 ?
-                $("#next_button").text("Submit").removeAttr("onclick") :
-                $("#next_button")
-                .attr("type", "button")
-                .text("Next")
-                .attr("onclick", "next()");
-        }
-
-        function next() {
-            errors = false;
-
-            // console.log("Asd");
-
-            // var validator = $("#checkoutForm").validate({
-            //     ignore: ":hidden",
-            //     rules: {
-            //         address: "required",
-            //         billing_name: "required",
-            //         // email: {
-            //         //     required: true,
-            //         // }
-            //     }
-            // });
-
-            // console.log(validator.valid());;
-
-            // $("#checkoutForm").data('validator').element('#element').valid();
-            // var validator = $("#checkoutForm").data('validator');
-
-            if (current == 0) {
-                // console.log(current);
-                // if (!$('.addressCheckbox').is(':checked')) {
-                //     errors = true
-                //     alert('Please select an address')
-                // }
+            function loadMap(lat, lng) {
+                $('#us3').locationpicker({
+                    location: {
+                        latitude: lat,
+                        longitude: lng
+                    },
+                    radius: 0,
+                    inputBinding: {
+                        latitudeInput: $('#us3-lat'),
+                        longitudeInput: $('#us3-lon'),
+                        radiusInput: $('#us3-radius'),
+                        locationNameInput: $('#us3-address')
+                    },
+                    enableAutocomplete: true,
+                    onchanged: function(currentLocation, radius, isMarkerDropped) {
+                        @this.set('new_address_lat', currentLocation.latitude);
+                        @this.set('new_address_long', currentLocation.longitude);
+                        // Uncomment line below to show alert on each Location Changed event
+                        //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+                    }
+                });
             }
 
-            // if (!errors) {
+            $(document).ready(function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition(showPosition, showPositionerror);
+                } else {
+                    loadMap(25.2048, 55.2708)
+                }
+            });
+        </script>
+    @endsection
+    @section('header')
+        <style>
+            .accordion-button {
+                font-size: inherit;
+            }
 
+            .addressLabel.checked .border {
+                border-color: #eb6228 !important;
+                box-shadow: 0px 0px 5px 0px #eb6228;
+            }
 
+            .c-poniter,
+            .addressLabel:hover {
+                cursor: pointer;
+            }
 
-            $(tabs[current]).addClass("d-none");
-            $(tabs_pill[current]).removeClass("active");
-            current++;
-            loadFormData(current);
-            // }
-        }
+            .modal {
+                --bs-modal-width: 630px;
+            }
 
-        function back() {
-            $(tabs[current]).addClass("d-none");
-            $(tabs_pill[current]).removeClass("active");
+            .pac-container {
+                z-index: 99999;
+            }
 
-            current--;
-            loadFormData(current);
-        }
-    </script>
-@endsection
+            .loadingImage {
+                height: 60px;
+                width: 60px;
+                object-fit: cover;
+            }
+
+            .action-btn {
+                background-color: #FF7F00;
+                border: none;
+                font-size: 20px;
+                font-weight: 600;
+                text-transform: uppercase;
+                padding: 0.5em 1.25em;
+                color: white;
+                border-radius: 0.15em;
+                transition: 0.3s;
+                cursor: pointer;
+                position: relative;
+                display: block;
+            }
+
+            .action-btn:hover {
+                background-color: #eb6228;
+            }
+
+            .action-btn:focus {
+                outline: 0.05em dashed #eb6228;
+                outline-offset: 0.05em;
+            }
+
+            .action-btn::after {
+                content: '';
+                display: block;
+                width: 1.2em;
+                height: 1.2em;
+                position: absolute;
+                left: calc(50% - 0.75em);
+                top: calc(50% - 0.75em);
+                border: 0.15em solid transparent;
+                border-right-color: white;
+                border-radius: 50%;
+                animation: button-anim 0.7s linear infinite;
+                opacity: 0;
+            }
+
+            @keyframes button-anim {
+                from {
+                    transform: rotate(0);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .action-btn.loading {
+                color: transparent;
+            }
+
+            .action-btn.loading::after {
+                opacity: 1;
+            }
+
+            /* em values are used to adjust button values such as padding, radius etc. based on font-size */
+
+            .action-btn:disabled {
+                color: #eb6228
+            }
+
+            .action-btn:disabled::after {
+                opacity: 1;
+            }
+        </style>
+    @endsection
+
+</div>

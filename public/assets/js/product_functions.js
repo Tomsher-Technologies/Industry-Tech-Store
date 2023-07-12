@@ -31,12 +31,12 @@ function addEnquiry(slug) {
         success: function (data, status, xhr) {
             if (xhr.status == 200) {
                 console.log(data);
-                alert(data.message);
+                launchToast(data.message);
                 $('.headerEnquiryCount').html(data.count)
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            alert('Something went wrong, please try again');
+            launchToast('Something went wrong, please try again', 'error');
         },
     });
 }
@@ -52,14 +52,14 @@ function addToCart(slug, qty = 1) {
         },
         success: function (data, status, xhr) {
             if (xhr.status == 200) {
-                alert(data.message);
+                launchToast(data.message);
                 $('.headerCartCount').html(data.count)
                 Livewire.emit('cartUpdated')
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status == 404) {
-                alert('Something went wrong, please try again');
+                launchToast('Something went wrong, please try again', 'error');
             }
         },
     });
@@ -75,16 +75,17 @@ function addToWishList(slug) {
         },
         success: function (data, status, xhr) {
             if (xhr.status == 200) {
-                alert(data.message);
+                launchToast(data.message);
                 $('.headerWishlistCount').html(data.count)
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status == 401) {
-                alert('Please login first');
+                launchToast('Please login first', 'error');
+
             }
             if (xhr.status == 404) {
-                alert('Something went wrong, please try again');
+                launchToast('Something went wrong, please try again', 'error');
             }
         },
     });

@@ -16059,7 +16059,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: #fff;
+  color: #000;
 }
 
 .menu>li>a:hover {
@@ -16456,7 +16456,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .navigation__extra>li a {
-  color: #fff;
+  color: #000;
 }
 
 .navigation__extra>li:last-child {
