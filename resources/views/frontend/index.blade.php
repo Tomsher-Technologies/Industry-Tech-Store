@@ -81,7 +81,7 @@
                                     <div class="ps-block--category">
                                         <a href="{{ route('products.category', $category->slug) }}"
                                             title="{{ $category->name }}" class="ps-block__overlay">
-                                            <img src="{{ get_uploads_image($category->icon) }}"
+                                            <img src="{{ uploaded_asset($category->icon) }}"
                                                 alt="{{ $category->name }}">
                                             <p>{{ $category->name }}</p>
                                         </a>

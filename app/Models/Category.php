@@ -86,16 +86,19 @@ class Category extends Model
         static::creating(function ($model) {
             Cache::forget('categories');
             Cache::forget('categoriesTree');
+            Cache::forget('trending_categories');
         });
 
         static::updating(function ($model) {
             Cache::forget('categories');
             Cache::forget('categoriesTree');
+            Cache::forget('trending_categories');
         });
 
         static::deleting(function ($model) {
             Cache::forget('categories');
             Cache::forget('categoriesTree');
+            Cache::forget('trending_categories');
         });
 
         parent::boot();
