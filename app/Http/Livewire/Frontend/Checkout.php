@@ -62,6 +62,18 @@ class Checkout extends Component
     public $shipping_method;
     public $payment_method;
 
+    // Guest data
+    public $guest_address_lat;
+    public $guest_address_long;
+    public $guest_address_name;
+    public $guest_address_email;
+    public $guest_address_address;
+    public $guest_address_country;
+    public $guest_address_state;
+    public $guest_address_city;
+    public $guest_address_pincode;
+    public $guest_address_phone;
+
     public function mount()
     {
         if (Auth::check()) {
@@ -138,6 +150,8 @@ class Checkout extends Component
                     $this->copupn_applied = true;
                 }
             }
+        } else {
+            return redirect()->route('cart');
         }
 
         if ($this->carts->count() && Auth::check()) {
@@ -147,7 +161,9 @@ class Checkout extends Component
                 'state',
             ])->whereUserId($this->user_id)->orderBy('set_default', 'desc')->get();
 
-            $this->shipping_address = $this->addresses->where('set_default', true)->first()->id;
+            if ($this->addresses && $this->addresses->where('set_default', true)->first()) {
+                $this->shipping_address = $this->addresses->where('set_default', true)->first()->id;
+            }
         }
 
         if (get_setting('free_shipping_status')) {
@@ -182,7 +198,6 @@ class Checkout extends Component
 
     public function saveAddress()
     {
-
         $validatedData = $this->validate([
             'new_address_lat' => 'required',
             'new_address_long' => 'required',
@@ -248,20 +263,43 @@ class Checkout extends Component
 
     public function step2()
     {
-        $this->current_step = 2;
-
-        $validatedData = $this->validate([
-            'shipping_address' => 'required',
-        ], [
-            'shipping_address.required' => "Please select a shipping address",
-        ]);
+        if (Auth::check()) {
+            $validatedData = $this->validate([
+                'shipping_address' => 'required',
+            ], [
+                'shipping_address.required' => "Please select a shipping address",
+            ]);
+        } else {
+            $validatedData = $this->validate([
+                'guest_address_lat' => 'required',
+                'guest_address_long' => 'required',
+                'guest_address_name' => 'required',
+                'guest_address_email' => 'required|email',
+                'guest_address_address' => 'required',
+                'guest_address_country' => 'required',
+                'guest_address_state' => 'required',
+                'guest_address_city' => 'required',
+                'guest_address_pincode' => 'required',
+                'guest_address_phone' => 'required',
+            ], [
+                'guest_address_lat.required' => "Please choose your location",
+                'guest_address_long.required' => "Please choose your location",
+                'guest_address_name.required' => "Please enter a name",
+                'guest_address_email.required' => "Please enter your email",
+                'guest_address_email.email' => "Please enter a valid email address",
+                'guest_address_address.required' => "Please enter your address",
+                'guest_address_country.required' => "Please choose a country",
+                'guest_address_state.required' => "Please choose a state",
+                'guest_address_city.required' => "Please choose a city",
+                'guest_address_pincode.required' => "Please enter a pincode",
+                'guest_address_phone.required' => "Please enter your phone number",
+            ]);
+        }
 
         if ($this->diffrent_billing_address) {
             $this->current_step = 2;
-            // $this->dispatchBrowserEvent('showStep', 2);
         } else {
             $this->current_step = 3;
-            // $this->dispatchBrowserEvent('showStep', 3);
         }
     }
 
@@ -322,18 +360,17 @@ class Checkout extends Component
             $shipping_address_json['longitude']   = $address->longitude;
             $shipping_address_json['latitude']    = $address->latitude;
         } else {
-            $address = $this->addresses->where('id', $this->shipping_address)->first();
 
-            $shipping_address_json['name']        = $address->name;
-            $shipping_address_json['email']       = Auth::user()->email;
-            $shipping_address_json['address']     = $address->address;
-            $shipping_address_json['country']     = $address->country->name;
-            $shipping_address_json['state']       = $address->state->name;
-            $shipping_address_json['city']        = $address->city->name;
-            $shipping_address_json['postal_code'] = $address->postal_code;
-            $shipping_address_json['phone']       = $address->phone;
-            $shipping_address_json['longitude']   = $address->longitude;
-            $shipping_address_json['latitude']    = $address->latitude;
+            $shipping_address_json['name']        =  $this->guest_address_name;
+            $shipping_address_json['email']       =  $this->guest_address_email;
+            $shipping_address_json['address']     =  $this->guest_address_address;
+            $shipping_address_json['country']     =  $this->guest_address_country;
+            $shipping_address_json['state']       =  $this->guest_address_state;
+            $shipping_address_json['city']        =  $this->guest_address_city;
+            $shipping_address_json['postal_code'] =  $this->guest_address_pincode;
+            $shipping_address_json['phone']       =  $this->guest_address_phone;
+            $shipping_address_json['longitude']   =  $this->guest_address_long;
+            $shipping_address_json['latitude']    =  $this->guest_address_lat;
         }
 
         if ($this->diffrent_billing_address) {

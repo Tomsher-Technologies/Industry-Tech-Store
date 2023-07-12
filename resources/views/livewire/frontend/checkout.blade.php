@@ -39,86 +39,262 @@
                                         <div id="checkout-steps" class="checkout-steps-accordion">
                                             <div class="step-box">
                                                 <h2>Shipping Address</h2>
-                                                <div class="row g-4 position-relative" id="address-list">
+                                                @auth
 
-                                                    {{-- <div class="position-absolute h-100 w-100 start-0 top-0 z-1020"
-                                                    style="z-index: 999" wire:loading>
-                                                    <img class="h-100 w-100" style="object-fit: cover;opacity: .6"
-                                                        src="{{ frontendAsset('img/Loading_icon.gif') }}"
-                                                        alt="Loading">
-                                                </div> --}}
 
-                                                    @if ($addresses && $addresses->count())
-                                                        @foreach ($addresses as $address)
-                                                            <div class="col-lg-6">
-                                                                <div class="ship-address-box">
-                                                                    <div class="form-check card-radio">
-                                                                        <input wire:model="shipping_address"
-                                                                            id="shippingAddress{{ $address->id }}"
-                                                                            name="shippingAddress" type="radio"
-                                                                            value="{{ $address->id }}"
-                                                                            class="form-check-input">
-                                                                        <label class="form-check-label"
-                                                                            for="shippingAddress{{ $address->id }}">
-                                                                            <span
-                                                                                class="mb-4 fw-semibold fs-12 d-block text-muted text-uppercase">
-                                                                                {{ $address->name ?? auth()->user()->name }}
-                                                                            </span>
-                                                                            <span
-                                                                                class="text-muted fw-normal text-wrap mb-1 d-block">
-                                                                                {{ $address->address }}, <br>
-                                                                                {{ $address->postal_code }}, <br>
-                                                                                {{ $address->city->name }}, <br>
-                                                                                {{ $address->state->name }}, <br>
-                                                                                {{ $address->country->name }}
-                                                                            </span>
-                                                                            <span class="text-muted fw-normal d-block">
-                                                                                {{ $address->phone }}
-                                                                            </span>
-                                                                        </label>
+
+
+                                                    <div class="row g-4 position-relative" id="address-list">
+                                                        @if ($addresses && $addresses->count())
+                                                            @foreach ($addresses as $address)
+                                                                <div class="col-lg-6">
+                                                                    <div class="ship-address-box">
+                                                                        <div class="form-check card-radio">
+                                                                            <input wire:model="shipping_address"
+                                                                                id="shippingAddress{{ $address->id }}"
+                                                                                name="shippingAddress" type="radio"
+                                                                                value="{{ $address->id }}"
+                                                                                class="form-check-input">
+                                                                            <label class="form-check-label"
+                                                                                for="shippingAddress{{ $address->id }}">
+                                                                                <span
+                                                                                    class="mb-4 fw-semibold fs-12 d-block text-muted text-uppercase">
+                                                                                    {{ $address->name ?? auth()->user()->name }}
+                                                                                </span>
+                                                                                <span
+                                                                                    class="text-muted fw-normal text-wrap mb-1 d-block">
+                                                                                    {{ $address->address }}, <br>
+                                                                                    {{ $address->postal_code }}, <br>
+                                                                                    {{ $address->city->name }}, <br>
+                                                                                    {{ $address->state->name }}, <br>
+                                                                                    {{ $address->country->name }}
+                                                                                </span>
+                                                                                <span class="text-muted fw-normal d-block">
+                                                                                    {{ $address->phone }}
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+
+
+                                                        <div class="col-lg-6">
+                                                            <div
+                                                                class="text-center p-4 rounded-3 border border-2 border-dashed">
+                                                                <div class="avatar-md mx-auto mb-4">
+                                                                    <div
+                                                                        class="avatar-title bg-success-subtle text-success rounded-circle display-6">
+                                                                        <i class="fa fa-map-pin"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <h5 class="fs-16 mb-3">Add New Address</h5>
+                                                                <button {{ $btn_disabled ? 'disabled' : '' }}
+                                                                    type="button"
+                                                                    class="btn btn-success-add-ad btn-sm  addAddress-modal"
+                                                                    id="addAddressContaniner"
+                                                                    onclick="add_new_address()">Add</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group mb-1">
+                                                                <div class="ps-checkbox">
+                                                                    <input wire:model="diffrent_billing_address"
+                                                                        class="form-control" type="checkbox" id="cb01">
+                                                                    <label for="cb01">Use a different billing
+                                                                        address?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @error('shipping_address')
+                                                        <div class="alert alert-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+
+                                                    
+                                                @else
+                                                    <div class="ps-form__billing-info">
+                                                        <div class="row">
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <div wire:ignore class=" row">
+                                                                    <label class="col-md-2">Location</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control"
+                                                                            id="us4-address" />
+                                                                    </div>
+                                                                    <div class="col-sm-12 mt-3">
+                                                                        <div id="us4" style="height: 400px;"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
-                                                    @endif
 
+                                                            <input type="hidden" wire:model="guest_address_lat"
+                                                                name="latitude" class="form-control" id="us4-lat" />
+                                                            <input type="hidden" wire:model="guest_address_long"
+                                                                name="longitude" class="form-control" id="us4-lon" />
 
-                                                    <div class="col-lg-6">
-                                                        <div
-                                                            class="text-center p-4 rounded-3 border border-2 border-dashed">
-                                                            <div class="avatar-md mx-auto mb-4">
-                                                                <div
-                                                                    class="avatar-title bg-success-subtle text-success rounded-circle display-6">
-                                                                    <i class="fa fa-map-pin"></i>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Name<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <input wire:model.lazy='guest_address_name'
+                                                                            class="form-control" type="text">
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_name')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Email<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <input wire:model.lazy='guest_address_email'
+                                                                            class="form-control" type="email">
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_email')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Address<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <textarea wire:model.lazy='guest_address_address' class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_address')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Country<sup>*</sup>
+                                                                        </label>
+                                                                        <div class="form-group__content" wire:ignore>
+                                                                            <select wire:model="guest_address_country"
+                                                                                class="form-control aiz-selectpicker"
+                                                                                data-live-search="true"
+                                                                                data-placeholder="Select your country"
+                                                                                name="country_id" required>
+                                                                                <option value="">Select your country
+                                                                                </option>
+                                                                                @if ($country)
+                                                                                    @foreach ($country as $key => $coun)
+                                                                                        <option
+                                                                                            value="{{ $coun->id }}">
+                                                                                            {{ $coun->name }}</option>
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    @error('guest_address_country')
+                                                                        <div class="alert alert-danger">
+                                                                            {{ $message }}
+                                                                        </div>
+                                                                    @enderror
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>State<sup>*</sup>
+                                                                        </label>
+                                                                        <div class="form-group__content" wire:ignore>
+                                                                            <select wire:model="guest_address_state"
+                                                                                class="form-control mb-3 aiz-selectpicker"
+                                                                                data-live-search="true" name="state_id"
+                                                                                required>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    @error('guest_address_state')
+                                                                        <div class="alert alert-danger">
+                                                                            {{ $message }}
+                                                                        </div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
-                                                            <h5 class="fs-16 mb-3">Add New Address</h5>
-                                                            <button {{ $btn_disabled ? 'disabled' : '' }}
-                                                                type="button"
-                                                                class="btn btn-success-add-ad btn-sm  addAddress-modal"
-                                                                id="addAddressContaniner"
-                                                                onclick="add_new_address()">Add</button>
-                                                        </div>
-                                                    </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>City<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content" wire:ignore>
+                                                                        <select wire:model="guest_address_city"
+                                                                            class="form-control mb-3 aiz-selectpicker"
+                                                                            data-live-search="true" name="city_id"
+                                                                            required>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_city')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Pin Code<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <input wire:model.lazy='guest_address_pincode'
+                                                                            class="form-control" type="text">
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_pincode')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
 
-                                                    <div class="col-md-12">
-                                                        <div class="form-group mb-1">
-                                                            <div class="ps-checkbox">
-                                                                <input wire:model="diffrent_billing_address"
-                                                                    class="form-control" type="checkbox" id="cb01">
-                                                                <label for="cb01">Use a different billing
-                                                                    address?</label>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Phone<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <input wire:model.lazy='guest_address_phone'
+                                                                            class="form-control" type="text">
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_phone')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group mb-1">
+                                                                <div class="ps-checkbox">
+                                                                    <input wire:model="diffrent_billing_address"
+                                                                        class="form-control" type="checkbox" id="cb01">
+                                                                    <label for="cb01">Use a different billing
+                                                                        address?</label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                </div>
-
-                                                @error('shipping_address')
-                                                    <div class="alert alert-danger">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                                @endauth
 
                                                 <div class="mt-n5 d-flex gap-3 flex-wrap align-items-end pt-4">
                                                     <div class="ms-md-auto">
@@ -706,48 +882,92 @@
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&v=weekly"></script>
         <script src="https://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
-        <script>
-            function showPosition(position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-                loadMap(lat, lng)
-            }
 
-            function showPositionerror() {
-                loadMap(25.2048, 55.2708)
-            }
+        @auth
+            <script>
+                function showPosition(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    loadMap(lat, lng)
+                }
 
-            function loadMap(lat, lng) {
-                $('#us3').locationpicker({
-                    location: {
-                        latitude: lat,
-                        longitude: lng
-                    },
-                    radius: 0,
-                    inputBinding: {
-                        latitudeInput: $('#us3-lat'),
-                        longitudeInput: $('#us3-lon'),
-                        radiusInput: $('#us3-radius'),
-                        locationNameInput: $('#us3-address')
-                    },
-                    enableAutocomplete: true,
-                    onchanged: function(currentLocation, radius, isMarkerDropped) {
-                        @this.set('new_address_lat', currentLocation.latitude);
-                        @this.set('new_address_long', currentLocation.longitude);
-                        // Uncomment line below to show alert on each Location Changed event
-                        //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-                    }
-                });
-            }
-
-            $(document).ready(function() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.watchPosition(showPosition, showPositionerror);
-                } else {
+                function showPositionerror() {
                     loadMap(25.2048, 55.2708)
                 }
-            });
-        </script>
+
+                function loadMap(lat, lng) {
+                    $('#us3').locationpicker({
+                        location: {
+                            latitude: lat,
+                            longitude: lng
+                        },
+                        radius: 0,
+                        inputBinding: {
+                            latitudeInput: $('#us3-lat'),
+                            longitudeInput: $('#us3-lon'),
+                            radiusInput: $('#us3-radius'),
+                            locationNameInput: $('#us3-address')
+                        },
+                        enableAutocomplete: true,
+                        onchanged: function(currentLocation, radius, isMarkerDropped) {
+                            @this.set('new_address_lat', currentLocation.latitude);
+                            @this.set('new_address_long', currentLocation.longitude);
+                            // Uncomment line below to show alert on each Location Changed event
+                            //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+                        }
+                    });
+                }
+
+                $(document).ready(function() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.watchPosition(showPosition, showPositionerror);
+                    } else {
+                        loadMap(25.2048, 55.2708)
+                    }
+                });
+            </script>
+        @else
+            <script>
+                function showPosition(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    loadMap2(lat, lng)
+                }
+
+                function showPositionerror() {
+                    loadMap2(25.2048, 55.2708)
+                }
+
+                function loadMap2(lat, lng) {
+                    $('#us4').locationpicker({
+                        location: {
+                            latitude: lat,
+                            longitude: lng
+                        },
+                        radius: 0,
+                        inputBinding: {
+                            latitudeInput: $('#us4-lat'),
+                            longitudeInput: $('#us4-lon'),
+                            radiusInput: $('#us4-radius'),
+                            locationNameInput: $('#us4-address')
+                        },
+                        enableAutocomplete: true,
+                        onchanged: function(currentLocation, radius, isMarkerDropped) {
+                            @this.set('guest_address_lat', currentLocation.latitude);
+                            @this.set('guest_address_long', currentLocation.longitude);
+                        }
+                    });
+                }
+
+                $(document).ready(function() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.watchPosition(showPosition, showPositionerror);
+                    } else {
+                        loadMap2(25.2048, 55.2708)
+                    }
+                });
+            </script>
+        @endauth
     @endsection
     @section('header')
         <style>
