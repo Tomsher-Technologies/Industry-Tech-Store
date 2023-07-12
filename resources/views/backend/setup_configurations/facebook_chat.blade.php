@@ -29,7 +29,7 @@
                                 <label class="col-from-label">{{translate('Facebook Page ID')}}</label>
                             </div>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" name="FACEBOOK_PAGE_ID" value="{{  env('FACEBOOK_PAGE_ID') }}" placeholder="{{ translate('Facebook Page ID') }}" required>
+                                <input type="text" class="form-control" name="FACEBOOK_PAGE_ID" value="{{  env('FACEBOOK_PAGE_ID') }}" placeholder="Facebook Page ID" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -42,16 +42,16 @@
         <div class="col-md-6">
             <div class="card bg-gray-light">
               <div class="card-header">
-                  <h5 class="mb-0 h6">{{ translate('Please be carefull when you are configuring Facebook chat. For incorrect configuration you will not get messenger icon on your user-end site.') }}</h5>
+                  <h5 class="mb-0 h6">Please be carefull when you are configuring Facebook chat. For incorrect configuration you will not get messenger icon on your user-end site.</h5>
               </div>
                 <div class="card-body">
                     <ul class="list-group mar-no">
-                        <li class="list-group-item text-dark">1. {{ translate('Login into your facebook page') }}</li>
-                        <li class="list-group-item text-dark">2. {{ translate('Find the About option of your facebook page') }}.</li>
-                        <li class="list-group-item text-dark">3. {{ translate('At the very bottom, you can find the “Facebook Page ID”') }}.</li>
-                        <li class="list-group-item text-dark">4. {{ translate('Go to Settings of your page and find the option of "Advance Messaging"') }}.</li>
-                        <li class="list-group-item text-dark">5. {{ translate('Scroll down that page and you will get "white listed domain"') }}.</li>
-                        <li class="list-group-item text-dark">6. {{ translate('Set your website domain name') }}.</li>
+                        <li class="list-group-item text-dark">1. Login into your facebook page</li>
+                        <li class="list-group-item text-dark">2. Find the About option of your facebook page.</li>
+                        <li class="list-group-item text-dark">3. At the very bottom, you can find the “Facebook Page ID”.</li>
+                        <li class="list-group-item text-dark">4. Go to Settings of your page and find the option of "Advance Messaging".</li>
+                        <li class="list-group-item text-dark">5. Scroll down that page and you will get "white listed domain".</li>
+                        <li class="list-group-item text-dark">6. Set your website domain name.</li>
                     </ul>
                 </div>
             </div>

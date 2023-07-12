@@ -26,7 +26,7 @@
 							<div class="col-lg-8">
 								<select class="form-control aiz-selectpicker" name="category_id" id="category_id" data-live-search="true" required>
 		                            @foreach ($categories as $category)
-		                                <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
+		                                <option value="{{ $category->id }}">{{ $category->name }}</option>
 		                                @foreach ($category->childrenCategories as $childCategory)
 		                                    @include('categories.child_category', ['child_category' => $childCategory])
 		                                @endforeach
@@ -41,7 +41,7 @@
 				                    <div class="input-group-prepend">
 				                        <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
 				                    </div>
-				                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+				                    <div class="form-control file-amount">Choose File</div>
 				                    <input type="hidden" name="file" class="selected-files">
 				                </div>
 				                <div class="file-preview box sm">
@@ -51,7 +51,7 @@
 						<div class="form-group row">
 							<label class="col-lg-2 col-from-label">{{translate('Tags')}}</label>
 							<div class="col-lg-8">
-								<input type="text" class="form-control aiz-tag-input" name="tags[]" placeholder="{{ translate('Type to add a tag') }}">
+								<input type="text" class="form-control aiz-tag-input" name="tags[]" placeholder="Type to add a tag">
 							</div>
 						</div>
 					</div>
@@ -68,7 +68,7 @@
 				                    <div class="input-group-prepend">
 				                        <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
 				                    </div>
-				                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+				                    <div class="form-control file-amount">Choose File</div>
 				                    <input type="hidden" name="photos" class="selected-files">
 				                </div>
 				                <div class="file-preview box sm">
@@ -83,7 +83,7 @@
 				                    <div class="input-group-prepend">
 				                        <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
 				                    </div>
-				                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+				                    <div class="form-control file-amount">Choose File</div>
 				                    <input type="hidden" name="thumbnail_img" class="selected-files">
 				                </div>
 				                <div class="file-preview box sm">
@@ -110,13 +110,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-		                    <label class="col-md-2 col-form-label" for="signinSrEmail">{{ translate('Meta Image') }}</label>
+		                    <label class="col-md-2 col-form-label" for="signinSrEmail">Meta Image</label>
 		                    <div class="col-md-8">
 		                        <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="false">
 		                            <div class="input-group-prepend">
 		                                <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
 		                            </div>
-		                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+		                            <div class="form-control file-amount">Choose File</div>
 		                            <input type="hidden" name="meta_img" class="selected-files">
 		                        </div>
 		                        <div class="file-preview box sm">
@@ -189,7 +189,7 @@
 					</div>
 				</div>
 				<div class="mb-3 text-right">
-					<button type="submit" name="button" class="btn btn-primary">{{ translate('Save Product') }}</button>
+					<button type="submit" name="button" class="btn btn-primary">Save Product</button>
 				</div>
 			</form>
 		</div>

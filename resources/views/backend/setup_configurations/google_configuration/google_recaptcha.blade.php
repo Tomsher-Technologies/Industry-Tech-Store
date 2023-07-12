@@ -29,7 +29,7 @@
                                 <label class="control-label">{{translate('Site KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="CAPTCHA_KEY" value="{{  env('CAPTCHA_KEY') }}" placeholder="{{ translate('Site KEY') }}" required>
+                                <input type="text" class="form-control" name="CAPTCHA_KEY" value="{{  env('CAPTCHA_KEY') }}" placeholder="Site KEY" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

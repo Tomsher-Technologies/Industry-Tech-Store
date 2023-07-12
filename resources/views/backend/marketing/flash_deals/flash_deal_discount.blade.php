@@ -28,7 +28,7 @@
                   <img class="size-60px img-fit" src="{{ uploaded_asset($product->thumbnail_img)}}">
                 </div>
                 <div class="col">
-                  <span>{{  $product->getTranslation('name')  }}</span>
+                  <span>{{  $product->name  }}</span>
                 </div>
               </div>
             </td>
@@ -40,8 +40,8 @@
             </td>
             <td>
                 <select class="form-control aiz-selectpicker" name="discount_type_{{ $id }}">
-                  <option value="amount">{{ translate('Flat') }}</option>
-                  <option value="percent">{{ translate('Percent') }}</option>
+                  <option value="amount">Flat</option>
+                  <option value="percent">Percent</option>
                 </select>
             </td>
           </tr>

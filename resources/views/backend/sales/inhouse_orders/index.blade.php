@@ -6,11 +6,11 @@
     <form class="" id="sort_orders" action="" method="GET">
       <div class="card-header row gutters-5">
         <div class="col text-center text-md-left">
-          <h5 class="mb-md-0 h6">{{ translate('Inhouse Orders') }}</h5>
+          <h5 class="mb-md-0 h6">Inhouse Orders</h5>
         </div>
         <div class="col-lg-2">
             <div class="form-group mb-0">
-                <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
+                <input type="text" class="aiz-date-range form-control" value="{{ $date }}" name="date" placeholder="Filter by date" data-format="DD-MM-Y" data-separator=" to " data-advanced-range="true" autocomplete="off">
             </div>
         </div>
           <div class="col-lg-2 ml-auto">
@@ -32,12 +32,12 @@
           </div>
           <div class="col-lg-2">
             <div class="form-group mb-0">
-              <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type Order code & hit Enter') }}">
+              <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type Order code & hit Enter">
             </div>
           </div>
           <div class="col-auto">
             <div class="form-group mb-0">
-              <button type="submit" class="btn btn-primary">{{ translate('Filter') }}</button>
+              <button type="submit" class="btn btn-primary">Filter</button>
             </div>
           </div>
       </div>
@@ -102,21 +102,21 @@
                         @if (addon_is_activated('refund_request'))
                             <td>
                                 @if (count($order->refund_requests) > 0)
-                                    {{ count($order->refund_requests) }} {{ translate('Refund') }}
+                                    {{ count($order->refund_requests) }} Refund
                                 @else
-                                    {{ translate('No Refund') }}
+                                    No Refund
                                 @endif
                             </td>
                         @endif
 
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('inhouse_orders.show', encrypt($order->id))}}" title="{{ translate('View') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('inhouse_orders.show', encrypt($order->id))}}" title="View">
                                 <i class="las la-eye"></i>
                             </a>
-                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="{{ translate('Download Invoice') }}">
+                            <a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $order->id) }}" title="Download Invoice">
                                 <i class="las la-download"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('orders.destroy', $order->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('orders.destroy', $order->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>

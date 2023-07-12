@@ -32,12 +32,12 @@
                 @foreach($roles as $key => $role)
                     <tr>
                         <td>{{ ($key+1) + ($roles->currentPage() - 1)*$roles->perPage() }}</td>
-                        <td>{{ $role->getTranslation('name')}}</td>
+                        <td>{{ $role->name}}</td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('roles.edit', ['id'=>$role->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('roles.edit', ['id'=>$role->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('roles.destroy', $role->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('roles.destroy', $role->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>

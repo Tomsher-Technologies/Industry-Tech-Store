@@ -30,7 +30,7 @@
                                 <label class="col-from-label">{{translate('Facebook App ID')}}</label>
                             </div>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" name="FACEBOOK_APP_ID" value="{{  env('FACEBOOK_APP_ID') }}" placeholder="{{ translate('Facebook App ID') }}" required>
+                                <input type="text" class="form-control" name="FACEBOOK_APP_ID" value="{{  env('FACEBOOK_APP_ID') }}" placeholder="Facebook App ID" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
@@ -43,21 +43,21 @@
         <div class="col-md-6">
             <div class="card bg-gray-light">
               <div class="card-header">
-                  <h5 class="mb-0 h6">{{ translate('Please be carefull when you are configuring Facebook Comment. For incorrect configuration you will not get comment section on your user-end site.') }}</h5>
+                  <h5 class="mb-0 h6">Please be carefull when you are configuring Facebook Comment. For incorrect configuration you will not get comment section on your user-end site.</h5>
               </div>
                 <div class="card-body">
                     <ul class="list-group mar-no">
                         <li class="list-group-item text-dark">
-                            1. {{ translate('Login into your facebook page') }}
+                            1. Login into your facebook page
                         </li>
                         <li class="list-group-item text-dark">
-                            2. {{ translate('After then go to this URL https://developers.facebook.com/apps/') }}.
+                            2. After then go to this URL https://developers.facebook.com/apps/.
                         </li>
                         <li class="list-group-item text-dark">
-                            3. {{ translate('Create Your App') }}.
+                            3. Create Your App.
                         </li>
                         <li class="list-group-item text-dark">
-                            4. {{ translate('In Dashboard page you will get your App ID') }}.
+                            4. In Dashboard page you will get your App ID.
                         </li>
                     </ul>
                 </div>

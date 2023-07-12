@@ -4,7 +4,7 @@
 
 <div class="card">
   <div class="card-header">
-      <h5 class="mb-0 h6">{{ translate('Seller Verification') }}</h5>
+      <h5 class="mb-0 h6">Seller Verification</h5>
       <div class="pull-right clearfix">
         <a href="{{ route('sellers.reject', $seller->id) }}" class="btn btn-default d-innline-block">{{translate('Reject')}}</a></li>
         <a href="{{ route('sellers.approve', $seller->id) }}" class="btn btn-circle btn-dark d-innline-block">{{translate('Accept')}}</a>
@@ -12,9 +12,9 @@
   </div>
   <div class="card-body row">
       <div class="col-md-5">
-          <h6 class="mb-4">{{ translate('User Info') }}</h6>
+          <h6 class="mb-4">User Info</h6>
           <p class="text-muted">
-              <strong>{{ translate('Name') }} :</strong>
+              <strong>Name :</strong>
               <span class="ml-2">{{ $seller->user->name }}</span>
           </p>
           <p class="text-muted">
@@ -31,7 +31,7 @@
           </p>
           <br>
 
-          <h6 class="mb-4">{{ translate('Shop Info') }}</h6>
+          <h6 class="mb-4">Shop Info</h6>
           <p class="text-muted">
               <strong>{{translate('Shop Name')}}</strong>
               <span class="ml-2">{{ $seller->user->shop->name }}</span>
@@ -42,7 +42,7 @@
           </p>
       </div>
       <div class="col-md-5">
-        <h6 class="mb-4">{{ translate('Verification Info') }}</h6>
+        <h6 class="mb-4">Verification Info</h6>
           <table class="table table-striped table-bordered" cellspacing="0" width="100%">
               <tbody>
                   @foreach (json_decode($seller->verification_info) as $key => $info)

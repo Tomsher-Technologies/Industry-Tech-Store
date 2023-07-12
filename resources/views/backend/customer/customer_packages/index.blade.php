@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-body text-center">
                     <img alt="{{ translate('Package Logo')}}" src="{{ uploaded_asset($customer_package->logo) }}" class="mw-100 mx-auto mb-4" height="150px">
-                    <p class="mb-3 h6 fw-600">{{$customer_package->getTranslation('name')}}</p>
+                    <p class="mb-3 h6 fw-600">{{$customer_package->name}}</p>
                     <p class="h4">{{single_price($customer_package->amount)}}</p>
                     <p class="fs-15">{{translate('Product Upload') }}:
                         <span class="text-bold">{{$customer_package->product_upload}}</span>

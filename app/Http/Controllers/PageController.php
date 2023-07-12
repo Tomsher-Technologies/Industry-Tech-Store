@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessSetting;
+use App\Models\Category;
+use App\Models\Frontend\Banner;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\PageTranslation;
-
+use Cache;
 
 class PageController extends Controller
 {
@@ -16,7 +19,6 @@ class PageController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -79,18 +81,25 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   public function edit(Request $request, $id)
-   {
-        $lang = $request->lang;
+    public function edit(Request $request, $id)
+    {
         $page_name = $request->page;
         $page = Page::where('slug', $id)->first();
-        if($page != null){
-          if ($page_name == 'home') {
-            return view('backend.website_settings.pages.home_page_edit', compact('page','lang'));
-          }
-          else{
-            return view('backend.website_settings.pages.edit', compact('page','lang'));
-          }
+        if ($page != null) {
+            if ($page_name == 'home') {
+                $banners = Banner::where('status', 1)->get();
+                $current_banners = BusinessSetting::whereIn('type', array('home_banner', 'home_ads_banner', 'home_large_banner'))->get()->keyBy('type');
+
+                $categories = Cache::rememberForever('categories', function () {
+                    return Category::where('parent_id', 0)->with('childrenCategories')->get();
+                });
+
+                // dd($categories);
+
+                return view('backend.website_settings.pages.home_page_edit', compact('page', 'banners', 'current_banners', 'categories'));
+            } else {
+                return view('backend.website_settings.pages.edit', compact('page'));
+            }
         }
         abort(404);
     }
@@ -105,13 +114,13 @@ class PageController extends Controller
     public function update(Request $request, $id)
     {
         $page = Page::findOrFail($id);
-        if (Page::where('id','!=', $id)->where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
-            if($page->type == 'custom_page'){
-              $page->slug           = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
+        if (Page::where('id', '!=', $id)->where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
+            if ($page->type == 'custom_page') {
+                $page->slug           = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
             }
-            if($request->lang == env("DEFAULT_LANGUAGE")){
-              $page->title          = $request->title;
-              $page->content        = $request->content;
+            if ($request->lang == env("DEFAULT_LANGUAGE")) {
+                $page->title          = $request->title;
+                $page->content        = $request->content;
             }
             $page->meta_title       = $request->meta_title;
             $page->meta_description = $request->meta_description;
@@ -128,9 +137,8 @@ class PageController extends Controller
             return redirect()->route('website.pages');
         }
 
-      flash(translate('Slug has been used already'))->warning();
-      return back();
-
+        flash(translate('Slug has been used already'))->warning();
+        return back();
     }
 
     /**
@@ -145,23 +153,25 @@ class PageController extends Controller
         foreach ($page->page_translations as $key => $page_translation) {
             $page_translation->delete();
         }
-        if(Page::destroy($id)){
+        if (Page::destroy($id)) {
             flash(translate('Page has been deleted successfully'))->success();
             return redirect()->back();
         }
         return back();
     }
 
-    public function show_custom_page($slug){
+    public function show_custom_page($slug)
+    {
         $page = Page::where('slug', $slug)->first();
-        if($page != null){
+        if ($page != null) {
             return view('frontend.custom_page', compact('page'));
         }
         abort(404);
     }
-    public function mobile_custom_page($slug){
+    public function mobile_custom_page($slug)
+    {
         $page = Page::where('slug', $slug)->first();
-        if($page != null){
+        if ($page != null) {
             return view('frontend.m_custom_page', compact('page'));
         }
         abort(404);

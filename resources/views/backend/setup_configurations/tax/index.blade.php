@@ -18,7 +18,7 @@
 <div class="card">
     <div class="card-header row gutters-5">
         <div class="col text-center text-md-left">
-            <h5 class="mb-md-0 h6">{{ translate('All Taxes') }}</h5>
+            <h5 class="mb-md-0 h6">All Taxes</h5>
         </div>
     </div>
     <div class="card-body">
@@ -45,10 +45,10 @@
                         
                     </td>
                     <td class="text-right">
-                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('tax.edit', $tax->id )}}" title="{{ translate('Edit') }}">
+                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('tax.edit', $tax->id )}}" title="Edit">
                             <i class="las la-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('tax.destroy', $tax->id)}}" title="{{ translate('Delete') }}">
+                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('tax.destroy', $tax->id)}}" title="Delete">
                             <i class="las la-trash"></i>
                         </a>
                     </td>
@@ -120,10 +120,10 @@
             }
             $.post('{{ route('taxes.tax-status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Tax status updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Tax status updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

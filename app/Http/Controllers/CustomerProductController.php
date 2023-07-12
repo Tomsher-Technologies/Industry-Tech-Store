@@ -41,17 +41,15 @@ class CustomerProductController extends Controller
     public function create()
     {
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
+
             ->with('childrenCategories')
             ->get();
 
-        if(Auth::user()->user_type == "customer" && Auth::user()->remaining_uploads > 0){
+        if (Auth::user()->user_type == "customer" && Auth::user()->remaining_uploads > 0) {
             return view('frontend.user.customer.product_upload', compact('categories'));
-        }
-        elseif (Auth::user()->user_type == "seller" && Auth::user()->remaining_uploads > 0) {
+        } elseif (Auth::user()->user_type == "seller" && Auth::user()->remaining_uploads > 0) {
             return view('frontend.user.customer.product_upload', compact('categories'));
-        }
-        else{
+        } else {
             flash(translate('Your classified product upload limit has been reached. Please buy a package.'))->error();
             return redirect()->route('customer_packages_list_show');
         }
@@ -78,7 +76,7 @@ class CustomerProductController extends Controller
         $customer_product->unit                 = $request->unit;
 
         $tags = array();
-        if($request->tags[0] != null){
+        if ($request->tags[0] != null) {
             foreach (json_decode($request->tags[0]) as $key => $tag) {
                 array_push($tags, $tag->value);
             }
@@ -93,8 +91,8 @@ class CustomerProductController extends Controller
         $customer_product->meta_description     = $request->meta_description;
         $customer_product->meta_img             = $request->meta_img;
         $customer_product->pdf                  = $request->pdf;
-        $customer_product->slug                 = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5));
-        if($customer_product->save()){
+        $customer_product->slug                 = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)) . '-' . Str::random(5));
+        if ($customer_product->save()) {
             $user = Auth::user();
             $user->remaining_uploads -= 1;
             $user->save();
@@ -107,8 +105,7 @@ class CustomerProductController extends Controller
 
             flash(translate('Product has been inserted successfully'))->success();
             return redirect()->route('customer_products.index');
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
             return back();
         }
@@ -134,12 +131,12 @@ class CustomerProductController extends Controller
     public function edit(Request $request, $id)
     {
         $categories = Category::where('parent_id', 0)
-            ->where('digital', 0)
+
             ->with('childrenCategories')
             ->get();
         $product    = CustomerProduct::find($id);
         $lang       = $request->lang;
-        return view('frontend.user.customer.product_edit', compact('categories', 'product','lang'));
+        return view('frontend.user.customer.product_edit', compact('categories', 'product', 'lang'));
     }
 
     /**
@@ -152,7 +149,7 @@ class CustomerProductController extends Controller
     public function update(Request $request, $id)
     {
         $customer_product                       = CustomerProduct::find($id);
-        if($request->lang == env("DEFAULT_LANGUAGE")){
+        if ($request->lang == env("DEFAULT_LANGUAGE")) {
             $customer_product->name             = $request->name;
             $customer_product->unit             = $request->unit;
             $customer_product->description      = $request->description;
@@ -167,7 +164,7 @@ class CustomerProductController extends Controller
         $customer_product->thumbnail_img        = $request->thumbnail_img;
 
         $tags = array();
-        if($request->tags[0] != null){
+        if ($request->tags[0] != null) {
             foreach (json_decode($request->tags[0]) as $key => $tag) {
                 array_push($tags, $tag->value);
             }
@@ -182,7 +179,7 @@ class CustomerProductController extends Controller
         $customer_product->meta_img             = $request->meta_img;
         $customer_product->pdf                  = $request->pdf;
         $customer_product->slug                 = strtolower($request->slug);
-        if($customer_product->save()){
+        if ($customer_product->save()) {
 
             $customer_product_translation               = CustomerProductTranslation::firstOrNew(['lang' => $request->lang, 'customer_product_id' => $customer_product->id]);
             $customer_product_translation->name         = $request->name;
@@ -192,8 +189,7 @@ class CustomerProductController extends Controller
 
             flash(translate('Product has been inserted successfully'))->success();
             return back();
-        }
-        else{
+        } else {
             flash(translate('Something went wrong'))->error();
             return back();
         }
@@ -214,11 +210,10 @@ class CustomerProductController extends Controller
         }
 
         if (CustomerProduct::destroy($id)) {
-            if(Auth::user()->user_type == "customer" || Auth::user()->user_type == "seller"){
+            if (Auth::user()->user_type == "customer" || Auth::user()->user_type == "seller") {
                 flash(translate('Product has been deleted successfully'))->success();
                 return redirect()->route('customer_products.index');
-            }
-            else {
+            } else {
                 return back();
             }
         }
@@ -228,7 +223,7 @@ class CustomerProductController extends Controller
     {
         $product = CustomerProduct::findOrFail($request->id);
         $product->status = $request->status;
-        if($product->save()){
+        if ($product->save()) {
             return 1;
         }
         return 0;
@@ -238,7 +233,7 @@ class CustomerProductController extends Controller
     {
         $product = CustomerProduct::findOrFail($request->id);
         $product->published = $request->status;
-        if($product->save()){
+        if ($product->save()) {
             return 1;
         }
         return 0;
@@ -252,7 +247,7 @@ class CustomerProductController extends Controller
     public function customer_product($slug)
     {
         $customer_product  = CustomerProduct::where('slug', $slug)->first();
-        if($customer_product!=null){
+        if ($customer_product != null) {
             return view('frontend.customer_product_details', compact('customer_product'));
         }
         abort(404);
@@ -268,13 +263,13 @@ class CustomerProductController extends Controller
 
         $conditions = ['published' => 1, 'status' => 1];
 
-        if($brand_id != null){
+        if ($brand_id != null) {
             $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
         }
 
         $customer_products = CustomerProduct::where($conditions);
 
-        if($category_id != null){
+        if ($category_id != null) {
             $category_ids = CategoryUtility::children_ids($category_id);
             $category_ids[] = $category_id;
 
@@ -285,7 +280,7 @@ class CustomerProductController extends Controller
         //     $customer_products = $customer_products->where('name', 'like', '%'.$query.'%')->orWhere('tags', 'like', '%'.$query.'%');
         // }
 
-        if($sort_by != null){
+        if ($sort_by != null) {
             switch ($sort_by) {
                 case '1':
                     $customer_products->orderBy('created_at', 'desc');
@@ -311,7 +306,7 @@ class CustomerProductController extends Controller
             }
         }
 
-        if($condition != null){
+        if ($condition != null) {
             $customer_products->where('conditon', $condition);
         }
 

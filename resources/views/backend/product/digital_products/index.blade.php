@@ -15,12 +15,12 @@
     <div class="card">
         <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('Digital Products') }}</h5>
+                <h5 class="mb-md-0 h6">Digital Products</h5>
             </div>
             <div class="col-md-4">
                 <form class="" id="sort_digital_products" action="" method="GET">
                     <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                        <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
                     </div>
                 </form>
             </div>
@@ -44,7 +44,7 @@
                     @foreach($products as $key => $product)
                         <tr>
                             <td>{{ ($key+1) + ($products->currentPage() - 1)*$products->perPage() }}</td>
-                            <td><a href="{{ route('product', $product->slug) }}" class="text-muted" target="_blank"><b>{{ $product->getTranslation('name') }}</b></a></td>
+                            <td><a href="{{ route('product', $product->slug) }}" class="text-muted" target="_blank"><b>{{ $product->name }}</b></a></td>
                             <td>{{ ucfirst($product->added_by) }}</td>
                             <td>
 								<img src="{{ uploaded_asset($product->thumbnail_img)}}" alt="Image" class="w-50px">
@@ -69,13 +69,13 @@
                                 </label>
                             </td>
                             <td class="text-right">
-                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                     <i class="las la-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('digitalproducts.destroy', $product->id)}}" title="{{ translate('Delete') }}">
+                                <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('digitalproducts.destroy', $product->id)}}" title="Delete">
                                     <i class="las la-trash"></i>
                                 </a>
-                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($product->id))}}" title="{{ translate('Download') }}">
+                                <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('digitalproducts.download', encrypt($product->id))}}" title="Download">
                                     <i class="las la-download"></i>
                                 </a>
                             </td>
@@ -112,10 +112,10 @@
             }
             $.post('{{ route('products.todays_deal') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Todays Deal updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Todays Deal updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }
@@ -129,10 +129,10 @@
             }
             $.post('{{ route('products.published') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Published products updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }
@@ -146,10 +146,10 @@
             }
             $.post('{{ route('products.featured') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Featured products updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Featured products updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

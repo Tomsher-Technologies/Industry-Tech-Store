@@ -1,67 +1,69 @@
 <!doctype html>
-@if(\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-<html dir="rtl" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@if (\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
+    <html dir="rtl" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @else
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @endif
+
 <head>
-	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<meta name="app-url" content="{{ getBaseURL() }}">
-	<meta name="file-base-url" content="{{ getFileBaseURL() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="app-url" content="{{ getBaseURL() }}">
+    <meta name="file-base-url" content="{{ getFileBaseURL() }}">
 
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Favicon -->
-	<link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
-	<title>{{ get_setting('website_name').' | '.get_setting('site_motto') }}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
+    <title>{{ get_setting('website_name') . ' | ' . get_setting('site_motto') }}</title>
 
-	<!-- google font -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
+    <!-- google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
-	<!-- aiz core css -->
-	<link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
-    @if(\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
-    <link rel="stylesheet" href="{{ static_asset('assets/css/bootstrap-rtl.min.css') }}">
+    <!-- aiz core css -->
+    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
+    @if (\App\Models\Language::where('code', Session::get('locale', Config::get('app.locale')))->first()->rtl == 1)
+        <link rel="stylesheet" href="{{ static_asset('assets/css/bootstrap-rtl.min.css') }}">
     @endif
-	<link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
+    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
 
     <style>
         body {
             font-size: 12px;
         }
     </style>
-	<script>
-    	var AIZ = AIZ || {};
+    <script>
+        var AIZ = AIZ || {};
         AIZ.local = {
-            nothing_selected: '{{ translate('Nothing selected') }}',
-            nothing_found: '{{ translate('Nothing found') }}',
-            choose_file: '{{ translate('Choose file') }}',
-            file_selected: '{{ translate('File selected') }}',
-            files_selected: '{{ translate('Files selected') }}',
-            add_more_files: '{{ translate('Add more files') }}',
-            adding_more_files: '{{ translate('Adding more files') }}',
-            drop_files_here_paste_or: '{{ translate('Drop files here, paste or') }}',
-            browse: '{{ translate('Browse') }}',
-            upload_complete: '{{ translate('Upload complete') }}',
-            upload_paused: '{{ translate('Upload paused') }}',
-            resume_upload: '{{ translate('Resume upload') }}',
-            pause_upload: '{{ translate('Pause upload') }}',
-            retry_upload: '{{ translate('Retry upload') }}',
-            cancel_upload: '{{ translate('Cancel upload') }}',
-            uploading: '{{ translate('Uploading') }}',
-            processing: '{{ translate('Processing') }}',
-            complete: '{{ translate('Complete') }}',
-            file: '{{ translate('File') }}',
-            files: '{{ translate('Files') }}',
+            nothing_selected: 'Nothing selected',
+            nothing_found: 'Nothing found',
+            choose_file: 'Choose file',
+            file_selected: 'File selected',
+            files_selected: 'Files selected',
+            add_more_files: 'Add more files',
+            adding_more_files: 'Adding more files',
+            drop_files_here_paste_or: 'Drop files here, paste or',
+            browse: 'Browse',
+            upload_complete: 'Upload complete',
+            upload_paused: 'Upload paused',
+            resume_upload: 'Resume upload',
+            pause_upload: 'Pause upload',
+            retry_upload: 'Retry upload',
+            cancel_upload: 'Cancel upload',
+            uploading: 'Uploading',
+            processing: 'Processing',
+            complete: 'Complete',
+            file: 'File',
+            files: 'Files',
         }
-	</script>
-
+    </script>
+    @yield('header')
 </head>
+
 <body class="">
 
-	<div class="aiz-main-wrapper d-flex">
+    <div class="aiz-main-wrapper d-flex">
         <div class="flex-grow-1">
             @yield('content')
         </div>
@@ -70,8 +72,8 @@
     @yield('modal')
 
 
-    <script src="{{ static_asset('assets/js/vendors.js') }}" ></script>
-    <script src="{{ static_asset('assets/js/aiz-core.js') }}" ></script>
+    <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
+    <script src="{{ static_asset('assets/js/aiz-core.js') }}"></script>
 
     @yield('script')
 
@@ -82,4 +84,5 @@
     </script>
 
 </body>
+
 </html>

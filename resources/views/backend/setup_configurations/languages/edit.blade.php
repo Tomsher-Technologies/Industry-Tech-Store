@@ -17,15 +17,15 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="control-label">{{ translate('Name') }}</label>
+                            <label class="control-label">Name</label>
                         </div>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="name" placeholder="{{ translate('Name') }}" value="{{ $language->name }}" required>
+                            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $language->name }}" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="control-label">{{ translate('Code') }}</label>
+                            <label class="control-label">Code</label>
                         </div>
                         <div class="col-lg-9">
                             @php
@@ -49,11 +49,11 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-3">
-                            <label class="control-label">{{ translate('Flutter App Lang Code') }}</label>
+                            <label class="control-label">Flutter App Lang Code</label>
                             <code><a target="_blank" href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">{{ translate("Links for ISO 639-1 codes")}}</a></code>
                         </div>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="app_lang_code" placeholder="{{ translate('Put ISO 639-1 code for your language') }}" value="{{ $language->app_lang_code }}" required>
+                            <input type="text" class="form-control" name="app_lang_code" placeholder="Put ISO 639-1 code for your language" value="{{ $language->app_lang_code }}" required>
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">

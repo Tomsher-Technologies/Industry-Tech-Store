@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subscriber;
+use Validator;
 
 class SubscriberController extends Controller
 {
@@ -14,8 +15,8 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        $subscribers = Subscriber::orderBy('created_at', 'desc')->paginate(15);
-        return view('backend.marketing.subscribers.index', compact('subscribers'));
+        // $subscribers = Subscriber::orderBy('created_at', 'desc')->paginate(15);
+        // return view('backend.marketing.subscribers.index', compact('subscribers'));
     }
 
     /**
@@ -36,17 +37,41 @@ class SubscriberController extends Controller
      */
     public function store(Request $request)
     {
-        $subscriber = Subscriber::where('email', $request->email)->first();
-        if($subscriber == null){
-            $subscriber = new Subscriber;
-            $subscriber->email = $request->email;
-            $subscriber->save();
-            flash(translate('You have subscribed successfully'))->success();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email|unique:subscribers,email'
+            ],
+            [
+                'email.required' => 'Please enter your email.',
+                'email.email' => 'Please enter a valid email.',
+                'email.unique' => 'You are already subscribed.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 400, 'errors' => $validator->errors()->all()]);
         }
-        else{
-            flash(translate('You are  already a subscriber'))->success();
-        }
-        return back();
+
+        Subscriber::create([
+            'email' => $request->email
+        ]);
+
+        return json_encode([
+            'status' => 200,
+            'msg' => 'You have subscribed successfully'
+        ]);
+
+        // $subscriber = Subscriber::where('email', $request->email)->first();
+        // if ($subscriber == null) {
+        //     $subscriber = new Subscriber;
+        //     $subscriber->email = ;
+        //     $subscriber->save();
+        //     flash(translate(''))->success();
+        // } else {
+        //     flash(translate('You are  already a subscriber'))->success();
+        // }
+        // return back();
     }
 
     /**

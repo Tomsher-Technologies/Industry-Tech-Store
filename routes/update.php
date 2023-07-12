@@ -9,4 +9,4 @@
 |
 |
 */
-Route::get('/', 'UpdateController@step0');
+Route::get('/', [UpdateController::class,'step0']);

@@ -14,7 +14,7 @@
     <form class="" id="sort_sellers" action="" method="GET">
         <div class="card-header row gutters-5">
             <div class="col">
-                <h5 class="mb-md-0 h6">{{ translate('Sellers') }}</h5>
+                <h5 class="mb-md-0 h6">Sellers</h5>
             </div>
             
             <div class="dropdown mb-2 mb-md-0">
@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group mb-0">
-                  <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name or email & Enter') }}">
+                  <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name or email & Enter">
                 </div>
             </div>
         </div>
@@ -60,8 +60,8 @@
                     <th data-breakpoints="lg">{{translate('Email Address')}}</th>
                     <th data-breakpoints="lg">{{translate('Verification Info')}}</th>
                     <th data-breakpoints="lg">{{translate('Approval')}}</th>
-                    <th data-breakpoints="lg">{{ translate('Num. of Products') }}</th>
-                    <th data-breakpoints="lg">{{ translate('Due to seller') }}</th>
+                    <th data-breakpoints="lg">Num. of Products</th>
+                    <th data-breakpoints="lg">Due to seller</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>
                 </thead>
@@ -259,10 +259,10 @@
             }
             $.post('{{ route('sellers.approved') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Approved sellers updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Approved sellers updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

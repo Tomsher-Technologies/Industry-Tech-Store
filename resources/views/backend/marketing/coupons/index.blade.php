@@ -36,17 +36,17 @@
                         <td>{{$key+1}}</td>
                         <td>{{$coupon->code}}</td>
                         <td>@if ($coupon->type == 'cart_base')
-                                {{ translate('Cart Base') }}
+                                Cart Base
                             @elseif ($coupon->type == 'product_base')
-                                {{ translate('Product Base') }}
+                                Product Base
                         @endif</td>
                         <td>{{ date('d-m-Y', $coupon->start_date) }}</td>
                         <td>{{ date('d-m-Y', $coupon->end_date) }}</td>
 						<td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('coupon.edit', encrypt($coupon->id) )}}" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('coupon.edit', encrypt($coupon->id) )}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('coupon.destroy', $coupon->id)}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('coupon.destroy', $coupon->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>

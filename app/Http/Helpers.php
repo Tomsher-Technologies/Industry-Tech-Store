@@ -16,10 +16,22 @@ use App\Models\Wallet;
 use App\Models\CombinedOrder;
 use App\Models\User;
 use App\Models\Addon;
+use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Products\ProductEnquiries;
 use App\Models\Shop;
+use App\Models\Wishlist;
 use App\Utility\SendSMSUtility;
 use App\Utility\NotificationUtility;
+
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\TwitterCard;
+use Artesaos\SEOTools\Facades\JsonLd;
+use Artesaos\SEOTools\Facades\JsonLdMulti;
+use Carbon\Carbon;
+
+use Harimayco\Menu\Facades\Menu;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -33,9 +45,10 @@ if (!function_exists('sendSMS')) {
 if (!function_exists('areActiveRoutes')) {
     function areActiveRoutes(array $routes, $output = "active")
     {
-        foreach ($routes as $route) {
-            if (Route::currentRouteName() == $route) return $output;
-        }
+        return in_array(Route::currentRouteName(), $routes) ? $output : '';
+        // foreach ($routes as $route) {
+        //     return Route::currentRouteName() == $route ? $output : '';
+        // }
     }
 }
 
@@ -194,7 +207,7 @@ if (!function_exists('single_price')) {
     }
 }
 
-if (! function_exists('discount_in_percentage')) {
+if (!function_exists('discount_in_percentage')) {
     function discount_in_percentage($product)
     {
         try {
@@ -204,7 +217,7 @@ if (! function_exists('discount_in_percentage')) {
             $dp = ($discount * 100) / $base;
             return round($dp);
         } catch (Exception $e) {
-
+            return 0;
         }
         return 0;
     }
@@ -334,16 +347,16 @@ if (!function_exists('home_base_price')) {
     function home_base_price($product, $formatted = true)
     {
         $price = $product->unit_price;
-        $tax = 0;
+        // $tax = 0;
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
+        // foreach ($product->taxes as $product_tax) {
+        //     if ($product_tax->tax_type == 'percent') {
+        //         $tax += ($price * $product_tax->tax) / 100;
+        //     } elseif ($product_tax->tax_type == 'amount') {
+        //         $tax += $product_tax->tax;
+        //     }
+        // }
+        // $price += $tax;
         return $formatted ? format_price(convert_price($price)) : $price;
     }
 }
@@ -415,50 +428,48 @@ if (!function_exists('home_discounted_base_price')) {
             }
         }
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
+        // foreach ($product->taxes as $product_tax) {
+        //     if ($product_tax->tax_type == 'percent') {
+        //         $tax += ($price * $product_tax->tax) / 100;
+        //     } elseif ($product_tax->tax_type == 'amount') {
+        //         $tax += $product_tax->tax;
+        //     }
+        // }
+        // $price += $tax;
 
         return $formatted ? format_price(convert_price($price)) : $price;
     }
 }
 
 if (!function_exists('renderStarRating')) {
-    function renderStarRating($rating, $maxRating = 5)
+    function renderStarRating($rating)
     {
-        $fullStar = "<i class = 'las la-star active'></i>";
-        $halfStar = "<i class = 'las la-star half'></i>";
-        $emptyStar = "<i class = 'las la-star'></i>";
-        $rating = $rating <= $maxRating ? $rating : $maxRating;
+        if ($rating == 0) {
+            return null;
+        }
 
-        $fullStarCount = (int)$rating;
-        $halfStarCount = ceil($rating) - $fullStarCount;
-        $emptyStarCount = $maxRating - $fullStarCount - $halfStarCount;
-
-        $html = str_repeat($fullStar, $fullStarCount);
-        $html .= str_repeat($halfStar, $halfStarCount);
-        $html .= str_repeat($emptyStar, $emptyStarCount);
+        $html = '<div class="ps-product__rating"><select class="ps-rating" data-read-only="true">';
+        for ($i = 1; $i <= 5; $i++) {
+            $value = $i <= $rating ? 1 : 2;
+            $html .= '<option value="' . $value . '">' . $i . '</option>';
+        }
+        $html .=  '</select><span>' . $rating . '</span></div>';
         echo $html;
     }
 }
 
 function translate($key, $lang = null, $addslashes = false)
 {
-    if($lang == null){
+    if ($lang == null) {
         $lang = App::getLocale();
     }
-    
+
     $lang_key = preg_replace('/[^A-Za-z0-9\_]/', '', str_replace(' ', '_', strtolower($key)));
-    
+
     $translations_en = Cache::rememberForever('translations-en', function () {
         return Translation::where('lang', 'en')->pluck('lang_value', 'lang_key')->toArray();
     });
-    
+
     if (!isset($translations_en[$lang_key])) {
         $translation_def = new Translation;
         $translation_def->lang = 'en';
@@ -497,7 +508,7 @@ function remove_invalid_charcaters($str)
     return str_ireplace(array('"'), '\"', $str);
 }
 
-function getShippingCost($carts, $index)
+function getShippingCost2($carts, $index)
 {
     $admin_products = array();
     $seller_products = array();
@@ -525,17 +536,17 @@ function getShippingCost($carts, $index)
 
     if (get_setting('shipping_type') == 'flat_rate') {
         return get_setting('flat_rate_shipping_cost') / count($carts);
-    }
-    elseif (get_setting('shipping_type') == 'seller_wise_shipping') {
+    } elseif (get_setting('shipping_type') == 'seller_wise_shipping') {
         if ($product->added_by == 'admin') {
             return get_setting('shipping_cost_admin') / count($admin_products);
         } else {
-            return Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
+            return Shop::where('user_id', $product->user_id)
+                ->first()
+                ->shipping_cost / count($seller_products[$product->user_id]);
         }
-    }
-    elseif (get_setting('shipping_type') == 'area_wise_shipping') {
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
-        $city = City::where('id', $shipping_info->city_id)->first();
+    } elseif (get_setting('shipping_type') == 'area_wise_shipping') {
+        $shippingInfo = Address::where('id', $carts[0]['address_id'])->first();
+        $city = City::where('id', $shippingInfo->city_id)->first();
         if ($city != null) {
             if ($product->added_by == 'admin') {
                 return $city->cost / count($admin_products);
@@ -544,9 +555,8 @@ function getShippingCost($carts, $index)
             }
         }
         return 0;
-    }
-    else {
-        if($product->is_quantity_multiplied && get_setting('shipping_type') == 'product_wise_shipping') {
+    } else {
+        if ($product->is_quantity_multiplied && get_setting('shipping_type') == 'product_wise_shipping') {
             return  $product->shipping_cost * $cartItem['quantity'];
         }
         return $product->shipping_cost;
@@ -579,9 +589,25 @@ if (!function_exists('api_asset')) {
 if (!function_exists('uploaded_asset')) {
     function uploaded_asset($id)
     {
-        if (($asset = \App\Models\Upload::find($id)) != null) {
-            return $asset->external_link == null ? my_asset($asset->file_name) : $asset->external_link;
+        if ($id && ($asset = \App\Models\Upload::find($id)) != null) {
+            return $asset->external_link == null ? storage_asset($asset->file_name) : $asset->external_link;
         }
+
+        return null;
+    }
+}
+
+//return file uploaded via uploader with name
+if (!function_exists('uploaded_asset_with_name')) {
+    function uploaded_asset_with_name($id)
+    {
+        if ($id && ($asset = \App\Models\Upload::find($id)) != null) {
+            return array(
+                'link' => $asset->external_link == null ? storage_asset($asset->file_name) : $asset->external_link,
+                'name' => $asset->file_original_name
+            );
+        }
+
         return null;
     }
 }
@@ -604,6 +630,20 @@ if (!function_exists('my_asset')) {
     }
 }
 
+if (!function_exists('storage_asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param string $path
+     * @param bool|null $secure
+     * @return string
+     */
+    function storage_asset($path, $secure = null)
+    {
+        return app('url')->asset('storage/' . $path, $secure);
+    }
+}
+
 if (!function_exists('static_asset')) {
     /**
      * Generate an asset path for the application.
@@ -614,7 +654,21 @@ if (!function_exists('static_asset')) {
      */
     function static_asset($path, $secure = null)
     {
-        return app('url')->asset('public/' . $path, $secure);
+        return app('url')->asset('admin_assets/' . $path, $secure);
+    }
+}
+
+if (!function_exists('frontendAsset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param string $path
+     * @param bool|null $secure
+     * @return string
+     */
+    function frontendAsset($path, $secure = null)
+    {
+        return app('url')->asset('assets/' . $path, $secure);
     }
 }
 
@@ -643,7 +697,8 @@ if (!function_exists('getFileBaseURL')) {
         if (env('FILESYSTEM_DRIVER') == 's3') {
             return env('AWS_URL') . '/';
         } else {
-            return getBaseURL() . '/';
+            return app('url')->asset('storage') . '/';
+            // return getBaseURL();
         }
     }
 }
@@ -670,19 +725,20 @@ if (!function_exists('isUnique')) {
 }
 
 if (!function_exists('get_setting')) {
-    function get_setting($key, $default = null, $lang = false)
+    function get_setting($key, $default = null)
     {
         $settings = Cache::remember('business_settings', 86400, function () {
-            return BusinessSetting::all();
+            return BusinessSetting::select(['type', 'value'])->get()->keyBy('type')->toArray();
+            // return BusinessSetting::select(['type', 'value'])->get()->toArray();
         });
 
-        if ($lang == false) {
-            $setting = $settings->where('type', $key)->first();
-        } else {
-            $setting = $settings->where('type', $key)->where('lang', $lang)->first();
-            $setting = !$setting ? $settings->where('type', $key)->first() : $setting;
+        if (isset($settings[$key])) {
+            return $settings[$key]['value'];
         }
-        return $setting == null ? $default : $setting->value;
+
+        return $default;
+        // $setting = $settings->where('type', $key)->first();
+        // return $setting == null ? $default : $setting->value;
     }
 }
 
@@ -793,9 +849,9 @@ if (!function_exists('checkout_done')) {
 
             try {
                 NotificationUtility::sendOrderPlacedNotification($order);
-                calculateCommissionAffilationClubPoint($order);
+                // calculateCommissionAffilationClubPoint($order);
             } catch (\Exception $e) {
-               
+                // Do nothing
             }
         }
     }
@@ -862,5 +918,181 @@ if (!function_exists('addon_is_activated')) {
 
         $activation = $addons->where('unique_identifier', $identifier)->where('activated', 1)->first();
         return $activation == null ? false : true;
+    }
+}
+
+// Get Image From Uploads
+if (!function_exists('get_uploads_image')) {
+    function get_uploads_image($relation)
+    {
+        if ($relation) {
+            return storage_asset($relation->file_name);
+        }
+
+        return frontendAsset('img/placeholder.webp');
+    }
+}
+
+// Load SEO details
+if (!function_exists('load_seo_tags')) {
+    function load_seo_tags($seo = null, $image = '')
+    {
+        if ($image == '') {
+            $image = frontendAsset('img/logo_new.webp');
+        }
+
+        if ($seo) {
+            SEOMeta::setTitle($seo->meta_title);
+            SEOMeta::setDescription($seo->meta_description);
+            SEOMeta::setKeywords($seo->meta_keywords);
+
+            OpenGraph::setTitle($seo->og_title);
+            OpenGraph::setDescription($seo->og_title);
+
+            OpenGraph::addProperty('type', 'articles')
+                ->addImage($image)
+                ->setTitle($seo->og_title)
+                ->setDescription($seo->og_description)
+                ->setSiteName(env('APP_NAME', 'Industry Tech Store'));
+
+            TwitterCard::setType('summary_large_image')
+                ->setImage($image)
+                ->setTitle($seo->twitter_title)
+                ->setDescription($seo->twitter_description)
+                ->setSite('@ind');
+
+            JsonLd::setImage($image)
+                ->setTitle($seo->meta_title)
+                ->setDescription($seo->meta_description)
+                ->setSite(env('APP_NAME', 'Industry Tech Store'));
+
+            JsonLdMulti::setImage($image)
+                ->setTitle($seo->meta_title)
+                ->setDescription($seo->meta_description)
+                ->setSite(env('APP_NAME', 'Industry Tech Store'));
+        }
+    }
+
+    function getTempUserId()
+    {
+        if (Session::has('temp_user_id')) {
+            $user_id = Session::get('temp_user_id');
+        } else {
+            $user_id = bin2hex(random_bytes(10));
+            Session::put('temp_user_id', $user_id);
+        }
+        return $user_id;
+    }
+
+    function getAllCategories()
+    {
+        return Cache::rememberForever('categoriesTree', function () {
+            return CategoryUtility::getSidebarCategoryTree();
+        });
+    }
+
+    function wishListCount(): int
+    {
+        if (Auth::check()) {
+            return Cache::remember('user_wishlist_count_' . Auth::id(), '3600', function () {
+                return Wishlist::where('user_id', Auth::user()->id)->count();
+            });
+        }
+
+        return 0;
+    }
+
+    function cartCount(): int
+    {
+        if (Auth::check()) {
+            return Cache::remember('user_cart_count_' . Auth::id(), '3600', function () {
+                return Cart::where('user_id', Auth::user()->id)->count();
+            });
+        } else {
+            return Cache::remember('user_cart_count_' . getTempUserId(), '3600', function () {
+                return Cart::where('temp_user_id', getTempUserId())->count();
+            });
+        }
+    }
+
+    function enquiryCount(): int
+    {
+        if (Auth::check()) {
+            $user_col = "user_id";
+            $user_id = Auth::id();
+        } else {
+            $user_col = "temp_user_id";
+            $user_id = getTempUserId();
+        }
+
+        return Cache::remember('user_enquiry_count_' . $user_id, '3600', function () use ($user_col, $user_id) {
+            $enquiries = ProductEnquiries::whereStatus(0)->where($user_col, $user_id)->withCount('products')->latest()->first();
+            if ($enquiries) {
+                return $enquiries->products_count;
+            }
+            return 0;
+        });
+    }
+
+    function formatDate($date): String
+    {
+        if ($date->lessThan(Carbon::now()->subHours(12))) {
+            return $date->format('d F, Y');
+        }
+        return $date->diffForHumans();
+    }
+
+    function deliveryBadge($status)
+    {
+        $html = '';
+
+        switch ($status) {
+            case 'pending':
+                $html = '<span class="badge badge badge-soft-danger">Pending</span>';
+                break;
+            case 'confirmed':
+                $html = '<span class="badge badge-soft-warning">Confirmed</span>';
+                break;
+            case 'picked_up':
+                $html = '<span class="badge badge-soft-warning">Picked Up</span>';
+                break;
+            case 'on_the_way':
+                $html = '<span class="badge badge-soft-warning">On The Way</span>';
+                break;
+            case 'delivered':
+                $html = '<span class="badge badge-soft-success">Delivered</span>';
+                break;
+            default:
+                $html = '-';
+                break;
+        }
+
+        return $html;
+    }
+
+    function getDeliveryStatusText($status)
+    {
+        return Str::title(str_replace('_', ' ', $status));
+    }
+
+    function getCurrentCurrency()
+    {
+        if (Session::has('currency_code')) {
+            return Currency::where('code', Session::get('currency_code'))->first();
+        } else {
+            return  Currency::find(get_setting('system_default_currency'));
+        }
+    }
+
+    function getMenu($id)
+    {
+        return Cache::rememberForever('menu_' . $id,  function () use ($id) {
+            return Menu::get($id);
+        });
+    }
+
+    function allProducts()
+    {
+        return Product::wherePublished(1)->latest()->get();
     }
 }

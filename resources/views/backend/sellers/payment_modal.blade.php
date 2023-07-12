@@ -11,28 +11,28 @@
           <tbody>
               <tr>
                   @if($seller->admin_to_pay >= 0)
-                      <td>{{ translate('Due to seller') }}</td>
+                      <td>Due to seller</td>
                       <td>{{ single_price($seller->admin_to_pay) }}</td>
                   @else
-                      <td>{{ translate('Due to admin') }}</td>
+                      <td>Due to admin</td>
                       <td>{{ single_price(abs($seller->admin_to_pay)) }}</td>
                   @endif
               </tr>
               @if ($seller->bank_payment_status == 1)
                   <tr>
-                      <td>{{ translate('Bank Name') }}</td>
+                      <td>Bank Name</td>
                       <td>{{ $seller->bank_name }}</td>
                   </tr>
                   <tr>
-                      <td>{{ translate('Bank Account Name') }}</td>
+                      <td>Bank Account Name</td>
                       <td>{{ $seller->bank_acc_name }}</td>
                   </tr>
                   <tr>
-                      <td>{{ translate('Bank Account Number') }}</td>
+                      <td>Bank Account Number</td>
                       <td>{{ $seller->bank_acc_no }}</td>
                   </tr>
                   <tr>
-                      <td>{{ translate('Bank Routing Number') }}</td>
+                      <td>Bank Routing Number</td>
                       <td>{{ $seller->bank_routing_no }}</td>
                   </tr>
               @endif

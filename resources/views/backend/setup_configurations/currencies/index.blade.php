@@ -108,12 +108,12 @@
 <div class="card">
     <div class="card-header row gutters-5">
         <div class="col text-center text-md-left">
-            <h5 class="mb-md-0 h6">{{ translate('All Currencies') }}</h5>
+            <h5 class="mb-md-0 h6">All Currencies</h5>
         </div>
         <div class="col-md-4">
             <form class="" id="sort_currencies" action="" method="GET">
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
+                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="Type name & Enter">
                 </div>
             </form>
         </div>
@@ -146,7 +146,7 @@
                             </label>
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" onclick="edit_currency_modal('{{$currency->id}}');" title="{{ translate('Edit') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" onclick="edit_currency_modal('{{$currency->id}}');" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
                         </td>
@@ -209,10 +209,10 @@
 
             $.post('{{ route('currency.update_status') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
                 if(data == 1){
-                    AIZ.plugins.notify('success', '{{ translate('Currency Status updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Currency Status updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

@@ -17,7 +17,17 @@ class AddressController extends Controller
      */
     public function index()
     {
-        //
+
+        $addresses = Auth::user()->addresses;
+        $addresses->load([
+            'country',
+            'state',
+            'city',
+        ]);
+
+        return view('frontend.user.addresses')->with([
+            'addresses' => $addresses
+        ]);
     }
 
     /**
@@ -39,10 +49,9 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         $address = new Address;
-        if($request->has('customer_id')){
+        if ($request->has('customer_id')) {
             $address->user_id   = $request->customer_id;
-        }
-        else{
+        } else {
             $address->user_id   = Auth::user()->id;
         }
         $address->address       = $request->address;
@@ -54,6 +63,58 @@ class AddressController extends Controller
         $address->postal_code   = $request->postal_code;
         $address->phone         = $request->phone;
         $address->save();
+
+        $address->load([
+            'country',
+            'state',
+            'city'
+        ]);
+
+        $html = "<div class='col-lg-6'>
+        <label class='addressLabel w-100' for='address-$address->id'>
+          <input
+            type='radio'
+            name='address'
+            id='address-$address->id'
+            value='$address->id'
+            class='addressCheckbox d-none'
+            required
+          />
+          <div class='border p-3 pr-5 rounded mb-3 position-relative'>
+            <div>
+              <span class='w-50 fw-600'>Address:</span>
+              <span class='ml-2'>$address->address</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Postal code:</span>
+              <span class='ml-2'>$address->postal_code</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>City:</span>
+              <span class='ml-2'>" . $address->city->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>State:</span>
+              <span class='ml-2'>" . $address->state->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Country:</span>
+              <span class='ml-2'>" . $address->country->name . "</span>
+            </div>
+            <div>
+              <span class='w-50 fw-600'>Phone:</span>
+              <span class='ml-2'>$address->phone</span>
+            </div>
+          </div>
+        </label>
+      </div>";
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response([
+                'msg' => 'success',
+                'data' => $html,
+            ], 200);
+        }
 
         return back();
     }
@@ -80,10 +141,10 @@ class AddressController extends Controller
         $data['address_data'] = Address::findOrFail($id);
         $data['states'] = State::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
         $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
-        
+
         $returnHTML = view('frontend.partials.address_edit_modal', $data)->render();
-        return response()->json(array('data' => $data, 'html'=>$returnHTML));
-//        return ;
+        return response()->json(array('data' => $data, 'html' => $returnHTML));
+        //        return ;
     }
 
     /**
@@ -96,7 +157,7 @@ class AddressController extends Controller
     public function update(Request $request, $id)
     {
         $address = Address::findOrFail($id);
-        
+
         $address->address       = $request->address;
         $address->country_id    = $request->country_id;
         $address->state_id      = $request->state_id;
@@ -121,7 +182,7 @@ class AddressController extends Controller
     public function destroy($id)
     {
         $address = Address::findOrFail($id);
-        if(!$address->set_default){
+        if (!$address->set_default) {
             $address->delete();
             return back();
         }
@@ -129,37 +190,48 @@ class AddressController extends Controller
         return back();
     }
 
-    public function getStates(Request $request) {
+    public function getStates(Request $request)
+    {
         $states = State::where('status', 1)->where('country_id', $request->country_id)->get();
-        $html = '<option value="">'.translate("Select State").'</option>';
-        
+        $html = '<option value="">' . translate("Select State") . '</option>';
+
         foreach ($states as $state) {
             $html .= '<option value="' . $state->id . '">' . $state->name . '</option>';
         }
-        
+
         echo json_encode($html);
     }
-    
-    public function getCities(Request $request) {
+
+    public function getCities(Request $request)
+    {
         $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
-        $html = '<option value="">'.translate("Select City").'</option>';
-        
+        $html = '<option value="">' . translate("Select City") . '</option>';
+
         foreach ($cities as $row) {
-            $html .= '<option value="' . $row->id . '">' . $row->getTranslation('name') . '</option>';
+            $html .= '<option value="' . $row->id . '">' . $row->name . '</option>';
         }
-        
+
         echo json_encode($html);
     }
 
-    public function set_default($id){
-        foreach (Auth::user()->addresses as $key => $address) {
-            $address->set_default = 0;
-            $address->save();
-        }
-        $address = Address::findOrFail($id);
-        $address->set_default = 1;
-        $address->save();
+    public function set_default(Request $request)
+    {
+        $address = Address::whereUserId(Auth::id())->whereId($request->id)->firstOrFail();
 
-        return back();
+        if ($address) {
+            Address::whereUserId(Auth::id())->update([
+                'set_default' => 0
+            ]);
+
+            $address->set_default = 1;
+            $address->save();
+
+            return response()->json([
+                'message' => 'Default address updated',
+                'address' => $address,
+            ], 200);
+        }
+
+        return response()->json(['message' => 'Please login first'], 401);
     }
 }

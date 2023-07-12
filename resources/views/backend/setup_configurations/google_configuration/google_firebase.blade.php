@@ -29,7 +29,7 @@
                                 <label class="control-label">{{translate('FCM SERVER KEY')}}</label>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="FCM_SERVER_KEY" value="{{  env('FCM_SERVER_KEY') }}" placeholder="{{ translate('FCM SERVER KEY') }}">
+                                <input type="text" class="form-control" name="FCM_SERVER_KEY" value="{{  env('FCM_SERVER_KEY') }}" placeholder="FCM SERVER KEY">
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

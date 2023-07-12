@@ -5,16 +5,16 @@
     <div class="col-lg-10 col-xxl-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h3 class="h6 mb-0">{{ translate('Server information') }}</h3>
+                <h3 class="h6 mb-0">Server information</h3>
             </div>
             <div class="card-body">
                 <table class="table table-striped aiz-table">
                     <thead>
                         <tr>
-                            <th>{{ translate('Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Current Version') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Required Version') }}</th>
-                            <th>{{ translate('Status') }}</th>
+                            <th>Name</th>
+                            <th data-breakpoints="lg">Current Version</th>
+                            <th data-breakpoints="lg">Required Version</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,16 +54,16 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="h6 mb-0">{{ translate('php.ini Config') }}</h3>
+                <h3 class="h6 mb-0">php.ini Config</h3>
             </div>
             <div class="card-body">
                 <table class="table table-striped aiz-table">
                     <thead>
                         <tr>
-                            <th>{{ translate('Config Name') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Current') }}</th>
-                            <th data-breakpoints="lg">{{ translate('Recommended') }}</th>
-                            <th>{{ translate('Status') }}</th>
+                            <th>Config Name</th>
+                            <th data-breakpoints="lg">Current</th>
+                            <th data-breakpoints="lg">Recommended</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -231,14 +231,14 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="h6 mb-0">{{ translate('Extensions information') }}</h3>
+                <h3 class="h6 mb-0">Extensions information</h3>
             </div>
             <div class="card-body">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ translate('Extension Name') }}</th>
-                            <th>{{ translate('Status') }}</th>
+                            <th>Extension Name</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     @php
@@ -264,14 +264,14 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="h6 mb-0">{{ translate('Filesystem Permissions') }}</h3>
+                <h3 class="h6 mb-0">Filesystem Permissions</h3>
             </div>
             <div class="card-body">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ translate('File or Folder') }}</th>
-                            <th>{{ translate('Status') }}</th>
+                            <th>File or Folder</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     @php

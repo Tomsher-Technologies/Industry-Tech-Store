@@ -18,7 +18,7 @@
                                 <label class="control-label">{{translate('AWS_ACCESS_KEY_ID')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="AWS_ACCESS_KEY_ID" value="{{  env('AWS_ACCESS_KEY_ID') }}" placeholder="{{ translate('AWS_ACCESS_KEY_ID') }}" required>
+                                <input type="text" class="form-control" name="AWS_ACCESS_KEY_ID" value="{{  env('AWS_ACCESS_KEY_ID') }}" placeholder="AWS_ACCESS_KEY_ID" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -27,7 +27,7 @@
                                 <label class="control-label">{{translate('AWS_SECRET_ACCESS_KEY')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="AWS_SECRET_ACCESS_KEY" value="{{  env('AWS_SECRET_ACCESS_KEY') }}" placeholder="{{ translate('AWS_SECRET_ACCESS_KEY') }}" required>
+                                <input type="text" class="form-control" name="AWS_SECRET_ACCESS_KEY" value="{{  env('AWS_SECRET_ACCESS_KEY') }}" placeholder="AWS_SECRET_ACCESS_KEY" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -36,7 +36,7 @@
                                 <label class="control-label">{{translate('AWS_DEFAULT_REGION')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="AWS_DEFAULT_REGION" value="{{  env('AWS_DEFAULT_REGION') }}" placeholder="{{ translate('AWS_DEFAULT_REGION') }}" required>
+                                <input type="text" class="form-control" name="AWS_DEFAULT_REGION" value="{{  env('AWS_DEFAULT_REGION') }}" placeholder="AWS_DEFAULT_REGION" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -45,7 +45,7 @@
                                 <label class="control-label">{{translate('AWS_BUCKET')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="AWS_BUCKET" value="{{  env('AWS_BUCKET') }}" placeholder="{{ translate('AWS_BUCKET') }}" required>
+                                <input type="text" class="form-control" name="AWS_BUCKET" value="{{  env('AWS_BUCKET') }}" placeholder="AWS_BUCKET" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -54,7 +54,7 @@
                                 <label class="control-label">{{translate('AWS_URL')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="AWS_URL" value="{{  env('AWS_URL') }}" placeholder="{{ translate('AWS_URL') }}" required>
+                                <input type="text" class="form-control" name="AWS_URL" value="{{  env('AWS_URL') }}" placeholder="AWS_URL" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -98,8 +98,8 @@
                             </div>
                             <div class="col-lg-8">
                                 <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="CACHE_DRIVER">
-                                    <option value="file" @if (env('CACHE_DRIVER') == "file") selected @endif>{{ translate('file') }}</option>
-                                    <option value="redis" @if (env('CACHE_DRIVER') == "redis") selected @endif>{{ translate('redis') }}</option>
+                                    <option value="file" @if (env('CACHE_DRIVER') == "file") selected @endif>file</option>
+                                    <option value="redis" @if (env('CACHE_DRIVER') == "redis") selected @endif>redis</option>
                                 </select>
                             </div>
                         </div>
@@ -110,8 +110,8 @@
                             </div>
                             <div class="col-lg-8">
                                 <select class="form-control aiz-selectpicker mb-2 mb-md-0" name="SESSION_DRIVER">
-                                    <option value="file" @if (env('SESSION_DRIVER') == "file") selected @endif>{{ translate('file') }}</option>
-                                    <option value="redis" @if (env('SESSION_DRIVER') == "redis") selected @endif>{{ translate('redis') }}</option>
+                                    <option value="file" @if (env('SESSION_DRIVER') == "file") selected @endif>file</option>
+                                    <option value="redis" @if (env('SESSION_DRIVER') == "redis") selected @endif>redis</option>
                                 </select>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                                 <label class="control-label">{{translate('REDIS_HOST')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="REDIS_HOST" value="{{  env('REDIS_HOST') }}" placeholder="{{ translate('REDIS_HOST') }}" required>
+                                <input type="text" class="form-control" name="REDIS_HOST" value="{{  env('REDIS_HOST') }}" placeholder="REDIS_HOST" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -148,7 +148,7 @@
                                 <label class="control-label">{{translate('REDIS_PASSWORD')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="REDIS_PASSWORD" value="{{  env('REDIS_PASSWORD') }}" placeholder="{{ translate('REDIS_PASSWORD') }}">
+                                <input type="text" class="form-control" name="REDIS_PASSWORD" value="{{  env('REDIS_PASSWORD') }}" placeholder="REDIS_PASSWORD">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -157,7 +157,7 @@
                                 <label class="control-label">{{translate('REDIS_PORT')}}</label>
                             </div>
                             <div class="col-lg-8">
-                                <input type="text" class="form-control" name="REDIS_PORT" value="{{  env('REDIS_PORT') }}" placeholder="{{ translate('REDIS_PORT') }}" required>
+                                <input type="text" class="form-control" name="REDIS_PORT" value="{{  env('REDIS_PORT') }}" placeholder="REDIS_PORT" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -184,10 +184,10 @@
             }
             $.post('{{ route('business_settings.update.activation') }}', {_token:'{{ csrf_token() }}', type:type, value:value}, function(data){
                 if(data == '1'){
-                    AIZ.plugins.notify('success', '{{ translate('Settings updated successfully') }}');
+                    AIZ.plugins.notify('success', 'Settings updated successfully');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    AIZ.plugins.notify('danger', 'Something went wrong');
                 }
             });
         }

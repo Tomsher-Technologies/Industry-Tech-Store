@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\User;
@@ -12,88 +13,130 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Str;
 use Auth;
+use DB;
+use Exception;
 use Storage;
 
 //class ProductsImport implements ToModel, WithHeadingRow, WithValidation
 class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, ToModel
 {
     private $rows = 0;
-    
-    public function collection(Collection $rows) {
-        $canImport = true;
-        if (addon_is_activated('seller_subscription')){
-            if(Auth::user()->user_type == 'seller' && Auth::user()->seller->seller_package && (count($rows) + Auth::user()->seller->user->products()->count()) > Auth::user()->seller->seller_package->product_upload_limit) {
-                $canImport = false;
-                flash(translate('Upload limit has been reached. Please upgrade your package.'))->warning();
+
+    public function collection(Collection $rows)
+    {
+        $brands = Brand::all();
+        $categories = Category::all();
+        DB::enableQueryLog();
+        foreach ($rows as $row) {
+
+
+            $sku = $this->cleanSKU($row['product_code']);
+
+            $brand = $brands->where('name', $row['brand'])->first();
+            $category = explode('>', $row['category']);
+
+            $parent_id = 0;
+            foreach ($category as $key => $cat) {
+                $c = $categories->where('name', 'LIKE', $cat)->where(
+                    'parent_id',
+                    $parent_id
+                )->first();
+
+                if ($c) {
+                    $parent_id = $c->id;
+                } else {
+                    $c_new = Category::create([
+                        'name' => $cat,
+                        'parent_id' => $parent_id,
+                        'level' => $key + 1,
+                        'slug' => $this->categorySlug($cat),
+                    ]);
+                    $categories->push($c_new);
+                    $parent_id = $c_new->id;
+                }
             }
-        }
-        
-        if($canImport) {
-            foreach ($rows as $row) {
-				$approved = 1;
-				if(Auth::user()->user_type == 'seller' && get_setting('product_approve_by_admin') == 1) {
-					$approved = 0;
-				}
-				
-                $productId = Product::create([
-                            'name' => $row['name'],
-                            'description' => $row['description'],
-                            'added_by' => Auth::user()->user_type == 'seller' ? 'seller' : 'admin',
-                            'user_id' => Auth::user()->user_type == 'seller' ? Auth::user()->id : User::where('user_type', 'admin')->first()->id,
-                            'approved' => $approved,
-							'category_id' => $row['category_id'],
-                            'brand_id' => $row['brand_id'],
-                            'video_provider' => $row['video_provider'],
-                            'video_link' => $row['video_link'],
-                            'unit_price' => $row['unit_price'],
-                            'purchase_price' => $row['purchase_price'] == null ? $row['unit_price'] : $row['purchase_price'],
-                            'unit' => $row['unit'],
-                            'meta_title' => $row['meta_title'],
-                            'meta_description' => $row['meta_description'],
-                            'colors' => json_encode(array()),
-                            'choice_options' => json_encode(array()),
-                            'variations' => json_encode(array()),
-                            'slug' => preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', strtolower($row['slug']))) . '-' . Str::random(5),
-                            'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
-                            'photos' => $this->downloadGalleryImages($row['photos']),
+
+            if (isset($row['product_name']) && $row['product_name'] !== null) {
+                $productId = Product::updateOrCreate([
+                    'sku' => $sku,
+                ], [
+                    'name' => $row['product_name'],
+                    'description' => $row['description'],
+                    'short_description' => $row['short_description'],
+                    'category_id' => $parent_id,
+                    'brand_id' => $brand ? $brand->id : 0,
+
+                    'video_provider' => '',
+                    'video_link' => '',
+                    'unit_price' => $row['price'] ?? 1,
+                    'purchase_price' => $row['price'],
+                    'unit' => '',
+
+                    'slug' => $this->productSlug($row['product_name']),
+                    // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
+                    // 'photos' => $this->downloadGalleryImages($row['photos']),
+
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                 ]);
-                ProductStock::create([
+
+                ProductStock::updateOrCreate([
                     'product_id' => $productId->id,
-                    'qty' => $row['current_stock'],
-                    'price' => $row['unit_price'],
+                    'sku' => $sku,
+                ], [
+                    'qty' => (isset($row['quantity']) && $row['quantity'] !== NULL) ? $row['quantity'] : 1,
+                    'price' => $row['price'] ?? 1,
                     'variant' => '',
                 ]);
             }
-            
-            flash(translate('Products imported successfully'))->success();
         }
-        
-        
+
+        flash(translate('Products imported successfully'))->success();
     }
-    
+
     public function model(array $row)
     {
         ++$this->rows;
     }
-    
+
     public function getRowCount(): int
     {
         return $this->rows;
     }
 
+    public function productSlug($name)
+    {
+        $slug = Str::slug($name, '-');
+        $same_slug_count = Product::where('slug', 'LIKE', $slug . '%')->count();
+        $slug_suffix = $same_slug_count ? '-' . $same_slug_count + 1 : '';
+        $slug .= $slug_suffix;
+
+        return $slug;
+    }
+    public function categorySlug($name)
+    {
+        $slug = Str::slug($name, '-');
+        $same_slug_count = Category::where('slug', 'LIKE', $slug . '%')->count();
+        $slug_suffix = $same_slug_count ? '-' . $same_slug_count + 1 : '';
+        $slug .= $slug_suffix;
+
+        return $slug;
+    }
+
     public function rules(): array
     {
         return [
-             // Can also use callback validation rules
-             'unit_price' => function($attribute, $value, $onFailure) {
-                  if (!is_numeric($value)) {
-                       $onFailure('Unit price is not numeric');
-                  }
-              }
+            // Can also use callback validation rules
+            'unit_price' => function ($attribute, $value, $onFailure) {
+                if (!is_numeric($value)) {
+                    $onFailure('Unit price is not numeric');
+                }
+            }
         ];
     }
 
-    public function downloadThumbnail($url){
+    public function downloadThumbnail($url)
+    {
         try {
             $upload = new Upload;
             $upload->external_link = $url;
@@ -101,16 +144,23 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
 
             return $upload->id;
         } catch (\Exception $e) {
-            
         }
         return null;
     }
 
-    public function downloadGalleryImages($urls){
+    public function downloadGalleryImages($urls)
+    {
         $data = array();
-        foreach(explode(',', str_replace(' ', '', $urls)) as $url){
+        foreach (explode(',', str_replace(' ', '', $urls)) as $url) {
             $data[] = $this->downloadThumbnail($url);
         }
         return implode(',', $data);
+    }
+
+    public function cleanSKU($sku)
+    {
+        $sku = trim($sku);
+        $sku = preg_replace('/[^a-zA-Z0-9\-\_]/i', '', $sku);
+        return $sku;
     }
 }

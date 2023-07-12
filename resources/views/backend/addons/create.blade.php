@@ -23,7 +23,7 @@
                             <div class="custom-file">
                                 <label class="custom-file-label">
                                     <input type="file" id="addon_zip" name="addon_zip"  class="custom-file-input" required>
-                                    <span class="custom-file-name">{{ translate('Choose file') }}</span>
+                                    <span class="custom-file-name">Choose file</span>
                                 </label>
                             </div>
                         </div>

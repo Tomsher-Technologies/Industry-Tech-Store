@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductStock extends Model
 {
-    protected $fillable = ['product_id', 'qty', 'price'];
+    protected $fillable = ['product_id', 'qty', 'price', 'sku', 'variant', 'image'];
     //
-    public function product(){
-    	return $this->belongsTo(Product::class);
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
-    public function wholesalePrices() {
+    public function wholesalePrices()
+    {
         return $this->hasMany(WholesalePrice::class);
     }
 }

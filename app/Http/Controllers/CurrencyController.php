@@ -14,21 +14,21 @@ class CurrencyController extends Controller
         $request->session()->put('currency_code', $request->currency_code);
         $request->session()->put('currency_symbol', $currency->symbol);
         $request->session()->put('currency_exchange_rate', $currency->exchange_rate);
-    	flash(translate('Currency changed to ').$currency->name)->success();
+        flash(translate('Currency changed to ') . $currency->name)->success();
     }
 
     public function currency(Request $request)
     {
-        $sort_search =null;
+        $sort_search = null;
         $currencies = Currency::orderBy('created_at', 'desc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $currencies = $currencies->where('name', 'like', '%'.$sort_search.'%');
+            $currencies = $currencies->where('name', 'like', '%' . $sort_search . '%');
         }
         $currencies = $currencies->paginate(10);
 
         $active_currencies = Currency::where('status', 1)->get();
-        return view('backend.setup_configurations.currencies.index', compact('currencies', 'active_currencies','sort_search'));
+        return view('backend.setup_configurations.currencies.index', compact('currencies', 'active_currencies', 'sort_search'));
     }
 
     public function updateYourCurrency(Request $request)
@@ -38,12 +38,11 @@ class CurrencyController extends Controller
         $currency->symbol = $request->symbol;
         $currency->code = $request->code;
         $currency->exchange_rate = $request->exchange_rate;
-        $currency->status = $currency->status;
-        if($currency->save()){
+        $currency->status = $request->status;
+        if ($currency->save()) {
             flash(translate('Currency updated successfully'))->success();
             return redirect()->route('currency.index');
-        }
-        else {
+        } else {
             flash(translate('Something went wrong'))->error();
             return redirect()->route('currency.index');
         }
@@ -68,11 +67,10 @@ class CurrencyController extends Controller
         $currency->code = $request->code;
         $currency->exchange_rate = $request->exchange_rate;
         $currency->status = '0';
-        if($currency->save()){
+        if ($currency->save()) {
             flash(translate('Currency updated successfully'))->success();
             return redirect()->route('currency.index');
-        }
-        else {
+        } else {
             flash(translate('Something went wrong'))->error();
             return redirect()->route('currency.index');
         }
@@ -81,7 +79,7 @@ class CurrencyController extends Controller
     public function update_status(Request $request)
     {
         $currency = Currency::findOrFail($request->id);
-        if($request->status == 0){
+        if ($request->status == 0) {
             if (get_setting('system_default_currency') == $currency->id) {
                 return 0;
             }

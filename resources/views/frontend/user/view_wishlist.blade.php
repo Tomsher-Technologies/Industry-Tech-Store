@@ -1,90 +1,155 @@
-@extends('frontend.layouts.user_panel')
+@extends('frontend.layouts.app')
 
-@section('panel_content')
-    <div class="aiz-titlebar mt-2 mb-4">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <b class="h4">{{ translate('Wishlist')}}</b>
+@section('content')
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ route('dashboard') }}">My Account</a></li>
+                <li>Wishlist</li>
+            </ul>
+        </div>
+    </div>
+    <div class="ps-section--shopping ps-shopping-cart">
+        <div class="container">
+            <div class="ps-section__content">
+                <div class="row justify-content-center">
+
+
+                    @if ($wishlists->count())
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table aria-describedby="wishlist"
+                                    class="table ps-table--shopping-cart ps-table--responsive">
+                                    <thead class="ps-table--shopping-cart-header">
+                                        <tr>
+                                            <th>Products</th>
+                                            <th>PRICE</th>
+                                            <th>ACTION</th>
+                                            <th>REMOVE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($wishlists as $key => $wishlist)
+                                            <tr data-loop-container={{ $key }}>
+                                                <td data-label="Product">
+                                                    <div class="ps-product--cart">
+                                                        <div class="ps-product__thumbnail">
+                                                            <a href="{{ route('product', $wishlist->product->slug) }}">
+                                                                <img src="{{ uploaded_asset($wishlist->product->thumbnail_img) }}"
+                                                                    alt="{{ $wishlist->product->name }}"
+                                                                    onerror="this.onerror=null;this.src='{{ frontendAsset('img/placeholder.webp') }}';" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="ps-product__content">
+                                                            <a href="{{ route('product', $wishlist->product->slug) }}">
+                                                                {{ $wishlist->product->name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="price text-center" data-label="Price">
+                                                    {{ home_discounted_base_price($wishlist->product) }}
+                                                    @if (home_base_price($wishlist->product) != home_discounted_base_price($wishlist->product))
+                                                        <del>{{ home_base_price($wishlist->product) }}</del>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center" data-label="actions-add">
+                                                    <a class="ps-btn" title="Add to cart" data-loop-id={{ $key }}
+                                                        href="javascript:void(0)"
+                                                        onclick="moveToCart(this,'{{ $wishlist->product->slug }}')">Add to
+                                                        cart</a>
+                                                </td>
+                                                <td class="text-center" data-label="Actions">
+                                                    <button id="wishlistRemove{{ $key }}"
+                                                        data-loop-id={{ $key }} data-list-id={{ $wishlist->id }}
+                                                        class="wishlistRemove"><i class="icon-cross"></i></button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                {{ $wishlists->links('vendor.pagination.product_listing') }}
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body p-4 p-md-5">
+                                    <div class="text-center">
+                                        <img src="{{ frontendAsset('img/cart-empty.svg') }}" alt="" class="w-50">
+                                    </div>
+                                    <div class="text-center mt-5 pt-1">
+                                        <h4 class="mb-3 text-capitalize">Your wishlist is empty!</h4>
+                                        <h5 class="text-muted mb-0">What are you waiting for?</h5>
+                                        <div class="mt-4 pt-2 hstack gap-2 justify-content-center">
+                                            <a href="{{ route('home') }}" class="btn ps-btn btn-sm">Start Shopping
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="row gutters-5">
-        @forelse ($wishlists as $key => $wishlist)
-            @if ($wishlist->product != null)
-                <div class="col-xxl-3 col-xl-4 col-lg-3 col-md-4 col-sm-6" id="wishlist_{{ $wishlist->id }}">
-                    <div class="card mb-2 shadow-sm">
-                        <div class="card-body">
-                            <a href="{{ route('product', $wishlist->product->slug) }}" class="d-block mb-3">
-                                <img src="{{ uploaded_asset($wishlist->product->thumbnail_img) }}" class="img-fit h-140px h-md-200px">
-                            </a>
-
-                            <h5 class="fs-14 mb-0 lh-1-5 fw-600 text-truncate-2">
-                                <a href="{{ route('product', $wishlist->product->slug) }}" class="text-reset">{{ $wishlist->product->getTranslation('name') }}</a>
-                            </h5>
-                            <div class="rating rating-sm mb-1">
-                                {{ renderStarRating($wishlist->product->rating) }}
-                            </div>
-                            <div class=" fs-14">
-                                  @if(home_base_price($wishlist->product) != home_discounted_base_price($wishlist->product))
-                                      <del class="opacity-60 mr-1">{{ home_base_price($wishlist->product) }}</del>
-                                  @endif
-                                      <span class="fw-600 text-primary">{{ home_discounted_base_price($wishlist->product) }}</span>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="link link--style-3" data-toggle="tooltip" data-placement="top" title="Remove from wishlist" onclick="removeFromWishlist({{ $wishlist->id }})">
-                                <i class="la la-trash la-2x"></i>
-                            </a>
-                            <button type="button" class="btn btn-sm btn-block btn-primary ml-3" onclick="showAddToCartModal({{ $wishlist->product->id }})">
-                                <i class="la la-shopping-cart mr-2"></i>{{ translate('Add to cart')}}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @empty
-            <div class="col">
-                <div class="text-center bg-white p-4 rounded shadow">
-                    <img class="mw-100 h-200px" src="{{ static_asset('assets/img/nothing.svg') }}" alt="Image">
-                    <h5 class="mb-0 h5 mt-3">{{ translate("There isn't anything added yet")}}</h5>
-                </div>
-            </div>
-        @endforelse
-    </div>
-    <div class="aiz-pagination">
-        {{ $wishlists->links() }}
-    </div>
 @endsection
 
-@section('modal')
-
-<div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
-        <div class="modal-content position-relative">
-            <div class="c-preloader">
-                <i class="fa fa-spin fa-spinner"></i>
-            </div>
-            <button type="button" class="close absolute-close-btn" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <div id="addToCart-modal-body">
-
-            </div>
-        </div>
-    </div>
-</div>
-
-@endsection
-
-@section('script')
-    <script type="text/javascript">
-        function removeFromWishlist(id){
-            $.post('{{ route('wishlists.remove') }}',{_token:'{{ csrf_token() }}', id:id}, function(data){
-                $('#wishlist').html(data);
-                $('#wishlist_'+id).hide();
-                AIZ.plugins.notify('success', '{{ translate('Item has been renoved from wishlist') }}');
-            })
+@section('header')
+    <style>
+        .wishlistRemove {
+            all: unset;
+            font-size: 20px;
         }
+
+        .wishlistRemove:hover {
+            color: #eb6228;
+        }
+    </style>
+@endsection
+@section('script')
+    <script>
+        function moveToCart(that, slug) {
+            loop_id = $(that).data('loop-id');
+            addToCart(slug);
+            $('#wishlistRemove' + loop_id).trigger('click');
+        }
+    </script>
+
+    <script>
+        $('.wishlistRemove').on('click', function() {
+            loop_id = $(this).data('loop-id');
+            list_id = $(this).data('list-id');
+            $(this).attr('disabled', true);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('wishlists.remove') }}",
+                data: {
+                    'id': list_id,
+                    '_token': "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    var rdata = JSON.parse(data);
+                    if (rdata.status == 200) {
+                        $('[data-loop-container="' + loop_id + '"]').remove();
+                        if ($('.ps-table--shopping-cart tbody tr').length <= 0) {
+                            $('.table-responsive').html(
+                                "<p>You dont have any items in your wishlist</p>");
+                        }
+                        $('.headerWishlistCount').html(rdata.count)
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 404) {
+                        location.reload();
+                    }
+                },
+            });
+        });
     </script>
 @endsection

@@ -17,31 +17,43 @@ class PurchaseHistoryController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('user_id', Auth::user()->id)->orderBy('code', 'desc')->paginate(9);
+        $orders = Order::where('user_id', Auth::user()->id)->latest()->withCount('orderDetails')->paginate(9);
         return view('frontend.user.purchase_history', compact('orders'));
     }
 
     public function digital_index()
     {
         $orders = DB::table('orders')
-                        ->orderBy('code', 'desc')
-                        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                        ->join('products', 'order_details.product_id', '=', 'products.id')
-                        ->where('orders.user_id', Auth::user()->id)
-                        ->where('products.digital', '1')
-                        ->where('order_details.payment_status', 'paid')
-                        ->select('order_details.id')
-                        ->paginate(15);
+            ->orderBy('code', 'desc')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->where('orders.user_id', Auth::user()->id)
+            ->where('products.digital', '1')
+            ->where('order_details.payment_status', 'paid')
+            ->select('order_details.id')
+            ->paginate(15);
         return view('frontend.user.digital_purchase_history', compact('orders'));
     }
 
     public function purchase_history_details(Request $request)
     {
-        $order = Order::findOrFail($request->order_id);
-        $order->delivery_viewed = 1;
-        $order->payment_status_viewed = 1;
-        $order->save();
-        return view('frontend.user.order_details_customer', compact('order'));
+        $order = Order::with([
+            'orderDetails',
+            'orderDetails.product' => function ($query) {
+                $query->select('id', 'name');
+            },
+        ])->findOrFail(decrypt($request->order_id));
+
+        // dd($order);
+
+        if ($order->user_id == Auth::id()) {
+            $order->delivery_viewed = 1;
+            $order->payment_status_viewed = 1;
+            $order->save();
+            return view('frontend.user.order_details', compact('order'));
+        }
+
+        abort(404);
     }
 
     /**

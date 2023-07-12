@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
@@ -11,7 +12,7 @@ class WebsiteController extends Controller
 		return view('backend.website_settings.header');
 	}
 	public function footer(Request $request)
-	{	
+	{
 		$lang = $request->lang;
 		return view('backend.website_settings.footer', compact('lang'));
 	}
@@ -22,5 +23,9 @@ class WebsiteController extends Controller
 	public function appearance(Request $request)
 	{
 		return view('backend.website_settings.appearance');
+	}
+	public function menu(Request $request)
+	{
+		return view('backend.website_settings.menu');
 	}
 }

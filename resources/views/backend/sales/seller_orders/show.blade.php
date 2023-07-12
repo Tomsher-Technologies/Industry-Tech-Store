@@ -4,7 +4,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h1 class="h2 fs-16 mb-0">{{ translate('Order Details') }}</h1>
+            <h1 class="h2 fs-16 mb-0">Order Details</h1>
         </div>
 
     	<div class="card-body">
@@ -25,7 +25,7 @@
                     </address>
                     @if ($order->manual_payment && is_array(json_decode($order->manual_payment_data, true)))
                         <br>
-                        <strong class="text-main">{{ translate('Payment Information') }}</strong><br>
+                        <strong class="text-main">Payment Information</strong><br>
                         Name: {{ json_decode($order->manual_payment_data)->name }}, Amount: {{ single_price(json_decode($order->manual_payment_data)->amount) }}, TRX ID: {{ json_decode($order->manual_payment_data)->trx_id }}
                         <br>
                         <a href="{{ uploaded_asset(json_decode($order->manual_payment_data)->photo) }}" target="_blank"><img src="{{ uploaded_asset(json_decode($order->manual_payment_data)->photo) }}" alt="" height="100"></a>
@@ -102,25 +102,25 @@
                                 @if ($orderDetail->product != null)
                                   <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank"><img height="50px" src="{{ uploaded_asset($orderDetail->product->thumbnail_img) }}"></a>
                                 @else
-                                  <strong>{{ translate('N/A') }}</strong>
+                                  <strong>N/A</strong>
                                 @endif
                             </td>
                             <td>
                                 @if ($orderDetail->product != null)
-                                  <strong><a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank" class="text-muted">{{ $orderDetail->product->getTranslation('name') }}</a></strong>
+                                  <strong><a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank" class="text-muted">{{ $orderDetail->product->name }}</a></strong>
                                   <small>{{ $orderDetail->variation }}</small>
                                 @else
-                                  <strong>{{ translate('Product Unavailable') }}</strong>
+                                  <strong>Product Unavailable</strong>
                                 @endif
                             </td>
                             <td>
                                 @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
-                                    {{ translate('Home Delivery') }}
+                                    Home Delivery
                                 @elseif ($order->shipping_type == 'pickup_point')
                                     @if ($order->pickup_point != null)
-                                        {{ $order->pickup_point->getTranslation('name') }} ({{ translate('Pickup Point') }})
+                                        {{ $order->pickup_point->name }} (Pickup Point)
                                     @else
-                                        {{ translate('Pickup Point') }}
+                                        Pickup Point
                                     @endif
                                 @endif
                             </td>
@@ -181,7 +181,7 @@
             var order_id = {{ $order->id }};
             var status = $('#update_delivery_status').val();
             $.post('{{ route('orders.update_delivery_status') }}', {_token:'{{ @csrf_token() }}',order_id:order_id,status:status}, function(data){
-                AIZ.plugins.notify('success', '{{ translate('Delivery status has been updated') }}');
+                AIZ.plugins.notify('success', 'Delivery status has been updated');
             });
         });
 
@@ -189,7 +189,7 @@
             var order_id = {{ $order->id }};
             var status = $('#update_payment_status').val();
             $.post('{{ route('orders.update_payment_status') }}', {_token:'{{ @csrf_token() }}',order_id:order_id,status:status}, function(data){
-                AIZ.plugins.notify('success', '{{ translate('Payment status has been updated') }}');
+                AIZ.plugins.notify('success', 'Payment status has been updated');
             });
         });
     </script>

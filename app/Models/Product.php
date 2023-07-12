@@ -4,27 +4,50 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App;
+use App\Models\Products\ProductDetails;
+use App\Models\Products\ProductEnquiries;
+use App\Models\Products\ProductTabs;
+use Cache;
+use Illuminate\Support\Str;
+use Wildside\Userstamps\Userstamps;
 
 class Product extends Model
 {
+    use Userstamps;
 
     protected $fillable = [
-        'name', 'added_by', 'user_id', 'category_id', 'brand_id', 'video_provider', 'video_link', 'description', 'unit_price',
-        'purchase_price', 'unit', 'slug', 'approved', 'colors', 'choice_options', 'variations', 'photos', 'thumbnail_img', 'meta_title', 'meta_description'
+        'name',
+        'sku',
+        'added_by',
+        'user_id',
+        'category_id',
+        'brand_id',
+        'video_provider',
+        'video_link',
+        'description',
+        'unit_price',
+        'purchase_price',
+        'unit',
+        'slug',
+        'approved',
+        'colors',
+        'choice_options',
+        'variations',
+        'photos',
+        'thumbnail_img',
+        'return_refund',
+        'length',
+        'height',
+        'width',
+        'weight',
     ];
 
-    protected $with = ['product_translations', 'taxes'];
+    // protected $with = ['taxes'];
+    // protected $with = ['product_translations', 'taxes'];
 
-    public function getTranslation($field = '', $lang = false)
+    public function seo()
     {
-        $lang = $lang == false ? App::getLocale() : $lang;
-        $product_translations = $this->product_translations->where('lang', $lang)->first();
-        return $product_translations != null ? $product_translations->$field : $this->$field;
-    }
-
-    public function product_translations()
-    {
-        return $this->hasMany(ProductTranslation::class);
+        return $this->hasOne(ProductSeo::class);
     }
 
     public function category()
@@ -72,13 +95,63 @@ class Product extends Model
         return $this->hasOne(FlashDealProduct::class);
     }
 
-    public function bids()
+    public function tabs()
     {
-        return $this->hasMany(AuctionProductBid::class);
+        return $this->hasMany(ProductTabs::class);
     }
 
-    public function scopePhysical($query)
+    // public function enquiries()
+    // {
+    //     return $this->belongsToMany(ProductEnquiries::class, 'product_product_enquiry');
+    // }
+
+    private function generateSlug($name)
     {
-        return $query->where('digital', 0);
+        if (static::whereSlug($slug = Str::slug($name))->exists()) {
+            $max = static::whereName($name)->latest('id')->skip(1)->value('slug');
+            if (isset($max[-1]) && is_numeric($max[-1])) {
+                return preg_replace_callback('/(\d+)$/', function ($mathces) {
+                    return $mathces[1] + 1;
+                }, $max);
+            }
+            return "{$slug}-2";
+        }
+        return $slug;
+    }
+
+    public function thumbnail()
+    {
+        return $this->hasOne(Upload::class, 'id', 'thumbnail_img');
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(Upload::class, 'id', 'photos');
+    }
+
+    public function getGalleryAttributes()
+    {
+        $photos = $this->getOriginal('photos');
+        return Upload::whereIn('id', explode(',', $photos))->get();
+    }
+
+    // public function allCategories()
+    // {
+    //     $parents = collect([]);
+    //     $parent = $this->parentCategory;
+    //     while (!is_null($parent)) {
+    //         $parents->push($parent);
+    //         $parent = $parent->parent;
+    //     }
+
+    //     return $parents;
+    // }
+
+    public static function boot()
+    {
+        static::creating(function ($model) {
+            Cache::forget('newest_products');
+        });
+        parent::boot();
     }
 }

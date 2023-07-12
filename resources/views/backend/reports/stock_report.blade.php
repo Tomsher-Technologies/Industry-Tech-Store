@@ -18,20 +18,20 @@
                         <div class="col-md-5">
                             <select id="demo-ease" class="from-control aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)
-                                    <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
                 <table class="table table-bordered aiz-table mb-0">
                     <thead>
                         <tr>
-                            <th>{{ translate('Product Name') }}</th>
-                            <th>{{ translate('Stock') }}</th>
+                            <th>Product Name</th>
+                            <th>Stock</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +43,7 @@
                                 }
                             @endphp
                             <tr>
-                                <td>{{ $product->getTranslation('name') }}</td>
+                                <td>{{ $product->name }}</td>
                                 <td>{{ $qty }}</td>
                             </tr>
                         @endforeach

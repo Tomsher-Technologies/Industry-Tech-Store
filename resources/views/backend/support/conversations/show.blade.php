@@ -36,7 +36,7 @@
                     <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
                     <div class="row">
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="4" name="message" placeholder="{{ translate('Type your reply') }}" required></textarea>
+                            <textarea class="form-control" rows="4" name="message" placeholder="Type your reply" required></textarea>
                         </div>
                     </div>
                     <br>

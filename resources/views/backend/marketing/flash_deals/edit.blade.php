@@ -54,7 +54,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                 </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                <div class="form-control file-amount">Choose File</div>
                                 <input type="hidden" name="banner" value="{{ $flash_deal->banner }}" class="selected-files">
                             </div>
                             <div class="file-preview box sm">
@@ -77,19 +77,19 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="products">{{translate('Products')}}</label>
                         <div class="col-sm-9">
-                            <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="{{ translate('Choose Products') }}" data-live-search="true" data-selected-text-format="count">
+                            <select name="products[]" id="products" class="form-control aiz-selectpicker" multiple required data-placeholder="Choose Products" data-live-search="true" data-selected-text-format="count">
                                 @foreach(\App\Models\Product::all() as $product)
                                     @php
                                         $flash_deal_product = \App\Models\FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $product->id)->first();
                                     @endphp
-                                    <option value="{{$product->id}}" <?php if($flash_deal_product != null) echo "selected";?> >{{ $product->getTranslation('name') }}</option>
+                                    <option value="{{$product->id}}" <?php if($flash_deal_product != null) echo "selected";?> >{{ $product->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
                     <div class="alert alert-danger">
-                        {{ translate('If any product has discount or exists in another flash deal, the discount will be replaced by this discount & time limit.') }}
+                        If any product has discount or exists in another flash deal, the discount will be replaced by this discount & time limit.
                     </div>
 
                     <br>

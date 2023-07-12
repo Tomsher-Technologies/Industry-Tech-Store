@@ -13,8 +13,8 @@
                         <th>{{translate('Seller')}}</th>
                         <th data-breakpoints="lg">{{translate('Total Amount to Pay')}}</th>
                         <th>{{translate('Requested Amount')}}</th>
-                        <th data-breakpoints="lg">{{ translate('Message') }}</th>
-                        <th data-breakpoints="lg">{{ translate('Status') }}</th>
+                        <th data-breakpoints="lg">Message</th>
+                        <th data-breakpoints="lg">Status</th>
                         <th data-breakpoints="lg" width="15%">{{translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -42,13 +42,13 @@
                                     @endif
                                 </td>
                                 <td class="text-right">
-    		                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  onclick="show_seller_payment_modal('{{$seller_withdraw_request->user_id}}','{{ $seller_withdraw_request->id }}');" title="{{ translate('Pay Now') }}">
+    		                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  onclick="show_seller_payment_modal('{{$seller_withdraw_request->user_id}}','{{ $seller_withdraw_request->id }}');" title="Pay Now">
     		                                <i class="las la-money-bill"></i>
     		                            </a>
-                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  onclick="show_message_modal('{{ $seller_withdraw_request->id }}');" title="{{ translate('Message View') }}">
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"  onclick="show_message_modal('{{ $seller_withdraw_request->id }}');" title="Message View">
     		                                <i class="las la-eye"></i>
     		                            </a>
-    		                            <a href="{{route('sellers.payment_history', encrypt($seller_withdraw_request->user_id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm"  title="{{ translate('Payment History') }}">
+    		                            <a href="{{route('sellers.payment_history', encrypt($seller_withdraw_request->user_id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm"  title="Payment History">
     		                                <i class="las la-history"></i>
     		                            </a>
     		                        </td>

@@ -14,14 +14,14 @@
 //Admin
 Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function(){
     Route::resource('seller_packages','SellerPackageController');
-    Route::get('/seller_packages/edit/{id}', 'SellerPackageController@edit')->name('seller_packages.edit');
-    Route::get('/seller_packages/destroy/{id}', 'SellerPackageController@destroy')->name('seller_packages.destroy');
+    Route::get('/seller_packages/edit/{id}', [SellerPackageController::class,'edit'])->name('seller_packages.edit');
+    Route::get('/seller_packages/destroy/{id}', [SellerPackageController::class,'destroy'])->name('seller_packages.destroy');
 });
 
 //FrontEnd
 Route::group(['middleware' => ['seller']], function(){
-    Route::get('/seller-packages', 'SellerPackageController@seller_packages_list')->name('seller_packages_list');
-    Route::post('/seller_packages/purchase', 'SellerPackageController@purchase_package')->name('seller_packages.purchase');
+    Route::get('/seller-packages', [SellerPackageController::class,'seller_packages_list'])->name('seller_packages_list');
+    Route::post('/seller_packages/purchase', [SellerPackageController::class,'purchase_package'])->name('seller_packages.purchase');
 });
 
-Route::get('/seller_packages/check_for_invalid', 'SellerPackageController@unpublish_products')->name('seller_packages.unpublish_products');
+Route::get('/seller_packages/check_for_invalid', [SellerPackageController::class,'unpublish_products'])->name('seller_packages.unpublish_products');

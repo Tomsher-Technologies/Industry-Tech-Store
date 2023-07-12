@@ -62,7 +62,13 @@ class ReportController extends Controller
     }
 
     public function user_search_report(Request $request){
-        $searches = Search::orderBy('count', 'desc')->paginate(10);
+        $query = Search::latest();
+
+        if ($request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $searches = $query->with(['user'])->paginate(10);
         return view('backend.reports.user_search_report', compact('searches'));
     }
     

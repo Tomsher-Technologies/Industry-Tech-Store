@@ -14,16 +14,16 @@
             <div class="card-body">
                 <form action="{{ route('wish_report.index') }}" method="GET">
                     <div class="form-group row offset-lg-2">
-                        <label class="col-md-3 col-form-label">{{ translate('Sort by Category') }}:</label>
+                        <label class="col-md-3 col-form-label">Sort by Category:</label>
                         <div class="col-md-5">
                             <select id="demo-ease" class="from-control aiz-selectpicker" name="category_id" required>
                                 @foreach (\App\Models\Category::all() as $key => $category)
-                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif>{{ $category->getTranslation('name') }}</option>
+                                    <option value="{{ $category->id }}" @if($category->id == $sort_by) selected @endif>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </form>
@@ -31,15 +31,15 @@
                 <table class="table table-bordered aiz-table mb-0">
                     <thead>
                         <tr>
-                            <th>{{ translate('Product Name') }}</th>
-                            <th>{{ translate('Number of Wish') }}</th>
+                            <th>Product Name</th>
+                            <th>Number of Wish</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($products as $key => $product)
                             @if($product->wishlists != null)
                                 <tr>
-                                    <td>{{ $product->getTranslation('name') }}</td>
+                                    <td>{{ $product->name }}</td>
                                     <td>{{ $product->wishlists->count() }}</td>
                                 </tr>
                             @endif

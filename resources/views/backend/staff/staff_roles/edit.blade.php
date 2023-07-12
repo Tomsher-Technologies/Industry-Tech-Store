@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Permissions') }}</h5>
+                    <h5 class="mb-0 h6">Permissions</h5>
                 </div>
                 <br>
                 @php
@@ -42,7 +42,7 @@
                         @if (addon_is_activated('pos_system'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('POS System') }}</label>
+                                  <label class="col-from-label">POS System</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -54,7 +54,7 @@
                         @endif
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Products') }}</label>
+                                <label class="col-from-label">Products</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -65,7 +65,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('All Orders') }}</label>
+                                <label class="col-from-label">All Orders</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -76,7 +76,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Inhouse orders') }}</label>
+                                <label class="col-from-label">Inhouse orders</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Seller Orders') }}</label>
+                                <label class="col-from-label">Seller Orders</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -98,7 +98,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Pick-up Point Order') }}</label>
+                                <label class="col-from-label">Pick-up Point Order</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -110,7 +110,7 @@
                         @if (addon_is_activated('refund_request'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('Refunds') }}</label>
+                                  <label class="col-from-label">Refunds</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -122,7 +122,7 @@
                         @endif
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Customers') }}</label>
+                                <label class="col-from-label">Customers</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -133,7 +133,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Sellers') }}</label>
+                                <label class="col-from-label">Sellers</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -144,7 +144,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Reports') }}</label>
+                                <label class="col-from-label">Reports</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -155,7 +155,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Marketing') }}</label>
+                                <label class="col-from-label">Marketing</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -166,7 +166,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Support') }}</label>
+                                <label class="col-from-label">Support</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -177,7 +177,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Website Setup') }}</label>
+                                <label class="col-from-label">Website Setup</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -188,7 +188,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Setup & Configurations') }}</label>
+                                <label class="col-from-label">Setup & Configurations</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -200,7 +200,7 @@
                         @if (addon_is_activated('affiliate_system'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('Affiliate System') }}</label>
+                                  <label class="col-from-label">Affiliate System</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -213,7 +213,7 @@
                         @if (addon_is_activated('offline_payment'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('Offline Payment System') }}</label>
+                                  <label class="col-from-label">Offline Payment System</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -226,7 +226,7 @@
                         @if (addon_is_activated('paytm'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('Paytm Payment Gateway') }}</label>
+                                  <label class="col-from-label">Paytm Payment Gateway</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -239,7 +239,7 @@
                         @if (addon_is_activated('club_point'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('Club Point System') }}</label>
+                                  <label class="col-from-label">Club Point System</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -252,7 +252,7 @@
                         @if (addon_is_activated('otp_system'))
                           <div class="row">
                               <div class="col-md-10">
-                                  <label class="col-from-label">{{ translate('OTP System') }}</label>
+                                  <label class="col-from-label">OTP System</label>
                               </div>
                               <div class="col-md-2">
                                   <label class="aiz-switch aiz-switch-success mb-0">
@@ -264,7 +264,7 @@
                         @endif
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Staffs') }}</label>
+                                <label class="col-from-label">Staffs</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -275,7 +275,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Addon Manager') }}</label>
+                                <label class="col-from-label">Addon Manager</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -287,7 +287,7 @@
                         
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Uploaded Files') }}</label>
+                                <label class="col-from-label">Uploaded Files</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -298,7 +298,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('Blog System') }}</label>
+                                <label class="col-from-label">Blog System</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">
@@ -309,7 +309,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <label class="col-from-label">{{ translate('System') }}</label>
+                                <label class="col-from-label">System</label>
                             </div>
                             <div class="col-md-2">
                                 <label class="aiz-switch aiz-switch-success mb-0">

@@ -12,7 +12,7 @@ class NewsletterController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::where('user_type', 'customer')->get();
         $subscribers = Subscriber::all();
         return view('backend.marketing.newsletters.index', compact('users', 'subscribers'));
     }
@@ -21,7 +21,7 @@ class NewsletterController extends Controller
     {
         if (env('MAIL_USERNAME') != null) {
             //sends newsletter to selected users
-        	if ($request->has('user_emails')) {
+            if ($request->has('user_emails')) {
                 foreach ($request->user_emails as $key => $email) {
                     $array['view'] = 'emails.newsletter';
                     $array['subject'] = $request->subject;
@@ -33,7 +33,7 @@ class NewsletterController extends Controller
                     } catch (\Exception $e) {
                         //dd($e);
                     }
-            	}
+                }
             }
 
             //sends newsletter to subscribers
@@ -49,19 +49,19 @@ class NewsletterController extends Controller
                     } catch (\Exception $e) {
                         //dd($e);
                     }
-            	}
+                }
             }
-        }
-        else {
+        } else {
             flash(translate('Please configure SMTP first'))->error();
             return back();
         }
 
-    	flash(translate('Newsletter has been send'))->success();
-    	return redirect()->route('admin.dashboard');
+        flash(translate('Newsletter has been send'))->success();
+        return redirect()->route('admin.dashboard');
     }
 
-    public function testEmail(Request $request){
+    public function testEmail(Request $request)
+    {
         $array['view'] = 'emails.newsletter';
         $array['subject'] = "SMTP Test";
         $array['from'] = env('MAIL_FROM_ADDRESS');

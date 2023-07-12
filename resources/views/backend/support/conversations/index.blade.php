@@ -11,7 +11,7 @@
             <thead>
                 <tr>
                     <th data-breakpoints="lg">#</th>
-                    <th data-breakpoints="lg">{{ translate('Date') }}</th>
+                    <th data-breakpoints="lg">Date</th>
                     <th data-breakpoints="lg">{{translate('Title')}}</th>
                     <th>{{translate('Sender')}}</th>
                     <th>{{translate('Receiver')}}</th>
@@ -28,7 +28,7 @@
                             @if ($conversation->sender != null)
                                 {{ $conversation->sender->name }}
                                 @if ($conversation->receiver_viewed == 0)
-                                    <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
+                                    <span class="badge badge-inline badge-info">New</span>
                                 @endif
                             @endif
                         </td>
@@ -36,15 +36,15 @@
                             @if ($conversation->receiver != null)
                                 {{ $conversation->receiver->name }}
                                 @if ($conversation->sender_viewed == 0)
-                                    <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
+                                    <span class="badge badge-inline badge-info">New</span>
                                 @endif
                             @endif
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('conversations.admin_show', encrypt($conversation->id))}}" title="{{ translate('View') }}">
+                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('conversations.admin_show', encrypt($conversation->id))}}" title="View">
                                 <i class="las la-eye"></i>
                             </a>
-                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('conversations.destroy', encrypt($conversation->id))}}" title="{{ translate('Delete') }}">
+                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('conversations.destroy', encrypt($conversation->id))}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>

@@ -3,68 +3,66 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Search;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\FlashDeal;
 use App\Models\Brand;
-use App\Models\Color;
+use App\Models\Search;
 use App\Models\Shop;
-use App\Models\Attribute;
-use App\Models\AttributeCategory;
 use App\Utility\CategoryUtility;
+use Auth;
+use Cache;
 
 class SearchController extends Controller
 {
     public function index(Request $request, $category_id = null, $brand_id = null)
     {
+        // dd($request);
         $query = $request->keyword;
         $sort_by = $request->sort_by;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
-        $seller_id = $request->seller_id;
-        $attributes = Attribute::all();
-        $selected_attribute_values = array();
-        $colors = Color::all();
-        $selected_color = null;
 
-        $conditions = ['published' => 1];
-
-        if ($brand_id != null) {
-            $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
-        } elseif ($request->brand != null) {
-            $brand_id = (Brand::where('slug', $request->brand)->first() != null) ? Brand::where('slug', $request->brand)->first()->id : null;
-            $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
-        }
-
-        if ($seller_id != null) {
-            $conditions = array_merge($conditions, ['user_id' => Seller::findOrFail($seller_id)->user->id]);
-        }
+        $conditions = [
+            'published' => 1
+        ];
 
         $products = Product::where($conditions);
 
+        if ($brand_id != null) {
+            $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
+        }
+
+        if ($request->brands != null) {
+            $brand_ids = explode(',', $request->brands);
+            $products->whereIn('brand_id', $brand_ids);
+        }
+
+        if ($request->rating != null) {
+            $ratings = explode(',', $request->rating);
+
+            foreach ($ratings as $rating) {
+                $r = array(
+                    $rating,
+                    $rating + 1
+                );
+                $products->whereBetween('rating', $r);
+            }
+        }
+
+        if ($request->categories) {
+            $categoryids = explode(',', $request->categories);
+            $category_ids[] = $categoryids;
+        }
+        if ($request->category) {
+            $category_ids[] = $request->category;
+        }
+
         if ($category_id != null) {
-            $category_ids = CategoryUtility::children_ids($category_id);
             $category_ids[] = $category_id;
+        }
 
+        if (!empty($category_ids)) {
             $products->whereIn('category_id', $category_ids);
-
-            $attribute_ids = AttributeCategory::whereIn('category_id', $category_ids)->pluck('attribute_id')->toArray();
-            $attributes = Attribute::whereIn('id', $attribute_ids)->get();
-        } else {
-            // if ($query != null) {
-            //     foreach (explode(' ', trim($query)) as $word) {
-            //         $ids = Category::where('name', 'like', '%'.$word.'%')->pluck('id')->toArray();
-            //         if (count($ids) > 0) {
-            //             foreach ($ids as $id) {
-            //                 $category_ids[] = $id;
-            //                 array_merge($category_ids, CategoryUtility::children_ids($id));
-            //             }
-            //         }
-            //     }
-            //     $attribute_ids = AttributeCategory::whereIn('category_id', $category_ids)->pluck('attribute_id')->toArray();
-            //     $attributes = Attribute::whereIn('id', $attribute_ids)->get();
-            // }
         }
 
         if ($min_price != null && $max_price != null) {
@@ -79,15 +77,14 @@ class SearchController extends Controller
                 foreach (explode(' ', trim($query)) as $word) {
                     $q->where('name', 'like', '%' . $word . '%')
                         ->orWhere('tags', 'like', '%' . $word . '%')
-                        ->orWhereHas('product_translations', function ($q) use ($word) {
-                            $q->where('name', 'like', '%' . $word . '%');
-                        })
                         ->orWhereHas('stocks', function ($q) use ($word) {
                             $q->where('sku', 'like', '%' . $word . '%');
                         });
                 }
             });
         }
+
+
 
         switch ($sort_by) {
             case 'newest':
@@ -96,6 +93,9 @@ class SearchController extends Controller
             case 'oldest':
                 $products->orderBy('created_at', 'asc');
                 break;
+            case 'name':
+                $products->orderBy('name', 'asc');
+                break;
             case 'price-asc':
                 $products->orderBy('unit_price', 'asc');
                 break;
@@ -103,27 +103,48 @@ class SearchController extends Controller
                 $products->orderBy('unit_price', 'desc');
                 break;
             default:
-                $products->orderBy('id', 'desc');
+                $products->orderBy('created_at', 'desc');
                 break;
         }
 
-        if ($request->has('color')) {
-            $str = '"' . $request->color . '"';
-            $products->where('colors', 'like', '%' . $str . '%');
-            $selected_color = $request->color;
-        }
+        $products = $products->select([
+            'id',
+            'name',
+            'sku',
+            'category_id',
+            'brand_id',
+            'thumbnail_img',
+            'unit_price',
+            'purchase_price',
+            'rating',
+            'slug',
+            'discount',
+            'discount_type',
+            'discount_end_date',
+            'discount_start_date',
+        ])->where($conditions)->with('brand')->paginate(35)->appends(request()->query());
 
-        if ($request->has('selected_attribute_values')) {
-            $selected_attribute_values = $request->selected_attribute_values;
-            foreach ($selected_attribute_values as $key => $value) {
-                $str = '"' . $value . '"';
-                $products->where('choice_options', 'like', '%' . $str . '%');
-            }
-        }
+        $min_price_slider = Product::min('unit_price');
+        $max_price_slider = Product::max('unit_price');
 
-        $products = filter_products($products)->with('taxes')->paginate(12)->appends(request()->query());
+        $brands = Cache::rememberForever('brandsWithCount', function () {
+            return Brand::select([
+                'id',
+                'name',
+                'slug',
+            ])->get();
+        });
 
-        return view('frontend.product_listing', compact('products', 'query', 'category_id', 'brand_id', 'sort_by', 'seller_id', 'min_price', 'max_price', 'attributes', 'selected_attribute_values', 'colors', 'selected_color'));
+        $category = Cache::rememberForever('categoriesTree', function () {
+            return CategoryUtility::getSidebarCategoryTree();
+        });
+
+        $selected_category = $request->category ?? 0;
+        $side_categories = $request->categories ? explode(',', $request->categories) : [];
+        $side_brands = $request->brands ? explode(',', $request->brands) : [];
+        $side_rating = $request->rating ? explode(',', $request->rating) : [];
+
+        return view('frontend.product.product_listing', compact('products', 'category', 'query', 'category_id', 'side_categories', 'side_brands', 'side_rating', 'selected_category', 'brand_id', 'sort_by', 'min_price', 'max_price', 'min_price_slider', 'max_price_slider', 'brands'));
     }
 
     public function listing(Request $request)
@@ -152,47 +173,53 @@ class SearchController extends Controller
     //Suggestional Search
     public function ajax_search(Request $request)
     {
-        $keywords = array();
-        $query = $request->search;
-        $products = Product::where('published', 1)->where('tags', 'like', '%' . $query . '%')->get();
-        foreach ($products as $key => $product) {
-            foreach (explode(',', $product->tags) as $key => $tag) {
-                if (stripos($tag, $query) !== false) {
-                    if (sizeof($keywords) > 5) {
-                        break;
-                    } else {
-                        if (!in_array(strtolower($tag), $keywords)) {
-                            array_push($keywords, strtolower($tag));
-                        }
-                    }
-                }
-            }
-        }
+        $query = $request->keyword;
 
-        $products = filter_products(Product::query());
+        $searchController = new SearchController;
+        $searchController->store($request);
+
+        $products = Product::query();
 
         $products = $products->where('published', 1)
+            ->select([
+                'id',
+                'name',
+                'sku',
+                'category_id',
+                'brand_id',
+                'thumbnail_img',
+                'unit_price',
+                'purchase_price',
+                'rating',
+                'slug',
+                'discount',
+                'discount_type',
+                'discount_end_date',
+                'discount_start_date',
+            ])
             ->where(function ($q) use ($query) {
                 foreach (explode(' ', trim($query)) as $word) {
                     $q->where('name', 'like', '%' . $word . '%')
                         ->orWhere('tags', 'like', '%' . $word . '%')
-                        ->orWhereHas('product_translations', function ($q) use ($word) {
-                            $q->where('name', 'like', '%' . $word . '%');
-                        })
                         ->orWhereHas('stocks', function ($q) use ($word) {
                             $q->where('sku', 'like', '%' . $word . '%');
                         });
                 }
             })
-            ->limit(3)
+            ->limit(8)
             ->get();
 
         $categories = Category::where('name', 'like', '%' . $query . '%')->get()->take(3);
 
-        $shops = Shop::whereIn('user_id', verified_sellers_id())->where('name', 'like', '%' . $query . '%')->get()->take(3);
+        if (sizeof($categories) > 0 || sizeof($products) > 0) {
+            // return compact('products', 'categories');
 
-        if (sizeof($keywords) > 0 || sizeof($categories) > 0 || sizeof($products) > 0 || sizeof($shops) > 0) {
-            return view('frontend.partials.search_content', compact('products', 'categories', 'keywords', 'shops'));
+            return response()->json([
+                'products' => $products,
+                'categories' => $categories,
+            ], 200);
+
+            // return view('frontend.partials.search_content', compact('products', 'categories', 'keywords', 'shops'));
         }
         return '0';
     }
@@ -205,14 +232,20 @@ class SearchController extends Controller
      */
     public function store(Request $request)
     {
-        $search = Search::where('query', $request->keyword)->first();
-        if ($search != null) {
-            $search->count = $search->count + 1;
-            $search->save();
-        } else {
-            $search = new Search;
-            $search->query = $request->keyword;
-            $search->save();
-        }
+        // $search = Search::where('query', $request->keyword)->first();
+
+        // if (Auth::check()) {
+        //     $user_id = Auth::id();
+        // } else {
+        //     $user_id = null;
+        //     $temp_user_id = getTempUserId();
+        // }
+
+        Search::create([
+            'query' => $request->keyword,
+            'ip_address' => $request->ip(),
+            'user_id' => Auth::id(),
+            'temp_user_id' => Auth::check() ? null : getTempUserId(),
+        ]);
     }
 }

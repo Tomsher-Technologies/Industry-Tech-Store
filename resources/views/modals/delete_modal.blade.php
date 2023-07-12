@@ -9,7 +9,7 @@
             <div class="modal-body text-center">
                 <p class="mt-1">{{translate('Are you sure to delete this?')}}</p>
                 <button type="button" class="btn btn-link mt-2" data-dismiss="modal">{{translate('Cancel')}}</button>
-                <a href="" id="delete-link" class="btn btn-primary mt-2">{{translate('Delete')}}</a>
+                <a href="" id="delete-link" autofocus class="btn btn-primary mt-2">{{translate('Delete')}}</a>
             </div>
         </div>
     </div>

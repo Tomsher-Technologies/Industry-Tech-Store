@@ -28,20 +28,20 @@
 						@foreach($attributes as $key => $attribute)
 							<tr>
 								<td>{{$key+1}}</td>
-								<td>{{$attribute->getTranslation('name')}}</td>
+								<td>{{$attribute->name}}</td>
 								<td>
 									@foreach($attribute->attribute_values as $key => $value)
 									<span class="badge badge-inline badge-md bg-soft-dark">{{ $value->value }}</span>
 									@endforeach
 								</td>
 								<td class="text-right">
-									<a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('attributes.show', $attribute->id)}}" title="{{ translate('Attribute values') }}">
+									<a class="btn btn-soft-info btn-icon btn-circle btn-sm" href="{{route('attributes.show', $attribute->id)}}" title="Attribute values">
 										<i class="las la-cog"></i>
 									</a>
-									<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('attributes.edit', ['id'=>$attribute->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
+									<a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('attributes.edit', ['id'=>$attribute->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
 										<i class="las la-edit"></i>
 									</a>
-									<a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('attributes.destroy', $attribute->id)}}" title="{{ translate('Delete') }}">
+									<a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('attributes.destroy', $attribute->id)}}" title="Delete">
 										<i class="las la-trash"></i>
 									</a>
 								</td>
@@ -55,7 +55,7 @@
 	<div class="col-md-5">
 		<div class="card">
 			<div class="card-header">
-					<h5 class="mb-0 h6">{{ translate('Add New Attribute') }}</h5>
+					<h5 class="mb-0 h6">Add New Attribute</h5>
 			</div>
 			<div class="card-body">
 				<form action="{{ route('attributes.store') }}" method="POST">
