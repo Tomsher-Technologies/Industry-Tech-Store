@@ -10,7 +10,10 @@
                             <ul class="menu--dropdown">
 
                                 @foreach (getAllCategories()->where('parent_id', 0) as $item)
-                                    @if ($item->child->count())
+                                    <li>
+                                        <a href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
+                                    </li>
+                                    {{-- @if ($item->child->count())
                                         <li class="menu-item-has-children has-mega-menu">
                                             <a title="{{ $item->name }}"
                                                 href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
@@ -105,7 +108,7 @@
                                             <a
                                                 href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
                                         </li>
-                                    @endif
+                                    @endif --}}
                                 @endforeach
 
                                 {{-- <li class="menu-item-has-children has-mega-menu"><a href="#">Automation and
@@ -420,7 +423,8 @@
                                 </li>
                             @else
                                 <li>
-                                    <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }} </a>
+                                    <a href="{{ $menu['link'] }}" title="{{ $menu['label'] }}">{{ $menu['label'] }}
+                                    </a>
                                 </li>
                             @endif
                         @endforeach
