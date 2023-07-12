@@ -10,7 +10,7 @@
     <div class="ps-section--shopping ps-shopping-cart">
         <div class="container">
             <div class="ps-section__content">
-                <div class="row">
+                <div class="row justify-content-center">
                     @if ($carts->count())
                         <div class="col-md-8">
                             <div class="table-responsive position-relative">
@@ -37,7 +37,7 @@
                                             @foreach ($carts as $index => $cart)
                                                 @php
                                                     $row_total = $cart->price * $cart->quantity;
-                                                    $item_total +=  $row_total;
+                                                    $item_total += $row_total;
                                                     if ($cart->coupon_applied) {
                                                         $coupon_total += $cart->discount;
                                                     }
@@ -153,7 +153,8 @@
                                         <span> {{ format_price(convert_price($item_total)) }}</span>
                                     </p>
                                     @if ($coupon_total > 0)
-                                        <p>Coupon discount <span>{{ format_price(convert_price($coupon_total)) }}</span></p>
+                                        <p>Coupon discount
+                                            <span>{{ format_price(convert_price($coupon_total)) }}</span></p>
                                     @endif
                                 </div>
                                 <div class="ps-block__content">
@@ -164,8 +165,25 @@
                                 href="{{ route('checkout.checkout_page') }}">Proceed to checkout</a>
                         </div>
                     @else
-                        <div class="col-12">
-                            <p>You dont have any items in your cart</p>
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body p-4 p-md-5">
+                                    <div class="text-center">
+                                        <img src="{{ frontendAsset('img/cart-empty.svg') }}" alt=""
+                                            class="w-50">
+                                    </div>
+                                    <div class="text-center mt-5 pt-1">
+                                        <h4 class="mb-3 text-capitalize">Your cart is empty
+                                            !</h4>
+
+                                        <h5 class="text-muted mb-0">What are you waiting for?</h5>
+                                        <div class="mt-4 pt-2 hstack gap-2 justify-content-center">
+                                            <a href="{{ route('home') }}" class="btn ps-btn btn-sm">Start Shopping
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </div>

@@ -110,8 +110,23 @@
                             <br>
                         </div>
                     @else
-                        <div class="col-12">
-                            <p>You dont have any items in your cart</p>
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body p-4 p-md-5">
+                                    <div class="text-center">
+                                        <img src="{{ frontendAsset('img/cart-empty.svg') }}" alt="" class="w-50">
+                                    </div>
+                                    <div class="text-center mt-5 pt-1">
+                                        <h4 class="mb-3 text-capitalize">Your Cart is empty
+                                            !</h4>
+
+                                        <h5 class="text-muted mb-0">What are you waiting for?</h5>
+                                        <div class="mt-4 pt-2 hstack gap-2 justify-content-center">
+                                            <a href="{{ route('home') }}" class="btn ps-btn btn-sm">Start Shopping </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </div>

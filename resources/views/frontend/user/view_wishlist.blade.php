@@ -12,10 +12,12 @@
     <div class="ps-section--shopping ps-shopping-cart">
         <div class="container">
             <div class="ps-section__content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            @if ($wishlists->count())
+                <div class="row justify-content-center">
+
+
+                    @if ($wishlists->count())
+                        <div class="col-md-12">
+                            <div class="table-responsive">
                                 <table aria-describedby="wishlist"
                                     class="table ps-table--shopping-cart ps-table--responsive">
                                     <thead class="ps-table--shopping-cart-header">
@@ -67,11 +69,28 @@
                                     </tbody>
                                 </table>
                                 {{ $wishlists->links('vendor.pagination.product_listing') }}
-                            @else
-                                You dont have any items in your wishlist
-                            @endif
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body p-4 p-md-5">
+                                    <div class="text-center">
+                                        <img src="{{ frontendAsset('img/cart-empty.svg') }}" alt="" class="w-50">
+                                    </div>
+                                    <div class="text-center mt-5 pt-1">
+                                        <h4 class="mb-3 text-capitalize">Your wishlist is empty!</h4>
+                                        <h5 class="text-muted mb-0">What are you waiting for?</h5>
+                                        <div class="mt-4 pt-2 hstack gap-2 justify-content-center">
+                                            <a href="{{ route('home') }}" class="btn ps-btn btn-sm">Start Shopping
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div>

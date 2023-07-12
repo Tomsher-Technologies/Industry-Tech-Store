@@ -84,6 +84,8 @@ class SearchController extends Controller
             });
         }
 
+
+
         switch ($sort_by) {
             case 'newest':
                 $products->orderBy('created_at', 'desc');
@@ -120,7 +122,7 @@ class SearchController extends Controller
             'discount_type',
             'discount_end_date',
             'discount_start_date',
-        ])->with('brand')->paginate(35)->appends(request()->query());
+        ])->where($conditions)->with('brand')->paginate(35)->appends(request()->query());
 
         $min_price_slider = Product::min('unit_price');
         $max_price_slider = Product::max('unit_price');

@@ -45,14 +45,15 @@ Route::get('/refresh-csrf', function () {
 });
 
 Route::get('/test', function () {
-    $order = Order::find(1);
+    return view('frontend.order_confirmed');
+    // $order = Order::find(1);
 
-    $array['view'] = 'emails.invoice';
-    $array['subject'] = translate('A new order has been placed') . ' - ' . $order->code;
-    $array['from'] = env('MAIL_FROM_ADDRESS');
-    $array['order'] = $order;
+    // $array['view'] = 'emails.invoice';
+    // $array['subject'] = translate('A new order has been placed') . ' - ' . $order->code;
+    // $array['from'] = env('MAIL_FROM_ADDRESS');
+    // $array['order'] = $order;
 
-    return new App\Mail\InvoiceEmailManager($array);
+    // return new App\Mail\InvoiceEmailManager($array);
 });
 
 Auth::routes([
