@@ -51,7 +51,8 @@
                 <div class="ps-layout__right">
                     <div class="ps-shopping ps-tab-root">
                         <div class="ps-shopping__header">
-                            <p><strong> {{ $products->count() }}</strong> Products found</p>
+                            <p>Showing <strong> {{ $products->firstItem() }} to {{ $products->lastItem() }}
+                                of total {{$products->total()}} </strong>products </p>
                             <div class="ps-shopping__actions">
                                 <select name="sort_by" class="ps-select sort_by_select" data-placeholder="Sort Items">
                                     <option {{ $sort_by == 'newest' ? 'selected' : '' }} value="newest">Sort by latest

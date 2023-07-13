@@ -49,19 +49,29 @@ class SearchController extends Controller
             }
         }
 
+        // Sidebar search
+        $category_ids = array();
         if ($request->categories) {
             $categoryids = explode(',', $request->categories);
-            $category_ids[] = $categoryids;
+            $category_ids =  array_merge($category_ids, $categoryids);
         }
+        
+        // Header search
         if ($request->category) {
             $category_ids[] = $request->category;
         }
 
+        // Category page
         if ($category_id != null) {
             $category_ids[] = $category_id;
-        }
+        } 
 
         if (!empty($category_ids)) {
+            // dd($category_ids);
+            foreach ($category_ids as $id) {
+                $category_ids =  array_merge($category_ids, CategoryUtility::children_ids($id));
+            }
+            // dd($category_ids);
             $products->whereIn('category_id', $category_ids);
         }
 
@@ -78,7 +88,7 @@ class SearchController extends Controller
                     $q->where('name', 'like', '%' . $word . '%')
                         ->orWhere('tags', 'like', '%' . $word . '%')
                         ->orWhereHas('stocks', function ($q) use ($word) {
-                            $q->where('sku', 'like', '%' . $word . '%');
+                            $q->where('sku', 'like',  $word);
                         });
                 }
             });
@@ -122,7 +132,7 @@ class SearchController extends Controller
             'discount_type',
             'discount_end_date',
             'discount_start_date',
-        ])->where($conditions)->with('brand')->paginate(35)->appends(request()->query());
+        ])->where($conditions)->with('brand')->paginate(36)->appends(request()->query());
 
         $min_price_slider = Product::min('unit_price');
         $max_price_slider = Product::max('unit_price');
