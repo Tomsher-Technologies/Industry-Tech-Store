@@ -1,6 +1,5 @@
 function productQuickView($id) {
     if ($('#product-quickview').length) {
-
         $('#product-quickview').modal('show');
         $('#product-quickview .ps-product--detail').hide();
         $('#product-quickview .loadingIcon').show();

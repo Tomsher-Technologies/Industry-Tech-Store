@@ -10,11 +10,6 @@
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
     @yield('meta')
 
-    @auth
-        <meta property="user" content="{{ auth()->user()->id }}" />
-        <meta property="user" content="{{ auth()->user()->email }}" />
-    @endauth
-
     <!-- Favicon -->
     <link rel="icon" href="{{ frontendAsset('css/bulk-style.css') }}">
 
@@ -105,7 +100,6 @@
 
 <body>
     <!-- aiz-main-wrapper -->
-
     @include('frontend.inc.header')
 
     @yield('content')

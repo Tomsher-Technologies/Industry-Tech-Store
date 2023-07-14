@@ -65,7 +65,6 @@ class RegisterController extends Controller
                 Password::min(6)
                     ->letters()
                     ->numbers()
-                    ->uncompromised()
             ],
         ]);
     }
@@ -138,12 +137,12 @@ class RegisterController extends Controller
 
                 return back()->withErrors([
                     'register' => 'Email already exists..',
-                ])->onlyInput('email', 'name');
+                ])->onlyInput('email', 'name', 'register');
             }
         } elseif (User::where('phone', '+' . $request->country_code . $request->phone)->first() != null) {
             return back()->withErrors([
                 'register' => 'Phone already exists..',
-            ])->onlyInput('email', 'name');
+            ])->onlyInput('email', 'name', 'register');
         }
 
         $this->validator($request->all())->validate();

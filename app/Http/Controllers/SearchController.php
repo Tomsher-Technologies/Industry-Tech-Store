@@ -55,7 +55,7 @@ class SearchController extends Controller
             $categoryids = explode(',', $request->categories);
             $category_ids =  array_merge($category_ids, $categoryids);
         }
-        
+
         // Header search
         if ($request->category) {
             $category_ids[] = $request->category;
@@ -64,7 +64,7 @@ class SearchController extends Controller
         // Category page
         if ($category_id != null) {
             $category_ids[] = $category_id;
-        } 
+        }
 
         if (!empty($category_ids)) {
             // dd($category_ids);
@@ -134,8 +134,8 @@ class SearchController extends Controller
             'discount_start_date',
         ])->where($conditions)->with('brand')->paginate(36)->appends(request()->query());
 
-        $min_price_slider = Product::min('unit_price');
-        $max_price_slider = Product::max('unit_price');
+        $min_price_slider = convert_price(Product::min('unit_price'));
+        $max_price_slider = convert_price(Product::max('unit_price'));
 
         $brands = Cache::rememberForever('brandsWithCount', function () {
             return Brand::select([

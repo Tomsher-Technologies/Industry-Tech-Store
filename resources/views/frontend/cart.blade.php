@@ -101,7 +101,7 @@
                                     <p>Sub Total (3 Items) <span> 1500.00</span></p>
                                     <p>Shipping Charge <span> AED 100.00</span></p>
                                     <p>VAT <span> AED 80.00</span></p>
-                                </div>
+                                </div>a
                                 <div class="ps-block__content">
                                     <h3>Total <span>AED 1680.00</span></h3>
                                 </div>

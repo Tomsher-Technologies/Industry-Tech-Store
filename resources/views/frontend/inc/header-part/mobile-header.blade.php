@@ -76,26 +76,7 @@
             'layout' => 2,
         ])
 
-        {{-- <div class="ps-cart--mobile">
-            <div class="ps-cart__content">
-                <div class="ps-product--cart-mobile">
-                    <div class="ps-product__thumbnail"><a href="#"><img
-                                src="{{ frontendAsset('img/products/shop/02.jpg') }}" alt=""></a>
-                    </div>
-                    <div class="ps-product__content"><a class="ps-product__remove" href="#"><i
-                                class="icon-cross"></i></a><a href="product-default.html">Schneider TeSys F
-                            contactor - 3P - LC1F400M7
-                        </a>
-                        <p><strong>Sold by:</strong> TYCO </p><small>1 x AED59.99</small>
-                    </div>
-                </div>
-            </div>
-            <div class="ps-cart__footer">
-                <h3>Sub Total:<strong>AED59.99</strong></h3>
-                <figure><a class="ps-btn" href="shopping-cart.html">View Cart</a><a class="ps-btn"
-                        href="checkout.html">Checkout</a></figure>
-            </div>
-        </div> --}}
+
     </div>
 </div>
 

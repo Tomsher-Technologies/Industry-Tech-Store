@@ -10,18 +10,21 @@
             <div class="container">
                 <div class="ps-form--account ps-tab-root">
                     <ul class="ps-tab-list">
-                        <li class="{{ request()->get('register') == 0 ? 'active' : '' }}"><a class="tab-switch-login"
-                                href="#sign-in">Login</a></li>
-                        <li class="{{ request()->get('register') == 1 ? 'active' : '' }}"><a class="tab-switch-register"
-                                href="#register">Register</a></li>
+                        <li class="{{ request()->get('register') == 0 && old('register') == 0 ? 'active' : '' }}">
+                            <a class="tab-switch tab-switch-login" href="#sign-in">Login</a>
+                        </li>
+                        <li class="{{ request()->get('register') == 1 || old('register') == 1 ? 'active' : '' }}">
+                            <a class="tab-switch tab-switch-register" href="#register">Register</a>
+                        </li>
                     </ul>
                     <div class="ps-tabs">
-                        <div class="ps-tab {{ request()->get('register') == 0 ? 'active' : '' }}" id="sign-in">
+                        <div class="ps-tab {{ request()->get('register') == 0 && old('register') == 0 ? 'active' : '' }}"
+                            id="sign-in">
                             <div class="ps-form__content">
-                                <h5>Log In Your Account</h5>
+                                <h5>Log in to your account</h5>
                                 <form action="{{ route('login') }}" method="post">
                                     @csrf
-
+                                    <input type="hidden" name="register" value="0">
                                     @error('login')
                                         <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -29,19 +32,20 @@
                                     @enderror
 
                                     <div class="form-group">
-                                        <input class="form-control" name="email" type="email"
-                                            placeholder="Email address" value="{{ old('email') }}" required />
-                                        @error('email')
+                                        <input class="form-control" name="l_email" type="email"
+                                            placeholder="Email address" value="{{ old('l_email') }}" required
+                                            autocomplete="email" />
+                                        @error('l_email')
                                             <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="form-group form-forgot">
-                                        <input class="form-control" type="password" name="password" placeholder="Password"
+                                        <input class="form-control" type="password" name="l_password" placeholder="Password"
                                             required />
                                         <a href="{{ route('password.request') }}">Forgot?</a>
-                                        @error('password')
+                                        @error('l_password')
                                             <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -60,13 +64,14 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="ps-tab {{ request()->get('register') == 1 ? 'active' : '' }}" id="register">
+                        <div class="ps-tab {{ request()->get('register') == 1 || old('register') == 1 ? 'active' : '' }}"
+                            id="register">
                             <div class="ps-form__content">
-                                <h5>Register An Account</h5>
+                                <h5>Create an account</h5>
 
                                 <form action="{{ route('register') }}" method="post">
                                     @csrf
-
+                                    <input type="hidden" name="register" value="1">
                                     @error('register')
                                         <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -107,12 +112,11 @@
                                             name="password_confirmation" />
                                     </div>
                                     <div class="form-group submtit">
-                                        <button type="submit" class="ps-btn ps-btn--fullwidth mb-5">Login</button>
+                                        <button type="submit" class="ps-btn ps-btn--fullwidth mb-5">Register</button>
                                     </div>
                                 </form>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -129,4 +133,24 @@
             }
         });
     </script> --}}
+
+    <script>
+        $('.tab-switch').on('click', function() {
+            if ($(this).hasClass('tab-switch-login')) {
+                // window.location.replace("http:www.example.com");
+                // window.location = window.location.hash.substring(1);
+                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +
+                    '?register=0';
+                window.history.pushState({
+                    path: newurl
+                }, '', newurl);
+            }else{
+                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +
+                    '?register=1';
+                window.history.pushState({
+                    path: newurl
+                }, '', newurl);
+            }
+        });
+    </script>
 @endsection

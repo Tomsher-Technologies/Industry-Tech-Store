@@ -150,7 +150,7 @@
 
             let searchParams = new URLSearchParams(window.location.search)
             price_min = 0
-            price_max = 1000
+            price_max = 10000
             if(searchParams.has('min_price')){
                 price_min = searchParams.get('min_price')
             }
@@ -158,13 +158,19 @@
                 price_max = searchParams.get('max_price')
             }
 
+            @php
+                if( $min_price_slider ==  $max_price_slider){
+                    $max_price_slider += 1;
+                }
+            @endphp
+
             noUiSlider.create(nonLinearSlider, {
                 connect: true,
                 behaviour: 'tap',
                 start: [price_min, price_max],
                 range: {
                     min: {{ $min_price_slider ?? 0 }},
-                    max: {{ $max_price_slider ?? 1000 }},
+                    max: {{ $max_price_slider ?? 10000 }},
                 },
             });
             var nodes = [

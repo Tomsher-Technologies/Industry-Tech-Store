@@ -43,9 +43,9 @@
 
                 <input type="hidden" name="min_price" id="price_min">
                 <input type="hidden" name="max_price" id="price_max">
-
-                <p class="ps-slider__meta">Price:<span class="ps-slider__value">AED<span
-                            class="ps-slider__min"></span></span>-<span class="ps-slider__value">AED<span
+                
+                <p class="ps-slider__meta">Price:<span class="ps-slider__value">{{ Session::get('currency_code') }}<span
+                            class="ps-slider__min"></span></span>-<span class="ps-slider__value">{{ Session::get('currency_code') }}<span
                             class="ps-slider__max"></span></span></p>
             </figure>
             <figure>
