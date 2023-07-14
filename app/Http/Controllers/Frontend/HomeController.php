@@ -43,27 +43,45 @@ class HomeController extends Controller
     public function index()
     {
         $sliders = Cache::rememberForever('homeSlider', function () {
-            return HomeSlider::whereStatus(1)->with(['mainImage', 'mobileImage'])->orderBy('sort_order')->get();
+            $banners = HomeSlider::whereStatus(1)->with(['mainImage', 'mobileImage'])->orderBy('sort_order')->get();
+
+            foreach ($banners as $banner) {
+                $banner->a_link = $banner->getALink();
+            }
+
+            return $banners;
         });
 
         $small_banners = Cache::rememberForever('smallBanners', function () {
             $banners = get_setting('home_banner');
 
             if ($banners) {
-                return Banner::whereStatus(1)
+                $banner = Banner::whereStatus(1)
                     ->whereIn('id', json_decode($banners))
                     ->with(['mainImage', 'mobileImage'])
                     ->get();
+
+                foreach ($banner as $b) {
+                    $b->a_link = $b->getALink();
+                }
+
+                return $banner;
             }
         });
 
         $ads_banners = Cache::rememberForever('ads_banners', function () {
             $banners = get_setting('home_ads_banner');
             if ($banners) {
-                return Banner::whereStatus(1)
+                $banner = Banner::whereStatus(1)
                     ->whereIn('id', json_decode($banners))
                     ->with(['mainImage', 'mobileImage'])
                     ->get();
+
+                foreach ($banner as $b) {
+                    $b->a_link = $b->getALink();
+                }
+
+                return $banner;
             }
         });
 
