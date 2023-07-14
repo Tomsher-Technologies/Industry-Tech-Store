@@ -61,8 +61,19 @@ class ProductBulkUploadController extends Controller
     public function bulk_upload(Request $request)
     {
         if ($request->hasFile('bulk_file')) {
-            $import = new ProductsImport;
-            Excel::import($import, request()->file('bulk_file'));
+            try {
+                $import = new ProductsImport;
+                Excel::import($import, request()->file('bulk_file'));
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                $failures = $e->failures();
+
+                foreach ($failures as $failure) {
+                    $failure->row(); // row that went wrong
+                    $failure->attribute(); // either heading key (if using heading row concern) or column index
+                    $failure->errors(); // Actual error messages from Laravel validator
+                    $failure->values(); // The values of the row that has failed.
+                }
+            }
         }
 
         return back();

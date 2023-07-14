@@ -127,7 +127,7 @@ $currentUrl = url()->current();
 
                                                                     <p class="button-controls">
                                                                         <a href="#" onclick="addProduct()"
-                                                                            class="button-secondary submit-add-to-menu right">Add
+                                                                            class="button-secondary  right">Add
                                                                             menu item</a>
                                                                         <span class="spinner"
                                                                             id="spincustomuPro"></span>
@@ -179,7 +179,7 @@ $currentUrl = url()->current();
 
                                                                     <p class="button-controls">
                                                                         <a href="#" onclick="addCategory()"
-                                                                            class="button-secondary submit-add-to-menu right">Add
+                                                                            class="button-secondary right">Add
                                                                             menu item</a>
                                                                         <span class="spinner"
                                                                             id="spincustomuCat"></span>

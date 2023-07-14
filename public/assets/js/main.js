@@ -1000,6 +1000,7 @@ function launchToast(msg, status = 'success') {
     }
     Toastify({
         text: msg,
+        gravity: 'bottom',
         duration: 3000,
         close: true,
         style: {

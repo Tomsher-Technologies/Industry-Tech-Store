@@ -1080,7 +1080,7 @@ if (!function_exists('load_seo_tags')) {
         if (Session::has('currency_code')) {
             return Currency::where('code', Session::get('currency_code'))->first();
         } else {
-            return  Currency::find(get_setting('system_default_currency'));
+            return Currency::find(get_setting('system_default_currency'));
         }
     }
 

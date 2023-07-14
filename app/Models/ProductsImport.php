@@ -126,12 +126,13 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
     public function rules(): array
     {
         return [
-            // Can also use callback validation rules
-            'unit_price' => function ($attribute, $value, $onFailure) {
-                if (!is_numeric($value)) {
-                    $onFailure('Unit price is not numeric');
-                }
-            }
+            // 'product_code' => function ($attribute, $value, $onFailure) {
+            //     if (!is_numeric($value)) {
+            //         $onFailure('Unit price is not numeric');
+            //     }
+            // }
+            'product_code' => 'required',
+            'product_name' => 'required',
         ];
     }
 

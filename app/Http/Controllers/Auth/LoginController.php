@@ -163,8 +163,8 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'email'    => 'required',
-            'password' => 'required|string',
+            'l_email'    => 'required',
+            'l_password' => 'required|string',
         ]);
     }
 
@@ -181,10 +181,10 @@ class LoginController extends Controller
                 'phone' => "+{$request['country_code']}{$request['phone']}",
                 'password' => $request->get('password')
             ];
-        } elseif ($request->get('email') != null) {
+        } elseif ($request->get('l_email') != null) {
             return  [
-                'email' => $request->email,
-                'password' => $request->password,
+                'email' => $request->l_email,
+                'password' => $request->l_password,
                 'user_type' => 'customer'
             ];
             // $request->only($this->username(), 'password');
@@ -260,7 +260,7 @@ class LoginController extends Controller
     {
         return back()->withErrors([
             'login' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email', 'remember');
+        ])->onlyInput('l_email', 'remember', 'register');
     }
 
     /**
