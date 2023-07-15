@@ -103,8 +103,12 @@ class Checkout extends Component
                 if ($coupon) {
                     $can_use_coupon = false;
                     if (strtotime(date('d-m-Y')) >= $coupon->start_date && strtotime(date('d-m-Y')) <= $coupon->end_date) {
-                        $coupon_used = CouponUsage::where($this->user_col, $this->user_id)->where('coupon_id', $coupon->id)->first();
-                        if ($coupon->one_time_use && $coupon_used == null) {
+                        if (Auth::check()) {
+                            $coupon_used = CouponUsage::where($this->user_col, $this->user_id)->where('coupon_id', $coupon->id)->first();
+                            if ($coupon->one_time_use && $coupon_used == null) {
+                                $can_use_coupon = true;
+                            }
+                        } else {
                             $can_use_coupon = true;
                         }
                     } else {

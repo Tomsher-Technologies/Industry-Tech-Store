@@ -14,7 +14,7 @@
                             @foreach ($sliders as $slider)
                                 <div class="ps-banner bg--cover"
                                     data-background="{{ get_uploads_image($slider->mainImage) }}">
-                                    <a class="ps-banner__overlay" href="{{ $slider->link }}"></a>
+                                    <a class="ps-banner__overlay" href="{{ $slider->a_link }}"></a>
                                 </div>
                             @endforeach
                         </div>
@@ -23,7 +23,7 @@
                 @if ($small_banners && get_setting('home_banner_status') == 1)
                     <div class="ps-section__right">
                         @foreach ($small_banners as $small_banner)
-                            <a class="ps-collection" href="{{ $small_banner->link }}">
+                            <a class="ps-collection" href="{{ $small_banner->a_link }}">
                                 <img loading="lazy" src="{{ get_uploads_image($small_banner->mainImage) }}"
                                     alt="" />
                             </a>
@@ -56,7 +56,7 @@
 
                         @foreach ($ads_banners as $item)
                             <div class="{{ $img_class }} col-md-12 col-sm-12 col-12">
-                                <a class="ps-collection" href="{{ $item->link }}">
+                                <a class="ps-collection" href="{{ $item->a_link }}">
                                     <img src="{{ get_uploads_image($item->mainImage) }}" alt="" />
                                 </a>
                             </div>

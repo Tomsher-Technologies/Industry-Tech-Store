@@ -99,8 +99,13 @@
                                     <div class="form-group">
                                         <input class="form-control" type="password" placeholder="Password"
                                             name="password" />
-                                        <small>The password must be at least 6 characters and must contain at least one
-                                            number.</small>
+
+                                        <div id="password-contain" class="p-3 mt-3 bg-light mb-2 rounded">
+                                            <h5 class="fs-13 mb-3">Password must contain:</h5>
+                                            <p id="pass-length" class="invalid fs-12 mb-1">Minimum <b>6 characters</b></p>
+                                            <p id="pass-number" class="invalid fs-12 mb-0">A least <b>1 number</b> (0-9)</p>
+                                        </div>
+
                                     </div>
                                     @error('password')
                                         <span class="invalid-feedback d-block" style="font-size: 14px" role="alert">
@@ -125,26 +130,15 @@
     </div>
 @endsection
 @section('script')
-    {{-- <script>
-        $(document).ready(function() {
-            let searchParams = new URLSearchParams(window.location.search)
-            if (searchParams.has('register')) {
-                $('.tab-switch-register').trigger('click');
-            }
-        });
-    </script> --}}
-
     <script>
         $('.tab-switch').on('click', function() {
             if ($(this).hasClass('tab-switch-login')) {
-                // window.location.replace("http:www.example.com");
-                // window.location = window.location.hash.substring(1);
                 var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +
                     '?register=0';
                 window.history.pushState({
                     path: newurl
                 }, '', newurl);
-            }else{
+            } else {
                 var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +
                     '?register=1';
                 window.history.pushState({
