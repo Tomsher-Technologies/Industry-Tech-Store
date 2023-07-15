@@ -215,7 +215,10 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     // website setting
     Route::group(['prefix' => 'website'], function () {
         Route::get('/footer', [WebsiteController::class, 'footer'])->name('website.footer');
+
         Route::get('/menu', [WebsiteController::class, 'menu'])->name('website.menu');
+        Route::post('/menu', [WebsiteController::class, 'menuUpdate']);
+
         Route::get('/header', [WebsiteController::class, 'header'])->name('website.header');
         Route::get('/appearance', [WebsiteController::class, 'appearance'])->name('website.appearance');
         Route::get('/pages', [WebsiteController::class, 'pages'])->name('website.pages');

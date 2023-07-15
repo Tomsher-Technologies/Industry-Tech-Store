@@ -16,6 +16,7 @@ use App\Models\Wallet;
 use App\Models\CombinedOrder;
 use App\Models\User;
 use App\Models\Addon;
+use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Products\ProductEnquiries;
@@ -1086,8 +1087,32 @@ if (!function_exists('load_seo_tags')) {
 
     function getMenu($id)
     {
+        // Cache::forget('menu_1');
         return Cache::rememberForever('menu_' . $id,  function () use ($id) {
-            return Menu::get($id);
+            $menu = Menu::get($id);
+            $menu_real = array();
+            foreach ($menu as $key => $m) {
+                $menu_real[$key] = $m;
+                if ($m['img_1']) {
+                    $menu_real[$key]['img_1_src'] = uploaded_asset($m['img_1']);
+                }
+                if ($m['img_2']) {
+                    $menu_real[$key]['img_2_src'] = uploaded_asset($m['img_2']);
+                }
+                if ($m['img_3']) {
+                    $menu_real[$key]['img_3_src'] = uploaded_asset($m['img_3']);
+                }
+
+                if ($m['brands'] !== null) {
+                    $brand_ids = explode(',', $m['brands']);
+                    $brands = Brand::whereIn('id', $brand_ids)->select(['id', 'name', 'logo', 'slug'])->with('logoImage', function ($query) {
+                        return $query->select(['id', 'file_name']);
+                    })->get();
+
+                    $menu_real[$key]['brands'] = $brands;
+                }
+            }
+            return $menu_real;
         });
     }
 

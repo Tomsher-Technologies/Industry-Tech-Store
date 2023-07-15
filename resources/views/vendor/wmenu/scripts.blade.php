@@ -21,6 +21,8 @@
     var csrftoken = "{{ csrf_token() }}";
     var menuwr = "{{ url()->current() }}";
 
+    var updateImages = '{{ route('website.menu') }}';
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': csrftoken

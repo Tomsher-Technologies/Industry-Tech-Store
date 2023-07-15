@@ -10,10 +10,10 @@
                             <ul class="menu--dropdown">
 
                                 @foreach (getAllCategories()->where('parent_id', 0) as $item)
-                                    <li>
+                                    {{-- <li>
                                         <a href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
-                                    </li>
-                                    {{-- @if ($item->child->count())
+                                    </li> --}}
+                                    @if ($item->child->count())
                                         <li class="menu-item-has-children has-mega-menu">
                                             <a title="{{ $item->name }}"
                                                 href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
@@ -108,7 +108,7 @@
                                             <a
                                                 href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
                                         </li>
-                                    @endif --}}
+                                    @endif
                                 @endforeach
 
                             </ul>
@@ -142,90 +142,59 @@
 
                                             </ul>
                                         </div>
-                                        <div class="mega-menu__columntwo">
-                                            <img class="w-100 h-100"
-                                                src="{{ frontendAsset('img/banner/banner-vertical-01.jpg') }}"
-                                                alt="">
-                                        </div>
-                                        <div class="mega-menu__columnthree">
-                                            <div class="menu-shop-brands">
-                                                <div class="row">
-                                                    <div class="brand col-lg-4"><a href="">
-                                                            <img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href="">
-                                                            <img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                                alt=""></a></div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                                alt=""></a></div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                                alt=""></a></div>
 
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/01.jpg') }}"
-                                                                alt=""></a>
+                                        @if ($menu['img_1'] !== null)
+                                            <div class="mega-menu__columntwo">
+                                                <a href="{{ $menu['img_1_link'] }}">
+                                                    <img class="w-100 h-100" src="{{ $menu['img_1_src'] }}"
+                                                        alt="">
+                                                </a>
+                                            </div>
+                                        @endif
+                                        @if ($menu['brands'] !== null)
+                                            <div class="mega-menu__columnthree">
+                                                <div class="menu-shop-brands">
+                                                    <div class="row">
+
+                                                        @foreach ($menu['brands'] as $item)
+                                                            <div class="brand col-lg-4">
+                                                                <a href="{{ route('products.brand', $item->slug) }}">
+                                                                    <img class="w-100"
+                                                                        src="{{ get_uploads_image($item->logoImage) }}"
+                                                                        alt="{{ $item->name }}">
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+
+
                                                     </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/02.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/03.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/04.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/05.jpg') }}"
-                                                                alt=""></a>
-                                                    </div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/07.jpg') }}"
-                                                                alt=""></a></div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/08.jpg') }}"
-                                                                alt=""></a></div>
-                                                    <div class="brand col-lg-4"><a href=""><img class="w-100"
-                                                                src="{{ frontendAsset('img/brand/09.jpg') }}"
-                                                                alt=""></a></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mega-menu__columnfour">
-                                            <div class="row">
-                                                <div class="col-md-12 pb-5"> <img class="w-100"
-                                                        src="{{ frontendAsset('img/slider/home-1/promotion-1.jpg') }}"
-                                                        alt="" />
-                                                </div>
-                                                <div class="col-md-12"> <img class="w-100"
-                                                        src="{{ frontendAsset('img/slider/home-1/promotion-2.jpg') }}"
-                                                        alt="" />
+                                        @endif
+
+                                        @if ($menu['img_2'] || $menu['img_3'])
+                                            <div class="mega-menu__columnfour">
+                                                <div class="row">
+                                                    @if ($menu['img_2'] !== null)
+                                                        <div class="col-md-12 pb-5">
+                                                            <a href="{{ $menu['img_2_link'] }}">
+                                                                <img class="w-100" src="{{ $menu['img_2_src'] }}"
+                                                                    alt="{{ $menu['label'] }}" />
+                                                            </a>
+                                                        </div>
+                                                    @endif
+                                                    @if ($menu['img_3'] !== null)
+                                                        <div class="col-md-12">
+                                                            <a href="{{ $menu['img_3_link'] }}">
+                                                                <img class="w-100" src="{{ $menu['img_3_src'] }}"
+                                                                    alt="{{ $menu['label'] }}" />
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
+
                                     </div>
                                 </li>
                             @else

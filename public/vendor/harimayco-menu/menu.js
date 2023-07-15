@@ -60,7 +60,97 @@ function addcustommenu() {
   });
 }
 
+function updateMenu(id = 0) {
+  if (id) {
+    var img_1 = $('#img_1_' + id).val();
+    var img_2 = $('#img_2_' + id).val();
+    var img_3 = $('#img_3_' + id).val();
+
+    var img_1_link = $('#img_1_link_' + id).val();
+    var img_2_link = $('#img_2_link_' + id).val();
+    var img_3_link = $('#img_3_link_' + id).val();
+
+    var brands = $('#brand_id_' + id).val();
+
+    var data_img = {
+      id: id,
+      menu_id: $('#idmenu').val(),
+      img_1: img_1,
+      img_2: img_2,
+      img_3: img_3,
+
+      img_1_link: img_1_link,
+      img_2_link: img_2_link,
+      img_3_link: img_3_link,
+
+      brands: brands,
+    };
+  } else {
+    var arr_data_2 = [];
+
+
+    var img_1 = $(this)
+      .find('.img_1')
+      .val()
+    var img_2 = $(this)
+      .find('.img_2')
+      .val()
+    var img_3 = $(this)
+      .find('.img_3')
+      .val()
+
+    var img_1_link = $(this)
+      .find('.img_1_link')
+      .val()
+    var img_2_link = $(this)
+      .find('.img_2_link')
+      .val()
+    var img_3_link = $(this)
+      .find('.img_3_link')
+      .val()
+
+    arr_data_2.push({
+      id: id,
+      img_1: img_1,
+      img_2: img_2,
+      img_3: img_3,
+
+      img_1_link: img_1_link,
+      img_2_link: img_2_link,
+      img_3_link: img_3_link,
+      menu_id: $('#idmenu').val(),
+    });
+
+
+    var data_img = { arraydata: arr_data_2 };
+  }
+
+
+  $.ajax({
+    data: data_img,
+    url: updateImages,
+    type: 'POST',
+    beforeSend: function (xhr) {
+      if (id) {
+        $('#spincustomu2').show();
+      }
+    },
+    success: function (response) {
+      console.log(response);
+      alert("Menu updated");
+    },
+    complete: function () {
+      
+      if (id) {
+        $('#spincustomu2').hide();
+      }
+    }
+  });
+
+}
+
 function updateitem(id = 0) {
+  console.log('updateitem');
   if (id) {
     var label = $('#idlabelmenu_' + id).val();
     var clases = $('#clases_menu_' + id).val();
@@ -242,3 +332,9 @@ function insertParam(key, value) {
 wpNavMenu.registerChange = function () {
   getmenus();
 };
+
+
+// $('.img_1_link').on('change', function (e) {
+//   e.preventDefault();
+//   console.log("Aas");
+// });
