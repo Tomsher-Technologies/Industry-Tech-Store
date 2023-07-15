@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\PageTranslation;
 use Cache;
+use Str;
 
 class PageController extends Controller
 {
@@ -41,8 +42,8 @@ class PageController extends Controller
     {
         $page = new Page;
         $page->title = $request->title;
-        if (Page::where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
-            $page->slug             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
+        if (Page::where('slug', Str::slug($request->slug))->first() == null) {
+            $page->slug             = Str::slug($request->slug);
             $page->type             = "custom_page";
             $page->content          = $request->content;
             $page->meta_title       = $request->meta_title;
@@ -50,11 +51,6 @@ class PageController extends Controller
             $page->keywords         = $request->keywords;
             $page->meta_image       = $request->meta_image;
             $page->save();
-
-            $page_translation           = PageTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'page_id' => $page->id]);
-            $page_translation->title    = $request->title;
-            $page_translation->content  = $request->content;
-            $page_translation->save();
 
             flash(translate('New page has been created successfully'))->success();
             return redirect()->route('website.pages');
@@ -94,8 +90,6 @@ class PageController extends Controller
                     return Category::where('parent_id', 0)->with('childrenCategories')->get();
                 });
 
-                // dd($categories);
-
                 return view('backend.website_settings.pages.home_page_edit', compact('page', 'banners', 'current_banners', 'categories'));
             } else {
                 return view('backend.website_settings.pages.edit', compact('page'));
@@ -114,24 +108,30 @@ class PageController extends Controller
     public function update(Request $request, $id)
     {
         $page = Page::findOrFail($id);
-        if (Page::where('id', '!=', $id)->where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
-            if ($page->type == 'custom_page') {
-                $page->slug           = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
-            }
-            if ($request->lang == env("DEFAULT_LANGUAGE")) {
-                $page->title          = $request->title;
-                $page->content        = $request->content;
-            }
+
+        // preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug))
+
+        if (Page::where('id', '!=', $id)->where('slug', Str::slug($request->slug))->first() == null) {
+            // if ($page->type == 'custom_page') {
+            $page->slug = Str::slug($request->slug);
+            // }    
+
+            $page->title          = $request->title;
+            $page->content        = $request->content;
+
             $page->meta_title       = $request->meta_title;
             $page->meta_description = $request->meta_description;
             $page->keywords         = $request->keywords;
             $page->meta_image       = $request->meta_image;
+
+            $page->og_title       = $request->og_title;
+            $page->og_description = $request->og_description;
+
+            $page->twitter_title       = $request->twitter_title;
+            $page->twitter_description = $request->twitter_description;
+
             $page->save();
 
-            $page_translation           = PageTranslation::firstOrNew(['lang' => $request->lang, 'page_id' => $page->id]);
-            $page_translation->title    = $request->title;
-            $page_translation->content  = $request->content;
-            $page_translation->save();
 
             flash(translate('Page has been updated successfully'))->success();
             return redirect()->route('website.pages');
@@ -162,12 +162,14 @@ class PageController extends Controller
 
     public function show_custom_page($slug)
     {
-        $page = Page::where('slug', $slug)->first();
+        $page = Page::where('slug', $slug)->firstOrFail();
         if ($page != null) {
+            load_seo_tags($page);
             return view('frontend.custom_page', compact('page'));
         }
         abort(404);
     }
+    
     public function mobile_custom_page($slug)
     {
         $page = Page::where('slug', $slug)->first();

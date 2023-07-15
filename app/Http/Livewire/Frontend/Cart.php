@@ -28,7 +28,7 @@ class Cart extends Component
     ];
 
     protected $messages = [
-        'coupon_code.required' => 'Please ente a coupon code'
+        'coupon_code.required' => 'Please enter a coupon code'
     ];
 
     function getCarts()
@@ -67,10 +67,14 @@ class Cart extends Component
 
         if ($coupon) {
             if (strtotime(date('d-m-Y')) >= $coupon->start_date && strtotime(date('d-m-Y')) <= $coupon->end_date) {
-                $coupon_used = CouponUsage::where($this->user_col, $this->user_id)->where('coupon_id', $coupon->id)->first();
+                if (Auth::check()) {
+                    $coupon_used = CouponUsage::where($this->user_col, $this->user_id)->where('coupon_id', $coupon->id)->first();
 
-                if ($coupon->one_time_use && $coupon_used != null) {
-                    $this->addError('coupon_code', "You already used this coupon!");
+                    if ($coupon->one_time_use && $coupon_used != null) {
+                        $this->addError('coupon_code', "You already used this coupon!");
+                    } else {
+                        $can_use_coupon = true;
+                    }
                 } else {
                     $can_use_coupon = true;
                 }
@@ -123,7 +127,7 @@ class Cart extends Component
             $this->addError('coupon_code', "Coupon '$this->coupon_code' does not exist!");
         }
 
-        if ($this->coupon_added) {
+        if ($this->coupon_added && $this->carts->count() > 0){
             ModelsCart::where($this->user_col, $this->user_id)
                 ->update(
                     [

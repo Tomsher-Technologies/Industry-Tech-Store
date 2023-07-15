@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class ResetPasswordController extends Controller
 {
@@ -38,6 +39,21 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(6)
+                    ->letters()
+                    ->numbers()
+            ],
+        ];
+    }
+
     /**
      * Get the response for a successful password reset.
      *
@@ -47,13 +63,12 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetResponse(Request $request, $response)
     {
-        if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
-        {
+        if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
             return redirect()->route('admin.dashboard')
-                            ->with('status', trans($response));
+                ->with('status', trans($response));
         }
 
         return redirect()->route('home')
-                            ->with('status', trans($response));
+            ->with('status', trans($response));
     }
 }

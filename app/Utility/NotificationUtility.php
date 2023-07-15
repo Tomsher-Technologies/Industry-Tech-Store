@@ -22,7 +22,14 @@ class NotificationUtility
         $array['order'] = $order;
 
         try {
-            Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
+            if ($order->user_id !== null) {
+                Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
+            } else {
+                $address = json_decode($order->shipping_address);
+                if (isset($address->email)) {
+                    Mail::to($address->email)->queue(new InvoiceEmailManager($array));
+                }
+            }
 
             $admin_emails = get_setting('admin_emails') ? explode(',', get_setting('admin_emails')) : '';
             if ($admin_emails) {

@@ -45,13 +45,25 @@ Route::get('/refresh-csrf', function () {
 });
 
 Route::get('/test', function () {
-    return view('frontend.order_confirmed');
-    // $order = Order::find(1);
+    // return view('frontend.order_confirmed');
+    $order = Order::find(1);
+
+
+    // if ($order->user_id !== null) {
+    //     Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
+    // } else {
+    //     $address = json_decode($order->shipping_address);
+    //     if (isset($address->email)) {
+    //         Mail::to($address->email)->queue(new InvoiceEmailManager($array));
+    //     }
+    // }
 
     // $array['view'] = 'emails.invoice';
     // $array['subject'] = translate('A new order has been placed') . ' - ' . $order->code;
     // $array['from'] = env('MAIL_FROM_ADDRESS');
     // $array['order'] = $order;
+
+    new App\Notifications\PasswordReset("asd");
 
     // return new App\Mail\InvoiceEmailManager($array);
 });
@@ -64,7 +76,7 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 Route::get('/verification-confirmation/{code}', 'Auth\VerificationController@verification_confirmation')->name('email.verification.confirmation');
 Route::get('/email_change/callback', [HomeController::class, 'email_change_callback'])->name('email_change.callback');
-Route::post('/password/reset/email/submit', [HomeController::class, 'reset_password_with_code'])->name('password.update');
+// Route::post('/password/reset/email/submit', [HomeController::class, 'reset_password_with_code'])->name('password.update');
 
 
 Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('language.change');
@@ -194,11 +206,11 @@ Route::get('/sellers', [HomeController::class, 'all_seller'])->name('sellers');
 Route::get('/coupons', [HomeController::class, 'all_coupons'])->name('coupons.all');
 Route::get('/inhouse', [HomeController::class, 'inhouse_products'])->name('inhouse.all');
 
-Route::get('/seller-policy', [HomeController::class, 'sellerpolicy'])->name('sellerpolicy');
-Route::get('/return-policy', [HomeController::class, 'returnpolicy'])->name('returnpolicy');
-Route::get('/support-policy', [HomeController::class, 'supportpolicy'])->name('supportpolicy');
-Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
-Route::get('/privacy-policy', [HomeController::class, 'privacypolicy'])->name('privacypolicy');
+// Route::get('/seller-policy', [HomeController::class, 'sellerpolicy'])->name('sellerpolicy');
+// Route::get('/return-policy', [HomeController::class, 'returnpolicy'])->name('returnpolicy');
+// Route::get('/support-policy', [HomeController::class, 'supportpolicy'])->name('supportpolicy');
+// Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+// Route::get('/privacy-policy', [HomeController::class, 'privacypolicy'])->name('privacypolicy');
 
 
 Route::group(['middleware' => ['user']], function () {
