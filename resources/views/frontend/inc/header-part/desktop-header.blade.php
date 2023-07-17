@@ -8,109 +8,67 @@
                         <div class="menu__toggle"><i class="fa fa-bars"></i><span> Shop by Categories</span></div>
                         <div class="menu__content">
                             <ul class="menu--dropdown">
-
-                                @foreach (getAllCategories()->where('parent_id', 0) as $item)
-                                    {{-- <li>
-                                        <a href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
-                                    </li> --}}
-                                    @if ($item->child->count())
+                                @foreach (getMenu(6) as $item)
+                                    @if (count($item['child']))
                                         <li class="menu-item-has-children has-mega-menu">
-                                            <a title="{{ $item->name }}"
-                                                href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
+                                            <a href="{{ $item['link'] }}"
+                                                title="{{ $item['label'] }}">{{ $item['label'] }}</a>
                                             <span class="sub-toggle"></span>
-                                            <div class="mega-menu mega-menu-large">
+                                            @php
+                                                $menu_class = 'mega-menu-small';
+                                            @endphp
+                                            @foreach ($item['child'] as $sec_child)
+                                                @if ($sec_child['class'] == 'menu-col-1')
+                                                    @php
+                                                        $menu_class = 'mega-menu-large';
+                                                    @endphp
+                                                @endif
+                                            @endforeach
+                                            <div class="mega-menu {{ $menu_class }}">
                                                 <div class="row">
-                                                    <div class="col-md-3">
-                                                        <h4>Engine/Steering Controls<span class="sub-toggle"></span>
-                                                        </h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html">Engine/Steering Controls</a>
-                                                            </li>
-                                                            <li><a href="#.html">Steering Control System</a>
-                                                            </li>
-                                                            <li><a href="#.html">Engine Control System</a>
-                                                            </li>
-                                                            <li><a href="#.html">Steering Gear Alarm</a>
-                                                            </li>
-                                                            <li><a href="#.html">Steering Gear System</a>
-                                                            </li>
-                                                        </ul>
-                                                        <h4>Sensors<span class="sub-toggle"></span></h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html"> Sensors</a></li>
-                                                        </ul>
-
-                                                        <h4>Inverters<span class="sub-toggle"></span></h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html"> Inverters</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h4>Valve Positioners<span class="sub-toggle"></span></h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html"> Air Filter Regulator</a>
-                                                            </li>
-                                                            <li><a href="#.html"> Air Filter Regulator</a>
-                                                            </li>
-                                                            <li><a href="#.html">Air Volume Booster</a></li>
-                                                            <li><a href="#.html">Electro Pneumatic Positioners</a></li>
-                                                            <li><a href="#.html">I/P Converter</a></li>
-                                                            <li><a href="#.html">Lock up Valve</a></li>
-                                                            <li><a href="#.html">Pneumatic Positioners</a></li>
-                                                            <li><a href="#.html">Position Transmitter</a></li>
-                                                            <li><a href="#.html">Smart Valve positioner</a></li>
-                                                            <li><a href="#.html">Solenoid Valve</a></li>
-                                                            <li><a href="#.html">Relay</a></li>
-                                                            <li><a href="#.html">Valve Positioner Motor</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h4>Measuring & Control Instruments<span
-                                                                class="sub-toggle"></span>
-                                                        </h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html">Bargraph digital display</a></li>
-                                                            <li><a href="#.html">Cable float switch </a></li>
-                                                            <li><a href="#.html">Cooling Water Monitor </a></li>
-                                                            <li><a href="#.html">Float Level Switch </a></li>
-                                                            <li><a href="#.html">Level Transmitter </a></li>
-                                                            <li><a href="#.html">Oil Content Monitor </a></li>
-                                                            <li><a href="#.html">Oil Discharge Monitor </a></li>
-                                                            <li><a href="#.html">Pressure Switch </a></li>
-                                                            <li><a href="#.html">Pressure Transmitter </a></li>
-                                                            <li><a href="#.html">Side Mounting Float Switch </a></li>
-                                                            <li><a href="#.html">Temperature Controller </a></li>
-                                                            <li><a href="#.html">Temperature Switch </a></li>
-                                                            <li><a href="#.html">Temperature Transmitter </a></li>
-                                                            <li><a href="#.html">Thermocouple and RTD </a></li>
-                                                            <li><a href="#.html">Vertical Float Switch </a></li>
-                                                            <li><a href="#.html">Wash Water Monitor </a></li>
-                                                            <li><a href="#.html">Alarm Monitor </a></li>
-                                                            <li><a href="#.html">RPM Meter </a></li>
-                                                            <li><a href="#.html">Level Switch </a></li>
-                                                            <li><a href="#.html">Magnetic Float Level Switch </a></li>
-                                                            <li><a href="#.html">Bilge Level Switch </a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h4>Gauges<span class="sub-toggle"></span></h4>
-                                                        <ul class="mega-menu__list">
-                                                            <li><a href="#.html"> Pressure Gauges </a></li>
-                                                            <li><a href="#.html"> Temperature Gauges </a></li>
-                                                            <li><a href="#.html"> Hour Meters </a></li>
-                                                        </ul>
-                                                    </div>
+                                                    @foreach ($item['child'] as $sec_child)
+                                                        @if ($sec_child['class'] == 'menu-col-1')
+                                                            <div class="col-md-3">
+                                                                @foreach ($sec_child['child'] as $third_child)
+                                                                    @if ($third_child['class'] == 'menu-col')
+                                                                        <a href="{{ $third_child['link'] }}"
+                                                                            title="{{ $third_child['label'] }}">
+                                                                            <h4>
+                                                                                {{ $third_child['label'] }}
+                                                                                <span class="sub-toggle"></span>
+                                                                            </h4>
+                                                                        </a>
+                                                                        <ul class="mega-menu__list">
+                                                                            @foreach ($third_child['child'] as $forth_child)
+                                                                                <li>
+                                                                                    <a href="{{ $forth_child['link'] }}"
+                                                                                        title="{{ $forth_child['label'] }}">
+                                                                                        {{ $forth_child['label'] }}
+                                                                                    </a>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    @else
+                                                                        <a href="{{ $item['link'] }}"
+                                                                            title="{{ $item['label'] }}">{{ $item['label'] }}</a>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        @else
+                                                            <a href="{{ $item['link'] }}"
+                                                                title="{{ $item['label'] }}">{{ $item['label'] }}</a>
+                                                        @endif
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </li>
                                     @else
                                         <li>
-                                            <a
-                                                href="{{ route('products.category', $item->slug) }}">{{ $item->name }}</a>
+                                            <a href="{{ $item['link'] }}"
+                                                title="{{ $item['label'] }}">{{ $item['label'] }}</a>
                                         </li>
                                     @endif
                                 @endforeach
-
                             </ul>
                         </div>
                     </div>
@@ -155,7 +113,6 @@
                                             <div class="mega-menu__columnthree">
                                                 <div class="menu-shop-brands">
                                                     <div class="row">
-
                                                         @foreach ($menu['brands'] as $item)
                                                             <div class="brand col-lg-4">
                                                                 <a href="{{ route('products.brand', $item->slug) }}">
@@ -165,8 +122,6 @@
                                                                 </a>
                                                             </div>
                                                         @endforeach
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,7 +165,6 @@
                     @if (get_setting('show_currency_switcher') == 'on')
                         @php
                             $currentCurrency = getCurrentCurrency();
-                            // Session:has('currentCurrency', $currentCurrency->code)
                             session(['currency_code' => $currentCurrency->code]);
                         @endphp
                         <ul class="navigation__extra" id="currency-change">
@@ -218,7 +172,7 @@
                                 <div class="ps-dropdown">
                                     <a href="#">{{ $currentCurrency->name }}{{ $currentCurrency->symbol }}</a>
                                     <ul class="ps-dropdown-menu">
-                                        @foreach (\App\Models\Currency::where('status', 1)->get() as $key => $currency)
+                                        @foreach (getCurrency() as $key => $currency)
                                             <li>
                                                 <a class=" @if ($currentCurrency->code == $currency->code) active @endif"
                                                     href="javascript:void(0)"

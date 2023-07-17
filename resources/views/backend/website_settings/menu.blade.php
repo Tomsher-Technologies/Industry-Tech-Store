@@ -17,8 +17,8 @@
 
 @section('styles')
     <style>
-        #hwpwrap input[type=text],
-        #hwpwrap label,
+        #update-nav-menu input[type=text],
+        #update-nav-menu label,
         #hwpwrap .description-wide,
         #hwpwrap .menu-item-settings,
         #hwpwrap .menu-item-bar .menu-item-handle {

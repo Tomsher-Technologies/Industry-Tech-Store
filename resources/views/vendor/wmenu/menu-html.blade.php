@@ -15,8 +15,7 @@ $brands = \App\Models\Brand::all();
 
                             <div class="manage-menus">
                                 <form method="get" action="{{ $currentUrl }}">
-                                    <label for="menu" class="selected-menu">Select the menu you want to
-                                        edit:</label>
+                                    <label for="menu" class="selected-menu">Select the menu you want to edit:</label>
 
                                     {!! Menu::select('menu', $menulist) !!}
 
@@ -374,7 +373,7 @@ $brands = \App\Models\Brand::all();
                                                                             </div>
 
 
-                                                                            @if ($m->depth == 0)
+                                                                            @if ($m->depth == 0 && $indmenu->id == 1)
                                                                                 <div class="form-group row">
                                                                                     <label
                                                                                         class="col-md-3 col-form-label"
@@ -500,7 +499,6 @@ $brands = \App\Models\Brand::all();
                                                                                     </div>
                                                                                 </div>
 
-
                                                                                 <div class="form-group row">
                                                                                     <label
                                                                                         class="col-md-3 col-form-label"
@@ -591,20 +589,6 @@ $brands = \App\Models\Brand::all();
                                                                             @endif
 
 
-                                                                            {{-- <p class="description description-thin">
-
-                                                                            </p>
-
-                                                                            <p
-                                                                                class="field-css-classes description description-thin">
-
-                                                                            </p>
-
-                                                                            <p
-                                                                                class="field-css-url description description-wide">
-
-                                                                            </p> --}}
-
                                                                             @if (!empty($roles))
                                                                                 <p
                                                                                     class="field-css-role description description-wide">
@@ -650,11 +634,13 @@ $brands = \App\Models\Brand::all();
                                                                                     id="update-{{ $m->id }}"
                                                                                     href="javascript:void(0)">Update
                                                                                     item</a>
-                                                                                <a onclick="updateMenu({{ $m->id }})"
-                                                                                    class="button button-primary"
-                                                                                    href="javascript:void(0)">Update
-                                                                                    images</a>
 
+                                                                                @if ($m->depth == 0 && $indmenu->id == 1)
+                                                                                    <a onclick="updateMenu({{ $m->id }})"
+                                                                                        class="button button-primary"
+                                                                                        href="javascript:void(0)">Update
+                                                                                        images</a>
+                                                                                @endif
                                                                             </div>
 
                                                                         </div>
@@ -728,9 +714,14 @@ $brands = \App\Models\Brand::all();
 <script>
     function deleteitems() {
         var refresh = false
+
+        var count = 0;
+        var c_count = 0;
+
         $('.menu-item  input:checkbox[name=bulkDelete]').each(function() {
             if (this.checked) {
                 refresh = true
+                count++;
                 $.ajax({
                     dataType: 'json',
                     data: {
@@ -738,12 +729,17 @@ $brands = \App\Models\Brand::all();
                     },
                     url: deleteitemmenur,
                     type: 'POST',
-                    success: function(response) {}
+                    complete: function(response) {
+                        c_count++;
+                        if((c_count == count) ){
+                            window.location.reload();
+                        }
+                    }
                 });
             }
         });
         if (refresh) {
-            window.location.reload();
+            // 
         }
     }
 

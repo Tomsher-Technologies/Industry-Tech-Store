@@ -1087,7 +1087,7 @@ if (!function_exists('load_seo_tags')) {
 
     function getMenu($id)
     {
-        // Cache::forget('menu_1');
+        // Cache::forget('menu_6');
         return Cache::rememberForever('menu_' . $id,  function () use ($id) {
             $menu = Menu::get($id);
             $menu_real = array();
@@ -1120,4 +1120,21 @@ if (!function_exists('load_seo_tags')) {
     {
         return Product::wherePublished(1)->latest()->get();
     }
+
+    function getCurrency()
+    {
+        return Cache::rememberForever('currency', function () {
+            return Currency::where('status', 1)->get();
+        });
+    }
+
+    // function testView()
+    // {
+    //     Cache::forget('awesomeHtml');
+    //     $html = Cache::remember('awesomeHtml', 3600, function () {
+    //         return view('frontend.inc.header-part.desktop-header')->render();
+    //     });
+
+    //     return $html;
+    // }
 }
