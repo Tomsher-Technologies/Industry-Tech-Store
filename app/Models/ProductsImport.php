@@ -42,7 +42,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
         $categories = Category::all();
         foreach ($rows as $row) {
 
-            dd($row);
+            // dd($row);
 
             $sku = $this->cleanSKU($row['product_code']);
 
