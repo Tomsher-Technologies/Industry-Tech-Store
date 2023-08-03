@@ -1,33 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('meta')
-    <meta name="product-id" content="{{ $product->id }}">
-
-    <!-- Schema.org markup for Google+ -->
-    {{-- <meta itemprop="name" content="{{ $detailedProduct->meta_title }}">
-    <meta itemprop="description" content="{{ $detailedProduct->meta_description }}">
-    <meta itemprop="image" content="{{ uploaded_asset($detailedProduct->meta_img) }}">
-
-    <!-- Twitter Card data -->
-    <meta name="twitter:card" content="product">
-    <meta name="twitter:site" content="@publisher_handle">
-    <meta name="twitter:title" content="{{ $detailedProduct->meta_title }}">
-    <meta name="twitter:description" content="{{ $detailedProduct->meta_description }}">
-    <meta name="twitter:creator" content="@author_handle">
-    <meta name="twitter:image" content="{{ uploaded_asset($detailedProduct->meta_img) }}">
-    <meta name="twitter:data1" content="{{ single_price($detailedProduct->unit_price) }}">
-    <meta name="twitter:label1" content="Price">
-
-    <!-- Open Graph data -->
-    <meta property="og:title" content="{{ $detailedProduct->meta_title }}" />
-    <meta property="og:type" content="og:product" />
-    <meta property="og:url" content="{{ route('product', $detailedProduct->slug) }}" />
-    <meta property="og:image" content="{{ uploaded_asset($detailedProduct->meta_img) }}" />
-    <meta property="og:description" content="{{ $detailedProduct->meta_description }}" />
-    <meta property="og:site_name" content="{{ get_setting('meta_title') }}" />
-    <meta property="og:price:amount" content="{{ single_price($detailedProduct->unit_price) }}" />
-    <meta property="product:price:currency" content="{{ \App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code }}" />
-    <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}"> --}}
+    {{-- <meta name="product-id" content="{{ $product->id }}"> --}}
 @endsection
 
 @section('content')
@@ -51,12 +25,22 @@
                                 <figure>
                                     <div class="ps-wrapper">
                                         <div class="ps-product__gallery" data-arrow="true">
-                                            @if ($gallery)
-                                                @foreach ($gallery as $photo)
+
+                                            @if ($product->thumbnail_img)
+                                                <div class="item">
+                                                    <a href="{{ get_product_image($product->thumbnail_img) }}">
+                                                        <img src="{{ get_product_image($product->thumbnail_img, '500') }}"
+                                                            alt="{{ $product->name }}" />
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if ($product->photos)
+                                                @foreach (explode(',', $product->photos) as $photo)
                                                     <div class="item">
-                                                        <a href="{{ storage_asset($photo->file_name) }}">
-                                                            <img src="{{ storage_asset($photo->file_name) }}"
-                                                                alt="" />
+                                                        <a href="{{ get_product_image($photo) }}">
+                                                            <img src="{{ get_product_image($photo,'300') }}"
+                                                                alt="{{ $product->name }}" />
                                                         </a>
                                                     </div>
                                                 @endforeach
@@ -66,10 +50,12 @@
                                 </figure>
                                 <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4"
                                     data-arrow="false">
-                                    @if ($gallery)
-                                        @foreach ($gallery as $photo)
+                                    @if ($product->photos)
+                                        @foreach (explode(',', $product->photos) as $photo)
                                             <div class="item">
-                                                <img src="{{ storage_asset($photo->file_name) }}" alt="" />
+                                                <a href="{{ get_product_image($photo) }}">
+                                                    <img src="{{ get_product_image($photo,'300') }}" alt="{{ $product->name }}" />
+                                                </a>
                                             </div>
                                         @endforeach
                                     @endif

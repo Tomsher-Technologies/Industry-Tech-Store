@@ -15,6 +15,21 @@
     </div>
 @endsection
 
+@section('styles')
+    <style>
+        #update-nav-menu input[type=text],
+        #update-nav-menu label,
+        #hwpwrap .description-wide,
+        #hwpwrap .menu-item-settings,
+        #hwpwrap .menu-item-bar .menu-item-handle {
+            width: 100% !important
+        }
+
+        #hwpwrap .description-thin {
+            width: 48% !important
+        }
+    </style>
+@endsection
 @section('script')
     {!! Menu::scripts() !!}
 @endsection

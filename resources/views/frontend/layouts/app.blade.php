@@ -11,7 +11,7 @@
     @yield('meta')
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ frontendAsset('css/bulk-style.css') }}">
+    <link rel="icon" href="{{ frontendAsset('img/fav_icon.png') }}">
 
     <link rel='dns-prefetch' href='//fonts.googleapis.com' />
     <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />

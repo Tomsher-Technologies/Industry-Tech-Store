@@ -13,8 +13,10 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Str;
 use Auth;
-use DB;
-use Exception;
+use Carbon\Carbon;
+use File;
+use Image;
+use Mpdf\Tag\Tr;
 use Storage;
 
 //class ProductsImport implements ToModel, WithHeadingRow, WithValidation
@@ -22,44 +24,105 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
 {
     private $rows = 0;
 
+    private $year = 0;
+    private $month = 0;
+
+    public function __construct()
+    {
+        $this->year = Carbon::now()->year;
+        $this->month =  Carbon::now()->format('m');
+    }
+
     public function collection(Collection $rows)
     {
+
+        dd($rows);
+
         $brands = Brand::all();
         $categories = Category::all();
-        DB::enableQueryLog();
         foreach ($rows as $row) {
 
+            dd($row);
 
             $sku = $this->cleanSKU($row['product_code']);
 
-            $brand = $brands->where('name', $row['brand'])->first();
-            $category = explode('>', $row['category']);
 
+            if ($row['main_image']) {
+                $mainImage = $this->downloadAndResizeImage($row['main_image'], $sku, true);
+            }
+
+            if ($row['gallery_images']) {
+                $galleryImage = $this->downloadGallery($row['gallery_images'], $sku);
+                $galleryImage = implode(',', $galleryImage);
+            }
+
+            $brand = null;
             $parent_id = 0;
-            foreach ($category as $key => $cat) {
-                $c = $categories->where('name', 'LIKE', $cat)->where(
-                    'parent_id',
-                    $parent_id
-                )->first();
 
-                if ($c) {
-                    $parent_id = $c->id;
-                } else {
-                    $c_new = Category::create([
-                        'name' => $cat,
-                        'parent_id' => $parent_id,
-                        'level' => $key + 1,
-                        'slug' => $this->categorySlug($cat),
-                    ]);
-                    $categories->push($c_new);
-                    $parent_id = $c_new->id;
+            if ($row['brand']) {
+                $brand = $brands->where('name', $row['brand'])->first();
+            }
+
+            if ($row['category']) {
+                $category = explode('>', $row['category']);
+                foreach ($category as $key => $cat) {
+                    $c = $categories->where('name', 'LIKE', $cat)->where(
+                        'parent_id',
+                        $parent_id
+                    )->first();
+
+                    if ($c) {
+                        $parent_id = $c->id;
+                    } else {
+                        $c_new = Category::create([
+                            'name' => $cat,
+                            'parent_id' => $parent_id,
+                            'level' => $key + 1,
+                            'slug' => $this->categorySlug($cat),
+                        ]);
+                        $categories->push($c_new);
+                        $parent_id = $c_new->id;
+                    }
                 }
             }
 
-            if (isset($row['product_name']) && $row['product_name'] !== null) {
-                $productId = Product::updateOrCreate([
+
+            $productId = Product::where([
+                'sku' => $sku
+            ])->get()->first();
+
+            if ($productId) {
+                if ($row['product_name']) {
+                    $productId->name = $row['product_name'];
+                }
+                if ($row['description']) {
+                    $productId->description = $row['description'];
+                }
+                if ($row['short_description']) {
+                    $productId->short_description = $row['short_description'];
+                }
+                if ($row['category']) {
+                    $productId->category_id = $parent_id;
+                }
+                if ($brand) {
+                    $productId->brand_id = $brand->id;
+                }
+                if ($row['price']) {
+                    $productId->unit_price = $row['price'];
+                    $productId->purchase_price = $row['price'];
+                }
+
+                if ($mainImage) {
+                    $productId->thumbnail_img = $mainImage;
+                }
+                if ($galleryImage) {
+                    $productId->photos = $galleryImage;
+                }
+
+                $productId->save();
+            } else {
+                $productId = Product::create([
                     'sku' => $sku,
-                ], [
                     'name' => $row['product_name'],
                     'description' => $row['description'],
                     'short_description' => $row['short_description'],
@@ -76,19 +139,48 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                     // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
                     // 'photos' => $this->downloadGalleryImages($row['photos']),
 
+                    'thumbnail_img' => $mainImage ?? '',
+                    'photos' => $galleryImage ?? '',
+
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                 ]);
-
-                ProductStock::updateOrCreate([
-                    'product_id' => $productId->id,
-                    'sku' => $sku,
-                ], [
-                    'qty' => (isset($row['quantity']) && $row['quantity'] !== NULL) ? $row['quantity'] : 1,
-                    'price' => $row['price'] ?? 1,
-                    'variant' => '',
-                ]);
             }
+
+            // $productId = Product::updateOrCreate([
+
+            // ], [
+            //     'name' => $row['product_name'],
+            //     'description' => $row['description'],
+            //     'short_description' => $row['short_description'],
+            //     'category_id' => $parent_id,
+            //     'brand_id' => $brand ? $brand->id : 0,
+
+            //     'video_provider' => '',
+            //     'video_link' => '',
+            //     'unit_price' => $row['price'] ?? 1,
+            //     'purchase_price' => $row['price'],
+            //     'unit' => '',
+
+            //     'slug' => $this->productSlug($row['product_name']),
+            //     // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
+            //     // 'photos' => $this->downloadGalleryImages($row['photos']),
+
+            //     'thumbnail_img' => $mainImage ?? '',
+            //     'photos' => $galleryImage ?? '',
+
+            //     'created_by' => Auth::user()->id,
+            //     'updated_by' => Auth::user()->id,
+            // ]);
+
+            ProductStock::updateOrCreate([
+                'product_id' => $productId->id,
+                'sku' => $sku,
+            ], [
+                'qty' => (isset($row['quantity']) && $row['quantity'] !== NULL) ? $row['quantity'] : 1,
+                'price' => $row['price'] ?? 1,
+                'variant' => '',
+            ]);
         }
 
         flash(translate('Products imported successfully'))->success();
@@ -132,31 +224,119 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             //     }
             // }
             'product_code' => 'required',
-            'product_name' => 'required',
         ];
     }
 
-    public function downloadThumbnail($url)
+    public function downloadGallery($urls, $sku)
     {
-        try {
-            $upload = new Upload;
-            $upload->external_link = $url;
-            $upload->save();
-
-            return $upload->id;
-        } catch (\Exception $e) {
+        foreach (explode(',', str_replace(' ', '', $urls)) as $index => $url) {
+            $data[] = $this->downloadAndResizeImage($url, $sku, false, $index + 1);
         }
-        return null;
+
+        return $data;
     }
 
-    public function downloadGalleryImages($urls)
+
+    public function downloadAndResizeImage($imageUrl, $sku, $mainImage = false, $count = 1)
     {
-        $data = array();
-        foreach (explode(',', str_replace(' ', '', $urls)) as $url) {
-            $data[] = $this->downloadThumbnail($url);
+        $data_url = '';
+        $ext = substr($imageUrl, strrpos($imageUrl, '.') + 1);
+        $path = 'products/' . $this->year . '/' . $this->month . '/' . $sku . '/';
+
+        if ($mainImage) {
+            $filename = $path . $sku . '.' . $ext;
+        } else {
+            $n = $sku . '_gallery_' .  $count;
+            $filename = $path . $n . '.' . $ext;
         }
-        return implode(',', $data);
+
+        // Download the image from the given URL
+        $imageContents = file_get_contents($imageUrl);
+
+        // Save the original image in the storage folder
+        Storage::disk('public')->put($filename, $imageContents);
+        $data_url = Storage::url($filename);
+        // Create an Intervention Image instance for the downloaded image
+        $image = Image::make($imageContents);
+
+        // Resize and save three additional copies of the image with different sizes
+        $sizes = config('app.img_sizes'); // Specify the desired sizes in pixels
+
+        foreach ($sizes as $size) {
+            $resizedImage = $image->resize($size, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            if ($mainImage) {
+                $filename2 = $path . $sku . "_{$size}px" . '.' . $ext;
+            } else {
+                $n = $sku . '_gallery_' .  $count . "_{$size}px";
+                $filename2 = $path . $n . '.' . $ext;
+            }
+
+            // Save the resized image in the storage folder
+            Storage::disk('public')->put($filename2, $resizedImage->encode('jpg'));
+
+            // $data_url[] = Storage::url($filename2);
+        }
+
+        return $data_url;
     }
+
+    // public function downloadImage($url, $sku, $mainImage = false, $count = 1)
+    // {
+    //     // File path = products/YEAR/MONTH/SKU/
+
+    //     $path = 'products/' . $this->year . '/' . $this->month . '/' . $sku . '/';
+    //     if ($mainImage) {
+    //         $name = $path . $sku . '.' . substr($url, strrpos($url, '.') + 1);
+    //     } else {
+    //         $n = $sku . '_gallery_' .  $count;
+    //         $name = $path . $n . '.' . substr($url, strrpos($url, '.') + 1);
+    //     }
+
+    //     $contents = file_get_contents($url);
+
+    //     $img = Storage::disk('public')->put($name, $contents);
+
+    //     $og_img = Storage::url($name);
+
+
+    //     // resize 
+    //     // 300*300
+    //     // 500*500
+
+    //     // dd(storage_path('app/public/'.$name));
+
+    //     $sizes = config('app.img_sizes');
+
+    //     foreach ($sizes as $size) {
+
+    //         if ($mainImage) {
+    //             $r_name = $path . $sku . '_' . $size . '.' . substr($url, strrpos($url, '.') + 1);
+    //         } else {
+    //             $n = $sku . '_gallery_' .  $count;
+    //             $r_name = $path . $n . '_' . $size . '.' . substr($url, strrpos($url, '.') + 1);
+    //         }
+
+    //         $r_img = Image::make(storage_path('app/public/' . $name))->resize($size, $size, function ($constraint) {
+    //             $constraint->aspectRatio();
+    //         });
+
+    //         $img = Storage::disk('public')->put($r_name, $r_img->__toString());
+    //     }
+
+    //     return $og_img;
+    // }
+
+    // // public function downloadGalleryImages($urls)
+    // // {
+    // //     $data = array();
+    // //     foreach (explode(',', str_replace(' ', '', $urls)) as $url) {
+    // //         $data[] = $this->downloadThumbnail($url);
+    // //     }
+    // //     return implode(',', $data);
+    // // }
 
     public function cleanSKU($sku)
     {

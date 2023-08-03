@@ -30,6 +30,8 @@ class MiniCart extends Component
         }
 
         $this->layout = $layout;
+
+        $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
     }
 
     public function remove($id)
@@ -60,7 +62,7 @@ class MiniCart extends Component
 
     public function render()
     {
-        $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
+
 
         foreach ($this->carts as $cart) {
             array_push($this->cart_quality, [

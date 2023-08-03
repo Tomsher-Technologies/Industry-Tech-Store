@@ -16,6 +16,7 @@ use App\Models\Wallet;
 use App\Models\CombinedOrder;
 use App\Models\User;
 use App\Models\Addon;
+use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Products\ProductEnquiries;
@@ -933,6 +934,26 @@ if (!function_exists('get_uploads_image')) {
     }
 }
 
+// Get Image From Uploads
+if (!function_exists('get_product_image')) {
+    function get_product_image($path, $size = 'full')
+    {
+        if ($path) {
+            if ($size == 'full') {
+                return app('url')->asset($path);
+            } else {
+                $fileName = pathinfo($path)['filename'];
+                $ext   = pathinfo($path)['extension'];
+                $dirname   = pathinfo($path)['dirname'];
+                $r_path = "{$dirname}/" . $fileName . "_{$size}px" . ".{$ext}";
+                return app('url')->asset($r_path);
+            }
+        }
+
+        return frontendAsset('img/placeholder.webp');
+    }
+}
+
 // Load SEO details
 if (!function_exists('load_seo_tags')) {
     function load_seo_tags($seo = null, $image = '')
@@ -1086,8 +1107,32 @@ if (!function_exists('load_seo_tags')) {
 
     function getMenu($id)
     {
+        // Cache::forget('menu_6');
         return Cache::rememberForever('menu_' . $id,  function () use ($id) {
-            return Menu::get($id);
+            $menu = Menu::get($id);
+            $menu_real = array();
+            foreach ($menu as $key => $m) {
+                $menu_real[$key] = $m;
+                if ($m['img_1']) {
+                    $menu_real[$key]['img_1_src'] = uploaded_asset($m['img_1']);
+                }
+                if ($m['img_2']) {
+                    $menu_real[$key]['img_2_src'] = uploaded_asset($m['img_2']);
+                }
+                if ($m['img_3']) {
+                    $menu_real[$key]['img_3_src'] = uploaded_asset($m['img_3']);
+                }
+
+                if ($m['brands'] !== null) {
+                    $brand_ids = explode(',', $m['brands']);
+                    $brands = Brand::whereIn('id', $brand_ids)->select(['id', 'name', 'logo', 'slug'])->with('logoImage', function ($query) {
+                        return $query->select(['id', 'file_name']);
+                    })->get();
+
+                    $menu_real[$key]['brands'] = $brands;
+                }
+            }
+            return $menu_real;
         });
     }
 
@@ -1095,4 +1140,21 @@ if (!function_exists('load_seo_tags')) {
     {
         return Product::wherePublished(1)->latest()->get();
     }
+
+    function getCurrency()
+    {
+        return Cache::rememberForever('currency', function () {
+            return Currency::where('status', 1)->get();
+        });
+    }
+
+    // function testView()
+    // {
+    //     Cache::forget('awesomeHtml');
+    //     $html = Cache::remember('awesomeHtml', 3600, function () {
+    //         return view('frontend.inc.header-part.desktop-header')->render();
+    //     });
+
+    //     return $html;
+    // }
 }
