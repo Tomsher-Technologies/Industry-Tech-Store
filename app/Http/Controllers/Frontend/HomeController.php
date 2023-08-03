@@ -113,11 +113,11 @@ class HomeController extends Controller
         // Cache::forget('newest_products');
 
         $newest_products = Cache::remember('newest_products', 3600, function () {
-            return Product::latest()->with('brand')->limit(12)->get();
+            return Product::where('published', 1)->latest()->with('brand')->limit(12)->get();
         });
 
         $best_selling_products = Cache::remember('best_selling_products', 3600, function () {
-            return Product::latest()->with('brand')->limit(12)->get();
+            return Product::where('published', 1)->latest()->with('brand')->limit(12)->get();
         });
 
         // load_seo_tags(null, '', 'Home');

@@ -934,6 +934,26 @@ if (!function_exists('get_uploads_image')) {
     }
 }
 
+// Get Image From Uploads
+if (!function_exists('get_product_image')) {
+    function get_product_image($path, $size = 'full')
+    {
+        if ($path) {
+            if ($size == 'full') {
+                return app('url')->asset($path);
+            } else {
+                $fileName = pathinfo($path)['filename'];
+                $ext   = pathinfo($path)['extension'];
+                $dirname   = pathinfo($path)['dirname'];
+                $r_path = "{$dirname}/" . $fileName . "_{$size}px" . ".{$ext}";
+                return app('url')->asset($r_path);
+            }
+        }
+
+        return frontendAsset('img/placeholder.webp');
+    }
+}
+
 // Load SEO details
 if (!function_exists('load_seo_tags')) {
     function load_seo_tags($seo = null, $image = '')

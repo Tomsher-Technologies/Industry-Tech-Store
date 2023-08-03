@@ -1,9 +1,12 @@
 <div class="ps-product__header">
     <div class="ps-product__thumbnail" data-vertical="false">
         <div class="ps-product__images" data-arrow="true">
-            <div class="item"><img src="img/products/shop/01.jpg" alt=""></div>
-            <div class="item"><img src="img/products/shop/02.jpg" alt=""></div>
-            <div class="item"><img src="img/products/shop/03.jpg" alt=""></div>
+            <div class="item">
+                <img src="{{ get_product_image($product->thumbnail_img, '300') }}" alt="{{ $product->name }}">
+            </div>
+            {{-- @foreach (explode(',', $product->photos) as $photo)
+                <img src="{{ get_product_image($photo, '300') }}" alt="{{ $product->name }}">
+            @endforeach --}}
         </div>
     </div>
     <div class="ps-product__info">

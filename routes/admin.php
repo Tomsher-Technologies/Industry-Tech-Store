@@ -52,7 +52,9 @@ use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Frontend\HomeSliderController;
+use App\Http\Controllers\Admin\TempImageController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Livewire\TempUpload;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
@@ -405,6 +407,11 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/aiz-uploader/get_uploaded_files', [AizUploadController::class, 'get_uploaded_files']);
     Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class, 'get_preview_files']);
     Route::get('/aiz-uploader/download/{id}', [AizUploadController::class, 'attachment_download'])->name('download_attachment');
+
+
+    Route::get('/temp-images', [TempImageController::class, 'index'])->name('temp_image');
+    Route::post('/temp-images', [TempImageController::class, 'upload']);
+    Route::get('/temp-images/list', [TempImageController::class, 'listAll'])->name('temp_image.all');
 
     // Cache
     Route::get('/cache-cache/{type?}', [AdminController::class, 'clearCache'])->name('cache.clear');
