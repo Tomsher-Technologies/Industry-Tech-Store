@@ -55,8 +55,8 @@
                                                                 @endforeach
                                                             </div>
                                                         @else
-                                                            <a href="{{ $item['link'] }}"
-                                                                title="{{ $item['label'] }}">{{ $item['label'] }}</a>
+                                                            <a href="{{ $sec_child['link'] }}"
+                                                                title="{{ $sec_child['label'] }}">{{ $sec_child['label'] }}</a>
                                                         @endif
                                                     @endforeach
                                                 </div>

@@ -36,7 +36,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
     public function collection(Collection $rows)
     {
 
-        dd($rows);
+        // dd($rows);
 
         $brands = Brand::all();
         $categories = Category::all();
@@ -47,11 +47,14 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             $sku = $this->cleanSKU($row['product_code']);
 
 
-            if ($row['main_image']) {
+            $mainImage = null;
+            $galleryImage = null;
+
+            if (isset($row['main_image'])) {
                 $mainImage = $this->downloadAndResizeImage($row['main_image'], $sku, true);
             }
 
-            if ($row['gallery_images']) {
+            if (isset($row['gallery_images'])) {
                 $galleryImage = $this->downloadGallery($row['gallery_images'], $sku);
                 $galleryImage = implode(',', $galleryImage);
             }
@@ -59,11 +62,11 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             $brand = null;
             $parent_id = 0;
 
-            if ($row['brand']) {
+            if (isset($row['brand'])) {
                 $brand = $brands->where('name', $row['brand'])->first();
             }
 
-            if ($row['category']) {
+            if (isset($row['category'])) {
                 $category = explode('>', $row['category']);
                 foreach ($category as $key => $cat) {
                     $c = $categories->where('name', 'LIKE', $cat)->where(
@@ -92,22 +95,22 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             ])->get()->first();
 
             if ($productId) {
-                if ($row['product_name']) {
+                if (isset($row['product_name'])) {
                     $productId->name = $row['product_name'];
                 }
-                if ($row['description']) {
+                if (isset($row['description'])) {
                     $productId->description = $row['description'];
                 }
-                if ($row['short_description']) {
+                if (isset($row['short_description'])) {
                     $productId->short_description = $row['short_description'];
                 }
-                if ($row['category']) {
+                if (isset($row['category'])) {
                     $productId->category_id = $parent_id;
                 }
-                if ($brand) {
+                if (isset($brand)) {
                     $productId->brand_id = $brand->id;
                 }
-                if ($row['price']) {
+                if (isset($row['price'])) {
                     $productId->unit_price = $row['price'];
                     $productId->purchase_price = $row['price'];
                 }
@@ -121,30 +124,30 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
 
                 $productId->save();
             } else {
-                $productId = Product::create([
-                    'sku' => $sku,
-                    'name' => $row['product_name'],
-                    'description' => $row['description'],
-                    'short_description' => $row['short_description'],
-                    'category_id' => $parent_id,
-                    'brand_id' => $brand ? $brand->id : 0,
+                // $productId = Product::create([
+                //     'sku' => $sku,
+                //     'name' => $row['product_name'],
+                //     'description' => $row['description'],
+                //     'short_description' => $row['short_description'],
+                //     'category_id' => $parent_id,
+                //     'brand_id' => $brand ? $brand->id : 0,
 
-                    'video_provider' => '',
-                    'video_link' => '',
-                    'unit_price' => $row['price'] ?? 1,
-                    'purchase_price' => $row['price'],
-                    'unit' => '',
+                //     'video_provider' => '',
+                //     'video_link' => '',
+                //     'unit_price' => $row['price'] ?? 1,
+                //     'purchase_price' => $row['price'],
+                //     'unit' => '',
 
-                    'slug' => $this->productSlug($row['product_name']),
-                    // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
-                    // 'photos' => $this->downloadGalleryImages($row['photos']),
+                //     'slug' => $this->productSlug($row['product_name']),
+                //     // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
+                //     // 'photos' => $this->downloadGalleryImages($row['photos']),
 
-                    'thumbnail_img' => $mainImage ?? '',
-                    'photos' => $galleryImage ?? '',
+                //     'thumbnail_img' => $mainImage ?? '',
+                //     'photos' => $galleryImage ?? '',
 
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                ]);
+                //     'created_by' => Auth::user()->id,
+                //     'updated_by' => Auth::user()->id,
+                // ]);
             }
 
             // $productId = Product::updateOrCreate([
@@ -173,14 +176,16 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             //     'updated_by' => Auth::user()->id,
             // ]);
 
-            ProductStock::updateOrCreate([
-                'product_id' => $productId->id,
-                'sku' => $sku,
-            ], [
-                'qty' => (isset($row['quantity']) && $row['quantity'] !== NULL) ? $row['quantity'] : 1,
-                'price' => $row['price'] ?? 1,
-                'variant' => '',
-            ]);
+            if ($productId) {
+                ProductStock::updateOrCreate([
+                    'product_id' => $productId->id,
+                    'sku' => $sku,
+                ], [
+                    'qty' => (isset($row['quantity']) && $row['quantity'] !== NULL) ? $row['quantity'] : 1,
+                    'price' => $row['price'] ?? 1,
+                    'variant' => '',
+                ]);
+            }
         }
 
         flash(translate('Products imported successfully'))->success();
@@ -240,44 +245,48 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
     public function downloadAndResizeImage($imageUrl, $sku, $mainImage = false, $count = 1)
     {
         $data_url = '';
-        $ext = substr($imageUrl, strrpos($imageUrl, '.') + 1);
-        $path = 'products/' . $this->year . '/' . $this->month . '/' . $sku . '/';
 
-        if ($mainImage) {
-            $filename = $path . $sku . '.' . $ext;
-        } else {
-            $n = $sku . '_gallery_' .  $count;
-            $filename = $path . $n . '.' . $ext;
-        }
-
-        // Download the image from the given URL
-        $imageContents = file_get_contents($imageUrl);
-
-        // Save the original image in the storage folder
-        Storage::disk('public')->put($filename, $imageContents);
-        $data_url = Storage::url($filename);
-        // Create an Intervention Image instance for the downloaded image
-        $image = Image::make($imageContents);
-
-        // Resize and save three additional copies of the image with different sizes
-        $sizes = config('app.img_sizes'); // Specify the desired sizes in pixels
-
-        foreach ($sizes as $size) {
-            $resizedImage = $image->resize($size, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+        try {
+            $ext = substr($imageUrl, strrpos($imageUrl, '.') + 1);
+            $path = 'products/' . $this->year . '/' . $this->month . '/' . $sku . '/';
 
             if ($mainImage) {
-                $filename2 = $path . $sku . "_{$size}px" . '.' . $ext;
+                $filename = $path . $sku . '.' . $ext;
             } else {
-                $n = $sku . '_gallery_' .  $count . "_{$size}px";
-                $filename2 = $path . $n . '.' . $ext;
+                $n = $sku . '_gallery_' .  $count;
+                $filename = $path . $n . '.' . $ext;
             }
 
-            // Save the resized image in the storage folder
-            Storage::disk('public')->put($filename2, $resizedImage->encode('jpg'));
+            // Download the image from the given URL
+            $imageContents = file_get_contents($imageUrl);
 
-            // $data_url[] = Storage::url($filename2);
+            // Save the original image in the storage folder
+            Storage::disk('public')->put($filename, $imageContents);
+            $data_url = Storage::url($filename);
+            // Create an Intervention Image instance for the downloaded image
+            $image = Image::make($imageContents);
+
+            // Resize and save three additional copies of the image with different sizes
+            $sizes = config('app.img_sizes'); // Specify the desired sizes in pixels
+
+            foreach ($sizes as $size) {
+                $resizedImage = $image->resize($size, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                if ($mainImage) {
+                    $filename2 = $path . $sku . "_{$size}px" . '.' . $ext;
+                } else {
+                    $n = $sku . '_gallery_' .  $count . "_{$size}px";
+                    $filename2 = $path . $n . '.' . $ext;
+                }
+
+                // Save the resized image in the storage folder
+                Storage::disk('public')->put($filename2, $resizedImage->encode('jpg'));
+
+                // $data_url[] = Storage::url($filename2);
+            }
+        } catch (Exception $e) {
         }
 
         return $data_url;
