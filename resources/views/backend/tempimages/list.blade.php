@@ -8,8 +8,6 @@
                     <h5 class="mb-0 h6">Upload Temp Images</h5>
                 </div>
                 
-                
-
             </div>
         </div>
     </div>
