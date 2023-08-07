@@ -29,33 +29,37 @@
                                                     @foreach ($item['child'] as $sec_child)
                                                         @if ($sec_child['class'] == 'menu-col-1')
                                                             <div class="col-md-3">
-                                                                @foreach ($sec_child['child'] as $third_child)
-                                                                    @if ($third_child['class'] == 'menu-col')
-                                                                        <a href="{{ $third_child['link'] }}"
-                                                                            title="{{ $third_child['label'] }}">
-                                                                            <h4>
-                                                                                {{ $third_child['label'] }}
-                                                                                <span class="sub-toggle"></span>
-                                                                            </h4>
-                                                                        </a>
-                                                                        <ul class="mega-menu__list">
-                                                                            @foreach ($third_child['child'] as $forth_child)
-                                                                                <li>
-                                                                                    <a href="{{ $forth_child['link'] }}"
-                                                                                        title="{{ $forth_child['label'] }}">
-                                                                                        {{ $forth_child['label'] }}
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                    @else
-                                                                        <a href="{{ $item['link'] }}"
-                                                                            title="{{ $item['label'] }}">{{ $item['label'] }}</a>
-                                                                    @endif
-                                                                @endforeach
+                                                                <ul>
+                                                                    @foreach ($sec_child['child'] as $third_child)
+                                                                        <li>
+                                                                            @if ($third_child['class'] == 'menu-col')
+                                                                                <a href="{{ $third_child['link'] }}"
+                                                                                    title="{{ $third_child['label'] }}">
+                                                                                    <h4>
+                                                                                        {{ $third_child['label'] }}
+                                                                                        <span class="sub-toggle"></span>
+                                                                                    </h4>
+                                                                                </a>
+                                                                                <ul class="mega-menu__list">
+                                                                                    @foreach ($third_child['child'] as $forth_child)
+                                                                                        <li>
+                                                                                            <a href="{{ $forth_child['link'] }}"
+                                                                                                title="{{ $forth_child['label'] }}">
+                                                                                                {{ $forth_child['label'] }}
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            @else
+                                                                                <a href="{{ $item['link'] }}"
+                                                                                    title="{{ $item['label'] }}">{{ $item['label'] }}</a>
+                                                                            @endif
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
                                                             </div>
                                                         @else
-                                                            <a href="{{ $sec_child['link'] }}"
+                                                            <a class="pb-10" href="{{ $sec_child['link'] }}"
                                                                 title="{{ $sec_child['label'] }}">{{ $sec_child['label'] }}</a>
                                                         @endif
                                                     @endforeach
@@ -190,3 +194,8 @@
             </div>
         </nav>
     </header>
+    <style>
+        .mega-menu.mega-menu-small .pb-10:last-child {
+            padding-bottom: 0;
+        }
+    </style>
