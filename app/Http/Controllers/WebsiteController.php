@@ -35,6 +35,11 @@ class WebsiteController extends Controller
 	{
 		// return response()->json(  , 200);
 
+		$brands = NULL;
+		if ($request->brands) {
+			$brands = implode(',', $request->brands);
+		}
+
 		MenuItems::where('id', $request->id)->update([
 			'img_1' => $request->img_1,
 			'img_2' => $request->img_2,
@@ -44,7 +49,7 @@ class WebsiteController extends Controller
 			'img_2_link' => $request->img_2_link,
 			'img_3_link' => $request->img_3_link,
 
-			'brands' => implode(',', $request->brands)
+			'brands' => $brands
 		]);
 
 
