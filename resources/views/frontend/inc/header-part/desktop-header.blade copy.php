@@ -18,17 +18,11 @@
                                                 $menu_class = 'mega-menu-small';
                                                 $sub_menu_class = 'col-md-6';
                                                 $img_menu_class = 'col-md-6';
-                                                $has_menu = false;
                                             @endphp
                                             @foreach ($item['child'] as $sec_child)
                                                 @if ($sec_child['class'] == 'menu-col-1')
                                                     @php
-                                                        $has_menu = true;
                                                         $menu_class = 'mega-menu-large';
-                                                    @endphp
-                                                @elseif($item['img_1'])
-                                                    @php
-                                                        $menu_class = 'mega-menu-medium';
                                                     @endphp
                                                 @endif
 
@@ -38,63 +32,48 @@
                                                     @endphp
                                                 @endif
                                             @endforeach
-
                                             <div class="mega-menu {{ $menu_class }}">
                                                 <div class="row">
-
-                                                    @if ($has_menu)
-                                                        @foreach ($item['child'] as $sec_child)
-                                                            @if ($sec_child['class'] == 'menu-col-1')
-                                                                @php
-                                                                    $img_menu_class = 'col-md-4';
-                                                                @endphp
-                                                                <div class="{{ $sub_menu_class }}">
-                                                                    <ul>
-                                                                        @foreach ($sec_child['child'] as $third_child)
-                                                                            <li>
-                                                                                @if ($third_child['class'] == 'menu-col')
-                                                                                    <a href="{{ $third_child['link'] }}"
-                                                                                        title="{{ $third_child['label'] }}">
-                                                                                        <h4>
-                                                                                            {{ $third_child['label'] }}
-                                                                                            <span
-                                                                                                class="sub-toggle"></span>
-                                                                                        </h4>
-                                                                                    </a>
-                                                                                    <ul class="mega-menu__list">
-                                                                                        @foreach ($third_child['child'] as $forth_child)
-                                                                                            <li>
-                                                                                                <a href="{{ $forth_child['link'] }}"
-                                                                                                    title="{{ $forth_child['label'] }}">
-                                                                                                    {{ $forth_child['label'] }}
-                                                                                                </a>
-                                                                                            </li>
-                                                                                        @endforeach
-                                                                                    </ul>
-                                                                                @endif
-                                                                            </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        <div class="{{ $item['img_1'] ? 'col-md-6' : 'col-md-12' }}">
-                                                            <ul class="mega-menu__list">
-                                                                @foreach ($item['child'] as $sec_child)
-                                                                    <li>
-                                                                        <a class="pb-10"
-                                                                            href="{{ $sec_child['link'] }}"
-                                                                            title="{{ $sec_child['label'] }}">
-                                                                            <h4>{{ $sec_child['label'] }}</h4>
-                                                                        </a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endif
-
-
+                                                    @foreach ($item['child'] as $sec_child)
+                                                        @if ($sec_child['class'] == 'menu-col-1')
+                                                            @php
+                                                                $img_menu_class = 'col-md-4';
+                                                            @endphp
+                                                            <div class="{{ $sub_menu_class }}">
+                                                                <ul>
+                                                                    @foreach ($sec_child['child'] as $third_child)
+                                                                        <li>
+                                                                            @if ($third_child['class'] == 'menu-col')
+                                                                                <a href="{{ $third_child['link'] }}"
+                                                                                    title="{{ $third_child['label'] }}">
+                                                                                    <h4>
+                                                                                        {{ $third_child['label'] }}
+                                                                                        <span class="sub-toggle"></span>
+                                                                                    </h4>
+                                                                                </a>
+                                                                                <ul class="mega-menu__list">
+                                                                                    @foreach ($third_child['child'] as $forth_child)
+                                                                                        <li>
+                                                                                            <a href="{{ $forth_child['link'] }}"
+                                                                                                title="{{ $forth_child['label'] }}">
+                                                                                                {{ $forth_child['label'] }}
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            @else
+                                                                                <a href="{{ $item['link'] }}"
+                                                                                    title="{{ $item['label'] }}">{{ $item['label'] }}</a>
+                                                                            @endif
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @else
+                                                            <a class="pb-10" href="{{ $sec_child['link'] }}"
+                                                                title="{{ $sec_child['label'] }}">{{ $sec_child['label'] }}</a>
+                                                        @endif
+                                                    @endforeach
                                                     @if ($item['img_1'])
                                                         <div class="{{ $img_menu_class }}">
                                                             <a href="{{ $item['img_1_link'] ?? '#' }}">
