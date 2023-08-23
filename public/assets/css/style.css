@@ -16247,9 +16247,9 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   min-width: 260px;
 }
 
-.menu--product-categories .menu--dropdown>.has-mega-menu {
+/* .menu--product-categories .menu--dropdown>.has-mega-menu {
   position: relative;
-}
+} */
 
 .menu--product-categories:hover .menu__content {
   visibility: visible;

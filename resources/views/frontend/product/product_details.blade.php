@@ -39,7 +39,7 @@
                                                 @foreach (explode(',', $product->photos) as $photo)
                                                     <div class="item">
                                                         <a href="{{ get_product_image($photo) }}">
-                                                            <img src="{{ get_product_image($photo,'300') }}"
+                                                            <img src="{{ get_product_image($photo, '300') }}"
                                                                 alt="{{ $product->name }}" />
                                                         </a>
                                                     </div>
@@ -54,7 +54,8 @@
                                         @foreach (explode(',', $product->photos) as $photo)
                                             <div class="item">
                                                 <a href="{{ get_product_image($photo) }}">
-                                                    <img src="{{ get_product_image($photo,'300') }}" alt="{{ $product->name }}" />
+                                                    <img src="{{ get_product_image($photo, '300') }}"
+                                                        alt="{{ $product->name }}" />
                                                 </a>
                                             </div>
                                         @endforeach
@@ -73,12 +74,14 @@
 
                                     {{ renderStarRating($product->rating) }}
                                 </div>
-                                <h4 class="ps-product__price">
-                                    {{ home_discounted_base_price($product) }}
-                                    @if (home_base_price($product) != home_discounted_base_price($product))
-                                        <del>{{ home_base_price($product) }}</del>
-                                    @endif
-                                </h4>
+                                @if (!$product->hide_price)
+                                    <h4 class="ps-product__price">
+                                        {{ home_discounted_base_price($product) }}
+                                        @if (home_base_price($product) != home_discounted_base_price($product))
+                                            <del>{{ home_base_price($product) }}</del>
+                                        @endif
+                                    </h4>
+                                @endif
 
                                 @if ($product->short_description)
                                     <div class="ps-product__desc">
@@ -86,22 +89,28 @@
                                     </div>
                                 @endif
 
+
                                 <div class="ps-product__shopping">
-                                    <figure>
-                                        <figcaption>Quantity</figcaption>
-                                        <div class="form-group--number">
-                                            <button class="up quantity-plus"><i class="fa fa-plus"></i></button>
-                                            <button class="down quantity-minus">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                            <input class="form-control quantity-input"
-                                                data-min="{{ $product->min_qty ?? 1 }}"
-                                                data-max="{{ $product->stocks->first()->qty }}" type="number"
-                                                value="{{ $product->min_qty ?? 1 }}" />
-                                        </div>
-                                    </figure>
-                                    <a class="ps-btn" href="javascript:void(0)"
-                                        onclick="addCart('{{ $product->slug }}')">Add to cart</a>
+                                    @if (!$product->hide_price)
+                                        <figure>
+                                            <figcaption>Quantity</figcaption>
+                                            <div class="form-group--number">
+                                                <button class="up quantity-plus"><i class="fa fa-plus"></i></button>
+                                                <button class="down quantity-minus">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <input class="form-control quantity-input"
+                                                    data-min="{{ $product->min_qty ?? 1 }}"
+                                                    data-max="{{ $product->stocks->first()->qty }}" type="number"
+                                                    value="{{ $product->min_qty ?? 1 }}" />
+                                            </div>
+                                        </figure>
+
+                                        <a class="ps-btn" href="javascript:void(0)"
+                                            onclick="addCart('{{ $product->slug }}')">Add to cart</a>
+                                    @endif
+
+
                                     <a class="ps-btn ps-btn--orange" href="javascript:void(0)"
                                         onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
 

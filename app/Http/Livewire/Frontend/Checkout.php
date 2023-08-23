@@ -185,16 +185,18 @@ class Checkout extends Component
             $this->shipping_rates['falt_rate']['rate'] = get_setting('flat_rate_shipping_cost');
         }
 
+        if (get_setting('pickup_from_store') == 'on') {
+            $this->shipping_rates['pickup_from_store']['name'] = "Pick up from store";
+            $this->shipping_rates['pickup_from_store']['rate'] = 0;
+            $this->shipping_rates['pickup_from_store']['note'] = "You can arrange your own courier serive to pick up the order from our store after 24 hours once the order is confirmed.";
+        }
+
         if (get_setting('cod_status')) {
             $this->payment_methods['cod']['name'] = "Cash On Delivery";
             $this->payment_methods['cod']['type'] = 'cash_on_delivery';
         }
 
-
         $this->payment_method = $this->payment_methods[key($this->payment_methods)]['type'];
-        $this->shipping_method = key($this->shipping_rates);
-
-        $this->shipping_rate = $this->shipping_rates[$this->shipping_method]['rate'];
 
         $this->country_list = Country::whereStatus(1)->get();
     }
@@ -300,6 +302,28 @@ class Checkout extends Component
             ]);
         }
 
+        $country_code = '';
+        if (Auth::check()) {
+            $address = $this->addresses->where('id', $this->shipping_address)->first();
+            $country_code = $address->country->code;
+        } else {
+            $country_code = Country::where('id', $this->guest_address_country)->first()->code;
+        }
+
+        if ($country_code !== 'AE') {
+            if (isset($this->shipping_rates['falt_rate'])) {
+                unset($this->shipping_rates['falt_rate']);
+            }
+        } else {
+            if (!isset($this->shipping_rates['falt_rate'])) {
+                $this->shipping_rates['falt_rate']['name'] = "Flat Rate Shipping";
+                $this->shipping_rates['falt_rate']['rate'] = get_setting('flat_rate_shipping_cost');
+            }
+        }
+
+        $this->shipping_method = key($this->shipping_rates);
+        $this->shipping_rate = $this->shipping_rates[$this->shipping_method]['rate'];
+
         if ($this->diffrent_billing_address) {
             $this->current_step = 2;
         } else {
@@ -341,8 +365,6 @@ class Checkout extends Component
         ], [
             'shipping_method.required' => "Please select a shipping method",
         ]);
-
-        // $this->dispatchBrowserEvent('showStep', 4);
     }
 
     public function checkout()
@@ -364,7 +386,6 @@ class Checkout extends Component
             $shipping_address_json['longitude']   = $address->longitude;
             $shipping_address_json['latitude']    = $address->latitude;
         } else {
-
             $shipping_address_json['name']        =  $this->guest_address_name;
             $shipping_address_json['email']       =  $this->guest_address_email;
             $shipping_address_json['address']     =  $this->guest_address_address;
@@ -436,7 +457,6 @@ class Checkout extends Component
     public function render()
     {
         $this->total = ($this->sub_total - $this->coupon_rate) + $this->shipping_rate;
-
         $country = $this->country_list;
         return view('livewire.frontend.checkout', [
             'country' => $country

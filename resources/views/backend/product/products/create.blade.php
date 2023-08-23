@@ -19,14 +19,12 @@
                                 <label class="col-md-3 col-from-label">Product Name <span
                                         class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="name"
-                                        placeholder="Product Name" onchange="title_update(this)"
-                                        required>
+                                    <input type="text" class="form-control" name="name" placeholder="Product Name"
+                                        onchange="title_update(this)" required>
                                 </div>
                             </div>
                             <div class="form-group row" id="category">
-                                <label class="col-md-3 col-from-label">Category <span
-                                        class="text-danger">*</span></label>
+                                <label class="col-md-3 col-from-label">Category <span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <select class="form-control aiz-selectpicker" name="category_id" id="category_id"
                                         data-live-search="true" required>
@@ -75,16 +73,15 @@
                                 <div class="col-md-8">
                                     <input type="text" class="form-control aiz-tag-input" name="tags[]"
                                         placeholder="Type and hit enter to add a tag">
-                                    <small
-                                        class="text-muted">This is used for search. Input those words by which cutomer can find this product.</small>
+                                    <small class="text-muted">This is used for search. Input those words by which cutomer
+                                        can find this product.</small>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Slug<span
-                                        class="text-danger">*</span></label>
+                                <label class="col-md-3 col-form-label">Slug<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" placeholder="Slug" id="slug"
-                                        name="slug" required class="form-control">
+                                    <input type="text" placeholder="Slug" id="slug" name="slug" required
+                                        class="form-control">
                                     @error('slug')
                                         <div class="alert alert-danger mt-1">{{ $message }}</div>
                                     @enderror
@@ -112,8 +109,7 @@
                                     </div>
                                     <div class="file-preview box sm">
                                     </div>
-                                    <small
-                                        class="text-muted">These images are visible in product details page gallery. Use 600x600 sizes images.</small>
+
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -131,70 +127,12 @@
                                     </div>
                                     <div class="file-preview box sm">
                                     </div>
-                                    <small
-                                        class="text-muted">This image is visible in all product box. Use 300x300 sizes image. Keep some blank space around main object of your image as we had to crop some edge in different devices to make it responsive.</small>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0 h6">Product Variation</h5>
-                        </div>
-                        <div class="card-body">
-                            {{-- <div class="form-group row gutters-5">
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" value="Colors"
-                                        disabled>
-                                </div>
-                                <div class="col-md-8">
-                                    <select class="form-control aiz-selectpicker" data-live-search="true"
-                                        data-selected-text-format="count" name="colors[]" id="colors" multiple
-                                        disabled>
-                                        @foreach (\App\Models\Color::orderBy('name', 'asc')->get() as $key => $color)
-                                            <option value="{{ $color->code }}"
-                                                data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>">
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <label class="aiz-switch aiz-switch-success mb-0">
-                                        <input value="1" type="checkbox" name="colors_active">
-                                        <span></span>
-                                    </label>
-                                </div>
-                            </div> --}}
-
-                            <div class="form-group row gutters-5">
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" value="Attributes"
-                                        disabled>
-                                </div>
-                                <div class="col-md-8">
-                                    <select name="choice_attributes[]" id="choice_attributes"
-                                        class="form-control aiz-selectpicker" data-selected-text-format="count"
-                                        data-live-search="true" multiple
-                                        data-placeholder="Choose Attributes">
-                                        @foreach (\App\Models\Attribute::all() as $key => $attribute)
-                                            <option value="{{ $attribute->id }}">{{ $attribute->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <p>Choose the attributes of this product and then input values of each attribute
-                                </p>
-                                <br>
-                            </div>
-
-                            <div class="customer_choice_options" id="customer_choice_options">
-
-                            </div>
-                        </div>
-                    </div>
+                   
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">Product price + stock</h5>
@@ -205,29 +143,24 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-md-6">
                                     <input type="number" lang="en" min="0" value="0" step="0.01"
-                                        placeholder="Unit price" name="unit_price"
-                                        class="form-control" required>
+                                        placeholder="Unit price" name="unit_price" class="form-control" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label"
-                                    for="date_range">Discount Date Range</label>
+                                <label class="col-sm-3 control-label" for="date_range">Discount Date Range</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control aiz-date-range" id="date_range"
-                                        name="date_range" placeholder="Select Date"
-                                        data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to "
-                                        autocomplete="off">
+                                        name="date_range" placeholder="Select Date" data-time-picker="true"
+                                        data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-from-label">Discount <span
-                                        class="text-danger">*</span></label>
+                                <label class="col-md-3 col-from-label">Discount</label>
                                 <div class="col-md-6">
                                     <input type="number" lang="en" min="0" value="0" step="0.01"
-                                        placeholder="Discount" name="discount" class="form-control"
-                                        required>
+                                        placeholder="Discount" name="discount" class="form-control">
                                 </div>
                                 <div class="col-md-3">
                                     <select class="form-control aiz-selectpicker" name="discount_type">
@@ -244,8 +177,7 @@
                                     </label>
                                     <div class="col-md-6">
                                         <input type="number" lang="en" min="0" value="0"
-                                            step="1" placeholder="1" name="earn_point"
-                                            class="form-control">
+                                            step="1" placeholder="1" name="earn_point" class="form-control">
                                     </div>
                                 </div>
                             @endif
@@ -256,8 +188,8 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <input type="number" lang="en" min="0" value="0"
-                                            step="1" placeholder="Quantity"
-                                            name="current_stock" class="form-control" required>
+                                            step="1" placeholder="Quantity" name="current_stock"
+                                            class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -265,8 +197,7 @@
                                         SKU
                                     </label>
                                     <div class="col-md-6">
-                                        <input type="text" placeholder="SKU" name="sku"
-                                            class="form-control">
+                                        <input type="text" placeholder="SKU" name="sku" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -328,32 +259,32 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Length</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Length"
-                                        name="length" class="form-control" required>
+                                    <input type="number" step="0.01" placeholder="Length" name="length"
+                                        class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Height</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Height"
-                                        name="height" class="form-control" required>
+                                    <input type="number" step="0.01" placeholder="Height" name="height"
+                                        class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Width</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Width"
-                                        name="width" class="form-control" required>
+                                    <input type="number" step="0.01" placeholder="Width" name="width"
+                                        class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Weight</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Weight"
-                                        name="weight" class="form-control" required>
+                                    <input type="number" step="0.01" placeholder="Weight" name="weight"
+                                        class="form-control">
                                 </div>
                             </div>
 
@@ -361,13 +292,13 @@
                     </div>
 
                     <!--                <div class="card">
-                                                                                                    <div class="card-header">
-                                                                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                                                                    </div>
-                                                                                                    <div class="card-body">
+                                                                                                        <div class="card-header">
+                                                                                                            <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                                        </div>
+                                                                                                        <div class="card-body">
 
-                                                                                                    </div>
-                                                                                                </div>-->
+                                                                                                        </div>
+                                                                                                    </div>-->
 
 
                     <div class="card">
@@ -433,10 +364,9 @@
                                     External link
                                 </label>
                                 <div class="col-md-9">
-                                    <input type="text" placeholder="External link"
-                                        name="external_link" class="form-control">
-                                    <small
-                                        class="text-muted">Leave it blank if you do not use external site link</small>
+                                    <input type="text" placeholder="External link" name="external_link"
+                                        class="form-control">
+                                    <small class="text-muted">Leave it blank if you do not use external site link</small>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -446,8 +376,7 @@
                                 <div class="col-md-9">
                                     <input type="text" placeholder="External link button text"
                                         name="external_link_btn" class="form-control">
-                                    <small
-                                        class="text-muted">Leave it blank if you do not use external site link</small>
+                                    <small class="text-muted">Leave it blank if you do not use external site link</small>
                                 </div>
                             </div>
                         </div>
@@ -485,8 +414,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">OG Title</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" name="og_title"
-                                        placeholder="OG Title">
+                                    <input type="text" class="form-control" name="og_title" placeholder="OG Title">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -538,6 +466,23 @@
 
                     <div class="card">
                         <div class="card-header">
+                            <h5 class="mb-0 h6">Price visibility</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-6 col-from-label">Hide Price</label>
+                                <div class="col-md-6">
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input type="checkbox" name="hide_price" value="1">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
                             <h5 class="mb-0 h6">Low Stock Quantity Warning</h5>
                         </div>
                         <div class="card-body">
@@ -571,8 +516,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label
-                                    class="col-md-6 col-from-label">Show Stock With Text Only</label>
+                                <label class="col-md-6 col-from-label">Show Stock With Text Only</label>
                                 <div class="col-md-6">
                                     <label class="aiz-switch aiz-switch-success mb-0">
                                         <input type="radio" name="stock_visibility_state" value="text">
@@ -632,8 +576,8 @@
                 <div class="col-12">
                     <div class="btn-toolbar float-right mb-3" role="toolbar" aria-label="Toolbar with button groups">
                         <div class="btn-group mr-2" role="group" aria-label="First group">
-                            <button type="submit" name="button" value="draft"
-                                class="btn btn-warning action-btn">Save As Draft</button>
+                            <button type="submit" name="button" value="draft" class="btn btn-warning action-btn">Save
+                                As Draft</button>
                         </div>
                         <div class="btn-group mr-2" role="group" aria-label="Third group">
                             <button type="submit" name="button" value="unpublish"
@@ -691,7 +635,7 @@
 
                 var nativeHtmlBuilderFunc = note.summernote('module', 'videoDialog').createVideoNode;
 
-                note.summernote('module', 'videoDialog').createVideoNode = function (url) {
+                note.summernote('module', 'videoDialog').createVideoNode = function(url) {
                     var wrap = $('<div class="embed-responsive embed-responsive-16by9"></div>');
                     var html = nativeHtmlBuilderFunc(url);
                     html = $(html).addClass('embed-responsive-item');
@@ -751,22 +695,22 @@
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append(
                         '\
-                                                                                                <div class="form-group row">\
-                                                                                                    <div class="col-md-3">\
-                                                                                                        <input type="hidden" name="choice_no[]" value="' +
+                                                                                                    <div class="form-group row">\
+                                                                                                        <div class="col-md-3">\
+                                                                                                            <input type="hidden" name="choice_no[]" value="' +
                         i +
                         '">\
-                                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
+                                                                                                            <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                                                                    </div>\
-                                                                                                    <div class="col-md-8">\
-                                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                                                                                        </div>\
+                                                                                                        <div class="col-md-8">\
+                                                                                                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple>\
-                                                                                                            ' + obj + '\
-                                                                                                        </select>\
-                                                                                                    </div>\
-                                                                                                </div>');
+                                                                                                                ' + obj + '\
+                                                                                                            </select>\
+                                                                                                        </div>\
+                                                                                                    </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

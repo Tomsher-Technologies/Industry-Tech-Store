@@ -119,9 +119,55 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
+                    <h5 class="mb-0 h6">{{ translate('Pickup from store') }}</h5>
+                </div>
+                <form action="{{ route('shipping_configuration.update') }}" method="POST" enctype="multipart/form-data">
+                    <div class="card-body">
+                        @csrf
+                        <input type="hidden" name="type" value="pickup_from_store">
+                        <div class="form-group row">
+                            <label class="col-md-8 col-from-label">
+                                Free shipping status
+                            </label>
+                            <div class="col-md-4">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input name="pickup_from_store"
+                                        {{ get_setting('pickup_from_store') == 'on' ? 'checked' : '' }} type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-0 text-right">
+                            <button type="submit" class="btn btn-sm btn-primary">{{ translate('Save') }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">{{ translate('Note') }}</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            1. Flat rate shipping cost is applicable if Flat rate shipping is enabled.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
                     <h5 class="mb-0 h6">Free Shipping Settings</h5>
                 </div>
-                <form action="{{ route('shipping_configuration.free_shipping') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('shipping_configuration.free_shipping') }}" method="POST"
+                    enctype="multipart/form-data">
                     <div class="card-body">
                         @csrf
                         <input type="hidden" name="type" value="free_shipping">
@@ -144,7 +190,8 @@
                                 Free shipping min amount
                             </label>
                             <div class="col-md-8">
-                                <input step="0.01" class="form-control" type="number" name="free_shipping_min_amount"
+                                <input step="0.01" class="form-control" type="number"
+                                    name="free_shipping_min_amount"
                                     value="{{ get_setting('free_shipping_min_amount') }}">
                             </div>
                         </div>
@@ -154,7 +201,8 @@
                                 Free shipping max amount
                             </label>
                             <div class="col-md-8">
-                                <input step="0.01" class="form-control" type="number" name="free_shipping_max_amount"
+                                <input step="0.01" class="form-control" type="number"
+                                    name="free_shipping_max_amount"
                                     value="{{ get_setting('free_shipping_max_amount') }}">
                             </div>
                         </div>

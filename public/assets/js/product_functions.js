@@ -55,6 +55,9 @@ function addToCart(slug, qty = 1) {
                 $('.headerCartCount').html(data.count)
                 Livewire.emit('cartUpdated')
             }
+            if (xhr.status == 203) {
+                launchToast(data.message,'error');
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status == 404) {
