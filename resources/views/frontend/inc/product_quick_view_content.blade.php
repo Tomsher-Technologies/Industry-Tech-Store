@@ -25,18 +25,22 @@
             {{ renderStarRating($product->rating) }}
         </div>
 
-        <h4 class="ps-product__price">
-            {{ home_discounted_base_price($product) }}
-            @if (home_base_price($product) != home_discounted_base_price($product))
-                <del>{{ home_base_price($product) }}</del>
-            @endif
-        </h4>
+        @if (!$product->hide_price)
+            <h4 class="ps-product__price">
+                {{ home_discounted_base_price($product) }}
+                @if (home_base_price($product) != home_discounted_base_price($product))
+                    <del>{{ home_base_price($product) }}</del>
+                @endif
+            </h4>
+        @endif
         <div class="ps-product__desc">
             {!! $product->description !!}
         </div>
         <div class="ps-product__shopping">
-            <a class="ps-btn" href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')">Add to
-                cart</a>
+            @if (!$product->hide_price)
+                <a class="ps-btn" href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')">Add to
+                    cart</a>
+            @endif
             <a class="ps-btn ps-btn--orange" href="javascript:void(0)"
                 onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
             <div class="ps-product__actions">

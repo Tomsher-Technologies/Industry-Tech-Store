@@ -16,16 +16,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-from-label">Product Name <span
-                                        class="text-danger">*</span> </label>
+                                <label class="col-lg-3 col-from-label">Product Name <span class="text-danger">*</span>
+                                </label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" name="name"
-                                        placeholder="Product Name" value="{{ $product->name }}" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Product Name"
+                                        value="{{ $product->name }}" required>
                                 </div>
                             </div>
                             <div class="form-group row" id="category">
-                                <label class="col-lg-3 col-from-label">Category<span
-                                        class="text-danger">*</span></label>
+                                <label class="col-lg-3 col-from-label">Category<span class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <select class="form-control aiz-selectpicker" name="category_id" id="category_id"
                                         data-selected="{{ $product->category_id }}" data-live-search="true" required>
@@ -61,8 +60,7 @@
                                 </label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="unit"
-                                        placeholder="Unit (e.g. KG, Pc etc)"
-                                        value="{{ $product->unit }}" required>
+                                        placeholder="Unit (e.g. KG, Pc etc)" value="{{ $product->unit }}" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -77,19 +75,17 @@
                                 <label class="col-lg-3 col-from-label">Tags</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control aiz-tag-input" name="tags[]" id="tags"
-                                        value="{{ $product->tags }}" placeholder="Type to add a tag"
-                                        data-role="tagsinput">
-                                    <small
-                                        class="text-muted">This is used for search. Input those words by which cutomer can find this product.</small>
+                                        value="{{ $product->tags }}" placeholder="Type to add a tag" data-role="tagsinput">
+                                    <small class="text-muted">This is used for search. Input those words by which cutomer
+                                        can find this product.</small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Slug<span
-                                        class="text-danger">*</span></label>
+                                <label class="col-md-3 col-form-label">Slug<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" placeholder="Slug" id="slug"
-                                        name="slug" value="{{ $product->slug }}" required class="form-control">
+                                    <input type="text" placeholder="Slug" id="slug" name="slug"
+                                        value="{{ $product->slug }}" required class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -101,8 +97,7 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">Gallery Images</label>
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">Gallery Images</label>
                                 <div class="col-md-8">
                                     <div class="input-group" data-toggle="aizuploader" data-type="image"
                                         data-multiple="true">
@@ -119,8 +114,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">Thumbnail Image
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">Thumbnail Image
                                     <small>(290x300)</small></label>
                                 <div class="col-md-8">
                                     <div class="input-group" data-toggle="aizuploader" data-type="image">
@@ -175,66 +169,6 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0 h6">Product Variation</h5>
-                        </div>
-                        <div class="card-body">
-
-
-                            <div class="form-group row gutters-5">
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" value="Attributes"
-                                        disabled>
-                                </div>
-                                <div class="col-lg-8">
-                                    <select name="choice_attributes[]" id="choice_attributes"
-                                        data-selected-text-format="count" data-live-search="true"
-                                        class="form-control aiz-selectpicker" multiple
-                                        data-placeholder="Choose Attributes">
-                                        @foreach (\App\Models\Attribute::all() as $key => $attribute)
-                                            <option value="{{ $attribute->id }}"
-                                                @if ($product->attributes != null && in_array($attribute->id, json_decode($product->attributes, true))) selected @endif>
-                                                {{ $attribute->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="">
-                                <p>Choose the attributes of this product and then input values of each attribute
-                                </p>
-                                <br>
-                            </div>
-
-                            <div class="customer_choice_options" id="customer_choice_options">
-                                @foreach (json_decode($product->choice_options) as $key => $choice_option)
-                                    <div class="form-group row">
-                                        <div class="col-lg-3">
-                                            <input type="hidden" name="choice_no[]"
-                                                value="{{ $choice_option->attribute_id }}">
-                                            <input type="text" class="form-control" name="choice[]"
-                                                value="{{ optional(\App\Models\Attribute::find($choice_option->attribute_id))->name }}"
-                                                placeholder="Choice Title" disabled>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <select class="form-control aiz-selectpicker attribute_choice"
-                                                data-live-search="true"
-                                                name="choice_options_{{ $choice_option->attribute_id }}[]" multiple>
-                                                @foreach (\App\Models\AttributeValue::where('attribute_id', $choice_option->attribute_id)->get() as $row)
-                                                    <option value="{{ $row->value }}"
-                                                        @if (in_array($row->value, $choice_option->values)) selected @endif>
-                                                        {{ $row->value }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            {{-- <input type="text" class="form-control aiz-tag-input" name="choice_options_{{ $choice_option->attribute_id }}[]" placeholder="Enter choice values" value="{{ implode(',', $choice_option->values) }}" data-on-change="update_sku"> --}}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
                             <h5 class="mb-0 h6">Product price + stock</h5>
                         </div>
                         <div class="card-body">
@@ -252,14 +186,12 @@
                             @endphp
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-from-label"
-                                    for="start_date">Discount Date Range</label>
+                                <label class="col-sm-3 col-from-label" for="start_date">Discount Date Range</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control aiz-date-range"
                                         @if ($product->discount_start_date && $product->discount_end_date) value="{{ $start_date . ' to ' . $end_date }}" @endif
-                                        name="date_range" placeholder="Select Date"
-                                        data-time-picker="true" data-format="DD-MM-Y HH:mm:ss" data-separator=" to "
-                                        autocomplete="off">
+                                        name="date_range" placeholder="Select Date" data-time-picker="true"
+                                        data-format="DD-MM-Y HH:mm:ss" data-separator=" to " autocomplete="off">
                                 </div>
                             </div>
 
@@ -268,10 +200,10 @@
                                 <div class="col-lg-6">
                                     <input type="number" lang="en" min="0" step="0.01"
                                         placeholder="Discount" name="discount" class="form-control"
-                                        value="{{ $product->discount }}" required>
+                                        value="{{ $product->discount }}">
                                 </div>
                                 <div class="col-lg-3">
-                                    <select class="form-control aiz-selectpicker" name="discount_type" required>
+                                    <select class="form-control aiz-selectpicker" name="discount_type">
                                         <option value="amount" <?php if ($product->discount_type == 'amount') {
                                             echo 'selected';
                                         } ?>>Flat</option>
@@ -289,8 +221,8 @@
                                     </label>
                                     <div class="col-md-6">
                                         <input type="number" lang="en" min="0"
-                                            value="{{ $product->earn_point }}" step="1"
-                                            placeholder="1" name="earn_point" class="form-control">
+                                            value="{{ $product->earn_point }}" step="1" placeholder="1"
+                                            name="earn_point" class="form-control">
                                     </div>
                                 </div>
                             @endif
@@ -301,8 +233,7 @@
                                     <div class="col-lg-6">
                                         <input type="number" lang="en"
                                             value="{{ optional($product->stocks->first())->qty }}" step="1"
-                                            placeholder="Quantity" name="current_stock"
-                                            class="form-control">
+                                            placeholder="Quantity" name="current_stock" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -374,32 +305,32 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Length</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Length"
-                                        name="length" class="form-control" value="{{ $product->length }}" required>
+                                    <input type="number" step="0.01" placeholder="Length" name="length"
+                                        class="form-control" value="{{ $product->length }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Height</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Height"
-                                        name="height" class="form-control" value="{{ $product->height }}" required>
+                                    <input type="number" step="0.01" placeholder="Height" name="height"
+                                        class="form-control" value="{{ $product->height }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Width</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Width"
-                                        name="width" class="form-control" value="{{ $product->width }}" required>
+                                    <input type="number" step="0.01" placeholder="Width" name="width"
+                                        class="form-control" value="{{ $product->width }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">Weight</label>
                                 <div class="col-md-6">
-                                    <input type="number" step="0.01" placeholder="Weight"
-                                        name="weight" class="form-control" value="{{ $product->weight }}" required>
+                                    <input type="number" step="0.01" placeholder="Weight" name="weight"
+                                        class="form-control" value="{{ $product->weight }}">
                                 </div>
                             </div>
 
@@ -408,13 +339,13 @@
 
 
                     <!--                 <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                    </div>
-                                                    <div class="card-body">
+                                                                                    <div class="card-header">
+                                                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                    </div>
+                                                                                    <div class="card-body">
 
-                                                    </div>
-                                                </div>-->
+                                                                                    </div>
+                                                                                </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -455,8 +386,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label"
-                                    for="signinSrEmail">PDF Specification</label>
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">PDF Specification</label>
                                 <div class="col-md-8">
                                     <div class="input-group" data-toggle="aizuploader">
                                         <div class="input-group-prepend">
@@ -484,11 +414,9 @@
                                     External link
                                 </label>
                                 <div class="col-md-9">
-                                    <input type="text" placeholder="External link"
-                                        name="external_link" value="{{ $product->external_link }}"
-                                        class="form-control">
-                                    <small
-                                        class="text-muted">Leave it blank if you do not use external site link</small>
+                                    <input type="text" placeholder="External link" name="external_link"
+                                        value="{{ $product->external_link }}" class="form-control">
+                                    <small class="text-muted">Leave it blank if you do not use external site link</small>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -499,8 +427,7 @@
                                     <input type="text" placeholder="External link button text"
                                         name="external_link_btn" value="{{ $product->external_link_btn }}"
                                         class="form-control">
-                                    <small
-                                        class="text-muted">Leave it blank if you do not use external site link</small>
+                                    <small class="text-muted">Leave it blank if you do not use external site link</small>
                                 </div>
                             </div>
                         </div>
@@ -515,14 +442,15 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">Meta Title</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" value="{{ $product->seo->meta_title }}"
-                                        name="meta_title" placeholder="Meta Title">
+                                    <input type="text" class="form-control"
+                                        value="{{ getSeoValues($product->seo, 'meta_title') }}" name="meta_title"
+                                        placeholder="Meta Title">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">Description</label>
                                 <div class="col-lg-8">
-                                    <textarea name="meta_description" rows="8" class="form-control">{{ $product->seo->meta_description }}</textarea>
+                                    <textarea name="meta_description" rows="8" class="form-control">{{ getSeoValues($product->seo, 'meta_description') }}</textarea>
                                 </div>
                             </div>
 
@@ -532,22 +460,21 @@
                                     {{-- data-max-tags="1" --}}
                                     <input type="text" class="form-control aiz-tag-input" name="meta_keywords[]"
                                         placeholder="Type and hit enter to add a keyword"
-                                        value="{{ $product->seo->meta_keywords }}">
+                                        value="{{ getSeoValues($product->seo, 'meta_keywords') }}">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">OG Title</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" name="og_title"
-                                        placeholder="OG Title"
-                                        value="{{ $product->seo->og_title }}">
+                                    <input type="text" class="form-control" name="og_title" placeholder="OG Title"
+                                        value="{{ getSeoValues($product->seo, 'og_title') }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">OG Description</label>
                                 <div class="col-lg-8">
-                                    <textarea name="og_description" rows="8" class="form-control">{{ $product->seo->og_description }}</textarea>
+                                    <textarea name="og_description" rows="8" class="form-control">{{ getSeoValues($product->seo, 'og_description') }}</textarea>
                                 </div>
                             </div>
 
@@ -556,18 +483,20 @@
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="twitter_title"
                                         placeholder="Twitter Title"
-                                        value="{{ $product->seo->twitter_title }}">
+                                        value="{{ getSeoValues($product->seo, 'twitter_title') }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-from-label">Twitter Description</label>
                                 <div class="col-lg-8">
-                                    <textarea name="twitter_description" rows="8" class="form-control">{{ $product->seo->twitter_description }}</textarea>
+                                    <textarea name="twitter_description" rows="8" class="form-control">{{ getSeoValues($product->seo, 'twitter_description') }}</textarea>
                                 </div>
                             </div>
 
                         </div>
                     </div>
+
+
                 </div>
 
                 <div class="col-lg-4">
@@ -579,6 +508,24 @@
                                 <div class="btn-group" role="group" aria-label="Second group">
                                     <button type="submit" name="button" value="publish"
                                         class="btn btn-info action-btn">Update Product</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">Price visibility</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-6 col-from-label">Hide Price</label>
+                                <div class="col-md-6">
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input type="checkbox" name="hide_price" value="1"
+                                            @if ($product->hide_price == 1) checked @endif>
+                                        <span></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -621,8 +568,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label
-                                    class="col-md-6 col-from-label">Show Stock With Text Only</label>
+                                <label class="col-md-6 col-from-label">Show Stock With Text Only</label>
                                 <div class="col-md-6">
                                     <label class="aiz-switch aiz-switch-success mb-0">
                                         <input type="radio" name="stock_visibility_state" value="text"
@@ -692,8 +638,7 @@
                 </div>
                 <div class="col-12">
                     <div class="mb-3 text-right">
-                        <button type="submit" name="button"
-                            class="btn btn-info">Update Product</button>
+                        <button type="submit" name="button" class="btn btn-info">Update Product</button>
                     </div>
                 </div>
             </div>
@@ -801,21 +746,24 @@
                 },
                 success: function(data) {
                     var obj = JSON.parse(data);
-                    $('#customer_choice_options').append('\
-                                                <div class="form-group row">\
-                                                    <div class="col-md-3">\
-                                                        <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                                        <input type="text" class="form-control" name="choice[]" value="' +
+                    $('#customer_choice_options').append(
+                        '\
+                                                                                <div class="form-group row">\
+                                                                                    <div class="col-md-3">\
+                                                                                        <input type="hidden" name="choice_no[]" value="' +
+                        i +
+                        '">\
+                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                    </div>\
-                                                    <div class="col-md-8">\
-                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                                                                    </div>\
+                                                                                    <div class="col-md-8">\
+                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple>\
-                                                            ' + obj + '\
-                                                        </select>\
-                                                    </div>\
-                                                </div>');
+                                                                                            ' + obj + '\
+                                                                                        </select>\
+                                                                                    </div>\
+                                                                                </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

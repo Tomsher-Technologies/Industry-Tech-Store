@@ -41,9 +41,6 @@
                                                 <h2>Shipping Address</h2>
                                                 @auth
 
-
-
-
                                                     <div class="row g-4 position-relative" id="address-list">
                                                         @if ($addresses && $addresses->count())
                                                             @foreach ($addresses as $address)
@@ -115,8 +112,6 @@
                                                             {{ $message }}
                                                         </div>
                                                     @enderror
-
-                                                    
                                                 @else
                                                     <div class="ps-form__billing-info">
                                                         <div class="row">
@@ -287,7 +282,8 @@
                                                             <div class="form-group mb-1">
                                                                 <div class="ps-checkbox">
                                                                     <input wire:model="diffrent_billing_address"
-                                                                        class="form-control" type="checkbox" id="cb01">
+                                                                        class="form-control" type="checkbox"
+                                                                        id="cb01">
                                                                     <label for="cb01">Use a different billing
                                                                         address?</label>
                                                                 </div>
@@ -468,14 +464,23 @@
                                             <div class="shipping-charge">
 
                                                 @foreach ($shipping_rates as $key => $shp_rate)
+                                                    {{-- @dd($shp_rate) --}}
                                                     <label class="card shipping-charge-box">
                                                         <input wire:model="shipping_method" name="plan"
                                                             value="{{ $key }}" class="radio"
                                                             type="radio" {{ $loop->index == 0 ? 'checked' : '' }}>
                                                         <span class="plan-details">
                                                             <span class="plan-type">{{ $shp_rate['name'] }}</span>
-                                                            <span
-                                                                class="plan-cost">{{ format_price(convert_price($shp_rate['rate'])) }}</span>
+                                                            @if (isset($shp_rate['rate']))
+                                                                <span
+                                                                    class="plan-cost">{{ format_price(convert_price($shp_rate['rate'])) }}</span>
+                                                            @endif
+                                                            @if (isset($shp_rate['note']))
+                                                                <span class="plan-note">
+                                                                    {{ $shp_rate['note'] }}
+                                                                </span>
+                                                            @endif
+
                                                         </span>
                                                     </label>
                                                 @endforeach
@@ -590,12 +595,13 @@
                                                                 </h4>
                                                             @endif
 
-                                                            <h4 class="ps-block__title">Shipping Charge:
-                                                                <span>
-                                                                    {{ format_price(convert_price($shipping_rate)) }}
-                                                                </span>
-                                                            </h4>
-
+                                                            @if ($shipping_rate)
+                                                                <h4 class="ps-block__title">Shipping Charge:
+                                                                    <span>
+                                                                        {{ format_price(convert_price($shipping_rate)) }}
+                                                                    </span>
+                                                                </h4>
+                                                            @endif
 
                                                             <h3>
                                                                 Total:
@@ -683,9 +689,9 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="mb-3" wire:ignore>
-                                        <select wire:model="new_address_country" class="form-control aiz-selectpicker"
-                                            data-live-search="true" data-placeholder="Select your country"
-                                            name="country_id" required>
+                                        <select wire:model="new_address_country" wire:change="countryChange"
+                                            class="form-control aiz-selectpicker" data-live-search="true"
+                                            data-placeholder="Select your country" name="country_id" required>
                                             <option value="">Select your country</option>
                                             @if ($country)
                                                 @foreach ($country as $key => $coun)
@@ -850,7 +856,6 @@
                         var obj = JSON.parse(response);
                         if (obj != '') {
                             $('[name="state_id"]').html(obj);
-
                         }
                     }
                 });
@@ -912,8 +917,6 @@
                         onchanged: function(currentLocation, radius, isMarkerDropped) {
                             @this.set('new_address_lat', currentLocation.latitude);
                             @this.set('new_address_long', currentLocation.longitude);
-                            // Uncomment line below to show alert on each Location Changed event
-                            //alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
                         }
                     });
                 }
@@ -931,6 +934,8 @@
                 function showPosition(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
+                    @this.set('guest_address_lat', lat);
+                    @this.set('guest_address_long', lng);
                     loadMap2(lat, lng)
                 }
 
