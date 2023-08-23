@@ -93,9 +93,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
-        // dd($request);
-
         $product = new Product;
         $product->name = $request->name;
         $product->category_id = $request->category_id;
@@ -109,6 +106,8 @@ class ProductController extends Controller
         $product->stock_visibility_state = $request->stock_visibility_state;
         $product->external_link = $request->external_link;
         $product->external_link_btn = $request->external_link_btn;
+
+        $product->hide_price = $request->hide_price ? 1 : 0;
 
         $tags = array();
         if ($request->tags[0] != null) {
@@ -384,6 +383,7 @@ class ProductController extends Controller
 
         $product->name          = $request->name;
         $product->unit          = $request->unit;
+        $product->hide_price          = $request->hide_price ? 1 : 0;
         $product->description   = $request->description;
 
         $slug = $request->slug ? Str::slug($request->slug, '-') : Str::slug($request->name, '-');

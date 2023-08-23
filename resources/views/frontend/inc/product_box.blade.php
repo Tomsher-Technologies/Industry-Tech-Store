@@ -1,7 +1,7 @@
-<div class="ps-product">    
+<div class="ps-product">
     <div class="ps-product__thumbnail">
         <a href="{{ route('product', $product->slug) }}" title="{{ $product->name }}">
-            <img src="{{ get_product_image($product->thumbnail_img,'300') }}" alt="{{ $product->name }}"
+            <img src="{{ get_product_image($product->thumbnail_img, '300') }}" alt="{{ $product->name }}"
                 onerror="this.onerror=null;this.src='{{ frontendAsset('img/placeholder.webp') }}';" />
         </a>
 
@@ -12,12 +12,14 @@
         @endif
 
         <ul class="ps-product__actions">
-            <li>
-                <a href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')" data-toggle="tooltip"
-                    data-placement="top" title="Add To Cart">
-                    <i class="icon-bag2"></i>
-                </a>
-            </li>
+            @if (!$product->hide_price)
+                <li>
+                    <a href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')" data-toggle="tooltip"
+                        data-placement="top" title="Add To Cart">
+                        <i class="icon-bag2"></i>
+                    </a>
+                </li>
+            @endif
             <li>
                 <a href="javascript:void(0)" onclick="productQuickView({{ $product->id }})" data-toggle="tooltip"
                     data-placement="top" title="Quick View">
@@ -44,13 +46,14 @@
                 href="{{ route('product', $product->slug) }}">{{ $product->name }}</a>
 
             {{ renderStarRating($product->rating) }}
-
-            <p class="ps-product__price sale">
-                {{ home_discounted_base_price($product) }}
-                @if (home_base_price($product) != home_discounted_base_price($product))
-                    <del>{{ home_base_price($product) }}</del>
-                @endif
-            </p>
+            @if (!$product->hide_price)
+                <p class="ps-product__price sale">
+                    {{ home_discounted_base_price($product) }}
+                    @if (home_base_price($product) != home_discounted_base_price($product))
+                        <del>{{ home_base_price($product) }}</del>
+                    @endif
+                </p>
+            @endif
         </div>
     </div>
 </div>

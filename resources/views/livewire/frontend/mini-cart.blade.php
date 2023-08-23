@@ -1,9 +1,7 @@
 <div class="ps-cart__content">
-
     @php
         $price = 0;
     @endphp
-
     @if ($carts->count())
         <div class="ps-cart__items">
             @foreach ($carts as $cart)
@@ -24,21 +22,6 @@
                         <div>
                             <figure>
                                 <figcaption>Quantity</figcaption>
-                                {{-- <div class="form-group--number">
-                                    <button wire:click.prevent="increment({{ $loop->index }})" class="up">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    <button wire:click.prevent="decrement({{ $loop->index }})" class="down">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <form action="">
-                                        <input wire:model='cart_quality.{{ $loop->index }}.qty'
-                                            class="form-control quantity-input"
-                                            data-min="{{ $cart->product->min_qty ?? 1 }}"
-                                            data-max="{{ $cart->product->stocks->first()->qty }}" type="number" />
-                                    </form>
-                                </div> --}}
-
                             </figure>
                         </div>
                         <p>
@@ -46,13 +29,11 @@
                         </p>
                     </div>
                 </div>
-
                 @php
                     $price += $cart->quantity * $cart->price;
                 @endphp
             @endforeach
         </div>
-
         <div class="ps-cart__footer">
             <h3>Sub Total:<strong>{{ single_price($price) }}</strong></h3>
             <figure>
@@ -61,6 +42,4 @@
             </figure>
         </div>
     @endif
-
-
 </div>

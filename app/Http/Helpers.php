@@ -1148,6 +1148,14 @@ if (!function_exists('load_seo_tags')) {
         });
     }
 
+    function getSeoValues($seo, $name)
+    {
+        if ($name && $seo) {
+            return $seo->$name;
+        }
+        return "";
+    }
+
     // function testView()
     // {
     //     Cache::forget('awesomeHtml');

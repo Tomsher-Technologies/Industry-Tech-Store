@@ -132,6 +132,7 @@ class SearchController extends Controller
             'discount_type',
             'discount_end_date',
             'discount_start_date',
+            'hide_price',
         ])->where($conditions)->with('brand')->paginate(36)->appends(request()->query());
 
         $min_price_slider = convert_price(Product::min('unit_price'));

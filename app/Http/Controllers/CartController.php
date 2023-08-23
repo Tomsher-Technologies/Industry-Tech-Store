@@ -62,7 +62,7 @@ class CartController extends Controller
         if ($product) {
             $product->load('stocks');
             $product_stock = $product->stocks->first();
-            if ($product_stock->qty < $request['quantity']) {
+            if (($product_stock->qty < $request['quantity']) || ($product->hide_price)) {
                 return response()->json([
                     'message' => 'This item is out of stock!',
                 ], 203);

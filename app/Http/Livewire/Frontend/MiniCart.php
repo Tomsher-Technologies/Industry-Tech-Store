@@ -46,6 +46,8 @@ class MiniCart extends Component
         $this->dispatchBrowserEvent('updateCartCount', [
             'count' => cartCount()
         ]);
+
+        $this->cartUpdateView();
     }
 
     public function increment($id)
@@ -62,8 +64,6 @@ class MiniCart extends Component
 
     public function render()
     {
-
-
         foreach ($this->carts as $cart) {
             array_push($this->cart_quality, [
                 "id" => $cart->id,
@@ -71,7 +71,7 @@ class MiniCart extends Component
             ]);
         }
 
-        if($this->layout == 2){
+        if ($this->layout == 2) {
             return view('livewire.frontend.mini-cart-mobile');
         }
 
@@ -80,6 +80,7 @@ class MiniCart extends Component
 
     public function cartUpdateView()
     {
-        // $this->render();
+        $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
+        $this->render();
     }
 }
