@@ -16003,6 +16003,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .mega-menu .mega-menu__list {
   background-color: transparent;
+  margin-bottom: 10px;
 }
 
 .mega-menu .mega-menu__list li a {

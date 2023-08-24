@@ -88,6 +88,18 @@
                                                                             title="{{ $sec_child['label'] }}">
                                                                             <h4>{{ $sec_child['label'] }}</h4>
                                                                         </a>
+                                                                        @if ($sec_child['child'])
+                                                                            <ul class="">
+                                                                                @foreach ($sec_child['child'] as $third_child)
+                                                                                    <li>
+                                                                                        <a href="{{ $third_child['link'] }}"
+                                                                                            title="{{ $third_child['label'] }}">
+                                                                                            {{ $third_child['label'] }}
+                                                                                        </a>
+                                                                                    </li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        @endif
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
