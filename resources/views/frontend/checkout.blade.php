@@ -196,7 +196,7 @@
                                                                     <div class="col-md-10">
                                                                         <input type="text" class="form-control mb-3"
                                                                             placeholder="Your Postal Code" name="postal_code"
-                                                                            value="" required>
+                                                                            value="">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">

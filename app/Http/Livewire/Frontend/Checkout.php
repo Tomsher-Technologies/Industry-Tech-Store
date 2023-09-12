@@ -212,7 +212,7 @@ class Checkout extends Component
             'new_address_country' => 'required',
             'new_address_state' => 'required',
             'new_address_city' => 'required',
-            'new_address_pincode' => 'required',
+            'new_address_pincode' => 'nullable',
             'new_address_phone' => 'required',
         ], [
             'new_address_lat.required' => "Please choose your location",
@@ -285,7 +285,7 @@ class Checkout extends Component
                 'guest_address_country' => 'required',
                 'guest_address_state' => 'required',
                 'guest_address_city' => 'required',
-                'guest_address_pincode' => 'required',
+                'guest_address_pincode' => 'nullable',
                 'guest_address_phone' => 'required',
             ], [
                 'guest_address_lat.required' => "Please choose your location",
@@ -339,7 +339,7 @@ class Checkout extends Component
             'billing_address_country' => 'required',
             'billing_address_state' => 'required',
             'billing_address_city' => 'required',
-            'billing_address_pincode' => 'required',
+            'billing_address_pincode' => 'nullable',
             'billing_address_phone' => 'required',
         ], [
             'billing_address_name.required' => "Please enter a name",

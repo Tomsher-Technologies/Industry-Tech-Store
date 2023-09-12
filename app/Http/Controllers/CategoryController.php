@@ -25,7 +25,7 @@ class CategoryController extends Controller
             $sort_search = $request->search;
             $categories = $categories->where('name', 'like', '%' . $sort_search . '%');
         }
-        $categories = $categories->paginate(15);
+        $categories = $categories->paginate(5000);
         return view('backend.product.categories.index', compact('categories', 'sort_search'));
     }
 
