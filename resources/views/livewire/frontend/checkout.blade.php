@@ -897,6 +897,8 @@
                 function showPosition(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
+                    @this.set('new_address_lat', lat);
+                    @this.set('new_address_long', lng);
                     loadMap(lat, lng)
                 }
 
@@ -926,11 +928,11 @@
                 }
 
                 $(document).ready(function() {
+                    @this.set('new_address_lat', 25.2048);
+                    @this.set('new_address_long', 55.2708);
                     if (navigator.geolocation) {
                         navigator.geolocation.watchPosition(showPosition, showPositionerror);
                     } else {
-                        @this.set('new_address_lat', 25.2048);
-                        @this.set('new_address_long', 55.2708);
                         loadMap(25.2048, 55.2708)
                     }
                 });
@@ -971,11 +973,11 @@
                 }
 
                 $(document).ready(function() {
+                    @this.set('guest_address_lat', 25.2048);
+                    @this.set('guest_address_long', 55.2708);
                     if (navigator.geolocation) {
                         navigator.geolocation.watchPosition(showPosition, showPositionerror);
                     } else {
-                        @this.set('guest_address_lat', 25.2048);
-                        @this.set('guest_address_long', 55.2708);
                         loadMap2(25.2048, 55.2708)
                     }
                 });
