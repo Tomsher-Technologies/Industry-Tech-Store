@@ -49,7 +49,7 @@
                                                                     $img_menu_class = 'col-md-4';
                                                                 @endphp
                                                                 <div class="{{ $sub_menu_class }}">
-                                                                    <ul>
+                                                                    <ul class="mega-menu__list">
                                                                         @foreach ($sec_child['child'] as $third_child)
                                                                             <li>
                                                                                 @if ($third_child['class'] == 'menu-col')
@@ -61,6 +61,7 @@
                                                                                                 class="sub-toggle"></span>
                                                                                         </h4>
                                                                                     </a>
+                                                                                    @if($third_child['child'])
                                                                                     <ul class="mega-menu__list">
                                                                                         @foreach ($third_child['child'] as $forth_child)
                                                                                             <li>
@@ -71,6 +72,8 @@
                                                                                             </li>
                                                                                         @endforeach
                                                                                     </ul>
+                                                                                    @endif
+                                                                                    
                                                                                 @endif
                                                                             </li>
                                                                         @endforeach
@@ -110,7 +113,7 @@
                                                     @if ($item['img_1'])
                                                         <div class="{{ $img_menu_class }}">
                                                             <a href="{{ $item['img_1_link'] ?? '#' }}">
-                                                                <img class="w-100 h-100" src="{{ $item['img_1_src'] }}"
+                                                                <img class="w-100" src="{{ $item['img_1_src'] }}"
                                                                     alt="">
                                                             </a>
                                                         </div>
@@ -143,7 +146,7 @@
                                     <span class="sub-toggle"></span>
                                     <div class="mega-menu">
                                         <div class="mega-menu__columnone">
-                                            <h4>Categories<span class="sub-toggle"></span></h4>
+                                            <!--<h4>Categories<span class="sub-toggle"></span></h4>-->
                                             <ul class="mega-menu__list">
 
                                                 @foreach ($menu['child'] as $child)
@@ -160,7 +163,7 @@
                                         @if ($menu['img_1'] !== null)
                                             <div class="mega-menu__columntwo">
                                                 <a href="{{ $menu['img_1_link'] }}">
-                                                    <img class="w-100 h-100" src="{{ $menu['img_1_src'] }}"
+                                                    <img class="w-100" src="{{ $menu['img_1_src'] }}"
                                                         alt="">
                                                 </a>
                                             </div>

@@ -28,7 +28,7 @@
                     @if ($menu['img_1'] !== null)
                         <div class="mega-menu__columntwo">
                             <a href="{{ $menu['img_1_link'] }}">
-                                <img class="w-100 h-100" src="{{ $menu['img_1_src'] }}" alt="">
+                                <img class="w-100" src="{{ $menu['img_1_src'] }}" alt="">
                             </a>
                         </div>
                     @endif

@@ -149,7 +149,8 @@
                                                                     </div>
                                                                 @enderror
                                                             </div>
-                                                            <div class="col-md-12">
+
+                                                            <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label>Email<sup>*</sup>
                                                                     </label>
@@ -164,6 +165,24 @@
                                                                     </div>
                                                                 @enderror
                                                             </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone<sup>*</sup>
+                                                                    </label>
+                                                                    <div class="form-group__content">
+                                                                        <input wire:model.lazy='guest_address_phone'
+                                                                            class="form-control" type="text">
+                                                                    </div>
+                                                                </div>
+                                                                @error('guest_address_phone')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+
+
 
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
@@ -248,7 +267,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label>Pin Code<sup>*</sup>
+                                                                    <label>Pin Code
                                                                     </label>
                                                                     <div class="form-group__content">
                                                                         <input wire:model.lazy='guest_address_pincode'
@@ -262,21 +281,7 @@
                                                                 @enderror
                                                             </div>
 
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label>Phone<sup>*</sup>
-                                                                    </label>
-                                                                    <div class="form-group__content">
-                                                                        <input wire:model.lazy='guest_address_phone'
-                                                                            class="form-control" type="text">
-                                                                    </div>
-                                                                </div>
-                                                                @error('guest_address_phone')
-                                                                    <div class="alert alert-danger">
-                                                                        {{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
+
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group mb-1">
@@ -406,7 +411,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Pin Code<sup>*</sup>
+                                                            <label>Pin Code
                                                             </label>
                                                             <div class="form-group__content">
                                                                 <input wire:model.lazy='billing_address_pincode'
@@ -732,7 +737,7 @@
                                 <div class="col-md-10">
                                     <input wire:model.lazy="new_address_pincode" type="text"
                                         class="form-control mb-3 numbers-only" placeholder="Your Postal Code"
-                                        name="postal_code" value="" required>
+                                        name="postal_code" value="">
                                 </div>
                             </div>
                             <div class="row">
