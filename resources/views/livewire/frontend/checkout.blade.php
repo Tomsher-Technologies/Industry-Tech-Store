@@ -482,7 +482,7 @@
                                                             @endif
                                                             @if (isset($shp_rate['note']))
                                                                 <span class="plan-note">
-                                                                    {{ $shp_rate['note'] }}
+                                                                    {!! $shp_rate['note'] !!}
                                                                 </span>
                                                             @endif
 
@@ -881,7 +881,6 @@
                         var obj = JSON.parse(response);
                         if (obj != '') {
                             $('[name="city_id"]').html(obj);
-
                         }
                     }
                 });
@@ -930,6 +929,8 @@
                     if (navigator.geolocation) {
                         navigator.geolocation.watchPosition(showPosition, showPositionerror);
                     } else {
+                        @this.set('new_address_lat', 25.2048);
+                        @this.set('new_address_long', 55.2708);
                         loadMap(25.2048, 55.2708)
                     }
                 });
@@ -973,6 +974,8 @@
                     if (navigator.geolocation) {
                         navigator.geolocation.watchPosition(showPosition, showPositionerror);
                     } else {
+                        @this.set('guest_address_lat', 25.2048);
+                        @this.set('guest_address_long', 55.2708);
                         loadMap2(25.2048, 55.2708)
                     }
                 });

@@ -188,7 +188,7 @@ class Checkout extends Component
         if (get_setting('pickup_from_store') == 'on') {
             $this->shipping_rates['pickup_from_store']['name'] = "Pick up from store";
             $this->shipping_rates['pickup_from_store']['rate'] = 0;
-            $this->shipping_rates['pickup_from_store']['note'] = "You can arrange your own courier serive to pick up the order from our store after 24 hours once the order is confirmed.";
+            $this->shipping_rates['pickup_from_store']['note'] = "For international shipments, contact <a href='mailto:info@industrytechstore.com'>info@industrytechstore.com</a> for courier charges.";
         }
 
         if (get_setting('cod_status')) {
