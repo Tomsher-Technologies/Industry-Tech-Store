@@ -153,9 +153,9 @@
                             <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('products.edit', ['id'=>$product->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="Edit">
                                 <i class="las la-edit"></i>
                             </a>
-                            <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('products.duplicate', ['id'=>$product->id, 'type'=>$type]  )}}" title="Duplicate">
+                            {{-- <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('products.duplicate', ['id'=>$product->id, 'type'=>$type]  )}}" title="Duplicate">
                                 <i class="las la-copy"></i>
-                            </a>
+                            </a> --}}
                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('products.destroy', $product->id)}}" title="Delete">
                                 <i class="las la-trash"></i>
                             </a>

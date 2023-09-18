@@ -1,5 +1,6 @@
 function productQuickView($id) {
     if ($('#product-quickview').length) {
+
         $('#product-quickview').modal('show');
         $('#product-quickview .ps-product--detail').hide();
         $('#product-quickview .loadingIcon').show();
@@ -54,9 +55,6 @@ function addToCart(slug, qty = 1) {
                 launchToast(data.message);
                 $('.headerCartCount').html(data.count)
                 Livewire.emit('cartUpdated')
-            }
-            if (xhr.status == 203) {
-                launchToast(data.message,'error');
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {

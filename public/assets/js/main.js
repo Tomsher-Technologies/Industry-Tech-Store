@@ -97,6 +97,12 @@
             filterSidebar.addClass('active');
             $('.ps-site-overlay').addClass('active');
         });
+        
+      $('.mega-menu').on('mouseover', function (e) {
+            e.preventDefault();
+            filterSidebar.addClass('active');
+            $('overlay').addClass('active');
+        });
 
         $('.ps-filter--sidebar .ps-filter__header .ps-btn--close').on(
             'click',
@@ -117,6 +123,11 @@
                 $('.ps-site-overlay').removeClass('active');
             }
         });
+        
+        
+        
+        
+        
     }
 
     function subMenuToggle() {
@@ -1000,7 +1011,6 @@ function launchToast(msg, status = 'success') {
     }
     Toastify({
         text: msg,
-        gravity: 'bottom',
         duration: 3000,
         close: true,
         style: {
@@ -1008,3 +1018,12 @@ function launchToast(msg, status = 'success') {
         }
     }).showToast();
 }
+// $(document).ready(function() {
+//   $(".menu-item-has-children").mouseenter(function() {
+//     $("body").addClass("overlay");
+//   });
+//   $(".menu-item-has-children").mouseleave(function() {
+//     $("body").removeClass("overlay");
+//   });
+// });
+

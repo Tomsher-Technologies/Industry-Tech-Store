@@ -22,6 +22,9 @@ use Combinations;
 // use CoreComponentRepository;
 use Artisan;
 use Cache;
+use Exception;
+use Image;
+use Storage;
 use Str;
 
 class ProductController extends Controller
@@ -98,10 +101,9 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
-        $product->photos = $request->photos;
-        $product->thumbnail_img = $request->thumbnail_img;
         $product->unit = $request->unit;
         $product->min_qty = $request->min_qty;
+        $product->sku = cleanSKU($request->sku);
         $product->low_stock_quantity = $request->low_stock_quantity;
         $product->stock_visibility_state = $request->stock_visibility_state;
         $product->external_link = $request->external_link;
@@ -189,6 +191,44 @@ class ProductController extends Controller
 
         $product->save();
 
+        $gallery = [];
+        if ($request->hasfile('gallery_images')) {
+            if ($product->photos == null) {
+                $count = 1;
+                $old_gallery = [];
+            } else {
+                $old_gallery = explode(',', $product->photos);
+                $count = count($old_gallery) + 1;
+            }
+
+            foreach ($request->file('gallery_images') as $key => $file) {
+                $gallery[] = $this->downloadAndResizeImage($file, $product->sku, false, $count + $key);
+            }
+            $product->photos = implode(',', array_merge($old_gallery, $gallery));
+        }
+
+        if ($request->hasFile('thumbnail_image')) {
+            if ($product->thumbnail_img) {
+                if (Storage::exists($product->thumbnail_img)) {
+                    $info = pathinfo($product->thumbnail_img);
+                    $file_name = basename($product->thumbnail_img, '.' . $info['extension']);
+                    $ext = $info['extension'];
+
+                    $sizes = config('app.img_sizes');
+                    foreach ($sizes as $size) {
+                        $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
+                        if (Storage::exists($path)) {
+                            Storage::delete($path);
+                        }
+                    }
+                    Storage::delete($product->thumbnail_img);
+                }
+            }
+            $gallery = $this->downloadAndResizeImage($request->file('thumbnail_image'), $product->sku, true);
+            $product->thumbnail_img = $gallery;
+        }
+
+        $product->save();
 
         // SEO
         $seo = ProductSeo::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
@@ -332,7 +372,6 @@ class ProductController extends Controller
      */
     public function admin_product_edit(Request $request, $id)
     {
-        //CoreComponentRepository::initializeCache();
 
         $product = Product::with(['tabs', 'seo'])->findOrFail($id);
 
@@ -367,6 +406,58 @@ class ProductController extends Controller
         return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
     }
 
+
+    public function downloadAndResizeImage($imageUrl, $sku, $mainImage = false, $count = 1, $update = false)
+    {
+        $data_url = '';
+
+        try {
+            $ext = $imageUrl->getClientOriginalExtension();
+            $path = 'products/' . Carbon::now()->year . '/' . Carbon::now()->format('m') . '/' . $sku . '/';
+
+            if ($mainImage) {
+                $filename = $path . $sku . '.' . $ext;
+            } else {
+                $n = $sku . '_gallery_' .  $count;
+                $filename = $path . $n . '.' . $ext;
+            }
+
+
+            // Download the image from the given URL
+            $imageContents = file_get_contents($imageUrl);
+
+            // Save the original image in the storage folder
+            Storage::disk('public')->put($filename, $imageContents);
+            $data_url = Storage::url($filename);
+            // Create an Intervention Image instance for the downloaded image
+            $image = Image::make($imageContents);
+
+            // Resize and save three additional copies of the image with different sizes
+            $sizes = config('app.img_sizes'); // Specify the desired sizes in pixels
+
+            foreach ($sizes as $size) {
+                $resizedImage = $image->resize($size, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                if ($mainImage) {
+                    $filename2 = $path . $sku . "_{$size}px" . '.' . $ext;
+                } else {
+                    $n = $sku . '_gallery_' .  $count . "_{$size}px";
+                    $filename2 = $path . $n . '.' . $ext;
+                }
+
+                // Save the resized image in the storage folder
+                Storage::disk('public')->put($filename2, $resizedImage->encode('jpg'));
+
+                // $data_url[] = Storage::url($filename2);
+            }
+        } catch (Exception $e) {
+        }
+
+        return $data_url;
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -376,7 +467,46 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product                    = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
+
+        $gallery = [];
+        if ($request->hasfile('gallery_images')) {
+            if ($product->photos == null) {
+                $count = 1;
+                $old_gallery = [];
+            } else {
+                $old_gallery = explode(',', $product->photos);
+                $count = count($old_gallery) + 1;
+            }
+
+            foreach ($request->file('gallery_images') as $key => $file) {
+                $gallery[] = $this->downloadAndResizeImage($file, $product->sku, false, $count + $key);
+            }
+            $product->photos = implode(',', array_merge($old_gallery, $gallery));
+        }
+
+        if ($request->hasFile('thumbnail_image')) {
+            if ($product->thumbnail_img) {
+                if (Storage::exists($product->thumbnail_img)) {
+                    $info = pathinfo($product->thumbnail_img);
+                    $file_name = basename($product->thumbnail_img, '.' . $info['extension']);
+                    $ext = $info['extension'];
+
+                    $sizes = config('app.img_sizes');
+                    foreach ($sizes as $size) {
+                        $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
+                        if (Storage::exists($path)) {
+                            Storage::delete($path);
+                        }
+                    }
+                    Storage::delete($product->thumbnail_img);
+                }
+            }
+            $gallery = $this->downloadAndResizeImage($request->file('thumbnail_image'), $product->sku, true);
+            $product->thumbnail_img = $gallery;
+        }
+
+
         $product->category_id       = $request->category_id;
         $product->brand_id          = $request->brand_id;
         $product->featured = 0;
@@ -393,8 +523,8 @@ class ProductController extends Controller
 
         $product->slug = $slug;
 
-        $product->photos                 = $request->photos;
-        $product->thumbnail_img          = $request->thumbnail_img;
+        // $product->photos                 = $request->photos;
+        // $product->thumbnail_img          = $request->thumbnail_img;
         $product->min_qty                = $request->min_qty;
         $product->low_stock_quantity     = $request->low_stock_quantity;
         $product->stock_visibility_state = $request->stock_visibility_state;
@@ -462,6 +592,9 @@ class ProductController extends Controller
 
         $product->choice_options = json_encode($choice_options, JSON_UNESCAPED_UNICODE);
 
+        // Gallery upload
+
+
 
         //combinations start
         $options = array();
@@ -520,7 +653,7 @@ class ProductController extends Controller
             $product_stock->product_id  = $product->id;
             $product_stock->variant     = '';
             $product_stock->price       = $request->unit_price;
-            $product_stock->sku         = $request->sku;
+            $product_stock->sku         = cleanSKU($request->sku);
             $product_stock->qty         = $request->current_stock;
             $product_stock->save();
         }
@@ -597,20 +730,12 @@ class ProductController extends Controller
 
         // Tabs
         if ($request->has('tabs')) {
-            // dd($request->tabs);
+            ProductTabs::where('product_id', $product->id)->delete();
             foreach ($request->tabs as $tab) {
-                if ($tab['tab_id'] !== null) {
-                    ProductTabs::where('id', $tab['tab_id'])
-                        ->update([
-                            'heading' => $tab['tab_heading'],
-                            'content' => $tab['tab_description'],
-                        ]);
-                } else {
-                    $p_tab = $product->tabs()->create([
-                        'heading' => $tab['tab_heading'],
-                        'content' => $tab['tab_description'],
-                    ]);
-                }
+                $p_tab = $product->tabs()->create([
+                    'heading' => $tab['tab_heading'],
+                    'content' => $tab['tab_description'],
+                ]);
             }
         }
 
@@ -631,9 +756,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-        foreach ($product->product_translations as $key => $product_translations) {
-            $product_translations->delete();
-        }
+        // foreach ($product->product_translations as $key => $product_translations) {
+        //     $product_translations->delete();
+        // }
 
         foreach ($product->stocks as $key => $stock) {
             $stock->delete();
@@ -841,5 +966,60 @@ class ProductController extends Controller
 
         $combinations = Combinations::makeCombinations($options);
         return view('backend.product.products.sku_combinations_edit', compact('combinations', 'unit_price', 'colors_active', 'product_name', 'product'));
+    }
+
+    public function delete_thumbnail(Request $request)
+    {
+        $product = Product::where('id', $request->id)->first();
+        if (Storage::exists($product->thumbnail_img)) {
+            $info = pathinfo($product->thumbnail_img);
+            $file_name = basename($product->thumbnail_img, '.' . $info['extension']);
+            $ext = $info['extension'];
+
+            $sizes = config('app.img_sizes');
+            foreach ($sizes as $size) {
+                $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+            }
+
+            Storage::delete($product->thumbnail_img);
+            $product->thumbnail_img = null;
+            $product->save();
+            return 1;
+        }
+    }
+
+    public function delete_gallery(Request $request)
+    {
+        $product = Product::where('id', $request->id)->first();
+
+        if (Storage::exists($request->url)) {
+            $info = pathinfo($request->url);
+            $file_name = basename($request->url, '.' . $info['extension']);
+            $ext = $info['extension'];
+
+            $sizes = config('app.img_sizes');
+            foreach ($sizes as $size) {
+                $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+            }
+
+            Storage::delete($request->url);
+
+            $thumbnail_img = explode(',', $product->photos);
+            $thumbnail_img =  array_diff($thumbnail_img, [$request->url]);
+            if ($thumbnail_img) {
+                $product->photos = implode(',', $thumbnail_img);
+            } else {
+                $product->photos = null;
+            }
+
+            $product->save();
+            return 1;
+        }
     }
 }

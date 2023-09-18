@@ -1156,6 +1156,21 @@ if (!function_exists('load_seo_tags')) {
         return "";
     }
 
+    function deleteImage($path)
+    {
+        $fileName = 'public' . Str::remove('/storage', $path);
+        if (Storage::exists($fileName)) {
+            Storage::delete($fileName);
+        }
+    }
+
+    function cleanSKU($sku)
+    {
+        $sku = str_replace(' ', '', $sku);
+        $sku = preg_replace('/[^a-zA-Z0-9_-]/', '', $sku);
+        return $sku;
+    }
+
     // function testView()
     // {
     //     Cache::forget('awesomeHtml');

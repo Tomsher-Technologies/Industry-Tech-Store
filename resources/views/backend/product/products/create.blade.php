@@ -94,45 +94,26 @@
                             <h5 class="mb-0 h6">Product Images</h5>
                         </div>
                         <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Gallery Images
-                                    <small>(600x600)</small></label>
-                                <div class="col-md-8">
-                                    <div class="input-group" data-toggle="aizuploader" data-type="image"
-                                        data-multiple="true">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                Browse</div>
-                                        </div>
-                                        <div class="form-control file-amount">Choose File</div>
-                                        <input type="hidden" name="photos" id="photos" class="selected-files">
-                                    </div>
-                                    <div class="file-preview box sm">
-                                    </div>
 
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">Gallery
+                                    Images<small>(1000*1000)</small></label>
+                                <div class="col-md-8">
+                                    <input type="file" name="gallery_images[]" multiple class="form-control"
+                                        accept="image/*">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Thumbnail Image
-                                    <small>(300x300)</small></label>
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">Thumbnail Image
+                                    <small>(1000*1000)</small></label>
                                 <div class="col-md-8">
-                                    <div class="input-group" data-toggle="aizuploader" data-type="image">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                Browse</div>
-                                        </div>
-                                        <div class="form-control file-amount">Choose File</div>
-                                        <input type="hidden" name="thumbnail_img" id="thumbnail_img"
-                                            class="selected-files">
-                                    </div>
-                                    <div class="file-preview box sm">
-                                    </div>
+                                    <input type="file" name="thumbnail_image" class="form-control" accept="image/*">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                   
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">Product price + stock</h5>
@@ -292,13 +273,13 @@
                     </div>
 
                     <!--                <div class="card">
-                                                                                                        <div class="card-header">
-                                                                                                            <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                                                                        </div>
-                                                                                                        <div class="card-body">
+                                                                                                                    <div class="card-header">
+                                                                                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                                                    </div>
+                                                                                                                    <div class="card-body">
 
-                                                                                                        </div>
-                                                                                                    </div>-->
+                                                                                                                    </div>
+                                                                                                                </div>-->
 
 
                     <div class="card">
@@ -695,22 +676,24 @@
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append(
                         '\
-                                                                                                    <div class="form-group row">\
-                                                                                                        <div class="col-md-3">\
-                                                                                                            <input type="hidden" name="choice_no[]" value="' +
+                                                                                                                <div class="form-group row">\
+                                                                                                                    <div class="col-md-3">\
+                                                                                                                        <input type="hidden" name="choice_no[]" value="' +
                         i +
                         '">\
-                                                                                                            <input type="text" class="form-control" name="choice[]" value="' +
+                                                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                                                                        </div>\
-                                                                                                        <div class="col-md-8">\
-                                                                                                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
-                        i + '[]" multiple>\
-                                                                                                                ' + obj + '\
-                                                                                                            </select>\
-                                                                                                        </div>\
-                                                                                                    </div>');
+                                                                                                                    </div>\
+                                                                                                                    <div class="col-md-8">\
+                                                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                        i +
+                        '[]" multiple>\
+                                                                                                                            ' +
+                        obj + '\
+                                                                                                                        </select>\
+                                                                                                                    </div>\
+                                                                                                                </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

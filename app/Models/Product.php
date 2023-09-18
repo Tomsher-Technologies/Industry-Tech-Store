@@ -9,6 +9,7 @@ use App\Models\Products\ProductEnquiries;
 use App\Models\Products\ProductTabs;
 use Cache;
 use Illuminate\Support\Str;
+use URL;
 use Wildside\Userstamps\Userstamps;
 
 class Product extends Model
@@ -120,21 +121,26 @@ class Product extends Model
         return $slug;
     }
 
-    public function thumbnail()
+    public function image($path)
     {
-        return $this->hasOne(Upload::class, 'id', 'thumbnail_img');
+        return URL::to($path);
     }
 
-    public function gallery()
-    {
-        return $this->hasMany(Upload::class, 'id', 'photos');
-    }
+    // public function thumbnail()
+    // {
+    //     return $this->hasOne(Upload::class, 'id', 'thumbnail_img');
+    // }
 
-    public function getGalleryAttributes()
-    {
-        $photos = $this->getOriginal('photos');
-        return Upload::whereIn('id', explode(',', $photos))->get();
-    }
+    // public function gallery()
+    // {
+    //     return $this->hasMany(Upload::class, 'id', 'photos');
+    // }
+
+    // public function getGalleryAttributes()
+    // {
+    //     $photos = $this->getOriginal('photos');
+    //     return  explode(',', $photos);
+    // }
 
     // public function allCategories()
     // {
