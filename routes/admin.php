@@ -100,6 +100,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/products/destroy/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/duplicate/{id}', [ProductController::class, 'duplicate'])->name('products.duplicate');
+    Route::post('/products/delete-thumbnail', [ProductController::class, 'delete_thumbnail'])->name('products.delete_thumbnail');
+    Route::post('/products/delete_gallery', [ProductController::class, 'delete_gallery'])->name('products.delete_gallery');
 
     Route::post('/products/slug_check', [ProductController::class, 'slug_check'])->name('products.slug_check');
 

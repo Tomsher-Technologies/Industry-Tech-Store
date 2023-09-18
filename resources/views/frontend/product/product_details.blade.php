@@ -24,7 +24,55 @@
                             <div class="ps-product__thumbnail" data-vertical="true">
                                 <figure>
                                     <div class="ps-wrapper">
-                                        <div class="ps-product__gallery" data-arrow="true">
+
+
+                                        <div class="gallery-image">
+                                            <div class="galleries">
+                                                <div class="detail-gallery">
+                                                    <div class="product-image-slider">
+
+                                                        @if ($product->thumbnail_img)
+                                                            <figure class="border-radius-10"><img
+                                                                    src="{{ get_product_image($product->thumbnail_img) }}"
+                                                                    alt="{{ $product->name }}"></figure>
+                                                        @endif
+                                                        @if ($product->photos)
+                                                            @foreach (explode(',', $product->photos) as $photo)
+                                                                <figure class="border-radius-10"><img
+                                                                        src="{{ get_product_image($photo) }}"
+                                                                        alt="{{ $product->name }}"></figure>
+                                                            @endforeach
+                                                        @endif
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="slider-nav-thumbnails">
+                                                    @if ($product->thumbnail_img)
+                                                        <div>
+                                                            <div class="item-thumb">
+                                                                <img src="{{ get_product_image($product->thumbnail_img, 300) }}"
+                                                                    alt="{{ $product->name }}">
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($product->photos)
+                                                        @foreach (explode(',', $product->photos) as $photo)
+                                                            <div>
+                                                                <div class="item-thumb">
+                                                                    <img src="{{ get_product_image($photo, 300) }}"
+                                                                        alt="{{ $product->name }}">
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- <div class="ps-product__gallery" data-arrow="true">
 
                                             @if ($product->thumbnail_img)
                                                 <div class="item">
@@ -45,11 +93,19 @@
                                                     </div>
                                                 @endforeach
                                             @endif
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </figure>
-                                <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4"
+                                {{-- <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4"
                                     data-arrow="false">
+                                    @if ($product->thumbnail_img)
+                                        <div class="item">
+                                            <a href="{{ get_product_image($product->thumbnail_img) }}">
+                                                <img src="{{ get_product_image($product->thumbnail_img, '500') }}"
+                                                    alt="{{ $product->name }}" />
+                                            </a>
+                                        </div>
+                                    @endif
                                     @if ($product->photos)
                                         @foreach (explode(',', $product->photos) as $photo)
                                             <div class="item">
@@ -60,7 +116,7 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="ps-product__info">
                                 <h1>
@@ -325,9 +381,216 @@
     </div>
 @endsection
 @section('header')
+    <style>
+        .gallery-image {
+            display: flex;
+            width: 100%;
+        }
+
+        .galleries {
+            padding: 0px 0px 110px 0px;
+            position: relative;
+            width: 100%;
+        }
+
+        .detail-gallery {
+            position: relative;
+        }
+
+        .detail-gallery {
+            width: 100%;
+            border: 1px solid #ddd;
+            /* background-color: #fff; */
+            border-radius: 4px;
+        }
+
+        .label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            border-radius: 30px;
+            padding: 4px 10px;
+            color: #ffffff;
+            font-size: 12px;
+            line-height: 12px;
+            background-color: #FD9636;
+        }
+
+
+        .product-image-slider.slick-slider .slick-track figure {
+            height: auto;
+            padding: 0px 0px;
+        }
+
+
+
+        .product-image-slider-2.slick-slider .slick-track figure {
+            height: 460px;
+            display: flex;
+            align-items: center;
+            padding: 20px 0px;
+        }
+
+        .product-image-slider .slick-slide img,
+        .product-image-slider-2 .slick-slide img {
+
+            max-width: 99%;
+            display: block;
+            margin: auto;
+            max-height: 100%;
+        }
+
+        .detail-gallery {
+            position: relative;
+        }
+
+        .product-image-slider .slick-slide img,
+        .product-image-slider-2 .slick-slide img {
+
+            max-width: 99%;
+            display: block;
+            margin: auto;
+            max-height: 100%;
+        }
+
+
+
+        .slider-nav-thumbnails {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            height: 105px;
+            width: 94px;
+            min-width: 100%;
+            display: flex;
+        }
+
+
+
+
+        .slider-nav-thumbnails .slick-slide .item-thumb,
+        .slider-nav-thumbnails-2 .slick-slide .item-thumb {
+            height: 109px;
+            border: 1px solid #DDE4F0;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            text-align: center;
+            line-height: 108px;
+            cursor: pointer;
+        }
+
+        .slider-nav-thumbnails .slick-slide .item-thumb.slick-current,
+        .slider-nav-thumbnails .slick-slide .item-thumb:hover,
+        .slider-nav-thumbnails-2 .slick-slide .item-thumb.slick-current,
+        .slider-nav-thumbnails-2 .slick-slide .item-thumb:hover {
+            border-color: #FD9636;
+        }
+
+        .slider-nav-thumbnails .slick-slide .item-thumb img,
+        .slider-nav-thumbnails-2 .slick-slide .item-thumb img {
+            display: inline-block;
+            height: auto;
+            max-width: 90%;
+            vertical-align: middle;
+            max-height: 90%;
+        }
+
+        .slider-nav-thumbnails .slick-prev,
+        .slider-nav-thumbnails-2 .slick-prev {
+            display: none !important;
+        }
+
+        .slider-nav-thumbnails .slick-next,
+        .slider-nav-thumbnails-2 .slick-next {
+            display: none !important;
+        }
+
+        .slick-initialized .slick-slide {
+            text-align: center;
+        }
+
+        .product-image-slider.slick-slider .slick-track figure {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image-slider-2.slick-slider .slick-track figure {
+            /* height: 460px; */
+            display: flex;
+            align-items: center;
+            padding: 20px 0px;
+        }
+
+        .product-image-slider .slick-slide img,
+        .product-image-slider-2 .slick-slide img {
+            /* display: inline-block;
+                                                                                vertical-align: middle;*/
+            max-width: 99%;
+            display: block;
+            margin: auto;
+            max-height: 100%;
+        }
+
+
+        @media (max-width: 449.98px) {
+
+            .slider-nav-thumbnails {
+                width: 100%;
+                position: relative;
+                top: auto;
+                left: auto;
+            }
+
+            .slider-nav-thumbnails .slick-slide {
+                padding: 0px 5px;
+            }
+
+            .slider-nav-thumbnails .slick-slide .item-thumb {
+                margin-top: 15px;
+            }
+
+            .slider-nav-thumbnails .slick-slide .item-thumb {
+                height: auto;
+                line-height: 100%;
+                padding: 5px;
+            }
+
+            .slider-nav-thumbnails {
+                width: 75px;
+            }
+        }
+
+        .slider-nav-thumbnails .slick-track {
+            display: flex;
+            height: 100% !important;
+        }
+    </style>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js"></script>
     <script>
+        $(".product-image-slider").slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: false,
+            asNavFor: ".slider-nav-thumbnails"
+        });
+
+        $(".slider-nav-thumbnails").slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            asNavFor: ".product-image-slider",
+            dots: false,
+            focusOnSelect: true,
+            vertical: true,
+            prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
+            nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
+        });
+
         function addCart(slug) {
             count = parseInt($('.quantity-input').val());
             addToCart(slug, count);
@@ -367,5 +630,60 @@
                 getParts()
             }, 3000);
         });
+
+        var productDetails = function () {
+        $slick_slider_1.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: false,
+            asNavFor: ".slider-nav-thumbnails-2"
+        });
+        $slick_slider_2.slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            asNavFor: ".product-image-slider-2",
+            dots: false,
+            focusOnSelect: true,
+            vertical: false,
+            adaptiveHeight: false,
+            prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
+            nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
+        });
+
+        // Remove active class from all thumbnail slides
+        $(".slider-nav-thumbnails-2 .slick-slide").removeClass("slick-active");
+
+        // Set active class to first thumbnail slides
+        $(".slider-nav-thumbnails-2 .slick-slide").eq(0).addClass("slick-active");
+
+        // On before slide change match active thumbnail to current slide
+        $(".product-image-slider-2").on("beforeChange", function (event, slick, currentSlide, nextSlide) {
+            var mySlideNumber = nextSlide;
+            $(".slider-nav-thumbnails-2 .slick-slide").removeClass("slick-active");
+            $(".slider-nav-thumbnails-2 .slick-slide").eq(mySlideNumber).addClass("slick-active");
+        });
+
+        $(".product-image-slider-2").on("beforeChange", function (event, slick, currentSlide, nextSlide) {
+            var img = $(slick.$slides[nextSlide]).find("img");
+            $(".zoomWindowContainer,.zoomContainer").remove();
+            $(img).elevateZoom({
+                zoomType: "inner",
+                cursor: "crosshair",
+                zoomWindowFadeIn: 500,
+                zoomWindowFadeOut: 750
+            });
+        });
+        //Elevate Zoom
+        if ($(".product-image-slider-2").length) {
+            $(".product-image-slider-2 .slick-active img").elevateZoom({
+                zoomType: "inner",
+                cursor: "crosshair",
+                zoomWindowFadeIn: 500,
+                zoomWindowFadeOut: 750
+            });
+        }
+    };
+
     </script>
 @endpush

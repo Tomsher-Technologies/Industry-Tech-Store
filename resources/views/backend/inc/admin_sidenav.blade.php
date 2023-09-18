@@ -422,12 +422,12 @@
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('in_house_sale_report.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['in_house_sale_report.index']) }}">
-                                    <span class="aiz-side-nav-text">Product Sale</span>
-                                </a>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('in_house_sale_report.index') }}"-->
+                            <!--        class="aiz-side-nav-link {{ areActiveRoutes(['in_house_sale_report.index']) }}">-->
+                            <!--        <span class="aiz-side-nav-text">Product Sale</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
                             {{-- <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller_sale_report.index') }}"
                                     class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index']) }}">
@@ -473,27 +473,27 @@
                 @endif
                 @if (Auth::user()->user_type == 'admin' || in_array('23', json_decode(Auth::user()->staff->role->permissions)))
                     <!--Blog System-->
-                    <li class="aiz-side-nav-item">
-                        <a href="#" class="aiz-side-nav-link">
-                            <i class="las la-bullhorn aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">Blog System</span>
-                            <span class="aiz-side-nav-arrow"></span>
-                        </a>
-                        <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('blog.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['blog.create', 'blog.edit']) }}">
-                                    <span class="aiz-side-nav-text">All Posts</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('blog-category.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['blog-category.create', 'blog-category.edit']) }}">
-                                    <span class="aiz-side-nav-text">Categories</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--<li class="aiz-side-nav-item">-->
+                    <!--    <a href="#" class="aiz-side-nav-link">-->
+                    <!--        <i class="las la-bullhorn aiz-side-nav-icon"></i>-->
+                    <!--        <span class="aiz-side-nav-text">Blog System</span>-->
+                    <!--        <span class="aiz-side-nav-arrow"></span>-->
+                    <!--    </a>-->
+                    <!--    <ul class="aiz-side-nav-list level-2">-->
+                    <!--        <li class="aiz-side-nav-item">-->
+                    <!--            <a href="{{ route('blog.index') }}"-->
+                    <!--                class="aiz-side-nav-link {{ areActiveRoutes(['blog.create', 'blog.edit']) }}">-->
+                    <!--                <span class="aiz-side-nav-text">All Posts</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        <li class="aiz-side-nav-item">-->
+                    <!--            <a href="{{ route('blog-category.index') }}"-->
+                    <!--                class="aiz-side-nav-link {{ areActiveRoutes(['blog-category.create', 'blog-category.edit']) }}">-->
+                    <!--                <span class="aiz-side-nav-text">Categories</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--    </ul>-->
+                    <!--</li>-->
                 @endif
 
                 <!-- marketing -->
@@ -592,221 +592,9 @@
                     </li>
                 @endif --}}
 
-                <!-- Affiliate Addon -->
-                @if (addon_is_activated('affiliate_system'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-link aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">Affiliate System</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('affiliate.configs') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Affiliate Registration Form</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('affiliate.index') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Affiliate Configurations</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('affiliate.users') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['affiliate.users', 'affiliate_users.show_verification_request', 'affiliate_user.payment_history']) }}">
-                                        <span class="aiz-side-nav-text">Affiliate Users</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('refferals.users') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Referral Users</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('affiliate.withdraw_requests') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Affiliate Withdraw Requests</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('affiliate.logs.admin') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Affiliate Logs</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
+            
 
-                <!-- Offline Payment Addon-->
-                @if (addon_is_activated('offline_payment'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('16', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-money-check-alt aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">Offline Payment System</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('manual_payment_methods.index') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['manual_payment_methods.index', 'manual_payment_methods.create', 'manual_payment_methods.edit']) }}">
-                                        <span class="aiz-side-nav-text">Manual Payment Methods</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('offline_wallet_recharge_request.index') }}"
-                                        class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Offline Wallet Recharge</span>
-                                    </a>
-                                </li>
-                                @if (get_setting('classified_product') == 1)
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('offline_customer_package_payment_request.index') }}"
-                                            class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Offline Customer Package Payments</span>
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (addon_is_activated('seller_subscription'))
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('offline_seller_package_payment_request.index') }}"
-                                            class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Offline Seller Package Payments</span>
-                                            @if (env('DEMO_MODE') == 'On')
-                                                <span class="badge badge-inline badge-danger">Addon</span>
-                                            @endif
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
-                @endif
-
-                <!-- Paytm Addon -->
-                @if (addon_is_activated('paytm'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('17', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-mobile-alt aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">Asian Payment Gateway</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('paytm.index') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Set Asian PG Credentials</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
-
-                <!-- Club Point Addon-->
-                @if (addon_is_activated('club_point'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('18', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="lab la-btc aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">Club Point System</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('club_points.configs') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Club Point Configurations</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('set_product_points') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['set_product_points', 'product_club_point.edit']) }}">
-                                        <span class="aiz-side-nav-text">Set Product Point</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('club_points.index') }}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['club_points.index', 'club_point.details']) }}">
-                                        <span class="aiz-side-nav-text">User Points</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
-
-                <!--OTP addon -->
-                @if (addon_is_activated('otp_system'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('19', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-phone aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">OTP System</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('otp.configconfiguration') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">OTP Configurations</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('sms-templates.index') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">SMS Templates</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('otp_credentials.index') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Set OTP Credentials</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
-
-                @if (addon_is_activated('african_pg'))
-                    @if (Auth::user()->user_type == 'admin' || in_array('19', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-phone aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">African Payment Gateway Addon</span>
-                                @if (env('DEMO_MODE') == 'On')
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('african.configuration') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">African PG Configurations</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('african_credentials.index') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">Set African PG Credentials</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
+       
 
                 <!-- Website Setup -->
                 @if (Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
@@ -876,103 +664,103 @@
                                 </a>
                             </li>
 
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('activation.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Features activation</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('languages.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit']) }}">
-                                    <span class="aiz-side-nav-text">Languages</span>
-                                </a>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('activation.index') }}" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">Features activation</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('languages.index') }}"-->
+                            <!--        class="aiz-side-nav-link {{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit']) }}">-->
+                            <!--        <span class="aiz-side-nav-text">Languages</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
 
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('currency.index') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">Currency</span>
                                 </a>
                             </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('tax.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['tax.index', 'tax.create', 'tax.store', 'tax.show', 'tax.edit']) }}">
-                                    <span class="aiz-side-nav-text">Vat & TAX</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('pick_up_points.index') }}"
-                                    class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_points.index', 'pick_up_points.create', 'pick_up_points.edit']) }}">
-                                    <span class="aiz-side-nav-text">Pickup point</span>
-                                </a>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('tax.index') }}"-->
+                            <!--        class="aiz-side-nav-link {{ areActiveRoutes(['tax.index', 'tax.create', 'tax.store', 'tax.show', 'tax.edit']) }}">-->
+                            <!--        <span class="aiz-side-nav-text">Vat & TAX</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('pick_up_points.index') }}"-->
+                            <!--        class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_points.index', 'pick_up_points.create', 'pick_up_points.edit']) }}">-->
+                            <!--        <span class="aiz-side-nav-text">Pickup point</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('smtp_settings.index') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">SMTP Settings</span>
                                 </a>
                             </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('payment_method.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Payment Methods</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">File System & Cache Configuration</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('social_login.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Social media Logins</span>
-                                </a>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('payment_method.index') }}" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">Payment Methods</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">File System & Cache Configuration</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="{{ route('social_login.index') }}" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">Social media Logins</span>-->
+                            <!--    </a>-->
+                            <!--</li>-->
 
-                            <li class="aiz-side-nav-item">
-                                <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Facebook</span>
-                                    <span class="aiz-side-nav-arrow"></span>
-                                </a>
-                                <ul class="aiz-side-nav-list level-3">
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('facebook_chat.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Facebook Chat</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Facebook Comment</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="javascript:void(0);" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">Facebook</span>-->
+                            <!--        <span class="aiz-side-nav-arrow"></span>-->
+                            <!--    </a>-->
+                            <!--    <ul class="aiz-side-nav-list level-3">-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('facebook_chat.index') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Facebook Chat</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Facebook Comment</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--    </ul>-->
+                            <!--</li>-->
 
-                            <li class="aiz-side-nav-item">
-                                <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Google</span>
-                                    <span class="aiz-side-nav-arrow"></span>
-                                </a>
-                                <ul class="aiz-side-nav-list level-3">
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Analytics Tools</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Google reCAPTCHA</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Google Map</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">Google Firebase</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <!--<li class="aiz-side-nav-item">-->
+                            <!--    <a href="javascript:void(0);" class="aiz-side-nav-link">-->
+                            <!--        <span class="aiz-side-nav-text">Google</span>-->
+                            <!--        <span class="aiz-side-nav-arrow"></span>-->
+                            <!--    </a>-->
+                            <!--    <ul class="aiz-side-nav-list level-3">-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Analytics Tools</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Google reCAPTCHA</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Google Map</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--        <li class="aiz-side-nav-item">-->
+                            <!--            <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">-->
+                            <!--                <span class="aiz-side-nav-text">Google Firebase</span>-->
+                            <!--            </a>-->
+                            <!--        </li>-->
+                            <!--    </ul>-->
+                            <!--</li>-->
 
 
 
@@ -1040,36 +828,36 @@
                     </li>
                 @endif
                 @if (Auth::user()->user_type == 'admin' || in_array('24', json_decode(Auth::user()->staff->role->permissions)))
-                    <li class="aiz-side-nav-item">
-                        <a href="#" class="aiz-side-nav-link">
-                            <i class="las la-user-tie aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">System</span>
-                            <span class="aiz-side-nav-arrow"></span>
-                        </a>
-                        <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('system_update') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Update</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('system_server') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Server status</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <!--<li class="aiz-side-nav-item">-->
+                    <!--    <a href="#" class="aiz-side-nav-link">-->
+                    <!--        <i class="las la-user-tie aiz-side-nav-icon"></i>-->
+                    <!--        <span class="aiz-side-nav-text">System</span>-->
+                    <!--        <span class="aiz-side-nav-arrow"></span>-->
+                    <!--    </a>-->
+                    <!--    <ul class="aiz-side-nav-list level-2">-->
+                    <!--        <li class="aiz-side-nav-item">-->
+                    <!--            <a href="{{ route('system_update') }}" class="aiz-side-nav-link">-->
+                    <!--                <span class="aiz-side-nav-text">Update</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--        <li class="aiz-side-nav-item">-->
+                    <!--            <a href="{{ route('system_server') }}" class="aiz-side-nav-link">-->
+                    <!--                <span class="aiz-side-nav-text">Server status</span>-->
+                    <!--            </a>-->
+                    <!--        </li>-->
+                    <!--    </ul>-->
+                    <!--</li>-->
                 @endif
 
                 <!-- Addon Manager -->
                 @if (Auth::user()->user_type == 'admin' || in_array('21', json_decode(Auth::user()->staff->role->permissions)))
-                    <li class="aiz-side-nav-item">
-                        <a href="{{ route('addons.index') }}"
-                            class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create']) }}">
-                            <i class="las la-wrench aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">Addon Manager</span>
-                        </a>
-                    </li>
+                    <!--<li class="aiz-side-nav-item">-->
+                    <!--    <a href="{{ route('addons.index') }}"-->
+                    <!--        class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create']) }}">-->
+                    <!--        <i class="las la-wrench aiz-side-nav-icon"></i>-->
+                    <!--        <span class="aiz-side-nav-text">Addon Manager</span>-->
+                    <!--    </a>-->
+                    <!--</li>-->
                 @endif
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->

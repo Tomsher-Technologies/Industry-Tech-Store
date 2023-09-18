@@ -60,7 +60,7 @@
                                 </label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" name="unit"
-                                        placeholder="Unit (e.g. KG, Pc etc)" value="{{ $product->unit }}" >
+                                        placeholder="Unit (e.g. KG, Pc etc)" value="{{ $product->unit }}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -97,40 +97,62 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label" for="signinSrEmail">Gallery Images</label>
+                                <label class="col-md-3 col-form-label" for="signinSrEmail">Gallery
+                                    Images<small>(1000*1000)</small></label>
                                 <div class="col-md-8">
-                                    <div class="input-group" data-toggle="aizuploader" data-type="image"
-                                        data-multiple="true">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                Browse</div>
+                                    <input type="file" name="gallery_images[]" multiple class="form-control" accept="image/*">
+
+                                    @if ($product->photos)
+                                        <div class="file-preview box sm">
+                                            @php
+                                                $photos = explode(',', $product->photos);
+                                            @endphp
+                                            @foreach ($photos as $photo)
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                                    <div
+                                                        class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                                        <img src="{{ $product->image($photo) }}" class="img-fit">
+                                                    </div>
+                                                    <div class="remove">
+                                                        <button class="btn btn-sm btn-link remove-galley"
+                                                            data-url="{{ $photo }}" type="button">
+                                                            <i class="la la-close"></i></button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        <div class="form-control file-amount">Choose File</div>
-                                        <input type="hidden" name="photos" value="{{ $product->photos }}"
-                                            class="selected-files">
-                                    </div>
-                                    <div class="file-preview box sm">
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="signinSrEmail">Thumbnail Image
-                                    <small>(290x300)</small></label>
+                                    <small>(1000*1000)</small></label>
                                 <div class="col-md-8">
-                                    <div class="input-group" data-toggle="aizuploader" data-type="image">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                                Browse</div>
+                                    <input type="file" name="thumbnail_image" class="form-control" accept="image/*">
+
+                                    @if ($product->thumbnail_img)
+                                        <div class="file-preview box sm">
+                                            <div
+                                                class="d-flex justify-content-between align-items-center mt-2 file-preview-item">
+                                                <div
+                                                    class="align-items-center align-self-stretch d-flex justify-content-center thumb">
+                                                    <img src="{{ $product->image($product->thumbnail_img) }}"
+                                                        class="img-fit">
+                                                </div>
+                                                <div class="remove">
+                                                    <button class="btn btn-sm btn-link remove-thumbnail" type="button">
+                                                        <i class="la la-close"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-control file-amount">Choose File</div>
-                                        <input type="hidden" name="thumbnail_img" value="{{ $product->thumbnail_img }}"
-                                            class="selected-files">
-                                    </div>
-                                    <div class="file-preview box sm">
-                                    </div>
+                                    @endif
                                 </div>
+
                             </div>
-                            {{-- <div class="form-group row">
+                        </div>
+                        {{-- <div class="form-group row">
                                                     <label class="col-lg-3 col-from-label">{{translate('Gallery Images')}}</label>
                         <div class="col-lg-8">
                             <div id="photos">
@@ -148,7 +170,7 @@
                             </div>
                         </div>
                     </div> --}}
-                            {{-- <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label class="col-lg-3 col-from-label">{{translate('Thumbnail Image')}} <small>(290x300)</small></label>
                             <div class="col-lg-8">
                                 <div id="thumbnail_img">
@@ -164,8 +186,8 @@
                                 </div>
                             </div>
                         </div> --}}
-                        </div>
                     </div>
+
 
                     <div class="card">
                         <div class="card-header">
@@ -339,13 +361,13 @@
 
 
                     <!--                 <div class="card">
-                                                                                    <div class="card-header">
-                                                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                                                    </div>
-                                                                                    <div class="card-body">
+                                                                                                                                                                                                                            <div class="card-header">
+                                                                                                                                                                                                                                <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="card-body">
 
-                                                                                    </div>
-                                                                                </div>-->
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -404,7 +426,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    {{-- <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0 h6">External link</h5>
                         </div>
@@ -431,7 +453,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="card">
@@ -651,6 +673,43 @@
         integrity="sha512-foIijUdV0fR0Zew7vmw98E6mOWd9gkGWQBWaoA1EOFAx+pY+N8FmmtIYAVj64R98KeD2wzZh1aHK0JSpKmRH8w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script>
+        $('.remove-thumbnail').on('click', function() {
+            thumbnail = $(this)
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('products.delete_thumbnail') }}',
+                data: {
+                    id: '{{ $product->id }}'
+                },
+                success: function(data) {
+                    $(thumbnail).closest('.file-preview-item').remove();
+                }
+            });
+
+        });
+        $('.remove-galley').on('click', function() {
+            thumbnail = $(this)
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('products.delete_gallery') }}',
+                data: {
+                    url: $(thumbnail).data('url'),
+                    id: '{{ $product->id }}'
+                },
+                success: function(data) {
+                    $(thumbnail).closest('.file-preview-item').remove();
+                }
+            });
+        });
+    </script>
+
     @php
         $tabs = [];
         foreach ($product->tabs as $key => $tab) {
@@ -748,22 +807,26 @@
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append(
                         '\
-                                                                                <div class="form-group row">\
-                                                                                    <div class="col-md-3">\
-                                                                                        <input type="hidden" name="choice_no[]" value="' +
+                                                                                                                                                                                                                        <div class="form-group row">\
+                                                                                                                                                                                                                            <div class="col-md-3">\
+                                                                                                                                                                                                                                <input type="hidden" name="choice_no[]" value="' +
                         i +
                         '">\
-                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
+                                                                                                                                                                                                                                <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                                                    </div>\
-                                                                                    <div class="col-md-8">\
-                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
-                        i + '[]" multiple>\
-                                                                                            ' + obj + '\
-                                                                                        </select>\
-                                                                                    </div>\
-                                                                                </div>');
+                                                                                                                                                                                                                            </div>\
+                                                                                                                                                                                                                            <div class="col-md-8">\
+                                                                                                                                                                                                                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                        i +
+                        '[]" multiple>\
+                                                                                                                                                                                                                                    ' +
+                        obj +
+                        '\
+                                                                                                                                                                                                                                </select>\
+                                                                                                                                                                                                                            </div>\
+                                                                                                                                                                                                                        </div>'
+                    );
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

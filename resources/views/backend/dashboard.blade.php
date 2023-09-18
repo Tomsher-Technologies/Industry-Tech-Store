@@ -17,153 +17,386 @@
                     <i class="la la-refresh fs-24"></i>
                 </a>
             </div>
-            <div class="col-lg-12">
-                <div class="row gutters-10">
-                    <div class="col-3">
-                        <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Customer
-                                </div>
-                                <div class="h3 fw-700 mb-3">
-                                    {{ $counts['totalUsersCount'] }}
-                                </div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class="d-block">Total</span>
-                                    Products
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['totalProductsCount'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Product category
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['categoryCount'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Product brand
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['brandCount'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
+            
+            
+            
+            <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-1">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/team.png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Customer</div>
+                                                    <div class="text-muted mb-1 fs-12 count-n "> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                                             {{ $counts['totalUsersCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
                 </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="row gutters-10">
-                    <div class="col-3">
-                        <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Sales Amount
-                                </div>
-                                <div class="h3 fw-700 mb-3">
-                                    {{ $counts['salesAmount'] }}
-                                </div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class="d-block">Total</span>
-                                    Orders
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['orderCount'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Completed Orders
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['orderCompletedCount'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
-                            <div class="px-3 pt-3">
-                                <div class="fs-20">
-                                    <span class=" d-block">Total</span>
-                                    Products Sold
-                                </div>
-                                <div class="h3 fw-700 mb-3">{{ $counts['productsSold'] }}</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                                <path fill="rgba(255,255,255,0.3)" fill-opacity="1"
-                                    d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
+            
+            
+            
+            
+                <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-2">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/Products.png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Products</div>
+                                                    <div class="text-muted mb-1 fs-12 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom ">
+                                                             {{ $counts['totalProductsCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
                 </div>
-            </div>
+            
+            
+                  
+                <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-3">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/application.png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Product category</div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                                             {{ $counts['categoryCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+            
+            
+            
+                     <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-4">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/badge.png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Product brand</div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                                        {{ $counts['brandCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+            
+            
+            
+                        <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-5">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/sale (2).png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Sales Amount </div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                                       {{ $counts['salesAmount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+                
+                
+                
+                
+                <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-6">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/box (3).png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Orders </div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                               {{ $counts['orderCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+                
+                
+                
+                
+                      <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-7">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/shopping-bag (5).png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Completed Orders </div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                                    {{ $counts['orderCompletedCount'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+            
+            
+            
+            
+            
+                     <div class="col-lg-3 col-sm-6 col-md-3 col-xl-3">
+                
+                   <div class="card custom-card ">
+                                        <div class="card-body bg-8">
+                                            <div class="row">
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 d-flex align-items-center justify-content-center ecommerce-icon secondary  px-0"> 
+                                                <span class="">
+                                                         <img width="50" src="{{ static_asset('assets/img/sign.png') }}">
+                                                        </span> 
+                                                 </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ps-0"
+                                                >
+                                                    <div class="mb-2 fs-15 count-t">Total Products Sold </div>
+                                                    <div class="text-muted mb-1 count-n"> <span
+                                                            class="text-dark fw-semibold fs-35 lh-1 vertical-bottom">
+                                           {{ $counts['productsSold'] }}
+                                                            </span> </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <!--<div class="col-lg-12">-->
+            <!--    <div class="row gutters-10">-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Customer-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">-->
+            <!--                        {{ $counts['totalUsersCount'] }}-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class="d-block">Total</span>-->
+            <!--                        Products-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['totalProductsCount'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Product category-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['categoryCount'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Product brand-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['brandCount'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--</div>-->
+           
+           
+            <!--<div class="col-lg-12">-->
+            <!--    <div class="row gutters-10">-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Sales Amount-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">-->
+            <!--                        {{ $counts['salesAmount'] }}-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class="d-block">Total</span>-->
+            <!--                        Orders-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['orderCount'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Completed Orders-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['orderCompletedCount'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--        <div class="col-3">-->
+            <!--            <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">-->
+            <!--                <div class="px-3 pt-3">-->
+            <!--                    <div class="fs-20">-->
+            <!--                        <span class=" d-block">Total</span>-->
+            <!--                        Products Sold-->
+            <!--                    </div>-->
+            <!--                    <div class="h3 fw-700 mb-3">{{ $counts['productsSold'] }}</div>-->
+            <!--                </div>-->
+            <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">-->
+            <!--                    <path fill="rgba(255,255,255,0.3)" fill-opacity="1"-->
+            <!--                        d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z">-->
+            <!--                    </path>-->
+            <!--                </svg>-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--</div>-->
         </div>
     @endif
 
 
     @if (Auth::user()->user_type == 'admin' || in_array('1', json_decode(Auth::user()->staff->role->permissions)))
         <div class="row gutters-10">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">Orders This Month</h6>
@@ -177,7 +410,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">Orders Past 12 Months</h6>
@@ -192,7 +425,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">Total Sales This Month</h6>
@@ -207,7 +440,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0 fs-14">Total Sales 12 Months</h6>

@@ -35,17 +35,10 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
 
     public function collection(Collection $rows)
     {
-
-        // dd($rows);
-
         $brands = Brand::all();
         $categories = Category::all();
         foreach ($rows as $row) {
-
-            // dd($row);
-
             $sku = $this->cleanSKU($row['product_code']);
-
 
             $mainImage = null;
             $galleryImage = null;
