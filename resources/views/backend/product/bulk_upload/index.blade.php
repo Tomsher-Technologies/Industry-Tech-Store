@@ -18,7 +18,7 @@
             <div class="">
                 <a href="{{ static_asset('download/product_bulk_demo.xlsx') }}" download><button class="btn btn-info">{{ translate('Download CSV')}}</button></a>
             </div>
-            <div class="alert" style="color: #004085;background-color: #cce5ff;border-color: #b8daff;margin-bottom:0;margin-top:10px;">
+            {{-- <div class="alert" style="color: #004085;background-color: #cce5ff;border-color: #b8daff;margin-bottom:0;margin-top:10px;">
                 <strong>{{translate('Step 2')}}:</strong>
                 <p>1. {{translate('Category and Brand should be in numerical id')}}.</p>
                 <p>2. {{translate('You can download the pdf to get Category and Brand id')}}.</p>
@@ -27,7 +27,7 @@
             <div class="">
                 <a href="{{ route('pdf.download_category') }}"><button class="btn btn-info">{{translate('Download Category')}}</button></a>
                 <a href="{{ route('pdf.download_brand') }}"><button class="btn btn-info">{{translate('Download Brand')}}</button></a>
-            </div>
+            </div> --}}
             <br>
         </div>
     </div>

@@ -40,18 +40,6 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
         foreach ($rows as $row) {
             $sku = $this->cleanSKU($row['product_code']);
 
-            $mainImage = null;
-            $galleryImage = null;
-
-            if (isset($row['main_image'])) {
-                $mainImage = $this->downloadAndResizeImage($row['main_image'], $sku, true);
-            }
-
-            if (isset($row['gallery_images'])) {
-                $galleryImage = $this->downloadGallery($row['gallery_images'], $sku);
-                $galleryImage = implode(',', $galleryImage);
-            }
-
             $brand = null;
             $parent_id = 0;
 
@@ -83,6 +71,18 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             }
 
 
+            $mainImage = null;
+            $galleryImage = null;
+
+            if (isset($row['main_image'])) {
+                $mainImage = $this->downloadAndResizeImage($row['main_image'], $sku, true);
+            }
+
+            if (isset($row['gallery_images'])) {
+                $galleryImage = $this->downloadGallery($row['gallery_images'], $sku);
+                $galleryImage = implode(',', $galleryImage);
+            }
+
             $productId = Product::where([
                 'sku' => $sku
             ])->get()->first();
@@ -107,41 +107,41 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                     $productId->unit_price = $row['price'];
                     $productId->purchase_price = $row['price'];
                 }
-
-                if ($mainImage) {
-                    $productId->thumbnail_img = $mainImage;
-                }
-                if ($galleryImage) {
-                    $productId->photos = $galleryImage;
-                }
-
-                $productId->save();
             } else {
-                // $productId = Product::create([
-                //     'sku' => $sku,
-                //     'name' => $row['product_name'],
-                //     'description' => $row['description'],
-                //     'short_description' => $row['short_description'],
-                //     'category_id' => $parent_id,
-                //     'brand_id' => $brand ? $brand->id : 0,
+                $productId = Product::create([
+                    'sku' => $sku,
+                    'name' => $row['product_name'],
+                    'description' => $row['description'],
+                    'short_description' => $row['short_description'],
+                    'category_id' => $parent_id,
+                    'brand_id' => $brand ? $brand->id : 0,
 
-                //     'video_provider' => '',
-                //     'video_link' => '',
-                //     'unit_price' => $row['price'] ?? 1,
-                //     'purchase_price' => $row['price'],
-                //     'unit' => '',
+                    'video_provider' => '',
+                    'video_link' => '',
+                    'unit_price' => $row['price'] ?? 1,
+                    'purchase_price' => $row['price'],
+                    'unit' => '',
 
-                //     'slug' => $this->productSlug($row['product_name']),
-                //     // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
-                //     // 'photos' => $this->downloadGalleryImages($row['photos']),
+                    'slug' => $this->productSlug($row['product_name']),
+                    // 'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),
+                    // 'photos' => $this->downloadGalleryImages($row['photos']),
 
-                //     'thumbnail_img' => $mainImage ?? '',
-                //     'photos' => $galleryImage ?? '',
+                    'thumbnail_img' => $mainImage ?? '',
+                    'photos' => $galleryImage ?? '',
 
-                //     'created_by' => Auth::user()->id,
-                //     'updated_by' => Auth::user()->id,
-                // ]);
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ]);
             }
+
+            if ($mainImage) {
+                $productId->thumbnail_img = $mainImage;
+            }
+            if ($galleryImage) {
+                $productId->photos = $galleryImage;
+            }
+
+            $productId->save();
 
             // $productId = Product::updateOrCreate([
 
