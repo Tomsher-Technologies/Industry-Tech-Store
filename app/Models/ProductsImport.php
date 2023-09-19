@@ -91,6 +91,9 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                 if (isset($row['product_name'])) {
                     $productId->name = $row['product_name'];
                 }
+                if (isset($row['part_number'])) {
+                    $productId->part_number = $row['part_number'];
+                }
                 if (isset($row['description'])) {
                     $productId->description = $row['description'];
                 }
@@ -120,6 +123,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                     'video_link' => '',
                     'unit_price' => $row['price'] ?? 1,
                     'purchase_price' => $row['price'],
+                    'part_number' => $row['part_number'],
                     'unit' => '',
 
                     'slug' => $this->productSlug($row['product_name']),
