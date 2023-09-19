@@ -42,6 +42,7 @@ class Product extends Model
         'width',
         'weight',
         'hide_price',
+        'part_number',
     ];
 
     // protected $with = ['taxes'];
