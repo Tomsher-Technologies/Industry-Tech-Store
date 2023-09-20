@@ -35,7 +35,7 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'user_type' => [
-                'seller',
+                'staff',
                 'admin'
             ]
         ];

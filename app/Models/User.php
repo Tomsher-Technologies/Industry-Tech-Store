@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Cart;
 use App\Notifications\EmailVerificationNotification;
 use App\Notifications\PasswordReset;
+use Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

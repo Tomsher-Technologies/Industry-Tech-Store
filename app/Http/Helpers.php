@@ -215,8 +215,11 @@ if (!function_exists('discount_in_percentage')) {
             $base = home_base_price($product, false);
             $reduced = home_discounted_base_price($product, false);
             $discount = $base - $reduced;
-            $dp = ($discount * 100) / $base;
-            return round($dp);
+
+            if ($base > 0) {
+                $dp = ($discount * 100) / $base;
+                return round($dp);
+            }
         } catch (Exception $e) {
             return 0;
         }
@@ -1169,6 +1172,14 @@ if (!function_exists('load_seo_tags')) {
         $sku = str_replace(' ', '', $sku);
         $sku = preg_replace('/[^a-zA-Z0-9_-]/', '', $sku);
         return $sku;
+    }
+
+    function userHasPermision($id)
+    {
+        if (Auth::user()->user_type == 'admin' || in_array($id, json_decode(Auth::user()->staff->role->permissions))) {
+            return true;
+        }
+        return false;
     }
 
     // function testView()

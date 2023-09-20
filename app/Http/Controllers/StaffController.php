@@ -40,18 +40,18 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        if(User::where('email', $request->email)->first() == null){
+        if (User::where('email', $request->email)->first() == null) {
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->mobile;
             $user->user_type = "staff";
             $user->password = Hash::make($request->password);
-            if($user->save()){
+            if ($user->save()) {
                 $staff = new Staff;
                 $staff->user_id = $user->id;
                 $staff->role_id = $request->role_id;
-                if($staff->save()){
+                if ($staff->save()) {
                     flash(translate('Staff has been inserted successfully'))->success();
                     return redirect()->route('staffs.index');
                 }
@@ -100,12 +100,12 @@ class StaffController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->mobile;
-        if(strlen($request->password) > 0){
+        if (strlen($request->password) > 0) {
             $user->password = Hash::make($request->password);
         }
-        if($user->save()){
+        if ($user->save()) {
             $staff->role_id = $request->role_id;
-            if($staff->save()){
+            if ($staff->save()) {
                 flash(translate('Staff has been updated successfully'))->success();
                 return redirect()->route('staffs.index');
             }
@@ -124,7 +124,7 @@ class StaffController extends Controller
     public function destroy($id)
     {
         User::destroy(Staff::findOrFail($id)->user->id);
-        if(Staff::destroy($id)){
+        if (Staff::destroy($id)) {
             flash(translate('Staff has been deleted successfully'))->success();
             return redirect()->route('staffs.index');
         }
