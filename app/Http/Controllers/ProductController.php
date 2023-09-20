@@ -26,6 +26,7 @@ use Exception;
 use Image;
 use Storage;
 use Str;
+use File;
 
 class ProductController extends Controller
 {
@@ -971,20 +972,26 @@ class ProductController extends Controller
     public function delete_thumbnail(Request $request)
     {
         $product = Product::where('id', $request->id)->first();
-        if (Storage::exists($product->thumbnail_img)) {
-            $info = pathinfo($product->thumbnail_img);
-            $file_name = basename($product->thumbnail_img, '.' . $info['extension']);
+
+        $fil_url = str_replace('/storage/', '', $product->thumbnail_img);
+        $fil_url = $path = Storage::disk('public')->path($fil_url);
+
+        if (File::exists($fil_url)) {
+            $info = pathinfo($fil_url);
+            $file_name = basename($fil_url, '.' . $info['extension']);
             $ext = $info['extension'];
 
             $sizes = config('app.img_sizes');
             foreach ($sizes as $size) {
                 $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
-                if (Storage::exists($path)) {
-                    Storage::delete($path);
-                }
+                // if (Storage::exists($path)) {
+                //     Storage::delete($path);
+                // }
+                unlink($path);
             }
 
-            Storage::delete($product->thumbnail_img);
+            // Storage::delete($product->thumbnail_img);1
+            unlink($fil_url);
             $product->thumbnail_img = null;
             $product->save();
             return 1;
@@ -994,21 +1001,20 @@ class ProductController extends Controller
     public function delete_gallery(Request $request)
     {
         $product = Product::where('id', $request->id)->first();
-
-        if (Storage::exists($request->url)) {
-            $info = pathinfo($request->url);
-            $file_name = basename($request->url, '.' . $info['extension']);
+        $fil_url = str_replace('/storage/', '', $request->url);
+        $fil_url = $path = Storage::disk('public')->path($fil_url);
+        if (File::exists($fil_url)) {
+            $info = pathinfo($fil_url);
+            $file_name = basename($fil_url, '.' . $info['extension']);
             $ext = $info['extension'];
 
             $sizes = config('app.img_sizes');
             foreach ($sizes as $size) {
                 $path = $info['dirname'] . '/' . $file_name . '_' . $size . 'px.' . $ext;
-                if (Storage::exists($path)) {
-                    Storage::delete($path);
-                }
+                unlink($path);
             }
 
-            Storage::delete($request->url);
+            unlink($fil_url);
 
             $thumbnail_img = explode(',', $product->photos);
             $thumbnail_img =  array_diff($thumbnail_img, [$request->url]);
@@ -1020,6 +1026,8 @@ class ProductController extends Controller
 
             $product->save();
             return 1;
+        } else {
+            return 0;
         }
     }
 }

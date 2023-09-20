@@ -37,22 +37,17 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->has('permissions')){
+        if ($request->has('permissions')) {
             $role = new Role;
             $role->name = $request->name;
             $role->permissions = json_encode($request->permissions);
             $role->save();
-
-            $role_translation = RoleTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'role_id' => $role->id]);
-            $role_translation->name = $request->name;
-            $role_translation->save();
 
             flash(translate('Role has been inserted successfully'))->success();
             return redirect()->route('roles.index');
         }
         flash(translate('Something went wrong'))->error();
         return back();
-
     }
 
     /**
@@ -74,9 +69,8 @@ class RoleController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $lang = $request->lang;
         $role = Role::findOrFail($id);
-        return view('backend.staff.staff_roles.edit', compact('role','lang'));
+        return view('backend.staff.staff_roles.edit', compact('role'));
     }
 
     /**
@@ -90,16 +84,10 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        if($request->has('permissions')){
-            if($request->lang == env("DEFAULT_LANGUAGE")){
-                $role->name = $request->name;
-            }
+        if ($request->has('permissions')) {
+            $role->name = $request->name;
             $role->permissions = json_encode($request->permissions);
             $role->save();
-
-            $role_translation = RoleTranslation::firstOrNew(['lang' => $request->lang, 'role_id' => $role->id]);
-            $role_translation->name = $request->name;
-            $role_translation->save();
 
             flash(translate('Role has been updated successfully'))->success();
             return redirect()->route('roles.index');
@@ -116,11 +104,6 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
-        foreach ($role->role_translations as $key => $role_translation) {
-            $role_translation->delete();
-        }
-
         Role::destroy($id);
         flash(translate('Role has been deleted successfully'))->success();
         return redirect()->route('roles.index');
