@@ -102,6 +102,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $product = new Product;
         $product->name = $request->name;
         $product->category_id = $request->category_id;
@@ -138,9 +139,10 @@ class ProductController extends Controller
             $product->discount_end_date   = strtotime($date_var[1]);
         }
 
-        if ($request->hasFile('pdf')) {
-            $product->pdf = $request->pdf->store('uploads/products/pdf');
-        }
+        // if ($request->hasFile('pdf')) {
+        //     $product->pdf = $request->pdf->store('uploads/products/pdf');
+        // }
+        $product->pdf = $request->pdf;
 
         $slug = $request->slug ? Str::slug($request->slug, '-') : Str::slug($request->name, '-');
         $same_slug_count = Product::where('slug', 'LIKE', $slug . '%')->count();
