@@ -464,6 +464,7 @@ if (!function_exists('renderStarRating')) {
 
 function translate($key, $lang = null, $addslashes = false)
 {
+    return $key;
     if ($lang == null) {
         $lang = App::getLocale();
     }

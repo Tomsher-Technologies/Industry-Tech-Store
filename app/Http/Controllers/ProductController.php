@@ -51,7 +51,12 @@ class ProductController extends Controller
             $var = explode(",", $request->type);
             $col_name = $var[0];
             $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
+            if ($col_name == 'status') {
+                $products = $products->where('published', $query);
+            } else {
+                $products = $products->orderBy($col_name, $query);
+            }
+
             $sort_type = $request->type;
         }
 
