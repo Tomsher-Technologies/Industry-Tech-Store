@@ -14,7 +14,7 @@
                             <label class="col-sm-3 col-from-label" for="name">{{ translate('Images') }}</label>
                             <div class="col-sm-9">
                                 <input type="file" name="files[]" multiple placeholder="{{ translate('Images') }}"
-                                    id="name[]" class="form-control" required>
+                                    id="name[]" class="form-control" accept="image/*" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
