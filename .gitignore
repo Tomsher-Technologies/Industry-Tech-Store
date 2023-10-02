@@ -31,3 +31,5 @@ install.zip
 /nbproject
 /public/app-translations
 *.zip
+public/tempuploads/*
+public/temp-images/*

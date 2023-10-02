@@ -414,6 +414,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/temp-images', [TempImageController::class, 'index'])->name('temp_image');
     Route::post('/temp-images', [TempImageController::class, 'upload']);
     Route::get('/temp-images/list', [TempImageController::class, 'listAll'])->name('temp_image.all');
+    Route::post('/temp-images/delete', [TempImageController::class, 'deleteAll'])->name('temp_image.delete');
 
     // Cache
     Route::get('/cache-cache/{type?}', [AdminController::class, 'clearCache'])->name('cache.clear');

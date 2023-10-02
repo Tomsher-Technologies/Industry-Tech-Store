@@ -34,7 +34,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-md-2 ml-auto">
+                <div class="col-md-2 ml-auto bootstrap-select">
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type"
                         onchange="sort_products()">
                         <option value="">Sort By</option>
