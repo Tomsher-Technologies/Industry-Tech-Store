@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\TempImageExport;
 use App\Http\Controllers\Controller;
 use App\Models\Utilities\TempImage;
+use File;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Storage;
 
 class TempImageController extends Controller
 {
@@ -17,10 +19,19 @@ class TempImageController extends Controller
 
     public function listAll()
     {
-        // $images = TempImage::all();
-        return Excel::download(new TempImageExport, 'users.xlsx');
+        return Excel::download(new TempImageExport, 'temp-images-' .  date('d-m-y') . '.xlsx');
+    }
 
-        // return view('backend.tempimages.list', compact('images'));
+    public function deleteAll()
+    {
+        $images = TempImage::all();
+        foreach ($images as $image) {
+            Storage::disk('local')->delete($image->path);
+            $image->delete();
+        }
+
+        flash(translate('Uploads deleted.'))->success();
+        return back();
     }
 
     public function upload(Request $request)
@@ -29,8 +40,10 @@ class TempImageController extends Controller
             foreach ($request->file('files') as $file) {
                 $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
+
                 $path = 'tempuploads/' . date('d-m-y') . '/';
-                $file->storeAs($path, $filename);
+                Storage::disk('local')->putFileAs($path, $file, $filename);
+                // $file->storeAs($path, $filename);
 
                 TempImage::create([
                     'name' =>  pathinfo($filename, PATHINFO_FILENAME),
@@ -39,5 +52,7 @@ class TempImageController extends Controller
                 ]);
             }
         }
+
+        return redirect()->route('temp_image.all');
     }
 }

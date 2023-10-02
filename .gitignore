@@ -32,3 +32,4 @@ install.zip
 /public/app-translations
 *.zip
 public/tempuploads/*
+public/temp-images/*
