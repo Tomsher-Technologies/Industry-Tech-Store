@@ -285,8 +285,127 @@
             </div>
 
 
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Category section</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('business_settings.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <input type="hidden" name="types[]" value="home_banner">
+                        <input type="hidden" name="name" value="cat_banner">
+
+                        @php
+                            $cat_banner = $current_banners['cat_banner']->value ?? null;
+                        @endphp
+                        <div class="form-group">
+                            <label>Banner</label>
+                            <div class="home-banner1-target">
+                                @if ($banners)
+                                    <select class="form-control aiz-selectpicker" name="banner[]"
+                                        data-live-search="true">
+                                        @foreach ($banners as $banner)
+                                            <option value="{{ $banner->id }}"
+                                                {{ isset($cat_banner) && $banner->id == $cat_banner ? 'selected' : '' }}>
+                                                {{ $banner->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-from-label">{{ translate('Categories (max:8)') }}</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="types[]" value="catsection_categories">
+                                <select name="catsection_categories[]" class="form-control aiz-selectpicker" multiple
+                                    data-live-search="true" data-max-options="10" data-selected="{{ get_setting('catsection_categories') }}">
+                                    @foreach ($categories as $key => $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @foreach ($category->childrenCategories as $childCategory)
+                                            @include('categories.child_category', [
+                                                'child_category' => $childCategory,
+                                            ])
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Product Sliders</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('business_settings.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-md-2 col-from-label">{{ translate('Latest Products') }}</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="types[]" value="latest_products">
+                                <select name="latest_products[]" class="form-control aiz-selectpicker" multiple
+                                    data-live-search="true" data-selected="{{ get_setting('latest_products') }}">
+                                    @foreach ($products as $key => $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-from-label">{{ translate('Best Selling') }}</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="types[]" value="best_selling">
+                                <select name="best_selling[]" class="form-control aiz-selectpicker" multiple
+                                    data-live-search="true" data-selected="{{ get_setting('best_selling') }}">
+                                    @foreach ($products as $key => $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             {{-- Top 10 --}}
             <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Popular brands</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('business_settings.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-md-2 col-from-label">{{ translate('Popular brands') }}</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="types[]" value="top10_brands">
+                                <select name="top10_brands[]" class="form-control aiz-selectpicker" multiple
+                                    data-live-search="true" data-selected="{{ get_setting('top10_brands') }}">
+                                    @foreach ($brands as $key => $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            {{-- <div class="card">
                 <div class="card-header">
                     <h6 class="mb-0">Top 10</h6>
                 </div>
@@ -330,7 +449,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 

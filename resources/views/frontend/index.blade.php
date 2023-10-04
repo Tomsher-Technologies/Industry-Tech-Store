@@ -81,8 +81,7 @@
                                     <div class="ps-block--category">
                                         <a href="{{ route('products.category', $category->slug) }}"
                                             title="{{ $category->name }}" class="ps-block__overlay">
-                                            <img src="{{ uploaded_asset($category->icon) }}"
-                                                alt="{{ $category->name }}">
+                                            <img src="{{ uploaded_asset($category->icon) }}" alt="{{ $category->name }}">
                                             <p>{{ $category->name }}</p>
                                         </a>
                                     </div>
@@ -115,6 +114,51 @@
                 </div>
             </div>
         @endif
+
+        @if ($section_categories)
+            <div class="ps-top-categories">
+                <div class="ps-container">
+                    <div class="row">
+
+                        @php
+                            $aclass = $cat_banners ? 'col-md-9' : 'col-md-12';
+                        @endphp
+
+                        @if ($cat_banners)
+                            @foreach ($cat_banners as $item)
+                                <div class="col-md-3">
+                                    <a href="{{ $item->a_link }}" class="ps-block__overlay">
+                                        <img src="{{ get_uploads_image($item->mainImage) }}" alt="">
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
+
+
+                        <div class="{{ $aclass }}">
+                            <div class="trending2-category-content p-0">
+                                <div class="trending2-category">
+                                    @foreach ($section_categories as $category)
+                                        <div class="trending-category-item">
+                                            <div class="ps-block--category">
+                                                <a href="{{ route('products.category', $category->slug) }}"
+                                                    title="{{ $category->name }}" class="ps-block__overlay">
+                                                    <img src="{{ uploaded_asset($category->icon) }}"
+                                                        alt="{{ $category->name }}">
+                                                    <p>{{ $category->name }}</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+
 
         @if ($best_selling_products)
             <div class="ps-product-list ps-clothings">

@@ -94,6 +94,33 @@ class HomeController extends Controller
             }
         });
 
+        $section_categories = Cache::rememberForever('section_categories', function () {
+            $categories = get_setting('catsection_categories');
+            if ($categories) {
+                return Category::whereIn('id', json_decode($categories))
+                    ->with(['icon'])
+                    ->get();
+            }
+        });
+
+        $cat_banners = Cache::rememberForever('cat_banners', function () {
+            $banners = get_setting('cat_banner');
+            if ($banners) {
+                $banner = Banner::whereStatus(1)
+                    ->whereIn('id', json_decode($banners))
+                    ->with(['mainImage', 'mobileImage'])
+                    ->get();
+
+                foreach ($banner as $b) {
+                    $b->a_link = $b->getALink();
+                }
+
+                return $banner;
+            }
+        });
+
+        // dd($cat_banners);
+
         // $small_banners = Cache::rememberForever('adsBanners', function () {
         //     $banners = BusinessSetting::whereType('home_banner')->first();
         //     return Banner::whereStatus(1)
@@ -113,16 +140,18 @@ class HomeController extends Controller
         // Cache::forget('newest_products');
 
         $newest_products = Cache::remember('newest_products', 3600, function () {
-            return Product::where('published', 1)->latest()->with('brand')->limit(12)->get();
+            $product_ids = get_setting('latest_products');
+            return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
         });
 
         $best_selling_products = Cache::remember('best_selling_products', 3600, function () {
-            return Product::where('published', 1)->latest()->with('brand')->limit(12)->get();
+            $product_ids = get_setting('best_selling');
+            return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
         });
 
         // load_seo_tags(null, '', 'Home');
 
-        return view('frontend.index', compact('sliders', 'small_banners', 'ads_banners', 'trending_categories', 'newest_products', 'best_selling_products'));
+        return view('frontend.index', compact('sliders', 'small_banners', 'ads_banners', 'trending_categories', 'newest_products', 'best_selling_products', 'section_categories', 'cat_banners'));
     }
 
     public function login()
@@ -304,8 +333,9 @@ class HomeController extends Controller
 
     public function load_brands_section()
     {
-        $brands = Cache::rememberForever('brands', function () {
-            return Brand::whereTop(1)->with('logoImage')->get();
+        $brands = Cache::rememberForever('home_brands', function () {
+            $brand_ids = get_setting('top10_brands');
+            return Brand::whereIn('id', json_decode($brand_ids))->with('logoImage')->get();
         });
         return view('frontend.partials.home.brands_section', compact('brands'));
     }
