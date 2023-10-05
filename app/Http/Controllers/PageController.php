@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\BusinessSetting;
 use App\Models\Category;
 use App\Models\Frontend\Banner;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\PageTranslation;
+use App\Models\Product;
 use Cache;
 use Str;
 
@@ -90,7 +92,10 @@ class PageController extends Controller
                     return Category::where('parent_id', 0)->with('childrenCategories')->get();
                 });
 
-                return view('backend.website_settings.pages.home_page_edit', compact('page', 'banners', 'current_banners', 'categories'));
+                $products = Product::select('id', 'name')->get();
+                $brands = Brand::all();
+
+                return view('backend.website_settings.pages.home_page_edit', compact('page', 'banners', 'current_banners', 'categories', 'brands', 'products'));
             } else {
                 return view('backend.website_settings.pages.edit', compact('page'));
             }
@@ -169,7 +174,7 @@ class PageController extends Controller
         }
         abort(404);
     }
-    
+
     public function mobile_custom_page($slug)
     {
         $page = Page::where('slug', $slug)->first();

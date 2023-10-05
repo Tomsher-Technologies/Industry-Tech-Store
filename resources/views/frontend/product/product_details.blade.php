@@ -24,13 +24,10 @@
                             <div class="ps-product__thumbnail" data-vertical="true">
                                 <figure>
                                     <div class="ps-wrapper">
-
-
                                         <div class="gallery-image">
                                             <div class="galleries">
                                                 <div class="detail-gallery">
                                                     <div class="product-image-slider">
-
                                                         @if ($product->thumbnail_img)
                                                             <figure class="border-radius-10"><img
                                                                     src="{{ get_product_image($product->thumbnail_img) }}"
@@ -43,8 +40,6 @@
                                                                         alt="{{ $product->name }}"></figure>
                                                             @endforeach
                                                         @endif
-
-
                                                     </div>
                                                 </div>
                                                 <div class="slider-nav-thumbnails">
@@ -69,54 +64,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-                                        {{-- <div class="ps-product__gallery" data-arrow="true">
-
-                                            @if ($product->thumbnail_img)
-                                                <div class="item">
-                                                    <a href="{{ get_product_image($product->thumbnail_img) }}">
-                                                        <img src="{{ get_product_image($product->thumbnail_img, '500') }}"
-                                                            alt="{{ $product->name }}" />
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if ($product->photos)
-                                                @foreach (explode(',', $product->photos) as $photo)
-                                                    <div class="item">
-                                                        <a href="{{ get_product_image($photo) }}">
-                                                            <img src="{{ get_product_image($photo, '300') }}"
-                                                                alt="{{ $product->name }}" />
-                                                        </a>
-                                                    </div>
-                                                @endforeach
-                                            @endif
-                                        </div> --}}
                                     </div>
                                 </figure>
-                                {{-- <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4"
-                                    data-arrow="false">
-                                    @if ($product->thumbnail_img)
-                                        <div class="item">
-                                            <a href="{{ get_product_image($product->thumbnail_img) }}">
-                                                <img src="{{ get_product_image($product->thumbnail_img, '500') }}"
-                                                    alt="{{ $product->name }}" />
-                                            </a>
-                                        </div>
-                                    @endif
-                                    @if ($product->photos)
-                                        @foreach (explode(',', $product->photos) as $photo)
-                                            <div class="item">
-                                                <a href="{{ get_product_image($photo) }}">
-                                                    <img src="{{ get_product_image($photo, '300') }}"
-                                                        alt="{{ $product->name }}" />
-                                                </a>
-                                            </div>
-                                        @endforeach
-                                    @endif
-                                </div> --}}
                             </div>
                             <div class="ps-product__info">
                                 <h1>
@@ -526,7 +475,7 @@
         .product-image-slider .slick-slide img,
         .product-image-slider-2 .slick-slide img {
             /* display: inline-block;
-                                                                                vertical-align: middle;*/
+                                                                                        vertical-align: middle;*/
             max-width: 99%;
             display: block;
             margin: auto;
@@ -631,59 +580,49 @@
             }, 3000);
         });
 
-        var productDetails = function () {
-        $slick_slider_1.slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: false,
-            asNavFor: ".slider-nav-thumbnails-2"
-        });
-        $slick_slider_2.slick({
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            asNavFor: ".product-image-slider-2",
-            dots: false,
-            focusOnSelect: true,
-            vertical: false,
-            adaptiveHeight: false,
-            prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
-            nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
-        });
+        var productDetails = function() {
+            // $slick_slider_1.slick({
+            //     slidesToShow: 1,
+            //     slidesToScroll: 1,
+            //     arrows: false,
+            //     fade: false,
+            //     asNavFor: ".slider-nav-thumbnails-2"
+            // });
+            // $slick_slider_2.slick({
+            //     slidesToShow: 4,
+            //     slidesToScroll: 1,
+            //     asNavFor: ".product-image-slider-2",
+            //     dots: false,
+            //     focusOnSelect: true,
+            //     vertical: false,
+            //     adaptiveHeight: false,
+            //     prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
+            //     nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
+            // });
 
-        // Remove active class from all thumbnail slides
-        $(".slider-nav-thumbnails-2 .slick-slide").removeClass("slick-active");
 
-        // Set active class to first thumbnail slides
-        $(".slider-nav-thumbnails-2 .slick-slide").eq(0).addClass("slick-active");
 
-        // On before slide change match active thumbnail to current slide
-        $(".product-image-slider-2").on("beforeChange", function (event, slick, currentSlide, nextSlide) {
-            var mySlideNumber = nextSlide;
-            $(".slider-nav-thumbnails-2 .slick-slide").removeClass("slick-active");
-            $(".slider-nav-thumbnails-2 .slick-slide").eq(mySlideNumber).addClass("slick-active");
-        });
-
-        $(".product-image-slider-2").on("beforeChange", function (event, slick, currentSlide, nextSlide) {
-            var img = $(slick.$slides[nextSlide]).find("img");
-            $(".zoomWindowContainer,.zoomContainer").remove();
-            $(img).elevateZoom({
-                zoomType: "inner",
-                cursor: "crosshair",
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 750
+            $(".product-image-slider").on("beforeChange", function(event, slick, currentSlide, nextSlide) {
+                var img = $(slick.$slides[nextSlide]).find("img");
+                $(".zoomWindowContainer,.zoomContainer").remove();
+                $(img).elevateZoom({
+                    zoomType: "inner",
+                    cursor: "crosshair",
+                    zoomWindowFadeIn: 500,
+                    zoomWindowFadeOut: 750
+                });
             });
-        });
-        //Elevate Zoom
-        if ($(".product-image-slider-2").length) {
-            $(".product-image-slider-2 .slick-active img").elevateZoom({
-                zoomType: "inner",
-                cursor: "crosshair",
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 750
-            });
-        }
-    };
+            //Elevate Zoom
+            if ($(".product-image-slider").length) {
+                $(".product-image-slider .slick-active img").elevateZoom({
+                    zoomType: "inner",
+                    cursor: "crosshair",
+                    zoomWindowFadeIn: 500,
+                    zoomWindowFadeOut: 750
+                });
+            }
+        };
 
+        productDetails();
     </script>
 @endpush
