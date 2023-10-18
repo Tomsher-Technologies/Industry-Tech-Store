@@ -45,7 +45,7 @@ class Product extends Model
         'part_number',
     ];
 
-    // protected $with = ['taxes'];
+    protected $with = ['stocks'];
     // protected $with = ['product_translations', 'taxes'];
 
     public function seo()
