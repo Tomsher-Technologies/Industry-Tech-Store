@@ -11,6 +11,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "barryvdh/laravel-ide-helper": "^2.10",
         "diglactic/laravel-breadcrumbs": "^8.1",
+        "esign/laravel-conversions-api": "^2.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "harimayco/laravel-menu": "^1.4",
