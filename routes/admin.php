@@ -54,6 +54,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Frontend\HomeSliderController;
 use App\Http\Controllers\Admin\TempImageController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Livewire\TempUpload;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
@@ -265,6 +266,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     Route::get('/all_orders', [OrderController::class, 'all_orders'])->name('all_orders.index');
     Route::get('/all_orders/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
+
+    Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
 
     Route::get('/enquiries/{id}/delete', [EnquiriesController::class, 'destroy'])->name('enquiries.destroy');
     Route::resource('enquiries', EnquiriesController::class)->only('index', 'show');

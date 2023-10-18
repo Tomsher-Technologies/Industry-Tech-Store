@@ -16,6 +16,7 @@ use App\Models\Wallet;
 use App\Models\CombinedOrder;
 use App\Models\User;
 use App\Models\Addon;
+use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Product;
@@ -231,12 +232,18 @@ if (!function_exists('discount_in_percentage')) {
 if (!function_exists('home_price')) {
     function home_price($product, $formatted = true)
     {
-        $lowest_price = $product->unit_price;
-        $highest_price = $product->unit_price;
+        $lowest_price = 0;
+        $highest_price = 0;
 
         if ($product->variant_product) {
+
+            $lowest_price = $product->stocks->max('price');
+            $highest_price = $product->stocks->max('price');
+
+            
+
             foreach ($product->stocks as $key => $stock) {
-                if ($lowest_price > $stock->price) {
+                if ($stock->price > 0 && $lowest_price > $stock->price) {
                     $lowest_price = $stock->price;
                 }
                 if ($highest_price < $stock->price) {
@@ -351,16 +358,6 @@ if (!function_exists('home_base_price')) {
     function home_base_price($product, $formatted = true)
     {
         $price = $product->unit_price;
-        // $tax = 0;
-
-        // foreach ($product->taxes as $product_tax) {
-        //     if ($product_tax->tax_type == 'percent') {
-        //         $tax += ($price * $product_tax->tax) / 100;
-        //     } elseif ($product_tax->tax_type == 'amount') {
-        //         $tax += $product_tax->tax;
-        //     }
-        // }
-        // $price += $tax;
         return $formatted ? format_price(convert_price($price)) : $price;
     }
 }
@@ -960,7 +957,7 @@ if (!function_exists('get_product_image')) {
 
 // Load SEO details
 if (!function_exists('load_seo_tags')) {
-    function load_seo_tags($seo = null, $image = '')
+    function load_seo_tags($seo = null, $image = '', $type = 'articles')
     {
         if ($image == '') {
             $image = frontendAsset('img/logo_new.webp');
@@ -974,7 +971,7 @@ if (!function_exists('load_seo_tags')) {
             OpenGraph::setTitle($seo->og_title);
             OpenGraph::setDescription($seo->og_title);
 
-            OpenGraph::addProperty('type', 'articles')
+            OpenGraph::addProperty('type', $type)
                 ->addImage($image)
                 ->setTitle($seo->og_title)
                 ->setDescription($seo->og_description)
@@ -997,191 +994,199 @@ if (!function_exists('load_seo_tags')) {
                 ->setSite(env('APP_NAME', 'Industry Tech Store'));
         }
     }
+}
 
-    function getTempUserId()
-    {
-        if (Session::has('temp_user_id')) {
-            $user_id = Session::get('temp_user_id');
-        } else {
-            $user_id = bin2hex(random_bytes(10));
-            Session::put('temp_user_id', $user_id);
-        }
-        return $user_id;
+function getTempUserId()
+{
+    if (Session::has('temp_user_id')) {
+        $user_id = Session::get('temp_user_id');
+    } else {
+        $user_id = bin2hex(random_bytes(10));
+        Session::put('temp_user_id', $user_id);
     }
+    return $user_id;
+}
 
-    function getAllCategories()
-    {
-        return Cache::rememberForever('categoriesTree', function () {
-            return CategoryUtility::getSidebarCategoryTree();
+function getAllCategories()
+{
+    return Cache::rememberForever('categoriesTree', function () {
+        return CategoryUtility::getSidebarCategoryTree();
+    });
+}
+
+function wishListCount(): int
+{
+    if (Auth::check()) {
+        return Cache::remember('user_wishlist_count_' . Auth::id(), '3600', function () {
+            return Wishlist::where('user_id', Auth::user()->id)->count();
         });
     }
 
-    function wishListCount(): int
-    {
-        if (Auth::check()) {
-            return Cache::remember('user_wishlist_count_' . Auth::id(), '3600', function () {
-                return Wishlist::where('user_id', Auth::user()->id)->count();
-            });
-        }
+    return 0;
+}
 
+function cartCount(): int
+{
+    if (Auth::check()) {
+        return Cache::remember('user_cart_count_' . Auth::id(), '3600', function () {
+            return Cart::where('user_id', Auth::user()->id)->count();
+        });
+    } else {
+        return Cache::remember('user_cart_count_' . getTempUserId(), '3600', function () {
+            return Cart::where('temp_user_id', getTempUserId())->count();
+        });
+    }
+}
+
+function enquiryCount(): int
+{
+    if (Auth::check()) {
+        $user_col = "user_id";
+        $user_id = Auth::id();
+    } else {
+        $user_col = "temp_user_id";
+        $user_id = getTempUserId();
+    }
+
+    return Cache::remember('user_enquiry_count_' . $user_id, '3600', function () use ($user_col, $user_id) {
+        $enquiries = ProductEnquiries::whereStatus(0)->where($user_col, $user_id)->withCount('products')->latest()->first();
+        if ($enquiries) {
+            return $enquiries->products_count;
+        }
         return 0;
+    });
+}
+
+function formatDate($date): String
+{
+    if ($date->lessThan(Carbon::now()->subHours(12))) {
+        return $date->format('d F, Y');
+    }
+    return $date->diffForHumans();
+}
+
+function deliveryBadge($status)
+{
+    $html = '';
+
+    switch ($status) {
+        case 'pending':
+            $html = '<span class="badge badge badge-soft-danger">Pending</span>';
+            break;
+        case 'confirmed':
+            $html = '<span class="badge badge-soft-warning">Confirmed</span>';
+            break;
+        case 'picked_up':
+            $html = '<span class="badge badge-soft-warning">Picked Up</span>';
+            break;
+        case 'on_the_way':
+            $html = '<span class="badge badge-soft-warning">On The Way</span>';
+            break;
+        case 'delivered':
+            $html = '<span class="badge badge-soft-success">Delivered</span>';
+            break;
+        default:
+            $html = '-';
+            break;
     }
 
-    function cartCount(): int
-    {
-        if (Auth::check()) {
-            return Cache::remember('user_cart_count_' . Auth::id(), '3600', function () {
-                return Cart::where('user_id', Auth::user()->id)->count();
-            });
-        } else {
-            return Cache::remember('user_cart_count_' . getTempUserId(), '3600', function () {
-                return Cart::where('temp_user_id', getTempUserId())->count();
-            });
-        }
+    return $html;
+}
+
+function getDeliveryStatusText($status)
+{
+    return Str::title(str_replace('_', ' ', $status));
+}
+
+function getCurrentCurrency()
+{
+    if (Session::has('currency_code')) {
+        return Currency::where('code', Session::get('currency_code'))->first();
+    } else {
+        return Currency::find(get_setting('system_default_currency'));
     }
+}
 
-    function enquiryCount(): int
-    {
-        if (Auth::check()) {
-            $user_col = "user_id";
-            $user_id = Auth::id();
-        } else {
-            $user_col = "temp_user_id";
-            $user_id = getTempUserId();
-        }
-
-        return Cache::remember('user_enquiry_count_' . $user_id, '3600', function () use ($user_col, $user_id) {
-            $enquiries = ProductEnquiries::whereStatus(0)->where($user_col, $user_id)->withCount('products')->latest()->first();
-            if ($enquiries) {
-                return $enquiries->products_count;
+function getMenu($id)
+{
+    // Cache::forget('menu_6');
+    return Cache::rememberForever('menu_' . $id,  function () use ($id) {
+        $menu = Menu::get($id);
+        $menu_real = array();
+        foreach ($menu as $key => $m) {
+            $menu_real[$key] = $m;
+            if ($m['img_1']) {
+                $menu_real[$key]['img_1_src'] = uploaded_asset($m['img_1']);
             }
-            return 0;
-        });
-    }
-
-    function formatDate($date): String
-    {
-        if ($date->lessThan(Carbon::now()->subHours(12))) {
-            return $date->format('d F, Y');
-        }
-        return $date->diffForHumans();
-    }
-
-    function deliveryBadge($status)
-    {
-        $html = '';
-
-        switch ($status) {
-            case 'pending':
-                $html = '<span class="badge badge badge-soft-danger">Pending</span>';
-                break;
-            case 'confirmed':
-                $html = '<span class="badge badge-soft-warning">Confirmed</span>';
-                break;
-            case 'picked_up':
-                $html = '<span class="badge badge-soft-warning">Picked Up</span>';
-                break;
-            case 'on_the_way':
-                $html = '<span class="badge badge-soft-warning">On The Way</span>';
-                break;
-            case 'delivered':
-                $html = '<span class="badge badge-soft-success">Delivered</span>';
-                break;
-            default:
-                $html = '-';
-                break;
-        }
-
-        return $html;
-    }
-
-    function getDeliveryStatusText($status)
-    {
-        return Str::title(str_replace('_', ' ', $status));
-    }
-
-    function getCurrentCurrency()
-    {
-        if (Session::has('currency_code')) {
-            return Currency::where('code', Session::get('currency_code'))->first();
-        } else {
-            return Currency::find(get_setting('system_default_currency'));
-        }
-    }
-
-    function getMenu($id)
-    {
-        // Cache::forget('menu_6');
-        return Cache::rememberForever('menu_' . $id,  function () use ($id) {
-            $menu = Menu::get($id);
-            $menu_real = array();
-            foreach ($menu as $key => $m) {
-                $menu_real[$key] = $m;
-                if ($m['img_1']) {
-                    $menu_real[$key]['img_1_src'] = uploaded_asset($m['img_1']);
-                }
-                if ($m['img_2']) {
-                    $menu_real[$key]['img_2_src'] = uploaded_asset($m['img_2']);
-                }
-                if ($m['img_3']) {
-                    $menu_real[$key]['img_3_src'] = uploaded_asset($m['img_3']);
-                }
-
-                if ($m['brands'] !== null) {
-                    $brand_ids = explode(',', $m['brands']);
-                    $brands = Brand::whereIn('id', $brand_ids)->select(['id', 'name', 'logo', 'slug'])->with('logoImage', function ($query) {
-                        return $query->select(['id', 'file_name']);
-                    })->get();
-
-                    $menu_real[$key]['brands'] = $brands;
-                }
+            if ($m['img_2']) {
+                $menu_real[$key]['img_2_src'] = uploaded_asset($m['img_2']);
             }
-            return $menu_real;
-        });
-    }
+            if ($m['img_3']) {
+                $menu_real[$key]['img_3_src'] = uploaded_asset($m['img_3']);
+            }
 
-    function allProducts()
-    {
-        return Product::wherePublished(1)->latest()->get();
-    }
+            if ($m['brands'] !== null) {
+                $brand_ids = explode(',', $m['brands']);
+                $brands = Brand::whereIn('id', $brand_ids)->select(['id', 'name', 'logo', 'slug'])->with('logoImage', function ($query) {
+                    return $query->select(['id', 'file_name']);
+                })->get();
 
-    function getCurrency()
-    {
-        return Cache::rememberForever('currency', function () {
-            return Currency::where('status', 1)->get();
-        });
-    }
-
-    function getSeoValues($seo, $name)
-    {
-        if ($name && $seo) {
-            return $seo->$name;
+                $menu_real[$key]['brands'] = $brands;
+            }
         }
-        return "";
-    }
+        return $menu_real;
+    });
+}
 
-    function deleteImage($path)
-    {
-        $fileName = 'public' . Str::remove('/storage', $path);
-        if (Storage::exists($fileName)) {
-            Storage::delete($fileName);
-        }
-    }
+function allProducts()
+{
+    return Product::wherePublished(1)->latest()->get();
+}
 
-    function cleanSKU($sku)
-    {
-        $sku = str_replace(' ', '', $sku);
-        $sku = preg_replace('/[^a-zA-Z0-9_-]/', '', $sku);
-        return $sku;
-    }
+function getCurrency()
+{
+    return Cache::rememberForever('currency', function () {
+        return Currency::where('status', 1)->get();
+    });
+}
 
-    function userHasPermision($id)
-    {
-        if (Auth::user()->user_type == 'admin' || in_array($id, json_decode(Auth::user()->staff->role->permissions))) {
-            return true;
-        }
-        return false;
+function getSeoValues($seo, $name)
+{
+    if ($name && $seo) {
+        return $seo->$name;
     }
+    return "";
+}
+
+function deleteImage($path)
+{
+    $fileName = 'public' . Str::remove('/storage', $path);
+    if (Storage::exists($fileName)) {
+        Storage::delete($fileName);
+    }
+}
+
+function cleanSKU($sku)
+{
+    $sku = str_replace(' ', '', $sku);
+    $sku = preg_replace('/[^a-zA-Z0-9_-]/', '', $sku);
+    return $sku;
+}
+
+function userHasPermision($id)
+{
+    if (Auth::user()->user_type == 'admin' || in_array($id, json_decode(Auth::user()->staff->role->permissions))) {
+        return true;
+    }
+    return false;
+}
+
+function allAttributes()
+{
+    return Cache::rememberForever('attributes', function () {
+        return Attribute::all();
+    });
+}
 
     // function testView()
     // {
@@ -1192,4 +1197,3 @@ if (!function_exists('load_seo_tags')) {
 
     //     return $html;
     // }
-}
