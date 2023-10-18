@@ -6,7 +6,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Order;
 use Session;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Config;
 
 class InvoiceController extends Controller
@@ -70,13 +70,15 @@ class InvoiceController extends Controller
         //     'text_align' => $text_align,
         //     'not_text_align' => $not_text_align
         // ], [], $config);
+        set_time_limit(300);
 
-        return PDF::loadView('backend.invoices.invoice', [
+        $pdf = Pdf::loadView('backend.invoices.invoice', [
             'order' => $order,
             'font_family' => $font_family,
             'direction' => $direction,
             'text_align' => $text_align,
             'not_text_align' => $not_text_align
-        ], [], $config)->download('order-' . $order->code . '.pdf');
+        ]);
+        return $pdf->download('order-' . $order->code . '.pdf');
     }
 }
