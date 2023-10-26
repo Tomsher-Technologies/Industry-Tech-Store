@@ -16,26 +16,39 @@
     <div class="card">
         <div class="card-header d-block d-md-flex">
             <h5 class="mb-0 h6">Categories</h5>
-            <form class="" id="sort_categories" action="" method="GET">
-                <div class="box-inline pad-rgt pull-left">
-                    <div class="" style="min-width: 200px;">
+            <form class="" id="sort_categories" action="" method="GET" style="width: 50%">
+
+                <div class="card-header row gutters-5">
+                    <div class="col-md-5">
+                        <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" data-live-search="true"
+                            name="catgeory" id="">
+                            <option value="0">All</option>
+                            @foreach (getAllCategories()->where('parent_id', 0) as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @if ($item->child)
+                                    @foreach ($item->child as $cat)
+                                        @include('frontend.product.categories.menu_child_category', [
+                                            'category' => $cat,
+                                            'selected_id' => 0,
+                                        ])
+                                    @endforeach
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-5">
                         <input type="text" class="form-control" id="search"
                             name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset
                             placeholder="Type name & Enter">
                     </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-info w-100" type="submit">Filter</button>
+                    </div>
                 </div>
+
             </form>
         </div>
-        <script>
-            function copy(that){
-var inp =document.createElement('input');
-document.body.appendChild(inp)
-inp.value =that.textContent
-inp.select();
-document.execCommand('copy',false);
-inp.remove();
-}
-        </script>
+
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
@@ -68,14 +81,14 @@ inp.remove();
                                 @endif
                             </td>
                             <td>
-                                <span style="cursor:pointer" onclick="copy(this)">{{ route('products.category', $category->slug) }}</span>
+                                <span style="cursor:pointer"
+                                    onclick="copy(this)">{{ route('products.category', $category->slug) }}</span>
                             </td>
                             <td>{{ $category->order_level }}</td>
                             <td>{{ $category->level }}</td>
                             <td>
                                 @if ($category->banner != null)
-                                    <img src="{{ uploaded_asset($category->banner) }}" alt="Banner"
-                                        class="h-50px">
+                                    <img src="{{ uploaded_asset($category->banner) }}" alt="Banner" class="h-50px">
                                 @else
                                     —
                                 @endif
@@ -127,6 +140,16 @@ inp.remove();
 
 
 @section('script')
+    <script>
+        function copy(that) {
+            var inp = document.createElement('input');
+            document.body.appendChild(inp)
+            inp.value = that.textContent
+            inp.select();
+            document.execCommand('copy', false);
+            inp.remove();
+        }
+    </script>
     <script type="text/javascript">
         function update_featured(el) {
             if (el.checked) {

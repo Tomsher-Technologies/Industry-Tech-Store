@@ -78,9 +78,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">Banner
-                                <small>(200x200)</small></label>
+                                <small>(1000x1000)</small></label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
@@ -93,10 +93,10 @@
                                 <div class="file-preview box sm">
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">Icon
-                                <small>(32x32)</small></label>
+                                <small>(1000x1000)</small></label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
