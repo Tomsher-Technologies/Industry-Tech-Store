@@ -63,7 +63,7 @@
                 </div> --}}
                 <div class="col-md-2 ml-auto bootstrap-select">
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" data-live-search="true"
-                        name="category" id="" onchange="sort_products()">
+                        name="category" id="">
                         <option value="0">All Categories</option>
                         @foreach (getAllCategories()->where('parent_id', 0) as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -79,8 +79,8 @@
                     </select>
                 </div>
                 <div class="col-md-2 ml-auto bootstrap-select">
-                    <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type"
-                        onchange="sort_products()">
+                    <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type"
+                        id="type">
                         <option value="">Sort By</option>
                         <option value="rating,desc"
                             @isset($col_name, $query) @if ($col_name == 'rating' && $query == 'desc') selected @endif @endisset>
@@ -114,6 +114,9 @@
                             name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset
                             placeholder="Type & Enter">
                     </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-info w-100" type="submit">Filter</button>
                 </div>
             </div>
 
