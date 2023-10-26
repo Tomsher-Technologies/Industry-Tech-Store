@@ -60,7 +60,7 @@ class ProductController extends Controller
             $sort_type = $request->type;
         }
 
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->category !== '0') {
             $products = $products->whereHas('category', function ($q) use ($request) {
                 $q->where('id', $request->category);
             });
