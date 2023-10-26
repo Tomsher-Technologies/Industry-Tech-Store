@@ -19,14 +19,21 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $catgeory = null;
         $sort_search = null;
         $categories = Category::orderBy('order_level', 'desc');
         if ($request->has('search')) {
             $sort_search = $request->search;
             $categories = $categories->where('name', 'like', '%' . $sort_search . '%');
         }
-        $categories = $categories->paginate(5000);
-        return view('backend.product.categories.index', compact('categories', 'sort_search'));
+        if ($request->has('catgeory') && $request->catgeory !== '0') {
+            $catgeory = $request->catgeory;
+            $categories = $categories->whereHas('parentCategory', function ($q) use ($catgeory) {
+                $q->where('id', $catgeory);
+            });
+        }
+        $categories = $categories->paginate(30);
+        return view('backend.product.categories.index', compact('categories', 'sort_search', 'catgeory'));
     }
 
     /**
@@ -155,7 +162,7 @@ class CategoryController extends Controller
         // $category->digital = $request->digital;
         $category->banner = $request->banner;
         $category->icon = $request->icon;
-      
+
         $category->meta_title = $request->meta_title ?? $request->name;
         $category->meta_description = $request->meta_description ?? $request->name;
         $category->meta_keyword  = $request->meta_keywords;

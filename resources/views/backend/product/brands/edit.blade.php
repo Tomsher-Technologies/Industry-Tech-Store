@@ -41,7 +41,7 @@
 
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="signinSrEmail">Logo
-                            <small>(120x80)</small></label>
+                            <small>(150x70)</small></label>
                         <div class="col-md-9">
                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                 <div class="input-group-prepend">
