@@ -1,6 +1,33 @@
 @extends('backend.layouts.app')
 
 @section('content')
+    <style>
+        .bread .breadcrumb {
+            all: unset;
+        }
+
+        .bread .breadcrumb li {
+            display: inline-block;
+        }
+
+        .bread nav {
+            display: inline-block;
+            max-width: 250px;
+        }
+
+        .bread .breadcrumb-item+.breadcrumb-item::before {
+            content: ">";
+        }
+
+        .breadcrumb-item+.breadcrumb-item {
+            padding-left: 0;
+        }
+
+        .bread a {
+            pointer-events: none;
+            cursor: sw-resize;
+        }
+    </style>
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="row align-items-center">
             <div class="col-auto">
@@ -24,7 +51,7 @@
                     <h5 class="mb-md-0 h6">All Product</h5>
                 </div>
 
-                <div class="dropdown mb-2 mb-md-0">
+                {{-- <div class="dropdown mb-2 mb-md-0">
                     <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
                         Bulk Action
                     </button>
@@ -33,6 +60,23 @@
                             Delete selection
                         </a>
                     </div>
+                </div> --}}
+                <div class="col-md-2 ml-auto bootstrap-select">
+                    <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" data-live-search="true"
+                        name="category" id="" onchange="sort_products()">
+                        <option value="0">All Categories</option>
+                        @foreach (getAllCategories()->where('parent_id', 0) as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @if ($item->child)
+                                @foreach ($item->child as $cat)
+                                    @include('frontend.product.categories.menu_child_category', [
+                                        'category' => $cat,
+                                        'selected_id' => 0,
+                                    ])
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-2 ml-auto bootstrap-select">
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type"
@@ -88,6 +132,7 @@
                                 </div>
                             </th>
                             <th>{{ translate('Name') }}</th>
+                            <th data-breakpoints="lg">Category</th>
                             <th data-breakpoints="sm">{{ translate('Info') }}</th>
                             <th data-breakpoints="md">{{ translate('Total Stock') }}</th>
                             {{-- <th data-breakpoints="lg">{{translate('Todays Deal')}}</th> --}}
@@ -124,6 +169,9 @@
                                             <span class="text-muted text-truncate-2">{{ $product->name }}</span>
                                         </div>
                                     </div>
+                                </td>
+                                <td class="bread">
+                                    {{ Breadcrumbs::render('product_admin', $product) }}
                                 </td>
                                 <td>
                                     <strong>{{ translate('Num of Sale') }}:</strong> {{ $product->num_of_sale }}

@@ -60,6 +60,12 @@ class ProductController extends Controller
             $sort_type = $request->type;
         }
 
+        if ($request->has('category')) {
+            $products = $products->whereHas('category', function ($q) use ($request) {
+                $q->where('id', $request->category);
+            });
+        }
+        $products->with('category');
         $products = $products->paginate(15);
         $type = 'All';
 
@@ -737,8 +743,8 @@ class ProductController extends Controller
         $seo->save();
 
         // Tabs
+        ProductTabs::where('product_id', $product->id)->delete();
         if ($request->has('tabs')) {
-            ProductTabs::where('product_id', $product->id)->delete();
             foreach ($request->tabs as $tab) {
                 $p_tab = $product->tabs()->create([
                     'heading' => $tab['tab_heading'],
