@@ -32,7 +32,7 @@
                                                         <div class="ps-product__thumbnail">
                                                             <a href="{{ route('product', $product->slug) }}"
                                                                 title="{{ $product->name }}">
-                                                                <img src="{{ uploaded_asset($product->thumbnail_img) }}"
+                                                                <img src="{{ get_product_image($product->thumbnail_img, '300') }}"
                                                                     alt="{{ $product->name }}"
                                                                     onerror="this.onerror=null;this.src='{{ frontendAsset('img/placeholder.webp') }}';" />
                                                             </a>
