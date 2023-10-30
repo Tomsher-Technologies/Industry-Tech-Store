@@ -47,8 +47,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/",
-            "Shabeersha\\EventTracker\\": "packages/shabeersha/eventtracker/src/"
+            "App\\": "app/"
         },
         "files": [
             "app/Http/Helpers.php"

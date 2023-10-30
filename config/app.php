@@ -182,7 +182,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
-        \Shabeersha\EventTracker\Providers\EventTrackerProvider::class,
+        // \Shabeersha\EventTracker\Providers\EventTrackerProvider::class,
 
         /*
          * Package Service Providers...
