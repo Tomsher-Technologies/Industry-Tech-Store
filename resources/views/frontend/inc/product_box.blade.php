@@ -13,12 +13,22 @@
 
         <ul class="ps-product__actions">
             @if (!$product->hide_price)
-                <li>
-                    <a href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')" data-toggle="tooltip"
-                        data-placement="top" title="Add To Cart">
-                        <i class="icon-bag2"></i>
-                    </a>
-                </li>
+
+                @if ($product->variant_product)
+                    <li>
+                        <a href="{{ route('product', $product->slug) }}" data-toggle="tooltip" data-placement="top"
+                            title="Add To Cart">
+                            <i class="icon-bag2"></i>
+                        </a>
+                    </li>
+                @else
+                    <li>
+                        <a href="javascript:void(0)" onclick="addToCart('{{ $product->slug }}')" data-toggle="tooltip"
+                            data-placement="top" title="Add To Cart">
+                            <i class="icon-bag2"></i>
+                        </a>
+                    </li>
+                @endif
             @endif
             <li>
                 <a href="javascript:void(0)" onclick="productQuickView({{ $product->id }})" data-toggle="tooltip"
@@ -48,9 +58,13 @@
             {{ renderStarRating($product->rating) }}
             @if (!$product->hide_price)
                 <p class="ps-product__price sale">
-                    {{ home_discounted_base_price($product) }}
-                    @if (home_base_price($product) != home_discounted_base_price($product))
-                        <del>{{ home_base_price($product) }}</del>
+                    @if ($product->variant_product)
+                        {{ home_price($product) }}
+                    @else
+                        {{ home_discounted_base_price($product) }}
+                        @if (home_base_price($product) != home_discounted_base_price($product))
+                            <del>{{ home_base_price($product) }}</del>
+                        @endif
                     @endif
                 </p>
             @endif

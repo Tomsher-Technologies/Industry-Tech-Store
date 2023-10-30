@@ -33,7 +33,6 @@ class Cart extends Component
 
     function getCarts()
     {
-
         $this->carts = ModelsCart::where($this->user_col, $this->user_id)->with(['product', 'product.stocks'])->get();
         foreach ($this->carts as $cart) {
             if ($cart->coupon_applied) {
@@ -127,7 +126,7 @@ class Cart extends Component
             $this->addError('coupon_code', "Coupon '$this->coupon_code' does not exist!");
         }
 
-        if ($this->coupon_added && $this->carts->count() > 0){
+        if ($this->coupon_added && $this->carts->count() > 0) {
             ModelsCart::where($this->user_col, $this->user_id)
                 ->update(
                     [
@@ -208,6 +207,24 @@ class Cart extends Component
     public function render()
     {
         $this->getCarts();
+        $this->variations();
         return view('livewire.frontend.cart')->extends('frontend.layouts.app');
+    }
+
+    public function variations()
+    {
+        $attributes = allAttributes();
+        foreach ($this->carts as $cart) {
+            if ($cart->variation) {
+                $attribute = json_decode($cart->product->attributes);
+                $variation = explode('-', $cart->variation);
+                $var_result = array();
+                foreach ($attribute as $key => $attr_id) {
+                    $attr = $attributes->where('id', $attr_id)->first()->name;
+                    $var_result[$attr] = $variation[$key];
+                }
+                $cart->attr = $var_result;
+            }
+        }
     }
 }

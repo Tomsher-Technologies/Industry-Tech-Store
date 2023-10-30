@@ -1,7 +1,14 @@
 @extends('frontend.layouts.app')
 
 @section('meta')
-    {{-- <meta name="product-id" content="{{ $product->id }}"> --}}
+    <meta name="twitter:data1" content="{{ convert_price($product->unit_price) }}">
+    <meta name="twitter:label1" content="Price">
+    <meta property="og:price:amount" content="{{ convert_price($product->unit_price) }}" />
+    <meta property="product:price:currency" content="{{ getCurrentCurrency()->code }}" />
+
+    @if (env('FACEBOOK_PIXEL_ID'))
+        <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
+    @endif
 @endsection
 
 @section('content')
@@ -80,7 +87,7 @@
                                     {{ renderStarRating($product->rating) }}
                                 </div>
                                 @if (!$product->hide_price)
-                                    <h4 class="ps-product__price">
+                                    <h4 id="product_price" class="ps-product__price">
                                         {{ home_discounted_base_price($product) }}
                                         @if (home_base_price($product) != home_discounted_base_price($product))
                                             <del>{{ home_base_price($product) }}</del>
@@ -94,13 +101,44 @@
                                     </div>
                                 @endif
 
+                                @if (!$product->hide_price)
+                                    <div class="ps-product__variations" id="option-choice-form">
+                                        @if ($product->choice_options != null)
+                                            @foreach (json_decode($product->choice_options) as $key => $choice)
+                                                <figure>
+                                                    <figcaption>
+                                                        {{ \App\Models\Attribute::find($choice->attribute_id)->name }}:
+                                                    </figcaption>
+                                                    <div class="grid flex-varients-pro">
+                                                        @foreach ($choice->values as $key => $value)
+                                                            <label for="{{ $choice->attribute_id }}_{{ $key }}"
+                                                                class="card">
+                                                                <input
+                                                                    id="{{ $choice->attribute_id }}_{{ $key }}"
+                                                                    value="{{ $value }}"
+                                                                    name="attribute_id_{{ $choice->attribute_id }}"
+                                                                    class="radio" type="radio"
+                                                                    {{ $key == 0 ? 'checked' : '' }}>
+                                                                <span class="plan-details">
+                                                                    <span class="plan-type">{{ $value }}</span>
+                                                                </span>
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                </figure>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                @endif
 
                                 <div class="ps-product__shopping">
-                                    @if (!$product->hide_price)
+                                    @if (!$product->hide_price && hasStock($product))
                                         <figure>
                                             <figcaption>Quantity</figcaption>
                                             <div class="form-group--number">
-                                                <button class="up quantity-plus"><i class="fa fa-plus"></i></button>
+                                                <button class="up quantity-plus">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                                 <button class="down quantity-minus">
                                                     <i class="fa fa-minus"></i>
                                                 </button>
@@ -110,8 +148,7 @@
                                                     value="{{ $product->min_qty ?? 1 }}" />
                                             </div>
                                         </figure>
-
-                                        <a class="ps-btn" href="javascript:void(0)"
+                                        <a id="add-to-cart" class="ps-btn" href="javascript:void(0)"
                                             onclick="addCart('{{ $product->slug }}')">Add to cart</a>
                                     @endif
 
@@ -126,10 +163,20 @@
                                         </a>
                                     </div>
                                 </div>
+
+                                @if ($product->hide_price || !hasStock($product))
+                                    <p class="enquiry-notification">
+                                        <b>
+                                            For pricing and availability, please send an email to <a
+                                                href="mailto:sales@industrytechstore.com">sales@industrytechstore.com</a>
+                                        </b>
+                                    </p>
+                                @endif
+
                                 <div class="ps-product__specification">
 
                                     @if ($product->sku)
-                                        <p><strong>SKU:</strong> {{ $product->sku }}</p>
+                                        <p><strong>SKU:</strong> <span id="sku">{{ $product->sku }}</span></p>
                                     @endif
 
                                     @if ($product->category)
@@ -328,9 +375,34 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h5>Item has been added to your basket</h5>
+            <p>⚠️ You may only request a quote as some of the items in your basket require us to contact the manufacturer for pricing information.</p>
+            <br>
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <a class="ps-btn" href="{{ route('enquiry.index') }}">Go to enquiry basket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('header')
     <style>
+        .enquiry-notification a {
+            font-weight: 700;
+            color: #eb6228;
+        }
+
+        .enquiry-notification a:hover {
+            color: #eb6328c0;
+        }
+
         .gallery-image {
             display: flex;
             width: 100%;
@@ -410,8 +482,8 @@
             bottom: 0px;
             left: 0px;
             height: 105px;
-            width: 94px;
-            min-width: 100%;
+            width: 225px;
+            /*min-width: 100%;*/
             display: flex;
         }
 
@@ -475,7 +547,7 @@
         .product-image-slider .slick-slide img,
         .product-image-slider-2 .slick-slide img {
             /* display: inline-block;
-                                                                                        vertical-align: middle;*/
+                                                                                                                                                                                                                                                                                    vertical-align: middle;*/
             max-width: 99%;
             display: block;
             margin: auto;
@@ -516,10 +588,410 @@
             height: 100% !important;
         }
     </style>
+
+    <style>
+        /* Modals */
+        .modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: end;
+            align-items: flex-start;
+            z-index: 1000;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal.modal-show {
+            animation: fadeIn 0.1s ease-in-out forwards;
+        }
+
+        .modal.modal-hide {
+            animation: fadeOut 0.1s ease-in-out 0.1s forwards;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            margin: 2rem;
+            padding: 2rem;
+            border-radius: 0.25rem;
+            width: 20%;
+            max-height: 75%;
+            overflow: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal.modal-show .modal-content {
+            animation: fadeInDown 0.3s ease-in-out forwards;
+        }
+
+        .modal.modal-hide .modal-content {
+            animation: fadeOutUp 0.2s ease-in-out forwards;
+        }
+
+        .modal-content h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-content p {
+            margin: 1rem 0;
+            line-height: 1.5rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.75rem;
+            font-weight: bold;
+            padding: 0 0.75rem;
+            color: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal:nth-of-type(2) {
+            justify-content: initial;
+            align-items: initial;
+            background-color: transparent;
+        }
+
+        .modal:nth-of-type(2) .modal-content {
+            margin: 0;
+            padding: 2rem 5rem;
+            border-radius: 0;
+            box-shadow: initial;
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+            text-align: justify;
+        }
+
+        .modal:nth-of-type(2) .modal-close {
+            font-size: 3rem;
+            padding: 0;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal:nth-of-type(2).modal-show {
+            animation: none;
+        }
+
+        .modal:nth-of-type(2).modal-hide {
+            animation: none;
+        }
+
+        .modal:nth-of-type(2).modal-show .modal-content {
+            animation: zoomIn 0.3s ease-in-out forwards;
+        }
+
+        .modal:nth-of-type(2).modal-hide .modal-content {
+            animation: zoomOut 0.2s ease-in-out forwards;
+        }
+
+        .modal:nth-of-type(3) {
+            justify-content: flex-end;
+            align-items: flex-end;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .modal:nth-of-type(3).modal-show {
+            animation: none;
+        }
+
+        .modal:nth-of-type(3).modal-hide {
+            animation: none;
+        }
+
+        .modal:nth-of-type(3).modal-show .modal-content {
+            animation: fadeInLeft 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .modal:nth-of-type(3).modal-hide .modal-content {
+            animation: fadeOutRight 0.2s ease-in-out forwards;
+        }
+
+        .modal:nth-of-type(4) .modal-content {
+            padding: 0;
+        }
+
+        .modal:nth-of-type(4) .modal-header,
+        .modal:nth-of-type(4) .modal-footer {
+            background-color: steelblue;
+            padding: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal:nth-of-type(4) .modal-header h1 {
+            margin: 0;
+        }
+
+        .modal:nth-of-type(4) .modal-body {
+            padding: 1.25rem;
+        }
+
+        .modal:nth-of-type(4) .modal-close {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .modal:nth-of-type(4) .modal-close:hover,
+        .modal:nth-of-type(4) .modal-close:focus {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .modal:nth-of-type(5) {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal:nth-of-type(5) .modal-content {
+            padding: 0;
+            height: 80%;
+            max-height: 80%;
+            width: auto;
+            max-width: 80%;
+            overflow: visible;
+            border: 3px solid #fff;
+        }
+
+        .modal:nth-of-type(5) .modal-content img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal:nth-of-type(5) .modal-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 3rem;
+            height: 3rem;
+            font-size: 3rem;
+            top: -1.5rem;
+            right: -1.5rem;
+            border-radius: 50%;
+            color: #111;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .modal:nth-of-type(5) .modal-close:hover,
+        .modal:nth-of-type(5) .modal-close:focus {
+            color: #111;
+            /* color: rgba(255,0,0,0.5); */
+        }
+
+        .modal:nth-of-type(5).modal-show .modal-content {
+            animation: zoomIn 0.3s ease-in-out forwards;
+        }
+
+        .modal:nth-of-type(5).modal-hide .modal-content {
+            animation: zoomOut 0.2s ease-in-out forwards;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-3rem);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOutUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-3rem);
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes zoomOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOutRight {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        /* Responsiveness */
+        @media(max-width: 992px) {
+            html {
+                font-size: 14px;
+            }
+
+            .modal-content {
+                width: 80%;
+            }
+        }
+
+        @media(max-width:767px) {
+            html {
+                font-size: 12px;
+            }
+
+            .modal-content {
+                padding: 2rem 1rem 1rem 1rem;
+                width: 90%;
+            }
+
+            .modal-content h1 {
+                margin-bottom: 1.5rem;
+            }
+
+            .modal:nth-of-type(2) .modal-content {
+                padding: 2rem 3rem;
+            }
+
+            .modal:nth-of-type(3) {
+                justify-content: center;
+            }
+
+            .modal:nth-of-type(3) .modal-content {
+                width: 80%;
+            }
+
+            .modal:nth-of-type(5) .modal-content {
+                max-width: 85%;
+            }
+        }
+    </style>
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js"></script>
+
+
+
+    <script>
+        const modalTriggerButtons = document.querySelectorAll("[data-modal-target]");
+        const modals = document.querySelectorAll(".modal");
+        const modalCloseButtons = document.querySelectorAll(".modal-close");
+
+        modalTriggerButtons.forEach(elem => {
+            elem.addEventListener("click", event => toggleModal(event.currentTarget.getAttribute(
+                "data-modal-target")));
+        });
+        modalCloseButtons.forEach(elem => {
+            elem.addEventListener("click", event => toggleModal(event.currentTarget.closest(".modal").id));
+        });
+        modals.forEach(elem => {
+            elem.addEventListener("click", event => {
+                if (event.currentTarget === event.target) toggleModal(event.currentTarget.id);
+            });
+        });
+
+        // Close Modal with "Esc"...
+        document.addEventListener("keydown", event => {
+            if (event.keyCode === 27 && document.querySelector(".modal.modal-show")) {
+                toggleModal(document.querySelector(".modal.modal-show").id);
+            }
+        });
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+
+            if (getComputedStyle(modal).display === "flex") { // alternatively: if(modal.classList.contains("modal-show"))
+                modal.classList.add("modal-hide");
+                setTimeout(() => {
+                    document.body.style.overflow = "initial";
+                    modal.classList.remove("modal-show", "modal-hide");
+                    modal.style.display = "none";
+                }, 200);
+            } else {
+                document.body.style.overflow = "hidden";
+                modal.style.display = "flex";
+                modal.classList.add("modal-show");
+            }
+        }
+    </script>
+
     <script>
         $(".product-image-slider").slick({
             slidesToShow: 1,
@@ -541,8 +1013,16 @@
         });
 
         function addCart(slug) {
+
+            variations = {};
+            $("#option-choice-form input[type=radio]:checked").each(function() {
+                if (this.checked == true) {
+                    variations[this.name] = this.value
+                }
+            });
+
             count = parseInt($('.quantity-input').val());
-            addToCart(slug, count);
+            addToCart(slug, count, variations);
         }
 
         function getParts() {
@@ -575,10 +1055,125 @@
         }
 
         $(document).ready(function() {
+            productDetails();
+            getVariantPrice();
             setTimeout(function() {
                 getParts()
             }, 3000);
         });
+
+        $('#option-choice-form input').on('change', function() {
+            console.log('input change');
+            console.log(parseInt($('.quantity-input').val()));
+            getVariantPrice();
+        });
+
+        // function getVariantPrice() {
+        //     if (parseInt($('.quantity-input').val()) > 0 && checkAddToCartValidity()) {
+        //         $.ajax({
+        //             type: "POST",
+        //             url: '{{ route('products.variant_price') }}',
+        //             data: $('#option-choice-form').serializeArray(),
+        //             success: function(data) {
+
+        //                 $('.product-gallery-thumb .carousel-box').each(function(i) {
+        //                     if ($(this).data('variation') && data.variation == $(this).data(
+        //                             'variation')) {
+        //                         $('.product-gallery-thumb').slick('slickGoTo', i);
+        //                     }
+        //                 })
+
+        //                 $('#option-choice-form #chosen_price_div').removeClass('d-none');
+        //                 $('#option-choice-form #chosen_price_div #chosen_price').html(data.price);
+        //                 $('#available-quantity').html(data.quantity);
+        //                 $('.input-number').prop('max', data.max_limit);
+        //                 if (parseInt(data.in_stock) == 0 && data.digital == 0) {
+        //                     $('.buy-now').addClass('d-none');
+        //                     $('.add-to-cart').addClass('d-none');
+        //                     $('.out-of-stock').removeClass('d-none');
+        //                 } else {
+        //                     $('.buy-now').removeClass('d-none');
+        //                     $('.add-to-cart').removeClass('d-none');
+        //                     $('.out-of-stock').addClass('d-none');
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
+
+        function checkAddToCartValidity() {
+            var names = {};
+            $('#option-choice-form input:radio').each(function() { // find unique names
+                names[$(this).attr('name')] = true;
+            });
+            var count = 0;
+            $.each(names, function() { // then count them
+                count++;
+            });
+
+            if ($('#option-choice-form input:radio:checked').length == count) {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        function getVariantPrice() {
+            if (parseInt($('.quantity-input').val()) > 0 && checkAddToCartValidity()) {
+                // var data = $('#option-choice-form').serializeArray();
+
+                data = {};
+                $("#option-choice-form input[type=radio]:checked").each(function() {
+                    if (this.checked == true) {
+                        data[this.name] = this.value
+                    }
+                });
+                data['quantity'] = parseInt($('.quantity-input').val())
+                data['id'] = {{ $product->id }}
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '{{ route('products.variant_price') }}',
+                    data: data,
+                    success: function(data) {
+                        if (data.status == 200) {
+                            $('#product_price').html(data.price);
+                            $('.quantity-input').data('max', data.max_limit);
+                            $('#sku').html(data.sku);
+                            if (parseInt(data.in_stock) == 0 || data.price_int == 0) {
+                                $('#add-to-cart').addClass('d-none');
+                            } else {
+                                $('#add-to-cart').removeClass('d-none');
+                            }
+                        }
+
+                    }
+                });
+            }
+        }
+
+        function checkAddToCartValidity() {
+            var names = {};
+            $('#option-choice-form input:radio').each(function() { // find unique names
+                names[$(this).attr('name')] = true;
+            });
+            var count = 0;
+            $.each(names, function() { // then count them
+                count++;
+            });
+
+            if ($('#option-choice-form input:radio:checked').length == count) {
+                return true;
+            }
+
+            return false;
+        }
 
         var productDetails = function() {
             // $slick_slider_1.slick({
@@ -622,7 +1217,5 @@
                 });
             }
         };
-
-        productDetails();
     </script>
 @endpush

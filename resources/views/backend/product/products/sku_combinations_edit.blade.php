@@ -73,7 +73,7 @@
                            @endphp" min="0" step="0.01" class="form-control" required>
                 </td>
                 <td>
-                    <input type="text" name="sku_{{ $str }}" value="@php
+                    <input type="text" required name="sku_{{ $str }}" value="@php
                             if($stock != null) {
                                 echo $stock->sku;
                             }

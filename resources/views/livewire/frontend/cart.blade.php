@@ -56,11 +56,21 @@
                                                                 <a href="{{ route('product', $cart->product->slug) }}">
                                                                     {{ $cart->product->name }}
                                                                 </a>
+                                                                @if ($cart->attr)
+                                                                    <p>
+                                                                        @foreach ($cart->attr as $key => $item)
+                                                                            {{ $key }}:<span>{{ $item }}</span>
+                                                                            @if ($loop->index < count($cart->attr) - 1)
+                                                                                ,
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </p>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="price" data-label="Price">
-                                                        {{ home_discounted_base_price($cart->product) }}
+                                                        {{ format_price($cart->price) }}
                                                     </td>
                                                     <td data-label="Quantity">
                                                         <div class="form-group--number">
@@ -154,7 +164,8 @@
                                     </p>
                                     @if ($coupon_total > 0)
                                         <p>Coupon discount
-                                            <span>{{ format_price(convert_price($coupon_total)) }}</span></p>
+                                            <span>{{ format_price(convert_price($coupon_total)) }}</span>
+                                        </p>
                                     @endif
                                 </div>
                                 <div class="ps-block__content">

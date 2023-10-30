@@ -16,13 +16,10 @@ use App\Models\User;
 use App\Models\Seller;
 use App\Models\Shop;
 use App\Models\Order;
-use App\Models\BusinessSetting;
 use App\Models\Coupon;
-use Cookie;
 use Illuminate\Support\Str;
 use App\Mail\SecondEmailVerifyMailManager;
 use App\Models\Address;
-use App\Models\AffiliateConfig;
 use App\Models\Frontend\Banner;
 use App\Models\Frontend\HomeSlider;
 use App\Models\Page;
@@ -30,8 +27,18 @@ use App\Models\Upload;
 use Mail;
 use Illuminate\Auth\Events\PasswordReset;
 use Cache;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Password;
+use URL;
+
+// use FacebookAds\Api;
+// use FacebookAds\Logger\CurlLogger;
+// use FacebookAds\Object\ServerSide\ActionSource;
+// use FacebookAds\Object\ServerSide\Content;
+// use FacebookAds\Object\ServerSide\CustomData;
+// use FacebookAds\Object\ServerSide\DeliveryCategory;
+// use FacebookAds\Object\ServerSide\Event;
+// use FacebookAds\Object\ServerSide\EventRequest;
+// use FacebookAds\Object\ServerSide\UserData;
 
 class HomeController extends Controller
 {
@@ -119,26 +126,6 @@ class HomeController extends Controller
             }
         });
 
-        // dd($cat_banners);
-
-        // $small_banners = Cache::rememberForever('adsBanners', function () {
-        //     $banners = BusinessSetting::whereType('home_banner')->first();
-        //     return Banner::whereStatus(1)
-        //         ->whereIn('id', json_decode($banners->value))
-        //         ->with(['mainImage', 'mobileImage'])
-        //         ->get();
-        // }); 
-
-        // $featured_categories = Cache::rememberForever('featured_categories', function () {
-        //     return Category::where('featured', 1)->get();
-        // });
-
-        // $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
-        //     return filter_products(Product::where('published', 1)->where('todays_deal', '1'))->get();
-        // });
-
-        // Cache::forget('newest_products');
-
         $newest_products = Cache::remember('newest_products', 3600, function () {
             $product_ids = get_setting('latest_products');
             return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
@@ -149,7 +136,6 @@ class HomeController extends Controller
             return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
         });
 
-        // load_seo_tags(null, '', 'Home');
 
         return view('frontend.index', compact('sliders', 'small_banners', 'ads_banners', 'trending_categories', 'newest_products', 'best_selling_products', 'section_categories', 'cat_banners'));
     }
@@ -167,22 +153,22 @@ class HomeController extends Controller
         if (Auth::check()) {
             return redirect()->route('home');
         }
-        if ($request->has('referral_code') && addon_is_activated('affiliate_system')) {
-            try {
-                $affiliate_validation_time = AffiliateConfig::where('type', 'validation_time')->first();
-                $cookie_minute = 30 * 24;
-                if ($affiliate_validation_time) {
-                    $cookie_minute = $affiliate_validation_time->value * 60;
-                }
+        // if ($request->has('referral_code') && addon_is_activated('affiliate_system')) {
+        //     try {
+        //         $affiliate_validation_time = AffiliateConfig::where('type', 'validation_time')->first();
+        //         $cookie_minute = 30 * 24;
+        //         if ($affiliate_validation_time) {
+        //             $cookie_minute = $affiliate_validation_time->value * 60;
+        //         }
 
-                Cookie::queue('referral_code', $request->referral_code, $cookie_minute);
-                $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
+        //         Cookie::queue('referral_code', $request->referral_code, $cookie_minute);
+        //         $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
-            } catch (\Exception $e) {
-            }
-        }
+        //         $affiliateController = new AffiliateController;
+        //         $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+        //     } catch (\Exception $e) {
+        //     }
+        // }
         return view('frontend.user_registration');
     }
 
@@ -324,9 +310,9 @@ class HomeController extends Controller
     public function flash_deal_details($slug)
     {
         $flash_deal = FlashDeal::where('slug', $slug)->first();
-        if ($flash_deal != null)
+        if ($flash_deal != null) {
             return view('frontend.flash_deal_details', compact('flash_deal'));
-        else {
+        } else {
             abort(404);
         }
     }
@@ -367,7 +353,7 @@ class HomeController extends Controller
     public function load_auction_products_section()
     {
         if (!addon_is_activated('auction')) {
-            return;
+            return null;
         }
         return view('auction.frontend.auction_products_section');
     }
@@ -396,9 +382,13 @@ class HomeController extends Controller
     public function product(Request $request, $slug)
     {
         $product = Product::with('reviews', 'reviews.user', 'brand', 'seo', 'category', 'tabs', 'stocks')->where('slug', $slug)->firstOrFail();
-        $gallery = Upload::whereIn('id', explode(',', $product->photos))->get();
-        load_seo_tags($product->seo);
-        return view('frontend.product.product_details', compact('product', 'gallery'));
+        if ($product != null && $product->published) {
+            $gallery = Upload::whereIn('id', explode(',', $product->photos))->get();
+            load_seo_tags($product->seo, URL::to($product->thumbnail_img), 'product');
+            return view('frontend.product.product_details', compact('product', 'gallery'));
+        }
+
+        abort(404);
     }
 
     public function shop($slug)
@@ -489,7 +479,7 @@ class HomeController extends Controller
 
     public function top_10_settings(Request $request)
     {
-        foreach (Category::all() as $key => $category) {
+        foreach (Category::all() as $category) {
             if (is_array($request->top_categories) && in_array($category->id, $request->top_categories)) {
                 $category->top = 1;
                 $category->save();
@@ -499,7 +489,7 @@ class HomeController extends Controller
             }
         }
 
-        foreach (Brand::all() as $key => $brand) {
+        foreach (Brand::all() as  $brand) {
             if (is_array($request->top_brands) && in_array($brand->id, $request->top_brands)) {
                 $brand->top = 1;
                 $brand->save();
@@ -521,12 +511,14 @@ class HomeController extends Controller
         $tax = 0;
         $max_limit = 0;
 
-        if ($request->has('color')) {
-            $str = $request['color'];
+        if (!$product->variant_product) {
+            return array(
+                'status' => 201,
+            );
         }
 
         if (json_decode($product->choice_options) != null) {
-            foreach (json_decode($product->choice_options) as $key => $choice) {
+            foreach (json_decode($product->choice_options) as  $choice) {
                 if ($str != null) {
                     $str .= '-' . str_replace(' ', '', $request['attribute_id_' . $choice->attribute_id]);
                 } else {
@@ -595,12 +587,15 @@ class HomeController extends Controller
         $price += $tax;
 
         return array(
+            'status' => 200,
             'price' => single_price($price * $request->quantity),
+            'price_int' => $price * $request->quantity,
             'quantity' => $quantity,
             'digital' => $product->digital,
             'variation' => $str,
             'max_limit' => $max_limit,
-            'in_stock' => $in_stock
+            'in_stock' => $in_stock,
+            'sku' => $product_stock->sku
         );
     }
 

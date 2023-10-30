@@ -44,7 +44,24 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
+                                                <td>
+                                                    <figure>
+                                                        <figcaption>Quantity</figcaption>
+                                                        <div class="form-group--number">
+                                                            <button data-product="{{ $product->id }}"
+                                                                class="up quantity-plus1"><i
+                                                                    class="fa fa-plus"></i></button>
+                                                            <button data-product="{{ $product->id }}"
+                                                                class="down quantity-minus1">
+                                                                <i class="fa fa-minus"></i>
+                                                            </button>
+                                                            <input name="quantity[{{ $product->id }}][]"
+                                                                class="form-control quantity-input" data-min="1"
+                                                                type="number"
+                                                                value="{{ $product->pivot->quantity ?? 1 }}" />
+                                                        </div>
+                                                    </figure>
+                                                </td>
                                                 <td data-label="Actions">
                                                     <a href="#" onclick="removeFromList({{ $product->id }},event)">
                                                         <i class="icon-cross"></i>
@@ -151,6 +168,43 @@
 
 @section('script')
     <script>
+        function changeQuantity(id, type) {
+            $.ajax({
+                type: "POST",
+                url: '{{ route('enquiry.change_quantity') }}',
+                data: {
+                    'id': id,
+                    'type': type,
+                    '_token': config.csrf
+                },
+                success: function(data, status, xhr) {
+                    if (xhr.status !== 200) {
+                        launchToast('Something went wrong, please try again', 'error');
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 404) {
+                        launchToast('Something went wrong, please try again', 'error');
+                    }
+                },
+            });
+        }
+
+        $('.quantity-plus1').on('click', function(event) {
+            event.preventDefault();
+            var inputField = $(this).siblings('.quantity-input')[0];
+            inputField.value = parseInt(inputField.value) + 1;
+            changeQuantity($('.quantity-plus1').data('product'), 'inc');
+        });
+        $('.quantity-minus1').on('click', function(event) {
+            event.preventDefault();
+            var inputField = $(this).siblings('.quantity-input')[0];
+            if (inputField.value > 1) {
+                inputField.value = parseInt(inputField.value) - 1;
+                changeQuantity($('.quantity-minus1').data('product'), 'dec');
+            }
+        });
+
         function removeFromList(id, event) {
             event.preventDefault();
             $.ajax({
@@ -195,8 +249,9 @@
                     '_token': config.csrf
                 },
                 success: function(data, status, xhr) {
+                    console.log(data);
                     if (xhr.status == 200) {
-
+                        launchToast(data.message, 'success');
                         var myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
                             'new-address-modal'));
                         myModal.hide();

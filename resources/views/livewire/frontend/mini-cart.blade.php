@@ -19,6 +19,21 @@
                         <a href="{{ route('product', $cart->product->slug) }}" title="{{ $cart->product->name }}">
                             {{ $cart->product->name }}
                         </a>
+                        @if ($cart->attr)
+                            <div>
+                                <figure>
+                                    <figcaption>Variations</figcaption>
+                                </figure>
+                            </div>
+                            <p>
+                                @foreach ($cart->attr as $key => $item)
+                                    {{ $key }}:<small>{{ $item }}</small>
+                                    @if ($loop->index < count($cart->attr) - 1)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </p>
+                        @endif
                         <div>
                             <figure>
                                 <figcaption>Quantity</figcaption>

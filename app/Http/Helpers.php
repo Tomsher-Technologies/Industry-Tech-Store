@@ -240,8 +240,6 @@ if (!function_exists('home_price')) {
             $lowest_price = $product->stocks->max('price');
             $highest_price = $product->stocks->max('price');
 
-            
-
             foreach ($product->stocks as $key => $stock) {
                 if ($stock->price > 0 && $lowest_price > $stock->price) {
                     $lowest_price = $stock->price;
@@ -1186,6 +1184,11 @@ function allAttributes()
     return Cache::rememberForever('attributes', function () {
         return Attribute::all();
     });
+}
+
+function hasStock($product)
+{
+    return $product->stocks->max('qty') > 0 ? true : false;
 }
 
     // function testView()

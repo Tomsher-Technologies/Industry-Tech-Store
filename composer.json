@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -11,12 +14,12 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "barryvdh/laravel-ide-helper": "^2.10",
         "diglactic/laravel-breadcrumbs": "^8.1",
-        "esign/laravel-conversions-api": "^2.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "harimayco/laravel-menu": "^1.4",
         "intervention/image": "^2.5",
         "laracasts/flash": "^3.0",
+        "laracon21/combinations": "^1.2",
         "laravel/framework": "^8.0",
         "laravel/sanctum": "^2.12",
         "laravel/socialite": "^5.0",
@@ -44,9 +47,12 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Shabeersha\\EventTracker\\": "packages/shabeersha/eventtracker/src/"
         },
-        "files": ["app/Http/Helpers.php"]
+        "files": [
+            "app/Http/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -55,8 +61,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {

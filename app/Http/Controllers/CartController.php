@@ -55,84 +55,113 @@ class CartController extends Controller
         $product = Product::whereSlug($request->slug)->first();
         $carts = array();
         $data = array();
-        $str = '';
+        $str = null;
         $tax = 0;
 
 
         if ($product) {
             $product->load('stocks');
-            $product_stock = $product->stocks->first();
-            if (($product_stock->qty < $request['quantity']) || ($product->hide_price)) {
-                return response()->json([
-                    'message' => 'This item is out of stock!',
-                ], 203);
-            }
-        }
+            if ($product->variant_product) {
 
-        $user_col = 'user_id';
+                $variations =  $request->variations;
 
-        if (Auth::user()) {
-            $data['user_id'] = $user_id = Auth::user()->id;
-        } else {
-            $user_col = 'temp_user_id';
-            $user_id = getTempUserId();
-            $data['temp_user_id'] = $user_id;
-        }
+                foreach (json_decode($product->choice_options) as $key => $choice) {
+                    if ($str != null) {
+                        $str .= '-' . str_replace(' ', '', $variations['attribute_id_' . $choice->attribute_id]);
+                    } else {
+                        $str .= str_replace(' ', '', $variations['attribute_id_' . $choice->attribute_id]);
+                    }
+                }
 
-        $carts = Cart::where([
-            $user_col => $user_id,
-            'product_id' => $product->id,
-        ])->first();
+                $product_stock = $product->stocks->where('variant', $str)->first();
 
-        if ($carts) {
-            $carts->quantity += $request->quantity;
-            $carts->save();
-            $rtn_msg = 'Cart updated successfully';
-        } else {
-            $price = $product->unit_price;
+                if (($product_stock->qty < $request['quantity']) || ($product->hide_price)) {
+                    return response()->json([
+                        'message' => 'This item is out of stock!',
+                    ], 200);
+                }
+            } else {
 
-            $discount_applicable = false;
-
-            if (
-                $product->discount_start_date == null ||
-                (strtotime(date('d-m-Y H:i:s')) >= $product->discount_start_date &&
-                    strtotime(date('d-m-Y H:i:s')) <= $product->discount_end_date)
-            ) {
-                $discount_applicable = true;
-            }
-
-            if ($discount_applicable) {
-                if ($product->discount_type == 'percent') {
-                    $price -= ($price * $product->discount) / 100;
-                } elseif ($product->discount_type == 'amount') {
-                    $price -= $product->discount;
+                $product_stock = $product->stocks->first();
+                if (($product_stock->qty < $request['quantity']) || ($product->hide_price)) {
+                    return response()->json([
+                        'message' => 'This item is out of stock!',
+                    ], 200);
                 }
             }
 
-            $data['product_id'] = $product->id;
-            $data['quantity'] = $request['quantity'] ?? 1;
-            $data['price'] = $price;
-            $data['tax'] = 0;
-            $data['shipping_cost'] = 0;
-            $data['product_referral_code'] = null;
-            $data['cash_on_delivery'] = $product->cash_on_delivery;
-            $data['digital'] = $product->digital;
 
-            $rtn_msg = 'Item added to cart';
+            $user_col = 'user_id';
 
-            Cart::create($data);
+            if (Auth::user()) {
+                $data['user_id'] = $user_id = Auth::user()->id;
+            } else {
+                $user_col = 'temp_user_id';
+                $user_id = getTempUserId();
+                $data['temp_user_id'] = $user_id;
+            }
+
+            $carts = Cart::where([
+                $user_col => $user_id,
+                'product_id' => $product->id,
+                'variation' => $str,
+            ])->first();
+
+            if ($carts) {
+                $carts->quantity += $request->quantity;
+                $carts->save();
+                $rtn_msg = 'Cart updated successfully';
+            } else {
+                $price = $product_stock->price;
+
+                $discount_applicable = false;
+
+                if (
+                    $product->discount_start_date == null ||
+                    (strtotime(date('d-m-Y H:i:s')) >= $product->discount_start_date &&
+                        strtotime(date('d-m-Y H:i:s')) <= $product->discount_end_date)
+                ) {
+                    $discount_applicable = true;
+                }
+
+                if ($discount_applicable) {
+                    if ($product->discount_type == 'percent') {
+                        $price -= ($price * $product->discount) / 100;
+                    } elseif ($product->discount_type == 'amount') {
+                        $price -= $product->discount;
+                    }
+                }
+
+                $data['product_id'] = $product->id;
+                $data['quantity'] = $request['quantity'] ?? 1;
+                $data['price'] = $price;
+                $data['variation'] = $str;
+                $data['tax'] = 0;
+                $data['shipping_cost'] = 0;
+                $data['product_referral_code'] = null;
+                $data['cash_on_delivery'] = $product->cash_on_delivery;
+                $data['digital'] = $product->digital;
+
+                $rtn_msg = 'Item added to cart';
+
+                Cart::create($data);
+            }
+
+            $cart_count = Cart::where([
+                $user_col => $user_id,
+            ])->count();
+
+            Cache::forget('user_cart_count_' . $user_id);
+
+            return response()->json([
+                'message' => $rtn_msg,
+                'count' => $cart_count
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => "",
+            ], 40);
         }
-
-        $cart_count = Cart::where([
-            $user_col => $user_id,
-        ])->count();
-
-        Cache::forget('user_cart_count_' . $user_id);
-
-        return response()->json([
-            'message' => $rtn_msg,
-            'count' => $cart_count
-        ], 200);
     }
 
     public function addToCart2(Request $request)

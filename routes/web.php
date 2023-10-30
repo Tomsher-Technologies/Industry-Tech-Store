@@ -167,6 +167,7 @@ Route::group(['prefix' => 'enquiry'], function () {
     Route::post('/', [EnquiryContoller::class, 'submit']);
     Route::post('/add', [EnquiryContoller::class, 'add'])->name('enquiry.add');
     Route::post('/remove', [EnquiryContoller::class, 'remove'])->name('enquiry.remove');
+    Route::post('/change_quantity', [EnquiryContoller::class, 'changeQuantity'])->name('enquiry.change_quantity');
 });
 
 //Paypal START

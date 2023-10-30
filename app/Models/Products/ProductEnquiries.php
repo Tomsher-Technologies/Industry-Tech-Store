@@ -28,6 +28,6 @@ class ProductEnquiries extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_product_enquiry', 'product_enquiry_id','product_id');
+        return $this->belongsToMany(Product::class, 'product_product_enquiry', 'product_enquiry_id','product_id')->withPivot('quantity');
     }
 }
