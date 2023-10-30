@@ -694,7 +694,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="mb-3" wire:ignore>
-                                        <select wire:model="new_address_country" wire:change="countryChange"
+                                        <select wire:model="new_address_country" 
                                             class="form-control aiz-selectpicker" data-live-search="true"
                                             data-placeholder="Select your country" name="country_id" required>
                                             <option value="">Select your country</option>

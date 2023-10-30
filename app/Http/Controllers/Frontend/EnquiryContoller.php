@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Products\ProductEnquiries;
 use Auth;
 use Cache;
+use DB;
 use Illuminate\Http\Request;
 
 class EnquiryContoller extends Controller
@@ -50,19 +51,42 @@ class EnquiryContoller extends Controller
                 $this->user_col => $this->user_id,
                 'comment' => ""
             ]);
+
+            $enquiries->products()->syncWithoutDetaching([
+                $product->id => [
+                    'sku' => $product->stocks->first()->sku,
+                    'varient' => $product->stocks->first()->variant,
+                    'quantity' => 1,
+                ]
+            ]);
+        } else {
+            $piviot_products = DB::table('product_product_enquiry')->where([
+                'product_id' => $product->id,
+                'product_enquiry_id' => $enquiries->id
+            ])->first();
+
+            $quantity = 1;
+
+            if ($piviot_products) {
+                $quantity = $piviot_products->quantity + 1;
+            }
+
+            DB::table('product_product_enquiry')->upsert(
+                [
+                    ['product_id' => $product->id, 'product_enquiry_id' => $enquiries->id, 'quantity' => $quantity],
+                ],
+                ['product_id', 'product_enquiry_id'],
+                ['quantity']
+            );
         }
 
-        $enquiries->products()->syncWithoutDetaching([
-            $product->id => [
-                'sku' => $product->stocks->first()->sku,
-                'varient' => $product->stocks->first()->variant,
-            ]
-        ]);
 
         Cache::flush('user_enquiry_count_' . $this->user_id);
 
         return response()->json([
-            'message' => "Product added to enquiry",
+            'message' => [
+                'name' => $product->name
+            ],
             'count' => enquiryCount()
         ], 200);
     }
@@ -78,8 +102,29 @@ class EnquiryContoller extends Controller
         ], 200);
     }
 
+    public function changeQuantity(Request $request)
+    {
+        $enquiries = ProductEnquiries::whereStatus(0)->where($this->user_col, $this->user_id)->first();
+        DB::table('product_product_enquiry')->upsert(
+            [
+                ['product_id' => $request->product, 'product_enquiry_id' => $enquiries->id, 'quantity' => $quantity],
+            ],
+            ['product_id', 'product_enquiry_id'],
+            ['quantity']
+        );
+        return response()->json([
+            'message' => "Product removed from enquiry",
+            'count' => enquiryCount()
+        ], 200);
+    }
+
     public function submit(Request $request)
     {
+        return response()->json([
+            'message' => $request,
+            'count' => 0
+        ], 210);
+
         parse_str($request->data, $data);
 
         $enquiries = ProductEnquiries::whereStatus(0)->where($this->user_col, $this->user_id)->first();

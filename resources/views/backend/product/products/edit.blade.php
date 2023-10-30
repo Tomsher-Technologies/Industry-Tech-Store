@@ -100,7 +100,8 @@
                                 <label class="col-md-3 col-form-label" for="signinSrEmail">Gallery
                                     Images<small>(1000*1000)</small></label>
                                 <div class="col-md-8">
-                                    <input type="file" name="gallery_images[]" multiple class="form-control" accept="image/*">
+                                    <input type="file" name="gallery_images[]" multiple class="form-control"
+                                        accept="image/*">
 
                                     @if ($product->photos)
                                         <div class="file-preview box sm">
@@ -152,41 +153,72 @@
 
                             </div>
                         </div>
-                        {{-- <div class="form-group row">
-                                                    <label class="col-lg-3 col-from-label">{{translate('Gallery Images')}}</label>
-                        <div class="col-lg-8">
-                            <div id="photos">
-                                @if (is_array(json_decode($product->photos)))
-                                @foreach (json_decode($product->photos) as $key => $photo)
-                                <div class="col-md-4 col-sm-4 col-xs-6">
-                                    <div class="img-upload-preview">
-                                        <img loading="lazy"  src="{{ uploaded_asset($photo) }}" alt="" class="img-responsive">
-                                            <input type="hidden" name="previous_photos[]" value="{{ $photo }}">
-                                            <button type="button" class="btn btn-danger close-btn remove-files"><i class="fa fa-times"></i></button>
-                                    </div>
+
+                    </div>
+
+
+                    {{-- Attributes --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Variation') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row gutters-5">
+                                <div class="col-lg-3">
+                                    <input type="text" class="form-control" value="{{ translate('Attributes') }}"
+                                        disabled>
                                 </div>
-                                @endforeach
+                                <div class="col-lg-8">
+                                    <select name="choice_attributes[]" id="choice_attributes"
+                                        data-selected-text-format="count" data-live-search="true"
+                                        class="form-control aiz-selectpicker" multiple
+                                        data-placeholder="{{ translate('Choose Attributes') }}">
+                                        @foreach (\App\Models\Attribute::all() as $key => $attribute)
+                                            <option value="{{ $attribute->id }}"
+                                                @if ($product->attributes != null && in_array($attribute->id, json_decode($product->attributes, true))) selected @endif>
+                                                {{ $attribute->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="">
+                                <p>{{ translate('Choose the attributes of this product and then input values of each attribute') }}
+                                </p>
+                                <br>
+                            </div>
+                            <div class="customer_choice_options" id="customer_choice_options">
+
+                                @if ($product->choice_options)
+                                    @foreach (json_decode($product->choice_options) as $key => $choice_option)
+                                        <div class="form-group row">
+                                            <div class="col-lg-3">
+                                                <input type="hidden" name="choice_no[]"
+                                                    value="{{ $choice_option->attribute_id }}">
+                                                <input type="text" class="form-control" name="choice[]"
+                                                    value="{{ optional(\App\Models\Attribute::find($choice_option->attribute_id))->name }}"
+                                                    placeholder="{{ translate('Choice Title') }}" disabled>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <select class="form-control aiz-selectpicker attribute_choice"
+                                                    data-live-search="true"
+                                                    name="choice_options_{{ $choice_option->attribute_id }}[]" multiple>
+                                                    @foreach (\App\Models\AttributeValue::where('attribute_id', $choice_option->attribute_id)->get() as $row)
+                                                        <option value="{{ $row->value }}"
+                                                            @if (in_array($row->value, $choice_option->values)) selected @endif>
+                                                            {{ $row->value }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {{-- <input type="text" class="form-control aiz-tag-input" name="choice_options_{{ $choice_option->attribute_id }}[]" placeholder="{{ translate('Enter choice values') }}" value="{{ implode(',', $choice_option->values) }}" data-on-change="update_sku"> --}}
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 @endif
+
                             </div>
                         </div>
-                    </div> --}}
-                        {{-- <div class="form-group row">
-                            <label class="col-lg-3 col-from-label">{{translate('Thumbnail Image')}} <small>(290x300)</small></label>
-                            <div class="col-lg-8">
-                                <div id="thumbnail_img">
-                                    @if ($product->thumbnail_img != null)
-                                    <div class="col-md-4 col-sm-4 col-xs-6">
-                                        <div class="img-upload-preview">
-                                            <img loading="lazy"  src="{{ uploaded_asset($product->thumbnail_img) }}" alt="" class="img-responsive">
-                                            <input type="hidden" name="previous_thumbnail_img" value="{{ $product->thumbnail_img }}">
-                                            <button type="button" class="btn btn-danger close-btn remove-files"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
+                    {{-- End Attributes --}}
 
 
                     <div class="card">
@@ -264,7 +296,7 @@
                                     </label>
                                     <div class="col-md-6">
                                         <input type="text" placeholder="SKU"
-                                            value="{{ optional($product->stocks->first())->sku }}" name="sku"
+                                            value="{{ optional($product->stocks->first())->sku }}" required name="sku"
                                             class="form-control">
                                     </div>
                                 </div>
@@ -361,13 +393,13 @@
 
 
                     <!--                 <div class="card">
-                                                                                                                                                                                                                            <div class="card-header">
-                                                                                                                                                                                                                                <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                            <div class="card-body">
+                                                                                                                                                                                                                                        <div class="card-header">
+                                                                                                                                                                                                                                            <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                        <div class="card-body">
 
-                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                        </div>-->
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                    </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -807,25 +839,25 @@
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append(
                         '\
-                                                                                                                                                                                                                        <div class="form-group row">\
-                                                                                                                                                                                                                            <div class="col-md-3">\
-                                                                                                                                                                                                                                <input type="hidden" name="choice_no[]" value="' +
+                                                                                                                                                                                                                                    <div class="form-group row">\
+                                                                                                                                                                                                                                        <div class="col-md-3">\
+                                                                                                                                                                                                                                            <input type="hidden" name="choice_no[]" value="' +
                         i +
                         '">\
-                                                                                                                                                                                                                                <input type="text" class="form-control" name="choice[]" value="' +
+                                                                                                                                                                                                                                            <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                                                                                                                                                                                            </div>\
-                                                                                                                                                                                                                            <div class="col-md-8">\
-                                                                                                                                                                                                                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                                                                                                                                                                                                                        </div>\
+                                                                                                                                                                                                                                        <div class="col-md-8">\
+                                                                                                                                                                                                                                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i +
                         '[]" multiple>\
-                                                                                                                                                                                                                                    ' +
+                                                                                                                                                                                                                                                ' +
                         obj +
                         '\
-                                                                                                                                                                                                                                </select>\
-                                                                                                                                                                                                                            </div>\
-                                                                                                                                                                                                                        </div>'
+                                                                                                                                                                                                                                            </select>\
+                                                                                                                                                                                                                                        </div>\
+                                                                                                                                                                                                                                    </div>'
                     );
                     AIZ.plugins.bootstrapSelect('refresh');
                 }

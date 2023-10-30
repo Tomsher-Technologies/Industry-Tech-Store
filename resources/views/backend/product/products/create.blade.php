@@ -113,6 +113,65 @@
                         </div>
                     </div>
 
+                    {{-- Attribute --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 h6">{{ translate('Product Variation') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row gutters-5 d-none">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{ translate('Colors') }}"
+                                        disabled>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control aiz-selectpicker" data-live-search="true"
+                                        data-selected-text-format="count" name="colors[]" id="colors" multiple
+                                        disabled>
+                                        @foreach (\App\Models\Color::orderBy('name', 'asc')->get() as $key => $color)
+                                            <option value="{{ $color->code }}"
+                                                data-content="<span><span class='size-15px d-inline-block mr-2 rounded border' style='background:{{ $color->code }}'></span><span>{{ $color->name }}</span></span>">
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input value="1" type="checkbox" name="colors_active">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row gutters-5">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="Attributes"
+                                        disabled>
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="choice_attributes[]" id="choice_attributes"
+                                        class="form-control aiz-selectpicker" data-selected-text-format="count"
+                                        data-live-search="true" multiple
+                                        data-placeholder="{{ translate('Choose Attributes') }}">
+                                        @foreach (\App\Models\Attribute::all() as $key => $attribute)
+                                            <option value="{{ $attribute->id }}">{{ $attribute->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <p>{{ translate('Choose the attributes of this product and then input values of each attribute') }}
+                                </p>
+                                <br>
+                            </div>
+
+                            <div class="customer_choice_options" id="customer_choice_options">
+
+                            </div>
+                        </div>
+                    </div>
+                    {{-- End Attribute --}}
 
                     <div class="card">
                         <div class="card-header">
@@ -178,7 +237,7 @@
                                         SKU
                                     </label>
                                     <div class="col-md-6">
-                                        <input type="text" placeholder="SKU" name="sku" class="form-control">
+                                        <input required type="text" placeholder="SKU" name="sku" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -273,13 +332,13 @@
                     </div>
 
                     <!--                <div class="card">
-                                                                                                                    <div class="card-header">
-                                                                                                                        <h5 class="mb-0 h6">Product Shipping Cost</h5>
-                                                                                                                    </div>
-                                                                                                                    <div class="card-body">
+                                                                                                                        <div class="card-header">
+                                                                                                                            <h5 class="mb-0 h6">Product Shipping Cost</h5>
+                                                                                                                        </div>
+                                                                                                                        <div class="card-body">
 
-                                                                                                                    </div>
-                                                                                                                </div>-->
+                                                                                                                        </div>
+                                                                                                                    </div>-->
 
 
                     <div class="card">
@@ -676,24 +735,25 @@
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append(
                         '\
-                                                                                                                <div class="form-group row">\
-                                                                                                                    <div class="col-md-3">\
-                                                                                                                        <input type="hidden" name="choice_no[]" value="' +
+                                                                                                                    <div class="form-group row">\
+                                                                                                                        <div class="col-md-3">\
+                                                                                                                            <input type="hidden" name="choice_no[]" value="' +
                         i +
                         '">\
-                                                                                                                        <input type="text" class="form-control" name="choice[]" value="' +
+                                                                                                                            <input type="text" class="form-control" name="choice[]" value="' +
                         name +
                         '" placeholder="Choice Title" readonly>\
-                                                                                                                    </div>\
-                                                                                                                    <div class="col-md-8">\
-                                                                                                                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                                                                                                        </div>\
+                                                                                                                        <div class="col-md-8">\
+                                                                                                                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i +
                         '[]" multiple>\
-                                                                                                                            ' +
+                                                                                                                                ' +
                         obj + '\
-                                                                                                                        </select>\
-                                                                                                                    </div>\
-                                                                                                                </div>');
+                                                                                                                            </select>\
+                                                                                                                        </div>\
+                                                                                                                    </div>'
+                        );
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });

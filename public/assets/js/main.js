@@ -1018,12 +1018,3 @@ function launchToast(msg, status = 'success') {
         }
     }).showToast();
 }
-// $(document).ready(function() {
-//   $(".menu-item-has-children").mouseenter(function() {
-//     $("body").addClass("overlay");
-//   });
-//   $(".menu-item-has-children").mouseleave(function() {
-//     $("body").removeClass("overlay");
-//   });
-// });
-

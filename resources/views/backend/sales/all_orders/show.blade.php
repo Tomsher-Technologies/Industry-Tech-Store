@@ -151,7 +151,7 @@
                                 <th data-breakpoints="lg" class="min-col">#</th>
                                 <th width="10%">Photo</th>
                                 <th class="text-uppercase">Description</th>
-                                <th data-breakpoints="lg" class="text-uppercase">Delivery Type</th>
+                                {{-- <th data-breakpoints="lg" class="text-uppercase">Delivery Type</th> --}}
                                 <th data-breakpoints="lg" class="min-col text-center text-uppercase">Qty
                                 </th>
                                 <th data-breakpoints="lg" class="min-col text-center text-uppercase">
@@ -191,7 +191,7 @@
                                             <strong>Product Unavailable</strong>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
                                             Home Delivery
                                         @elseif ($order->shipping_type == 'pickup_point')
@@ -202,7 +202,7 @@
                                                 Pickup Point
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td class="text-center">{{ $orderDetail->quantity }}</td>
                                     <td class="text-center">
                                         @if ($orderDetail->og_price)
@@ -241,7 +241,7 @@
                                 <strong class="text-muted">Shipping :</strong>
                             </td>
                             <td>
-                                {{ single_price($order->orderDetails->sum('shipping_cost')) }}
+                                {{ single_price($order->shipping_cost) }}
                             </td>
                         </tr>
                         <tr>

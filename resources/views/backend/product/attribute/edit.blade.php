@@ -26,7 +26,7 @@
               <div class="form-group row">
                   <label class="col-sm-3 col-from-label" for="name">{{ translate('Name')}} <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
                   <div class="col-sm-9">
-                      <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" required value="{{ $attribute->getTranslation('name', $lang) }}">
+                      <input type="text" placeholder="{{ translate('Name')}}" id="name" name="name" class="form-control" required value="{{ $attribute->name }}">
                   </div>
               </div>
               <div class="form-group mb-0 text-right">

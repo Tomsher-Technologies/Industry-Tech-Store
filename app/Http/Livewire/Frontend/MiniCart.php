@@ -32,6 +32,8 @@ class MiniCart extends Component
         $this->layout = $layout;
 
         $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
+
+        $this->variations();
     }
 
     public function remove($id)
@@ -62,6 +64,23 @@ class MiniCart extends Component
         $this->cart_quality[$id]['qty'] -= 1;
     }
 
+    public function variations()
+    {
+        $attributes = allAttributes();
+        foreach ($this->carts as $cart) {
+            if ($cart->variation) {
+                $attribute = json_decode($cart->product->attributes);
+                $variation = explode('-', $cart->variation);
+                $var_result = array();
+                foreach ($attribute as $key => $attr_id) {
+                    $attr = $attributes->where('id', $attr_id)->first()->name;
+                    $var_result[$attr] = $variation[$key];
+                }
+                $cart->attr = $var_result;
+            }
+        }
+    }
+
     public function render()
     {
         foreach ($this->carts as $cart) {
@@ -81,6 +100,7 @@ class MiniCart extends Component
     public function cartUpdateView()
     {
         $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
+        $this->variations();
         $this->render();
     }
 }

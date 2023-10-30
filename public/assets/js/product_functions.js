@@ -30,8 +30,8 @@ function addEnquiry(slug) {
         },
         success: function (data, status, xhr) {
             if (xhr.status == 200) {
-                console.log(data);
-                launchToast(data.message);
+                // launchToast(data.message);
+                toggleModal('modal1')
                 $('.headerEnquiryCount').html(data.count)
             }
         },
@@ -41,16 +41,18 @@ function addEnquiry(slug) {
     });
 }
 
-function addToCart(slug, qty = 1) {
+function addToCart(slug, qty = 1, variations) {
     $.ajax({
         type: "POST",
         url: config.routes.cart_add,
         data: {
             'slug': slug,
             'quantity': qty,
+            'variations': variations,
             '_token': config.csrf
         },
         success: function (data, status, xhr) {
+            console.log(data);
             if (xhr.status == 200) {
                 launchToast(data.message);
                 $('.headerCartCount').html(data.count)
@@ -94,7 +96,7 @@ function addToWishList(slug) {
 
 function owlCarouselConfig2() {
     var target = $('.owl-slider2');
-    const rtl = $('html').attr('dir') === 'rtl' ? true : false;
+    const rtl = $('html').attr('dir') === 'rtl';
     if (target.length > 0) {
         target.each(function () {
             var el = $(this),
@@ -173,8 +175,3 @@ function owlCarouselConfig2() {
         });
     }
 }
-
-// (function ($) {
-//     'use strict';
-
-// })(jQuery);
