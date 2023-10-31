@@ -21,7 +21,8 @@
                                     <thead class="ps-table--shopping-cart-header">
                                         <tr>
                                             <th>Product Details</th>
-                                            <th></th>
+                                            <th>Quantity</th>
+                                            <th>Remove</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,14 +49,15 @@
                                                     <figure>
                                                         <figcaption>Quantity</figcaption>
                                                         <div class="form-group--number">
-                                                            <button data-product="{{ $product->id }}"
+                                                            <button data-product="{{ $product->pivot->product_id }}"
                                                                 class="up quantity-plus1"><i
                                                                     class="fa fa-plus"></i></button>
-                                                            <button data-product="{{ $product->id }}"
+                                                            <button data-product="{{ $product->pivot->product_id }}"
                                                                 class="down quantity-minus1">
                                                                 <i class="fa fa-minus"></i>
                                                             </button>
-                                                            <input name="quantity[{{ $product->id }}][]"
+                                                            <input data-product="{{ $product->pivot->product_id }}"
+                                                                name="quantity[{{ $product->id }}][]"
                                                                 class="form-control quantity-input" data-min="1"
                                                                 type="number"
                                                                 value="{{ $product->pivot->quantity ?? 1 }}" />
@@ -166,15 +168,27 @@
 
 @endsection
 
+@section('header')
+    <style>
+        .ps-table--shopping-cart thead tr th {
+            text-align: left;
+        }
+
+        .ps-table--shopping-cart tbody tr td:last-child {
+            text-align: center;
+        }
+    </style>
+@endsection
+
 @section('script')
     <script>
-        function changeQuantity(id, type) {
+        function changeQuantity(product_id, quantity) {
             $.ajax({
                 type: "POST",
                 url: '{{ route('enquiry.change_quantity') }}',
                 data: {
-                    'id': id,
-                    'type': type,
+                    'product_id': product_id,
+                    'quantity': quantity,
                     '_token': config.csrf
                 },
                 success: function(data, status, xhr) {
@@ -194,15 +208,19 @@
             event.preventDefault();
             var inputField = $(this).siblings('.quantity-input')[0];
             inputField.value = parseInt(inputField.value) + 1;
-            changeQuantity($('.quantity-plus1').data('product'), 'inc');
+            changeQuantity($(this).data('product'), inputField.value);
         });
         $('.quantity-minus1').on('click', function(event) {
             event.preventDefault();
             var inputField = $(this).siblings('.quantity-input')[0];
             if (inputField.value > 1) {
                 inputField.value = parseInt(inputField.value) - 1;
-                changeQuantity($('.quantity-minus1').data('product'), 'dec');
+                changeQuantity($(this).data('product'), inputField.value);
             }
+        });
+
+        $('.quantity-input').on('change', function() {
+            changeQuantity($(this).data('product'), $(this).val());
         });
 
         function removeFromList(id, event) {

@@ -376,12 +376,12 @@
         </div>
     </div>
 
-
     <div class="modal" id="modal1">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
             <h5>Item has been added to your basket</h5>
-            <p>⚠️ You may only request a quote as some of the items in your basket require us to contact the manufacturer for pricing information.</p>
+            <p>⚠️ You may only request a quote as some of the items in your basket require us to contact the manufacturer
+                for pricing information.</p>
             <br>
             <div class="modal-footer">
                 <div class="d-flex">
@@ -390,7 +390,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('header')
     <style>
@@ -547,7 +546,7 @@
         .product-image-slider .slick-slide img,
         .product-image-slider-2 .slick-slide img {
             /* display: inline-block;
-                                                                                                                                                                                                                                                                                    vertical-align: middle;*/
+                                                                                                                                                                                                                                                                                                vertical-align: middle;*/
             max-width: 99%;
             display: block;
             margin: auto;
@@ -947,8 +946,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js"></script>
 
-
-
     <script>
         const modalTriggerButtons = document.querySelectorAll("[data-modal-target]");
         const modals = document.querySelectorAll(".modal");
@@ -1013,14 +1010,12 @@
         });
 
         function addCart(slug) {
-
             variations = {};
             $("#option-choice-form input[type=radio]:checked").each(function() {
                 if (this.checked == true) {
                     variations[this.name] = this.value
                 }
             });
-
             count = parseInt($('.quantity-input').val());
             addToCart(slug, count, variations);
         }
@@ -1147,9 +1142,13 @@
                             $('.quantity-input').data('max', data.max_limit);
                             $('#sku').html(data.sku);
                             if (parseInt(data.in_stock) == 0 || data.price_int == 0) {
+                                $('.ps-product__shopping figure').addClass('d-none');
                                 $('#add-to-cart').addClass('d-none');
+                                $('#product_price').addClass('d-none');
                             } else {
+                                $('.ps-product__shopping figure').removeClass('d-none');
                                 $('#add-to-cart').removeClass('d-none');
+                                $('#product_price').removeClass('d-none');
                             }
                         }
 

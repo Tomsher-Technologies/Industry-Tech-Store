@@ -39,11 +39,14 @@ class EnquiryContoller extends Controller
 
     public function add(Request $request)
     {
-        $product = Product::select('id')->where('slug', $request->slug)->with([
+        $product = Product::select(['id', 'variant_product', 'choice_options'])->where('slug', $request->slug)->with([
             'stocks'
         ])->first();
 
-        $enquiries = ProductEnquiries::whereStatus(0)->where($this->user_col, $this->user_id)->first();
+        $enquiries = ProductEnquiries::whereStatus(0)->where(
+            $this->user_col,
+            $this->user_id
+        )->first();
 
         if (!$enquiries) {
             $enquiries = ProductEnquiries::create([
@@ -73,13 +76,16 @@ class EnquiryContoller extends Controller
 
             DB::table('product_product_enquiry')->upsert(
                 [
-                    ['product_id' => $product->id, 'product_enquiry_id' => $enquiries->id, 'quantity' => $quantity],
+                    [
+                        'product_id' => $product->id,
+                        'product_enquiry_id' => $enquiries->id,
+                        'quantity' => $quantity
+                    ],
                 ],
                 ['product_id', 'product_enquiry_id'],
                 ['quantity']
             );
         }
-
 
         Cache::flush('user_enquiry_count_' . $this->user_id);
 
@@ -105,9 +111,14 @@ class EnquiryContoller extends Controller
     public function changeQuantity(Request $request)
     {
         $enquiries = ProductEnquiries::whereStatus(0)->where($this->user_col, $this->user_id)->first();
+
         DB::table('product_product_enquiry')->upsert(
             [
-                ['product_id' => $request->product, 'product_enquiry_id' => $enquiries->id, 'quantity' => $quantity],
+                [
+                    'product_id' => $request->product_id,
+                    'product_enquiry_id' => $enquiries->id,
+                    'quantity' => $request->quantity
+                ],
             ],
             ['product_id', 'product_enquiry_id'],
             ['quantity']
