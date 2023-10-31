@@ -30,7 +30,6 @@ function addEnquiry(slug) {
         },
         success: function (data, status, xhr) {
             if (xhr.status == 200) {
-                // launchToast(data.message);
                 toggleModal('modal1')
                 $('.headerEnquiryCount').html(data.count)
             }
