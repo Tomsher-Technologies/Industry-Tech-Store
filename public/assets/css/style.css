@@ -8454,7 +8454,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #000;
+  color: #fff;
+  font-size: 30px;
 }
 
 .ps-carousel--nav-inside .owl-nav .owl-prev {
@@ -16516,9 +16517,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   padding: 10px 0;
 }
 
+/* 
 .header.header--sticky .header__left .ps-logo {
   display: none;
-}
+} */
+
+
 
 .header.header--sticky .header__left .menu--product-categories {
   display: block;

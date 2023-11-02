@@ -85,13 +85,18 @@
     $footer_menu_1 = getMenu(2);
     $footer_menu_2 = getMenu(3);
     $footer_menu_3 = getMenu(4);
-    $footer_menu_4 = getMenu(5);
+    // $footer_menu_4 = getMenu(5);
 @endphp
 
 <footer class="ps-footer">
     <div class="ps-container">
         <div class="ps-footer__widgets">
-            <aside aria-label="Footer menu 1" class="widget widget_footer widget_contact-us">
+            <aside aria-label="Footer menu 1" class="widget widget_footer">
+                <a class="ps-logo" href="{{ route('home') }}" title="Home">
+                    <img src="{{ frontendAsset('img/logo_new.webp') }}" alt="{{ env('APP_NAME') }}" width="250">
+                </a>
+            </aside>
+            <aside aria-label="Footer menu 2" class="widget widget_footer widget_contact-us">
                 <h4 class="widget-title">Company</h4>
                 <ul class="ps-list--link">
                     @foreach ($footer_menu_1 as $menu)
@@ -101,7 +106,7 @@
                     @endforeach
                 </ul>
             </aside>
-            <aside aria-label="Footer menu 2" class="widget widget_footer">
+            <aside aria-label="Footer menu 3" class="widget widget_footer">
                 <h4 class="widget-title">Quick links</h4>
                 <ul class="ps-list--link">
                     @foreach ($footer_menu_2 as $menu)
@@ -111,7 +116,7 @@
                     @endforeach
                 </ul>
             </aside>
-            <aside aria-label="Footer menu 3" class="widget widget_footer">
+            <aside aria-label="Footer menu 4" class="widget widget_footer">
                 <h4 class="widget-title">Help</h4>
                 <ul class="ps-list--link">
                     @foreach ($footer_menu_3 as $menu)
@@ -121,7 +126,7 @@
                     @endforeach
                 </ul>
             </aside>
-            <aside aria-label="Footer menu 4" class="widget widget_footer">
+            {{-- <aside aria-label="Footer menu 4" class="widget widget_footer">
                 <h4 class="widget-title">Terms</h4>
                 <ul class="ps-list--link">
                     @foreach ($footer_menu_4 as $menu)
@@ -130,7 +135,7 @@
                         </li>
                     @endforeach
                 </ul>
-            </aside>
+            </aside> --}}
         </div>
 
         <div class="ps-footer__copyright">
