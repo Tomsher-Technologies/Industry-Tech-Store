@@ -56,6 +56,7 @@ use App\Http\Controllers\Admin\TempImageController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CareersController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\RequestQuoteController;
 use App\Http\Livewire\TempUpload;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
@@ -421,7 +422,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::post('/temp-images/delete', [TempImageController::class, 'deleteAll'])->name('temp_image.delete');
 
 
-    Route::resource('career', CareersController::class)->only('index', 'show','delete');
+    Route::resource('career', CareersController::class)->only('index', 'show', 'delete');
+    Route::resource('rfq', RequestQuoteController::class)->only('index', 'show', 'delete');
 
     // Cache
     Route::get('/cache-cache/{type?}', [AdminController::class, 'clearCache'])->name('cache.clear');
