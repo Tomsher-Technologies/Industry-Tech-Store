@@ -117,7 +117,7 @@
                 </ul>
             </aside>
             <aside aria-label="Footer menu 4" class="widget widget_footer">
-                <h4 class="widget-title">Help</h4>
+                <h4 class="widget-title">Terms</h4>
                 <ul class="ps-list--link">
                     @foreach ($footer_menu_3 as $menu)
                         <li>
