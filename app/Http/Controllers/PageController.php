@@ -174,6 +174,12 @@ class PageController extends Controller
             if ($page->type == 'careers_page') {
                 return view('frontend.career_page', compact('page'));
             }
+            if ($page->type == 'contact_page') {
+                return view('frontend.contact_us', compact('page'));
+            }
+            if ($page->type == 'request_quote') {
+                return view('frontend.request_quote', compact('page'));
+            }
 
             return view('frontend.custom_page', compact('page'));
         }
