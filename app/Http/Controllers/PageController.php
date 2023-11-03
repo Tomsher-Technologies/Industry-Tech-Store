@@ -170,6 +170,11 @@ class PageController extends Controller
         $page = Page::where('slug', $slug)->firstOrFail();
         if ($page != null) {
             load_seo_tags($page);
+
+            if ($page->type == 'careers_page') {
+                return view('frontend.career_page', compact('page'));
+            }
+
             return view('frontend.custom_page', compact('page'));
         }
         abort(404);

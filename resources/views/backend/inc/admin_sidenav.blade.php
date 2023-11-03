@@ -200,6 +200,14 @@
                     </li>
                 @endif
 
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('career.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['career.index']) }}">
+                        <i class="las la-graduation-cap aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Careers</span>
+                    </a>
+                </li>
+
                 <!-- marketing -->
                 @if (userHasPermision(11))
                     <li class="aiz-side-nav-item">
