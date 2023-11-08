@@ -1191,12 +1191,27 @@ function hasStock($product)
     return $product->stocks->max('qty') > 0 ? true : false;
 }
 
-    // function testView()
-    // {
-    //     Cache::forget('awesomeHtml');
-    //     $html = Cache::remember('awesomeHtml', 3600, function () {
-    //         return view('frontend.inc.header-part.desktop-header')->render();
-    //     });
+// function testView()
+// {
+//     Cache::forget('awesomeHtml');
+//     $html = Cache::remember('awesomeHtml', 3600, function () {
+//         return view('frontend.inc.header-part.desktop-header')->render();
+//     });
 
-    //     return $html;
-    // }
+//     return $html;
+// }
+
+function getAdminEmail()
+{
+    $emails = Cache::rememberForever('admin_emails', function () {
+        return BusinessSetting::where('type', 'admin_emails')->first();
+    });
+
+    if ($emails) {
+        return explode(',', $emails->value);
+    } else if (env('ADMIN_EMAIL')) {
+        return env('ADMIN_EMAIL');
+    } else {
+        return 'info@industrytechstore.com';
+    }
+}

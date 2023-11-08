@@ -7,12 +7,15 @@ use App\Models\Customer;
 use App\Models\Cart;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OTPVerificationController;
+use App\Mail\NewUserRegister;
+use App\Mail\NewUserRegisterAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Cookie;
 use Illuminate\Validation\Rules\Password;
+use Mail;
 use Session;
 
 class RegisterController extends Controller
@@ -130,48 +133,26 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            if (User::where('email', $request->email)->first() != null) {
-                // flash(translate('Email or Phone already exists.'));
-                // return back();
+        $this->validator($request->all())->validate();
 
-                return back()->withErrors([
-                    'register' => 'Email already exists..',
-                ])->onlyInput('email', 'name', 'register');
-            }
-        } elseif (User::where('phone', '+' . $request->country_code . $request->phone)->first() != null) {
+        if (User::where('email', $request->email)->first() != null) {
             return back()->withErrors([
-                'register' => 'Phone already exists..',
+                'register' => 'Email already exists..',
             ])->onlyInput('email', 'name', 'register');
         }
-
-        $this->validator($request->all())->validate();
 
         $user = $this->create($request->all());
 
         $this->guard()->login($user);
 
         if ($user->email != null) {
-            // if (BusinessSetting::where('type', 'email_verification')->first()->value != 1) {
             $user->email_verified_at = date('Y-m-d H:m:s');
             $user->save();
 
-            // return back()->withErrors([
-            //     'register' => 'Registration successful.',
-            // ])->onlyInput('email', 'name');
-
-            // flash(translate(''))->success();
-            // } else {
-            //     try {
-            //         $user->sendEmailVerificationNotification();
-            //         flash(translate('Registration successful. Please verify your email.'))->success();
-            //     } catch (\Throwable $th) {
-            //         $user->customer()->delete();
-            //         $user->delete();
-            //         flash(translate('Registration failed. Please try again later.'))->error();
-            //     }
-            // }
+            Mail::to($user->email)->queue(new NewUserRegister($user));
         }
+
+        Mail::to(getAdminEmail())->queue(new NewUserRegisterAdmin($user));
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());

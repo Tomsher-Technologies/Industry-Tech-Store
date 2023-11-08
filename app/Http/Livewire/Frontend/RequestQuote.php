@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Frontend;
 
+use App\Mail\Admin\NewRFQ;
 use App\Models\RequestQuote as ModelsRequestQuote;
 use Livewire\Component;
+use Mail;
 
 class RequestQuote extends Component
 {
@@ -32,12 +34,14 @@ class RequestQuote extends Component
     {
         $this->validate();
 
-        ModelsRequestQuote::create([
+        $rfq = ModelsRequestQuote::create([
             'name' => $this->name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'message' => $this->message_body,
         ]);
+
+        Mail::to(getAdminEmail())->queue(new NewRFQ($rfq));
 
         $this->reset();
 

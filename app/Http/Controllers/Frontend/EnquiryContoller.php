@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Admin\NewEnquiry;
 use App\Models\Product;
 use App\Models\Products\ProductEnquiries;
 use Auth;
 use Cache;
 use DB;
 use Illuminate\Http\Request;
+use Mail;
+
+use function GuzzleHttp\Promise\queue;
 
 class EnquiryContoller extends Controller
 {
@@ -147,6 +151,10 @@ class EnquiryContoller extends Controller
             'email' => $data['email'],
             'phone_number' => $data['phone'],
         ]);
+
+        $enquiries->load('products');
+
+        Mail::to(getAdminEmail())->queue(new NewEnquiry($enquiries));
 
         Cache::flush('user_enquiry_count_' . $this->user_id);
 

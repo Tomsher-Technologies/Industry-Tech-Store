@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\City;
+use App\Models\Country;
 use App\Models\State;
 use Auth;
 
@@ -25,8 +26,12 @@ class AddressController extends Controller
             'city',
         ]);
 
+        $country = Country::all();
+
         return view('frontend.user.addresses')->with([
-            'addresses' => $addresses
+            'addresses' => $addresses,
+            'country' => $country,
+
         ]);
     }
 
@@ -54,6 +59,7 @@ class AddressController extends Controller
         } else {
             $address->user_id   = Auth::user()->id;
         }
+        $address->name       = $request->name;
         $address->address       = $request->address;
         $address->country_id    = $request->country_id;
         $address->state_id      = $request->state_id;
@@ -81,6 +87,10 @@ class AddressController extends Controller
             required
           />
           <div class='border p-3 pr-5 rounded mb-3 position-relative'>
+          <div>
+              <span class='w-50 fw-600'>Name:</span>
+              <span class='ml-2'>$address->name</span>
+            </div>
             <div>
               <span class='w-50 fw-600'>Address:</span>
               <span class='ml-2'>$address->address</span>

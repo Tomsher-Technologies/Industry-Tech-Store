@@ -185,10 +185,10 @@
     </head>
 
 <body style="background-color: #cecece;">
-    <!-- ----------------- Header Start Here ------------------------- -->
+
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">
-        <tr>
-            <td class="heightsmalldevices" height="60">&nbsp;</td>
+        <tr class="mhide">
+            <td height="100">&nbsp;</td>
         </tr>
         <tr>
             <td align="center">
@@ -197,11 +197,11 @@
                         <td>
                             <table width="100%" bgcolor="#ffffff" border="0" cellspacing="0" cellpadding="0"
                                 align="center" class="full"
-                                style="background-color: #ffffff; border-radius: 5px 5px 0 0">
+                                style="background-color:#ffffff; border-radius:5px 5px 0 0;">
                                 <tr>
                                     <td>
                                         <table align="center" border="0" cellspacing="0" cellpadding="0"
-                                            class="inner" style="text-align: center">
+                                            class="inner" style="text-align:center;">
                                             <tr>
                                                 <td width="28" height="52">&nbsp;</td>
                                                 <td>&nbsp;</td>
@@ -213,7 +213,8 @@
                                                             height="54" alt="Industry Tech Store"></a>
                                                 </td>
                                             </tr>
-                                            <tr></tr>
+                                            <tr>
+                                            </tr>
                                         </table>
 
                                     </td>
@@ -234,81 +235,86 @@
                         <td>
                             <table width="100%" bgcolor="#ffffff" border="0" cellspacing="0" cellpadding="0"
                                 align="center" class="full"
-                                style="text-align: center; border-bottom: 1px solid #e5e5e5;padding:0 15px">
+                                style="text-align:center; border-bottom:1px solid #e5e5e5;">
                                 <tr>
                                     <td class="heightsmalldevices" height="40">&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td
-                                        style="
-                  font: 700 30px 'Montserrat', Helvetica, Arial, sans-serif;
-                  color: #eb6228;
-                  text-transform: uppercase;
-                ">
-                                        password change request
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td height="21">&nbsp;</td>
+                                        style="font: 700 30px 'Montserrat', Helvetica, Arial, sans-serif; color: #eb6228; text-transform: uppercase; font-size: 29px;">
+                                        congratulations</td>
                                 </tr>
                                 <tr>
-                                    <td
-                                        style="
-                  font: 18px Arial, Helvetica, sans-serif;
-                  color: #404040;
-                ">
-                                        You have submitted a password change request.
-                                    </td>
+                                    <td height="28">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td height="21">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="
-                  font: 18px Arial, Helvetica, sans-serif;
-                  color: #404040;
-                ">
-                                        If it wasn't you please disregard this email and make sure you can still login
-                                        to your account, If it
-                                        was you, then change your password by clicking on the button bellow.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td height="32">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td align="center">
-                                        <table width="250" align="center" border="0" cellspacing="0"
-                                            cellpadding="0"
-                                            style="
-                    border-collapse: collapse;
-                    mso-table-lspace: 0pt;
-                    mso-table-rspace: 0pt;
-                    text-align: center;
-                  ">
+                                    <td>
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                            style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; text-align:center;">
                                             <tr>
-                                                <td align="center" bgcolor="#eb6228" style="border-radius: 28px"
-                                                    height="61">
-                                                    <a href="{{ $link }}" target="new"
-                                                        style="
-                          font: 700 16px/61px 'Montserrat', Helvetica, Arial,
-                            sans-serif;
-                          color: #ffffff;
-                          text-decoration: none;
-                          display: block;
-                          overflow: hidden;
-                          outline: none;
-                        ">RESET
-                                                        PASSWORD</a>
+                                                <td width="28">&nbsp;</td>
+                                                <td align="center"
+                                                    style="font: 22px Arial, Helvetica, sans-serif; color:#404040;">
+                                                    Your account has been created successfully</td>
+                                                <td width="28">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28"></td>
+                                                <td height="28"></td>
+                                                <td width="28"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28">&nbsp;</td>
+                                                <td style="font: 16px Arial, Helvetica, sans-serif; color:#404040;">
+                                                    Welcome {{ $user->name }} and thank you for registering at Industy
+                                                    Tech Store!
+                                                    <br>
+                                                    Your account has now been created and you can log in by using your
+                                                    email address and password by visiting our website.
+                                                    <br>
+                                                    Keep your password secure to avoid third-party access to your
+                                                    accounts.
                                                 </td>
+                                                <td width="28">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28"></td>
+                                                <td height="40"></td>
+                                                <td width="28"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28"></td>
+                                                <td align="center">
+                                                    <table align="center" border="0" cellspacing="0" cellpadding="0"
+                                                        style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; text-align:center;">
+                                                        <tr>
+                                                            <td align="center" bgcolor="#eb6228"
+                                                                style="border-radius:28px; padding:0 28px;"
+                                                                height="61"><a href="{{ route('dashboard') }}"
+                                                                    style="font:700 16px 'Montserrat', Helvetica, Arial, sans-serif; color:#ffffff; text-decoration:none; text-transform:uppercase; display:block; overflow:hidden; outline:none;">
+                                                                    Go To Your Account
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td width="28"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28"></td>
+                                                <td height="36"></td>
+                                                <td width="28"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="28"></td>
+                                                <td height="34"></td>
+                                                <td width="28"></td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="heightsmalldevices" height="60">&nbsp;</td>
+                                    <td class="heightsmalldevices" height="79">&nbsp;</td>
                                 </tr>
                             </table>
                         </td>
@@ -317,6 +323,8 @@
             </td>
         </tr>
     </table>
+
+    <!-- ----------------- Footer Start Here ------------------------- -->
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">
         <tr>
@@ -367,7 +375,6 @@
             </td>
         </tr>
     </table>
-
 </body>
 
 </html>

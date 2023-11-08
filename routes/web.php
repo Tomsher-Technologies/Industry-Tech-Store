@@ -29,19 +29,35 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
 use App\Http\Livewire\Frontend\Checkout;
-use App\Models\Order;
+use App\Mail\Admin\NewCareer;
+use App\Mail\Admin\NewEnquiry;
+use App\Models\Frontend\Careers;
+use App\Models\Products\ProductEnquiries;
 
-Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
-Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
-Route::get('/convert_assets', [DemoController::class, 'convert_assets']);
-Route::get('/convert_category', [DemoController::class, 'convert_category']);
-Route::get('/convert_tax', [DemoController::class, 'convertTaxes']);
-Route::get('/insert_product_variant_forcefully', [DemoController::class, 'insert_product_variant_forcefully']);
-Route::get('/update_seller_id_in_orders/{id_min}/{id_max}', [DemoController::class, 'update_seller_id_in_orders']);
-Route::get('/migrate_attribute_values', [DemoController::class, 'migrate_attribute_values']);
+// Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
+// Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
+// Route::get('/convert_assets', [DemoController::class, 'convert_assets']);
+// Route::get('/convert_category', [DemoController::class, 'convert_category']);
+// Route::get('/convert_tax', [DemoController::class, 'convertTaxes']);
+// Route::get('/insert_product_variant_forcefully', [DemoController::class, 'insert_product_variant_forcefully']);
+// Route::get('/update_seller_id_in_orders/{id_min}/{id_max}', [DemoController::class, 'update_seller_id_in_orders']);
+// Route::get('/migrate_attribute_values', [DemoController::class, 'migrate_attribute_values']);
 
 Route::get('/refresh-csrf', function () {
     return csrf_token();
+});
+
+
+Route::get('/test', function () {
+
+    $enquiries = ProductEnquiries::find(7);
+    $enquiries->load('products');
+    // dd($enquiries);
+    // return view('emails.admin.enquiry')->with([
+    //     'enquiry' => $enquiries
+    // ]);
+
+    // Mail::to(getAdminEmail())->queue(new NewEnquiry($enquiries));
 });
 
 Auth::routes([
@@ -49,20 +65,10 @@ Auth::routes([
     'reset' => true
 ]);
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::get('/email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-Route::get('/verification-confirmation/{code}', 'Auth\VerificationController@verification_confirmation')->name('email.verification.confirmation');
-Route::get('/email_change/callback', [HomeController::class, 'email_change_callback'])->name('email_change.callback');
-// Route::post('/password/reset/email/submit', [HomeController::class, 'reset_password_with_code'])->name('password.update');
-
-
-Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('language.change');
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
 
-Route::get('/social-login/redirect/{provider}', 'Auth\LoginController@redirectToProvider')->name('social.login');
-Route::get('/social-login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 Route::get('/signin', [HomeController::class, 'login'])->name('user.login');
 Route::get('/registration', [HomeController::class, 'registration'])->name('user.registration');
-//Route::post('/users/login', [HomeController::class,'user_login'])->name('user.login.submit');
 Route::post('/signin/cart', [HomeController::class, 'cart_login'])->name('cart.login.submit');
 
 //Home Page
@@ -117,9 +123,6 @@ Route::group(['prefix' => 'checkout'], function () {
     Route::get('/payment-select', [CheckoutController::class, 'get_payment_info'])->name('checkout.payment_info');
     Route::post('/apply_coupon_code', [CheckoutController::class, 'apply_coupon_code'])->name('checkout.apply_coupon_code');
     Route::post('/remove_coupon_code', [CheckoutController::class, 'remove_coupon_code'])->name('checkout.remove_coupon_code');
-    //Club point
-    Route::post('/apply-club-point', [CheckoutController::class, 'apply_club_point'])->name('checkout.apply_club_point');
-    Route::post('/remove-club-point', [CheckoutController::class, 'remove_club_point'])->name('checkout.remove_club_point');
 });
 
 Route::group(['prefix' => 'enquiry'], function () {
@@ -129,10 +132,6 @@ Route::group(['prefix' => 'enquiry'], function () {
     Route::post('/remove', [EnquiryContoller::class, 'remove'])->name('enquiry.remove');
     Route::post('/change_quantity', [EnquiryContoller::class, 'changeQuantity'])->name('enquiry.change_quantity');
 });
-
-Route::get('/compare', [CompareController::class, 'index'])->name('compare');
-Route::get('/compare/reset', [CompareController::class, 'reset'])->name('compare.reset');
-Route::post('/compare/addToCompare', [CompareController::class, 'addToCompare'])->name('compare.addToCompare');
 
 Route::resource('subscribers', SubscriberController::class);
 
@@ -144,7 +143,7 @@ Route::get('/inhouse', [HomeController::class, 'inhouse_products'])->name('inhou
 
 
 Route::group(['middleware' => ['user']], function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/my-account', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
     Route::get('/profile/password', [HomeController::class, 'profilePassword'])->name('profile.password');
     Route::post('/profile/password', [HomeController::class, 'profilePasswordUpdate']);
@@ -160,109 +159,40 @@ Route::group(['middleware' => ['user']], function () {
     Route::resource('wishlists', WishlistController::class);
     Route::post('/wishlists/remove', [WishlistController::class, 'remove'])->name('wishlists.remove');
 
-    // Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
-    // Route::post('/recharge', [WalletController::class, 'recharge'])->name('wallet.recharge');
-
-    Route::resource('support_ticket', 'SupportTicketController');
-    Route::post('support_ticket/reply', [SupportTicketController::class, 'seller_store'])->name('support_ticket.seller_store');
-
-    // Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
-    // Route::resource('customer_products', 'CustomerProductController');
-    // Route::get('/customer_products/{id}/edit', [CustomerProductController::class, 'edit'])->name('customer_products.edit');
-    // Route::post('/customer_products/published', [CustomerProductController::class, 'updatePublished'])->name('customer_products.published');
-    // Route::post('/customer_products/status', [CustomerProductController::class, 'updateStatus'])->name('customer_products.update.status');
-
-    // Route::get('digital_purchase_history', [PurchaseHistoryController::class, 'digital_index'])->name('digital_purchase_history.index');
-
-    Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
-
     Route::resource('addresses', AddressController::class);
     Route::post('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
     Route::get('/addresses/destroy/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
     Route::post('/addresses/set_default', [AddressController::class, 'set_default'])->name('addresses.set_default');
 });
 
-Route::get('/customer_products/destroy/{id}', [CustomerProductController::class, 'destroy'])->name('customer_products.destroy');
+// Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user']], function () {
+//     Route::get('/products', [HomeController::class, 'seller_product_list'])->name('seller.products');
+//     Route::get('/product/upload', [HomeController::class, 'show_product_upload_form'])->name('seller.products.upload');
+//     Route::get('/product/{id}/edit', [HomeController::class, 'show_product_edit_form'])->name('seller.products.edit');
 
-Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user']], function () {
-    Route::get('/products', [HomeController::class, 'seller_product_list'])->name('seller.products');
-    Route::get('/product/upload', [HomeController::class, 'show_product_upload_form'])->name('seller.products.upload');
-    Route::get('/product/{id}/edit', [HomeController::class, 'show_product_edit_form'])->name('seller.products.edit');
-    Route::resource('payments', 'PaymentController');
+//     Route::get('/reviews', [ReviewController::class, 'seller_reviews'])->name('reviews.seller');
 
-    Route::get('/shop/apply_for_verification', [ShopController::class, 'verify_form'])->name('shop.verify');
-    Route::post('/shop/apply_for_verification', [ShopController::class, 'verify_form_store'])->name('shop.verify.store');
+//     //Upload
+//     Route::any('/uploads', [AizUploadController::class, 'index'])->name('my_uploads.all');
+//     Route::any('/uploads/new', [AizUploadController::class, 'create'])->name('my_uploads.new');
+//     Route::any('/uploads/file-info', [AizUploadController::class, 'file_info'])->name('my_uploads.info');
+//     Route::get('/uploads/destroy/{id}', [AizUploadController::class, 'destroy'])->name('my_uploads.destroy');
+// });
 
-    Route::get('/reviews', [ReviewController::class, 'seller_reviews'])->name('reviews.seller');
+// Route::group(['middleware' => ['auth']], function () {
+//     Route::resource('orders', OrderController::class);
+//     Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+//     Route::post('/orders/details', [OrderController::class, 'order_details'])->name('orders.details');
+//     Route::post('/orders/update_delivery_status', [OrderController::class, 'update_delivery_status'])->name('orders.update_delivery_status');
+//     Route::post('/orders/update_payment_status', [OrderController::class, 'update_payment_status'])->name('orders.update_payment_status');
+//     Route::post('/orders/update_tracking_code', [OrderController::class, 'update_tracking_code'])->name('orders.update_tracking_code');
 
-    //digital Product
-    Route::get('/digitalproducts', [HomeController::class, 'seller_digital_product_list'])->name('seller.digitalproducts');
-    Route::get('/digitalproducts/upload', [HomeController::class, 'show_digital_product_upload_form'])->name('seller.digitalproducts.upload');
-    Route::get('/digitalproducts/{id}/edit', [HomeController::class, 'show_digital_product_edit_form'])->name('seller.digitalproducts.edit');
-
-    //Coupon
-    Route::get('/coupons', [CouponController::class, 'sellerIndex'])->name('seller.coupon.index');
-    Route::get('/coupons/create', [CouponController::class, 'sellerCreate'])->name('seller.coupon.create');
-    Route::post('/coupons/store', [CouponController::class, 'sellerStore'])->name('seller.coupon.store');
-    Route::get('/coupon/edit/{id}', [CouponController::class, 'sellerEdit'])->name('seller.coupon.edit');
-    Route::get('/coupon/destroy/{id}', [CouponController::class, 'sellerDestroy'])->name('seller.coupon.destroy');
-    Route::patch('/coupons/update/{id}', [CouponController::class, 'sellerUpdate'])->name('seller.coupon.update');
-
-    //Upload
-    Route::any('/uploads', [AizUploadController::class, 'index'])->name('my_uploads.all');
-    Route::any('/uploads/new', [AizUploadController::class, 'create'])->name('my_uploads.new');
-    Route::any('/uploads/file-info', [AizUploadController::class, 'file_info'])->name('my_uploads.info');
-    Route::get('/uploads/destroy/{id}', [AizUploadController::class, 'destroy'])->name('my_uploads.destroy');
-});
-
-Route::group(['middleware' => ['auth']], function () {
-    Route::resource('orders', OrderController::class);
-    Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
-    Route::post('/orders/details', [OrderController::class, 'order_details'])->name('orders.details');
-    Route::post('/orders/update_delivery_status', [OrderController::class, 'update_delivery_status'])->name('orders.update_delivery_status');
-    Route::post('/orders/update_payment_status', [OrderController::class, 'update_payment_status'])->name('orders.update_payment_status');
-    Route::post('/orders/update_tracking_code', [OrderController::class, 'update_tracking_code'])->name('orders.update_tracking_code');
-
-    //Delivery Boy Assign
-    Route::post('/orders/delivery-boy-assign', [OrderController::class, 'assign_delivery_boy'])->name('orders.delivery-boy-assign');
-
-    Route::resource('/withdraw_requests', 'SellerWithdrawRequestController');
-    Route::get('/withdraw_requests_all', [SellerWithdrawRequestController::class, 'request_index'])->name('withdraw_requests_all');
-    Route::post('/withdraw_request/payment_modal', [SellerWithdrawRequestController::class, 'payment_modal'])->name('withdraw_request.payment_modal');
-    Route::post('/withdraw_request/message_modal', [SellerWithdrawRequestController::class, 'message_modal'])->name('withdraw_request.message_modal');
-
-    Route::resource('conversations', 'ConversationController');
-    Route::get('/conversations/destroy/{id}', [ConversationController::class, 'destroy'])->name('conversations.destroy');
-    Route::post('conversations/refresh', [ConversationController::class, 'refresh'])->name('conversations.refresh');
-    Route::resource('messages', 'MessageController');
-
-    Route::resource('digitalproducts', 'DigitalProductController');
-    Route::get('/digitalproducts/edit/{id}', [DigitalProductController::class, 'edit'])->name('digitalproducts.edit');
-    Route::get('/digitalproducts/destroy/{id}', [DigitalProductController::class, 'destroy'])->name('digitalproducts.destroy');
-    Route::get('/digitalproducts/download/{id}', [DigitalProductController::class, 'download'])->name('digitalproducts.download');
-
-    //Reports
-    // Route::get('/commission-log', [ReportController::class,'commission_history'])->name('commission-log.index');
-
-    //Coupon Form
-
-});
-
-Route::resource('shops', 'ShopController');
-Route::get('/track-your-order', [HomeController::class, 'trackOrder'])->name('orders.track');
+// });
 
 //Address
 Route::post('/get-city', [CityController::class, 'get_city'])->name('get-city');
 Route::post('/get-states', [AddressController::class, 'getStates'])->name('get-state');
 Route::post('/get-cities', [AddressController::class, 'getCities'])->name('get-city');
-
-
-//Blog Section
-// Route::get('/blog', [BlogController::class, 'all_blog'])->name('blog');
-// Route::get('/blog/{slug}', [BlogController::class, 'blog_details'])->name('blog.details');
-
-//mobile app balnk page for webview
-// Route::get('/mobile-page/{slug}', [PageController::class, 'mobile_custom_page'])->name('mobile.custom-pages');
 
 //Custom page
 Route::get('/{slug}', [PageController::class, 'show_custom_page'])->name('custom-pages.show_custom_page');

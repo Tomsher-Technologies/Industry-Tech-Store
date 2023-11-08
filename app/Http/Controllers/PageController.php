@@ -180,6 +180,9 @@ class PageController extends Controller
             if ($page->type == 'request_quote') {
                 return view('frontend.request_quote', compact('page'));
             }
+            if ($page->type == 'about_us') {
+                return view('frontend.about_us', compact('page'));
+            }
 
             return view('frontend.custom_page', compact('page'));
         }

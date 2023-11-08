@@ -2,13 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Mail\PasswordResetMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Mpdf\Tag\Th;
+use Mail;
 
-class PasswordReset extends Notification
+class PasswordReset extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -42,19 +43,14 @@ class PasswordReset extends Notification
      */
     public function toMail($notifiable)
     {
+        $link = route('password.reset', $this->token);
 
-        $array['subject'] = translate('Email Verification');
-        $array['content'] = translate('Please click the button below to verify your email address.');
-        $array['link'] = route('password.reset', $this->token);
+
+        // return Mail::to($notifiable->email)->queue(new PasswordResetMail($link));
 
         return (new MailMessage)
-            ->view('emails.passwordt_reset', ['array' => $array])
+            ->view('emails.passwordt_reset', ['link' => $link])
             ->subject("Password reset - " . env('APP_NAME'));
-
-        // return (new MailMessage)
-        //     ->line('The introduction to the notification.')
-        //     ->action('Notification Action', url('/'))
-        //     ->line('Thank you for using our application!');
     }
 
     /**

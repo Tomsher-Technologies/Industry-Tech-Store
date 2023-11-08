@@ -11,7 +11,7 @@ use App\Notifications\EmailVerificationNotification;
 use App\Notifications\PasswordReset;
 use Auth;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
