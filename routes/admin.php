@@ -19,13 +19,10 @@ use App\Http\Controllers\Admin\Products\EnquiriesController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\AttributeController;
-use App\Http\Controllers\BlogCategoryController;
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
-use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CurrencyController;
@@ -38,7 +35,6 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PickupPointController;
 use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
@@ -53,12 +49,10 @@ use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Frontend\HomeSliderController;
 use App\Http\Controllers\Admin\TempImageController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CareersController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestQuoteController;
-use App\Http\Livewire\TempUpload;
 
 Route::post('/update', [UpdateController::class, 'step0'])->name('update');
 Route::get('/update/step1', [UpdateController::class, 'step1'])->name('update.step1');
@@ -129,19 +123,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
 
     //Product Export
     Route::get('/product-bulk-export', [ProductBulkUploadController::class, 'export'])->name('product_bulk_export.index');
-
-
-    // Route::resource('sellers', SellerController::class);
-    // Route::get('sellers_ban/{id}', [SellerController::class, 'ban'])->name('sellers.ban');
-    // Route::get('/sellers/destroy/{id}', [SellerController::class, 'destroy'])->name('sellers.destroy');
-    // Route::post('/bulk-seller-delete', [SellerController::class, 'bulk_seller_delete'])->name('bulk-seller-delete');
-    // Route::get('/sellers/view/{id}/verification', [SellerController::class, 'show_verification_request'])->name('sellers.show_verification_request');
-    // Route::get('/sellers/approve/{id}', [SellerController::class, 'approve_seller'])->name('sellers.approve');
-    // Route::get('/sellers/reject/{id}', [SellerController::class, 'reject_seller'])->name('sellers.reject');
-    // Route::get('/sellers/login/{id}', [SellerController::class, 'login'])->name('sellers.login');
-    // Route::post('/sellers/payment_modal', [SellerController::class, 'payment_modal'])->name('sellers.payment_modal');
-    // Route::get('/seller/payments', [PaymentController::class, 'payment_histories'])->name('sellers.payment_histories');
-    // Route::get('/seller/payments/show/{id}', [PaymentController::class, 'show'])->name('sellers.payment_history');
 
     Route::resource('customers', CustomerController::class);
     Route::get('customers_ban/{customer}', [CustomerController::class, 'ban'])->name('customers.ban');
@@ -247,25 +228,9 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::resource('staffs', StaffController::class);
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
-    // Route::resource('flash_deals', FlashDealController::class);
-    // Route::get('/flash_deals/edit/{id}', [FlashDealController::class, 'edit'])->name('flash_deals.edit');
-    // Route::get('/flash_deals/destroy/{id}', [FlashDealController::class, 'destroy'])->name('flash_deals.destroy');
-    // Route::post('/flash_deals/update_status', [FlashDealController::class, 'update_status'])->name('flash_deals.update_status');
-    // Route::post('/flash_deals/update_featured', [FlashDealController::class, 'update_featured'])->name('flash_deals.update_featured');
-    // Route::post('/flash_deals/product_discount', [FlashDealController::class, 'product_discount'])->name('flash_deals.product_discount');
-    // Route::post('/flash_deals/product_discount_edit', [FlashDealController::class, 'product_discount_edit'])->name('flash_deals.product_discount_edit');
-
     //Subscribers
     Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
     Route::get('/subscribers/destroy/{id}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy');
-
-    // Route::get('/orders', [OrderController::class,'admin_orders'])->name('orders.index.admin');
-    // Route::get('/orders/{id}/show', [OrderController::class,'show'])->name('orders.show');
-    // Route::get('/sales/{id}/show', [OrderController::class,'sales_show'])->name('sales.show');
-    // Route::get('/sales', [OrderController::class,'sales'])->name('sales.index');
-    // All Orders
-
-
 
     Route::get('/all_orders', [OrderController::class, 'all_orders'])->name('all_orders.index');
     Route::get('/all_orders/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
@@ -275,28 +240,10 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/enquiries/{id}/delete', [EnquiriesController::class, 'destroy'])->name('enquiries.destroy');
     Route::resource('enquiries', EnquiriesController::class)->only('index', 'show');
 
-    // Route::get('/', [OrderController::class, 'all_orders'])->name('enquiries.index');
-    // Route::get('/enquiries/{id}/show', [OrderController::class, 'all_orders_show'])->name('all_orders.show');
-
-    // Inhouse Orders
-    // Route::get('/inhouse-orders', [OrderController::class, 'admin_orders'])->name('inhouse_orders.index');
-    // Route::get('/inhouse-orders/{id}/show', [OrderController::class, 'show'])->name('inhouse_orders.show');
-
-    // // Seller Orders
-    // Route::get('/seller_orders', [OrderController::class, 'seller_orders'])->name('seller_orders.index');
-    // Route::get('/seller_orders/{id}/show', [OrderController::class, 'seller_orders_show'])->name('seller_orders.show');
-
     Route::post('/bulk-order-status', [OrderController::class, 'bulk_order_status'])->name('bulk-order-status');
-
-
-    // Pickup point orders
-    // Route::get('orders_by_pickup_point', [OrderController::class, 'pickup_point_order_index'])->name('pick_up_point.order_index');
-    // Route::get('/orders_by_pickup_point/{id}/show', [OrderController::class, 'pickup_point_order_sales_show'])->name('pick_up_point.order_show');
 
     Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::post('/bulk-order-delete', [OrderController::class, 'bulk_order_delete'])->name('bulk-order-delete');
-
-    Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
 
     //Reports
     Route::get('/stock_report', [ReportController::class, 'stock_report'])->name('stock_report.index');
@@ -309,11 +256,11 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/{cart}/abandoned-cart', [AbandonedCartController::class, 'view'])->name('abandoned-cart.view');
 
     //Blog Section
-    Route::resource('blog-category', BlogCategoryController::class);
-    Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
-    Route::resource('blog', BlogController::class);
-    Route::get('/blog/destroy/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
-    Route::post('/blog/change-status', [BlogController::class, 'change_status'])->name('blog.change-status');
+    // Route::resource('blog-category', BlogCategoryController::class);
+    // Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
+    // Route::resource('blog', BlogController::class);
+    // Route::get('/blog/destroy/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+    // Route::post('/blog/change-status', [BlogController::class, 'change_status'])->name('blog.change-status');
 
     //Coupons
     Route::resource('coupon', CouponController::class);
@@ -325,22 +272,11 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews/published', [ReviewController::class, 'updatePublished'])->name('reviews.published');
 
-    //Support_Ticket
-    // Route::get('support_ticket/', [SupportTicketController::class, 'admin_index'])->name('support_ticket.admin_index');
-    // Route::get('support_ticket/{id}/show', [SupportTicketController::class, 'admin_show'])->name('support_ticket.admin_show');
-    // Route::post('support_ticket/reply', [SupportTicketController::class, 'admin_store'])->name('support_ticket.admin_store');
-
     //Pickup_Points
-    Route::resource('pick_up_points', PickupPointController::class);
-    Route::get('/pick_up_points/edit/{id}', [PickupPointController::class, 'edit'])->name('pick_up_points.edit');
-    Route::get('/pick_up_points/destroy/{id}', [PickupPointController::class, 'destroy'])->name('pick_up_points.destroy');
+    // Route::resource('pick_up_points', PickupPointController::class);
+    // Route::get('/pick_up_points/edit/{id}', [PickupPointController::class, 'edit'])->name('pick_up_points.edit');
+    // Route::get('/pick_up_points/destroy/{id}', [PickupPointController::class, 'destroy'])->name('pick_up_points.destroy');
 
-    //conversation of seller customer
-    // Route::get('conversations', [ConversationController::class, 'admin_index'])->name('conversations.admin_index');
-    // Route::get('conversations/{id}/show', [ConversationController::class, 'admin_show'])->name('conversations.admin_show');
-
-    // Route::post('/sellers/profile_modal', [SellerController::class, 'profile_modal'])->name('sellers.profile_modal');
-    // Route::post('/sellers/approved', [SellerController::class, 'updateApproved'])->name('sellers.approved');
 
     Route::resource('attributes', AttributeController::class);
     Route::get('/attributes/edit/{id}', [AttributeController::class, 'edit'])->name('attributes.edit');
@@ -352,15 +288,9 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::post('/update-attribute-value/{id}', [AttributeController::class, 'update_attribute_value'])->name('update-attribute-value');
     Route::get('/destroy-attribute-value/{id}', [AttributeController::class, 'destroy_attribute_value'])->name('destroy-attribute-value');
 
-    //Colors
-    // Route::get('/colors', [AttributeController::class, 'colors'])->name('colors');
-    // Route::post('/colors/store', [AttributeController::class, 'store_color'])->name('colors.store');
-    // Route::get('/colors/edit/{id}', [AttributeController::class, 'edit_color'])->name('colors.edit');
-    // Route::post('/colors/update/{id}', [AttributeController::class, 'update_color'])->name('colors.update');
-    // Route::get('/colors/destroy/{id}', [AttributeController::class, 'destroy_color'])->name('colors.destroy');
 
-    Route::resource('addons', AddonController::class);
-    Route::post('/addons/activation', [AddonController::class, 'activation'])->name('addons.activation');
+    // Route::resource('addons', AddonController::class);
+    // Route::post('/addons/activation', [AddonController::class, 'activation'])->name('addons.activation');
 
     Route::get('/customer-bulk-upload/index', [CustomerBulkUploadController::class, 'index'])->name('customer_bulk_upload.index');
     Route::post('/bulk-user-upload', [CustomerBulkUploadController::class, 'user_bulk_upload'])->name('bulk_user_upload');
@@ -380,9 +310,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/shipping_configuration', [BusinessSettingsController::class, 'shipping_configuration'])->name('shipping_configuration.index');
     Route::post('/shipping_configuration/update', [BusinessSettingsController::class, 'shipping_configuration_update'])->name('shipping_configuration.update');
     Route::post('/shipping_configuration/free_shipping', [BusinessSettingsController::class, 'freeshipping_settings'])->name('shipping_configuration.free_shipping');
-
-    // Route::resource('pages', 'PageController');
-    // Route::get('/pages/destroy/{id}', [PageController::class,'destroy'])->name('pages.destroy');
 
     Route::resource('countries', CountryController::class);
     Route::post('/countries/status', [CountryController::class, 'updateStatus'])->name('countries.status');
