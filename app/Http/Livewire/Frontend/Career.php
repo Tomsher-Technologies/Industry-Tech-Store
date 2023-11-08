@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Frontend;
 
+use App\Mail\Admin\NewCareer;
 use App\Models\Frontend\Careers;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Mail;
 
 class Career extends Component
 {
@@ -61,6 +63,8 @@ class Career extends Component
             'years_of_experience' => $this->years_of_experience,
             'resume' => $this->resume,
         ]);
+
+        Mail::to(getAdminEmail())->queue(new NewCareer($career));
 
         $this->reset();
 

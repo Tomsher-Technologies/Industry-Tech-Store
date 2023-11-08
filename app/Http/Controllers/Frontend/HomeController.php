@@ -216,8 +216,9 @@ class HomeController extends Controller
     {
         if (Auth::user()->user_type == 'customer') {
             $orders = Auth::user()->orders()->get();
-            $total_orders = $orders->where('delivery_status', 'delivered')->count();
+            $total_orders = $orders->count();
             $pending_orders = $orders->where('delivery_status', 'pending')->count();
+            $completed_orders = $orders->where('delivery_status', 'delivered')->count();
 
             $default_address = Address::whereUserId(Auth::id())->whereSetDefault(1)->with([
                 'country',
@@ -225,7 +226,7 @@ class HomeController extends Controller
                 'city',
             ])->first();
 
-            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders', 'default_address'));
+            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders', 'default_address','completed_orders'));
         } else {
             abort(404);
         }

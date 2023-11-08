@@ -45,9 +45,9 @@
 
                                                 <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
                                                     <div class="totle-contain">
-                                                        <img src="{{ frontendAsset('img/account/pendings.svg') }}"
+                                                        <img src="{{ frontendAsset('img/account/pending.svg') }}"
                                                             class="img-1 blur-up lazyloaded" alt="">
-                                                        <img src="{{ frontendAsset('img/account/pendings.svg') }}"
+                                                        <img src="{{ frontendAsset('img/account/pending.svg') }}"
                                                             class="blur-up lazyloaded" alt="">
                                                         <div class="totle-detail">
                                                             <h5>Total Pending Order</h5>
@@ -63,8 +63,8 @@
                                                         <img src="{{ frontendAsset('img/account/wishlists.svg') }}"
                                                             class="blur-up lazyloaded" alt="">
                                                         <div class="totle-detail">
-                                                            <h5>Total Wishlist</h5>
-                                                            <h3>{{ wishListCount() }}</h3>
+                                                            <h5>Total Completed Orders</h5>
+                                                            <h3>{{ $completed_orders }}</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,8 +88,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="dashboard-contant-title">
-                                                    <h4>Address Book <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                            data-bs-target="#editProfile">Edit</a></h4>
+                                                    <h4>Address Book <a href="{{ route('addresses.index') }}">Edit</a></h4>
                                                 </div>
 
                                                 <div class="row g-4">

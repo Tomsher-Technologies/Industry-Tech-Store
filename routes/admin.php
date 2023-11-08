@@ -56,6 +56,7 @@ use App\Http\Controllers\Admin\TempImageController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CareersController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestQuoteController;
 use App\Http\Livewire\TempUpload;
 

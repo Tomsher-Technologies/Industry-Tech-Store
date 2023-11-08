@@ -52,7 +52,6 @@
                             <th>Name</th>
                             <th data-breakpoints="lg">Email Address</th>
                             <th data-breakpoints="lg">Phone</th>
-                            <th data-breakpoints="lg">Phone Verified Status</th>
                             <th>Options</th>
                         </tr>
                     </thead>
@@ -80,13 +79,6 @@
                                     </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>
-                                        @if ($user->email_verified_at)
-                                            <span class="badge badge-inline badge-success">Verified</span>
-                                        @else
-                                            <span class="badge badge-inline badge-danger">Unverified</span>
-                                        @endif
-                                    </td>
                                     <td class="text-right">
                                         <a href="{{ route('customers.edit', $user->id) }}"
                                             class="btn btn-soft-primary btn-icon btn-circle btn-sm"
