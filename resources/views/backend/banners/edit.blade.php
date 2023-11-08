@@ -26,7 +26,6 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">
                                 Banner
-                                <small>(1300x650)</small>
                             </label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
@@ -50,7 +49,6 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">
                                 Mobile Banner
-                                <small>(1300x650)</small>
                             </label>
                             <div class="col-md-9">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">

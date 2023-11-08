@@ -181,6 +181,100 @@
             }
 
             @media only screen and (max-width: 320px) {}
+
+            #new-tbs table,
+            #new-tbs thead,
+            #new-tbs tbody,
+            #new-tbs tfoot,
+            #new-tbs tr,
+            #new-tbs td,
+            #new-tbs th {
+                text-align: center;
+                margin: auto;
+                border: 1px solid #dedede;
+                padding: 1rem;
+                font-family: Arial, Helvetica, sans-serif
+            }
+
+            #new-tbs .table {
+                display: table;
+                width: 95%;
+                margin: auto;
+
+            }
+
+            #new-tbs .tr {
+                display: table-row;
+            }
+
+            #new-tbs .thead {
+                display: table-header-group;
+            }
+
+            #new-tbs .tbody {
+                display: table-row-group;
+            }
+
+            #new-tbs .tfoot {
+                display: table-footer-group;
+            }
+
+            #new-tbs .col {
+                display: table-column;
+            }
+
+            #new-tbs .colgroup {
+                display: table-column-group;
+            }
+
+            #new-tbs .td,
+            #new-tbs .th {
+                display: table-cell;
+
+            }
+
+            #new-tbs .caption {
+                display: table-caption;
+            }
+
+            #new-tbs.table,
+            #new-tbs.thead,
+            #new-tbs.tbody,
+            #new-tbs.tfoot,
+            #new-tbs .tr,
+            #new-tbs .td,
+            #new-tbs .th {
+                text-align: center;
+                margin: auto;
+                padding: 1rem;
+            }
+
+            #new-tbs .table {
+                background: #fff;
+                margin: auto;
+                border: none;
+                padding: 0;
+                margin-bottom: 5rem;
+            }
+
+            #new-tbs .th {
+                font-weight: 700;
+                border: 1px solid #dedede;
+
+                &:nth-child(odd) {
+                    border-right: none;
+                }
+            }
+
+            #new-tbs .td {
+                font-weight: 300;
+                border: 1px solid #dedede;
+                border-top: none;
+
+                &:nth-child(odd) {
+                    border-right: none;
+                }
+            }
         </style>
     </head>
 
@@ -243,7 +337,8 @@
                                 <tr>
                                     <td
                                         style="font:700 30px 'Montserrat', Helvetica, Arial, sans-serif; color:#eb6228; text-transform:uppercase;">
-                                        New Request for Quote</td>
+                                        New Product Enquiry
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="heightSDBottom" height="47">&nbsp;</td>
@@ -261,7 +356,7 @@
                                                 <td width="26">&nbsp;</td>
                                                 <td align="left"
                                                     style="font:bold 18px Arial, Helvetica, sans-serif; color:#eb6228;">
-                                                    Name: {{ $career->name }}</td>
+                                                    Name: {{ $enquiry->name }}</td>
                                                 <td width="26">&nbsp;</td>
                                             </tr>
                                             <tr>
@@ -273,7 +368,7 @@
                                                 <td width="26">&nbsp;</td>
                                                 <td align="left"
                                                     style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Email: {{ $career->email }}
+                                                    Email: {{ $enquiry->email }}
                                                 </td>
                                                 <td width="26">&nbsp;</td>
                                             </tr>
@@ -286,7 +381,7 @@
                                                 <td width="26">&nbsp;</td>
                                                 <td align="left"
                                                     style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Phone: {{ $career->phone_number }}
+                                                    Phone: {{ $enquiry->phone_number }}
                                                 </td>
                                                 <td width="26">&nbsp;</td>
                                             </tr>
@@ -294,68 +389,44 @@
                                                 <td width="26"></td>
                                                 <td height="10"></td>
                                                 <td width="26"></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26">&nbsp;</td>
-                                                <td align="left"
-                                                    style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Qualification: {{ $career->qualification }}
-                                                </td>
-                                                <td width="26">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26"></td>
-                                                <td height="10"></td>
-                                                <td width="26"></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26">&nbsp;</td>
-                                                <td align="left"
-                                                    style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Current Status: {{ $career->current_status }}
-                                                </td>
-                                                <td width="26">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26"></td>
-                                                <td height="10"></td>
-                                                <td width="26"></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26">&nbsp;</td>
-                                                <td align="left"
-                                                    style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Gender: {{ $career->gender }}
-                                                </td>
-                                                <td width="26">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26"></td>
-                                                <td height="10"></td>
-                                                <td width="26"></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26">&nbsp;</td>
-                                                <td align="left"
-                                                    style="font:18px Arial, Helvetica, sans-serif; color:#404040;">
-                                                    Years Of Experience: {{ $career->years_of_experience }}
-                                                </td>
-                                                <td width="26">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26">&nbsp;</td>
-                                                <td class="heightsmalldevices" height="48">&nbsp;</td>
-                                                <td width="26">&nbsp;</td>
                                             </tr>
                                         </table>
                                     </td>
+                                    <td>
+                                        @if ($enquiry->products)
+
+                                <tr>
+                                    <td colspan="2">
+                                        <b style="font-size: 22px;font-family: Arial, Helvetica, sans-serif">Products</b>
+                                    </td>
                                 </tr>
-                            </table>
-                        </td>
+                                <tr>
+                                    <td id="new-tbs">
+                                        <table width="100%" cellspacing="0" cellpadding="0"
+                                            style=" mso-table-lspace:0pt; mso-table-rspace:0pt; text-align:left;">
+                                            <tr>
+                                                <td><b>Product</b></td>
+                                                <td><b>Quantity</b></td>
+                                            </tr>
+                                            @foreach ($enquiry->products as $product)
+                                                <tr>
+                                                    <td width="26">{{ $product->name }}</td>
+                                                    <td width="10">{{ $product->pivot->quantity }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                </tr>
+                                @endif
                     </tr>
-                </table>
             </td>
         </tr>
+    </table>
+    </td>
+    </tr>
+    </table>
+    </td>
+    </tr>
     </table>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">

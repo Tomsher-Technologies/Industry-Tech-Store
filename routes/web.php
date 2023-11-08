@@ -30,7 +30,9 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
 use App\Http\Livewire\Frontend\Checkout;
 use App\Mail\Admin\NewCareer;
+use App\Mail\Admin\NewEnquiry;
 use App\Models\Frontend\Careers;
+use App\Models\Products\ProductEnquiries;
 
 // Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 // Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
@@ -48,17 +50,14 @@ Route::get('/refresh-csrf', function () {
 
 Route::get('/test', function () {
 
-    $career = Careers::find(3);
-    // dd($carrer);
-
-    // dd(Storage::path('storage/' . $career->resume));;
-
-    // Mail::to('shabeer.tomsher@gmail.com')->queue(new NewCareer($career));
-    // return view('emails.admin.career')->with([
-    //     'career' => $career
+    $enquiries = ProductEnquiries::find(7);
+    $enquiries->load('products');
+    // dd($enquiries);
+    // return view('emails.admin.enquiry')->with([
+    //     'enquiry' => $enquiries
     // ]);
-    // dd();
 
+    // Mail::to(getAdminEmail())->queue(new NewEnquiry($enquiries));
 });
 
 Auth::routes([

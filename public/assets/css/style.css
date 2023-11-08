@@ -15992,12 +15992,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: #000;
+  color: #fff !important;
 }
 
 .menu>li>a:hover {
   color: #000;
-  background: #d1f2ff;
+  background: #eb6228;
   box-shadow: rgba(0, 0, 0, 0.18) 0px 5px 4px 0px;
 }
 
@@ -16318,7 +16318,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .navigation {
-  background-color: #abe5fb;
+  background-color: #4b4c4e;
   padding: 0;
   height: 40px;
 
@@ -16355,7 +16355,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .navigation__extra>li a {
-  color: #000;
+  color: #fff;
 }
 
 .navigation__extra>li:last-child {
@@ -16373,7 +16373,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .navigation .navigation__left {
   max-width: 185px;
-  background: #134b76;
+  background: #eb6228;
 }
 
 .navigation .navigation__right {

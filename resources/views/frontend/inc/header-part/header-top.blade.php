@@ -2,7 +2,7 @@
     <div class="ps-container align-items-center">
         <div class="header__left">
             <a class="ps-logo" href="{{ route('home') }}" title="Home">
-                <img src="{{ frontendAsset('img/logo_new.webp') }}" alt="{{ env('APP_NAME') }}" width="150">
+                <img src="{{ frontendAsset('img/logo_new.webp') }}" alt="{{ env('APP_NAME') }}" width="200">
             </a>
         </div>
         <div class="header__center">
