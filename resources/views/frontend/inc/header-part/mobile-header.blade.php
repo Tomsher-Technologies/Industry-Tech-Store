@@ -28,6 +28,7 @@
             <div class="header__actions">
                 <div class="ps-block--user-header">
                     <div class="ps-block__left">
+                        <i class="iconly-Profile icli"></i>
                         @auth
                             @if (isAdmin())
                                 <a href="{{ route('admin.dashboard') }}" title="My Acount"><i class="icon-user"></i></a>
