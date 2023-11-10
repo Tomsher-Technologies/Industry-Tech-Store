@@ -128,12 +128,16 @@ class HomeController extends Controller
 
         $newest_products = Cache::remember('newest_products', 3600, function () {
             $product_ids = get_setting('latest_products');
-            return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
+            if ($product_ids) {
+                return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
+            }
         });
 
         $best_selling_products = Cache::remember('best_selling_products', 3600, function () {
             $product_ids = get_setting('best_selling');
-            return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
+            if ($product_ids) {
+                return Product::where('published', 1)->whereIn('id', json_decode($product_ids))->with('brand')->get();
+            }
         });
 
 
@@ -223,10 +227,9 @@ class HomeController extends Controller
             $default_address = Address::whereUserId(Auth::id())->whereSetDefault(1)->with([
                 'country',
                 'state',
-                'city',
             ])->first();
 
-            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders', 'default_address','completed_orders'));
+            return view('frontend.user.dashboard')->with(compact('total_orders', 'pending_orders', 'default_address', 'completed_orders'));
         } else {
             abort(404);
         }
@@ -885,7 +888,7 @@ class HomeController extends Controller
                 ->limit(7)->with('brand')->get();
 
             foreach ($products as $product) {
-                $html .= '<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">';
+                $html .= '<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 product-item">';
                 $html .= view('frontend.inc.product_box', [
                     'product' => $product
                 ]);
