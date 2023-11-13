@@ -235,8 +235,7 @@
                                             <li>
                                                 <a class=" @if ($currentCurrency->code == $currency->code) active @endif"
                                                     href="javascript:void(0)"
-                                                    data-currency="{{ $currency->code }}">{{ $currency->name }}
-                                                    ({{ $currency->symbol }})
+                                                    data-currency="{{ $currency->code }}">{{ $currency->symbol }}
                                                 </a>
                                             </li>
                                         @endforeach
