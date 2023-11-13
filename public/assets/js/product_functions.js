@@ -20,7 +20,7 @@ function productQuickView($id) {
     }
 }
 
-function addEnquiry(slug) {
+function addEnquiry(slug, showStatus = true) {
     $.ajax({
         type: "POST",
         url: config.routes.enquiry_add,
@@ -29,11 +29,15 @@ function addEnquiry(slug) {
             '_token': config.csrf
         },
         success: function (data, status, xhr) {
+            console.log(data);
             if (xhr.status == 200) {
-                toggleModal('modal1')
+                if (showStatus) {
+                    launchToast("Product has been added to enquiry basket");
+                }
                 $('.headerEnquiryCount').html(data.count)
             }
         },
+
         error: function (xhr, ajaxOptions, thrownError) {
             launchToast('Something went wrong, please try again', 'error');
         },
@@ -51,7 +55,6 @@ function addToCart(slug, qty = 1, variations) {
             '_token': config.csrf
         },
         success: function (data, status, xhr) {
-            console.log(data);
             if (xhr.status == 200) {
                 launchToast(data.message);
                 $('.headerCartCount').html(data.count)
@@ -66,7 +69,7 @@ function addToCart(slug, qty = 1, variations) {
     });
 }
 
-function addToWishList(slug) {
+function addToWishList(slug, that) {
     $.ajax({
         type: "POST",
         url: config.routes.wishlist_add,
@@ -78,6 +81,7 @@ function addToWishList(slug) {
             if (xhr.status == 200) {
                 launchToast(data.message);
                 $('.headerWishlistCount').html(data.count)
+                $(that).addClass('active');
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {

@@ -113,7 +113,7 @@
                                         </div>
                                         <div>
                                             <span class="w-50 fw-600">City:</span>
-                                            <span class="ml-2">{{ $address->city->name }}</span>
+                                            <span class="ml-2">{{ $address->city }}</span>
                                         </div>
                                         <div>
                                             <span class="w-50 fw-600">State:</span>
@@ -132,7 +132,7 @@
                                                 <span class="badge badge-inline badge-primary">Default</span>
                                             </div>
                                         @endif
-                                        <div class="dropdown position-absolute right-0 top-0">
+                                        {{-- <div class="dropdown position-absolute right-0 top-0">
                                             <button class="btn bg-gray px-2" type="button" data-toggle="dropdown">
                                                 <i class="la la-ellipsis-v"></i>
                                             </button>
@@ -149,18 +149,18 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('admin.addresses.destroy', [$customer, $address->id]) }}">Delete</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             @endforeach
                         @endif
 
-                        <div class="col-lg-6 mx-auto" onclick="add_new_address()">
+                        {{-- <div class="col-lg-6 mx-auto" onclick="add_new_address()">
                             <div class="border p-3 rounded mb-3 c-pointer text-center bg-light">
                                 <i class="la la-plus la-2x"></i>
                                 <div class="alpha-7">Add New Address</div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -227,10 +227,9 @@
                                     <label>City</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
-                                        name="city_id" required>
 
-                                    </select>
+                                    <input type="text" class="form-control mb-3" placeholder="Your CIty"
+                                        name="city" value="" required>
                                 </div>
                             </div>
 
@@ -356,7 +355,6 @@
 
         $(document).on('change', '[name=state_id]', function() {
             var state_id = $(this).val();
-            get_city(state_id);
         });
 
         function get_states(country_id) {
@@ -380,25 +378,5 @@
             });
         }
 
-        function get_city(state_id) {
-            $('[name="city"]').html("");
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('get-city') }}",
-                type: 'POST',
-                data: {
-                    state_id: state_id
-                },
-                success: function(response) {
-                    var obj = JSON.parse(response);
-                    if (obj != '') {
-                        $('[name="city_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
-                    }
-                }
-            });
-        }
     </script>
 @endsection

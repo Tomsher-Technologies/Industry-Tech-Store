@@ -1,5 +1,5 @@
 <div>
-    @if ($commentable)
+    @if ($commentable['can_comment'])
         <form class="ps-form--review" wire:submit.prevent="save()">
             <h4>Submit Your Review</h4>
             <div wire:ignore class="form-group form-group__rating">
@@ -20,8 +20,14 @@
                 <button type="submit" class="ps-btn">Submit Review</button>
             </div>
         </form>
-    @else
     @endif
+
+    @if ($hasCommented)
+        <p>
+            Thank you for your review, it will appear after admin approves it.
+        </p>
+    @endif
+
 </div>
 @section('script')
     <script>

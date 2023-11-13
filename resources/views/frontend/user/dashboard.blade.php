@@ -107,8 +107,8 @@
                                                                     @isset($default_address->country->name)
                                                                         {{ $default_address->country->name }} <br>
                                                                     @endisset
-                                                                    @isset($default_address->city->name)
-                                                                        {{ $default_address->city->name }} <br>
+                                                                    @isset($default_address->city)
+                                                                        {{ $default_address->city }} <br>
                                                                     @endisset
                                                                     @isset($default_address->state->name)
                                                                         {{ $default_address->state->name }} <br>
@@ -124,10 +124,6 @@
                                                                 <h6 class="text-content">You have not set a default shipping
                                                                     address.</h6>
                                                             @endif
-
-
-                                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                                data-bs-target="#editProfile">Edit Address</a>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -49,19 +49,7 @@
                                 <small>Will be used in admin panel topbar in mobile + Admin login page</small>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-from-label">{{translate('System Timezone')}}</label>
-                            <div class="col-sm-9">
-                                <input type="hidden" name="types[]" value="timezone">
-                                <select name="timezone" class="form-control aiz-selectpicker" data-live-search="true">
-                                    @foreach (timezones() as $key => $value)
-                                        <option value="{{ $value }}" @if (app_timezone() == $value)
-                                            selected
-                                        @endif>{{ $key }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                        
                         <div class="form-group row">
                             <label class="col-sm-3 col-from-label">{{translate('Admin login page background')}}</label>
                             <div class="col-sm-9">

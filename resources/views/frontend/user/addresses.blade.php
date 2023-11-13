@@ -37,7 +37,7 @@
                                                         </div>
                                                         <div>
                                                             <span class="w-50 fw-600">City:</span>
-                                                            <span class="ml-2">{{ $address->city->name }}</span>
+                                                            <span class="ml-2">{{ $address->city }}</span>
                                                         </div>
                                                         <div>
                                                             <span class="w-50 fw-600">State:</span>
@@ -83,9 +83,10 @@
                                             @endforeach
                                         @endif
 
-                                        <div class="col-lg-6 mx-auto curser" id="addAddressContaniner" style="cursor: pointer"
-                                            onclick="add_new_address()">
-                                            <div class="border p-3 rounded mb-3 h-100 c-pointer text-center bg-light d-flex flex-column align-items-center justify-content-center">
+                                        <div class="col-lg-6 mx-auto curser" id="addAddressContaniner"
+                                            style="cursor: pointer" onclick="add_new_address()">
+                                            <div
+                                                class="border p-3 rounded mb-3 h-100 c-pointer text-center bg-light d-flex flex-column align-items-center justify-content-center">
                                                 <i class="iconly-Plus icli" style="font-size: 45px"></i>
                                                 <div class="alpha-7">Add New Address</div>
                                             </div>
@@ -183,8 +184,8 @@
                                     <label>City</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control mb-3 aiz-selectpicker" data-live-search="true"
-                                        name="city_id" required>
+                                    <input type="text" class="form-control mb-3" placeholder="Your City"
+                                        name="city" required>
                                     </select>
                                 </div>
                             </div>
@@ -389,8 +390,6 @@
             $('#new-address-modal').modal('show');
         }
 
-
-
         function edit_address(address) {
             var url = '{{ route('addresses.edit', ':id') }}';
             url = url.replace(':id', address);
@@ -428,7 +427,6 @@
 
         $(document).on('change', '[name=state_id]', function() {
             var state_id = $(this).val();
-            get_city(state_id);
         });
 
         function get_states(country_id) {
@@ -446,27 +444,6 @@
                     var obj = JSON.parse(response);
                     if (obj != '') {
                         $('[name="state_id"]').html(obj);
-                    }
-                }
-            });
-        }
-
-        function get_city(state_id) {
-            $('[name="city"]').html("");
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('get-city') }}",
-                type: 'POST',
-                data: {
-                    state_id: state_id
-                },
-                success: function(response) {
-                    var obj = JSON.parse(response);
-                    if (obj != '') {
-                        $('[name="city_id"]').html(obj);
-
                     }
                 }
             });

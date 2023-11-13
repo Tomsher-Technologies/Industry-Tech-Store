@@ -101,12 +101,8 @@ class OrderController extends Controller
     public function all_orders_show($id)
     {
         $order = Order::findOrFail(decrypt($id));
-        $order_shipping_address = json_decode($order->shipping_address);
-        $delivery_boys = User::where('city', $order_shipping_address->city)
-            ->where('user_type', 'delivery_boy')
-            ->get();
 
-        return view('backend.sales.all_orders.show', compact('order', 'delivery_boys'));
+        return view('backend.sales.all_orders.show', compact('order'));
     }
 
     // Inhouse Orders

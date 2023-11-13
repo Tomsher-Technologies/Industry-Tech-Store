@@ -44,8 +44,9 @@
             <a class="ps-btn ps-btn--orange" href="javascript:void(0)"
                 onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
             <div class="ps-product__actions">
-                <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" title="Add to wishlist"><i
-                        class="icon-heart"></i></a>
+                <a class="{{ whishlistHasProduct($product->id) ? 'active' : '' }}" href="javascript:void(0)"
+                    onclick="addToWishList('{{ $product->slug }}',this)" title="Add to wishlist">
+                    <i class="icon-heart"></i></a>
             </div>
         </div>
     </div>

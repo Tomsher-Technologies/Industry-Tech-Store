@@ -248,19 +248,10 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     //Reports
     Route::get('/stock_report', [ReportController::class, 'stock_report'])->name('stock_report.index');
     Route::get('/in_house_sa le_report', [ReportController::class, 'in_house_sale_report'])->name('in_house_sale_report.index');
-    // Route::get('/seller_sale_report', [ReportController::class, 'seller_sale_report'])->name('seller_sale_report.index');
     Route::get('/wish_report', [ReportController::class, 'wish_report'])->name('wish_report.index');
     Route::get('/user_search_report', [ReportController::class, 'user_search_report'])->name('user_search_report.index');
-    // Route::get('/wallet-history', [ReportController::class, 'wallet_transaction_history'])->name('wallet-history.index');
     Route::get('/abandoned-cart', [AbandonedCartController::class, 'index'])->name('abandoned-cart.index');
     Route::get('/{cart}/abandoned-cart', [AbandonedCartController::class, 'view'])->name('abandoned-cart.view');
-
-    //Blog Section
-    // Route::resource('blog-category', BlogCategoryController::class);
-    // Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
-    // Route::resource('blog', BlogController::class);
-    // Route::get('/blog/destroy/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
-    // Route::post('/blog/change-status', [BlogController::class, 'change_status'])->name('blog.change-status');
 
     //Coupons
     Route::resource('coupon', CouponController::class);
@@ -272,12 +263,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews/published', [ReviewController::class, 'updatePublished'])->name('reviews.published');
 
-    //Pickup_Points
-    // Route::resource('pick_up_points', PickupPointController::class);
-    // Route::get('/pick_up_points/edit/{id}', [PickupPointController::class, 'edit'])->name('pick_up_points.edit');
-    // Route::get('/pick_up_points/destroy/{id}', [PickupPointController::class, 'destroy'])->name('pick_up_points.destroy');
-
-
     Route::resource('attributes', AttributeController::class);
     Route::get('/attributes/edit/{id}', [AttributeController::class, 'edit'])->name('attributes.edit');
     Route::get('/attributes/destroy/{id}', [AttributeController::class, 'destroy'])->name('attributes.destroy');
@@ -287,10 +272,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'middleware' => ['auth', 'admin']
     Route::get('/edit-attribute-value/{id}', [AttributeController::class, 'edit_attribute_value'])->name('edit-attribute-value');
     Route::post('/update-attribute-value/{id}', [AttributeController::class, 'update_attribute_value'])->name('update-attribute-value');
     Route::get('/destroy-attribute-value/{id}', [AttributeController::class, 'destroy_attribute_value'])->name('destroy-attribute-value');
-
-
-    // Route::resource('addons', AddonController::class);
-    // Route::post('/addons/activation', [AddonController::class, 'activation'])->name('addons.activation');
 
     Route::get('/customer-bulk-upload/index', [CustomerBulkUploadController::class, 'index'])->name('customer_bulk_upload.index');
     Route::post('/bulk-user-upload', [CustomerBulkUploadController::class, 'user_bulk_upload'])->name('bulk_user_upload');

@@ -14,7 +14,6 @@
 //demo
 
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CurrencyController;
@@ -23,16 +22,12 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PurchaseHistoryController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
 use App\Http\Livewire\Frontend\Checkout;
-use App\Mail\Admin\NewCareer;
-use App\Mail\Admin\NewEnquiry;
-use App\Models\Frontend\Careers;
-use App\Models\Products\ProductEnquiries;
+use App\Models\Order;
 
 // Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 // Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
@@ -47,18 +42,12 @@ Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
 
-
-Route::get('/test', function () {
-
-    $enquiries = ProductEnquiries::find(7);
-    $enquiries->load('products');
-    // dd($enquiries);
-    // return view('emails.admin.enquiry')->with([
-    //     'enquiry' => $enquiries
-    // ]);
-
-    // Mail::to(getAdminEmail())->queue(new NewEnquiry($enquiries));
-});
+// Route::get('/test',function(){
+//     $order = Order::first();
+//     return view('emails.invoice',[
+//         'order' => $order
+//     ]);
+// });
 
 Auth::routes([
     'verify' => false,
@@ -101,11 +90,8 @@ Route::get('/shop/{slug}', [HomeController::class, 'shop'])->name('shop.visit');
 Route::get('/shop/{slug}/{type}', [HomeController::class, 'filter_shop'])->name('shop.visit.type');
 
 Route::get('/cart', Cart::class)->name('cart');
-// Route::post('/cart/show-cart-modal', [CartController::class, 'showCartModal'])->name('cart.showCartModal');
 Route::post('/cart/addtocart', [CartController::class, 'addToCart'])->name('cart.addToCart');
 Route::post('/cart/removeFromCart', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
-// Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
-
 
 // 
 
@@ -179,15 +165,14 @@ Route::group(['middleware' => ['user']], function () {
 //     Route::get('/uploads/destroy/{id}', [AizUploadController::class, 'destroy'])->name('my_uploads.destroy');
 // });
 
-// Route::group(['middleware' => ['auth']], function () {
-//     Route::resource('orders', OrderController::class);
-//     Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
-//     Route::post('/orders/details', [OrderController::class, 'order_details'])->name('orders.details');
-//     Route::post('/orders/update_delivery_status', [OrderController::class, 'update_delivery_status'])->name('orders.update_delivery_status');
-//     Route::post('/orders/update_payment_status', [OrderController::class, 'update_payment_status'])->name('orders.update_payment_status');
-//     Route::post('/orders/update_tracking_code', [OrderController::class, 'update_tracking_code'])->name('orders.update_tracking_code');
-
-// });
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('orders', OrderController::class);
+    Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::post('/orders/details', [OrderController::class, 'order_details'])->name('orders.details');
+    Route::post('/orders/update_delivery_status', [OrderController::class, 'update_delivery_status'])->name('orders.update_delivery_status');
+    Route::post('/orders/update_payment_status', [OrderController::class, 'update_payment_status'])->name('orders.update_payment_status');
+    Route::post('/orders/update_tracking_code', [OrderController::class, 'update_tracking_code'])->name('orders.update_tracking_code');
+});
 
 //Address
 Route::post('/get-city', [CityController::class, 'get_city'])->name('get-city');

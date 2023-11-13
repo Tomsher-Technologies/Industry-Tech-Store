@@ -446,27 +446,7 @@ class CheckoutController extends Controller
         return view('frontend.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'));
     }
 
-    public function apply_club_point(Request $request)
-    {
-        if (addon_is_activated('club_point')) {
 
-            $point = $request->point;
-
-            if (Auth::user()->point_balance >= $point) {
-                $request->session()->put('club_point', $point);
-                flash(translate('Point has been redeemed'))->success();
-            } else {
-                flash(translate('Invalid point!'))->warning();
-            }
-        }
-        return back();
-    }
-
-    public function remove_club_point(Request $request)
-    {
-        $request->session()->forget('club_point');
-        return back();
-    }
 
     public function order_confirmed()
     {
@@ -474,9 +454,6 @@ class CheckoutController extends Controller
 
         Cart::where('user_id', $combined_order->user_id)
             ->delete();
-
-        //Session::forget('club_point');
-        //Session::forget('combined_order_id');
 
         foreach ($combined_order->orders as $order) {
             NotificationUtility::sendOrderPlacedNotification($order);

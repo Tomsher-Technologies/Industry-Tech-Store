@@ -12,9 +12,14 @@
 @endsection
 
 @section('content')
+
+    @php
+        $commentable = canReview($product->id, Auth::id());
+    @endphp
+
     <nav class="navigation--mobile-product">
         <a class="ps-btn ps-btn--black" href="javascript:void(0)" onclick="addCart('{{ $product->slug }}')">Add to cart</a>
-        <a class="ps-btn" href="javascript:void(0)" onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
+        <a class="ps-btn" href="javascript:void(0)" onclick="addEnquiryNew('{{ $product->slug }}')">Enquire Now</a>
     </nav>
 
     <div class="ps-breadcrumb">
@@ -154,10 +159,11 @@
 
 
                                     <a class="ps-btn ps-btn--orange" href="javascript:void(0)"
-                                        onclick="addEnquiry('{{ $product->slug }}')">Enquire Now</a>
+                                        onclick="addEnquiryNew('{{ $product->slug }}')">Enquire Now</a>
 
                                     <div class="ps-product__actions">
-                                        <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')"
+                                        <a class="{{ whishlistHasProduct($product->id) ? 'active' : '' }}"
+                                            href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}',this)"
                                             title="Add to wishlist">
                                             <i class="icon-heart"></i>
                                         </a>
@@ -242,7 +248,7 @@
                                     <li><a href="#tab-datasheet">Datasheet</a></li>
                                 @endif
 
-                                @if ($product->reviews->count() > 0)
+                                @if ($product->reviews->count() > 0 || ($commentable['can_comment'] || $commentable['has_comment']))
                                     <li>
                                         <a href="#tab-reviews">Reviews
                                             {{ $product->reviews->count() > 0 ? '(' . $product->reviews->count() . ')' : '' }}</a>
@@ -295,44 +301,48 @@
                                     </div>
                                 @endif
 
-                                @if ($product->reviews->count())
+                                @if ($product->reviews->count() > 0 || ($commentable['can_comment'] || $commentable['has_comment']))
                                     <div class="ps-tab" id="tab-reviews">
                                         <div class="row">
-                                            @php
-                                                $total_rating = $product->reviews->sum('rating') / $product->reviews->count();
-                                            @endphp
-                                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
-                                                <div class="ps-block--average-rating">
-                                                    <div class="ps-block__header">
-                                                        <h3>{{ number_format((float) $total_rating, 2, '.', '') }}</h3>
-                                                        <select class="ps-rating" data-read-only="true">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <option value="{{ $i <= $total_rating ? 1 : 2 }}">
-                                                                    {{ $i }}</option>
-                                                            @endfor
-                                                        </select>
-                                                        <span>{{ $product->reviews->count() }}
-                                                            {{ Str::plural('Review', $product->reviews->count()) }}</span>
-                                                    </div>
 
-                                                    @for ($i = 5; $i > 0; $i--)
-                                                        @php
-                                                            $rateTot = $product->reviews->where('rating', $i)->count();
-                                                            $perc = ($rateTot / $product->reviews->count()) * 100;
-                                                            $perc = floor($perc);
-                                                        @endphp
-
-                                                        <div class="ps-block__star">
-                                                            <span>{{ $i }} Star</span>
-                                                            <div class="ps-progress" data-value="{{ $perc }}">
-                                                                <span></span>
-                                                            </div>
-                                                            <span>{{ $perc }}%</span>
+                                            @if ($product->reviews->count())
+                                                @php
+                                                    $total_rating = $product->reviews->sum('rating') / $product->reviews->count();
+                                                @endphp
+                                                <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+                                                    <div class="ps-block--average-rating">
+                                                        <div class="ps-block__header">
+                                                            <h3>{{ number_format((float) $total_rating, 2, '.', '') }}</h3>
+                                                            <select class="ps-rating" data-read-only="true">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <option value="{{ $i <= $total_rating ? 1 : 2 }}">
+                                                                        {{ $i }}</option>
+                                                                @endfor
+                                                            </select>
+                                                            <span>{{ $product->reviews->count() }}
+                                                                {{ Str::plural('Review', $product->reviews->count()) }}</span>
                                                         </div>
-                                                    @endfor
 
+                                                        @for ($i = 5; $i > 0; $i--)
+                                                            @php
+                                                                $rateTot = $product->reviews->where('rating', $i)->count();
+                                                                $perc = ($rateTot / $product->reviews->count()) * 100;
+                                                                $perc = floor($perc);
+                                                            @endphp
+
+                                                            <div class="ps-block__star">
+                                                                <span>{{ $i }} Star</span>
+                                                                <div class="ps-progress"
+                                                                    data-value="{{ $perc }}">
+                                                                    <span></span>
+                                                                </div>
+                                                                <span>{{ $perc }}%</span>
+                                                            </div>
+                                                        @endfor
+
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
                                                 @include('frontend.product.product_review_listing')
                                                 @livewire('frontend.review-form', ['product' => $product->id])
@@ -477,6 +487,7 @@
 
 
         .slider-nav-thumbnails {
+            overflow: hidden;
             position: absolute;
             bottom: 0px;
             left: 0px;
@@ -546,7 +557,7 @@
         .product-image-slider .slick-slide img,
         .product-image-slider-2 .slick-slide img {
             /* display: inline-block;
-                                                                                                                                                                                                                                                                                                vertical-align: middle;*/
+                                                                                                                                                                                                                                                                                                                                        vertical-align: middle;*/
             max-width: 99%;
             display: block;
             margin: auto;
@@ -947,6 +958,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js"></script>
 
     <script>
+        function addEnquiryNew(slug) {
+            addEnquiry(slug, false);
+            toggleModal('modal1')
+        }
+    </script>
+
+    <script>
         const modalTriggerButtons = document.querySelectorAll("[data-modal-target]");
         const modals = document.querySelectorAll(".modal");
         const modalCloseButtons = document.querySelectorAll(".modal-close");
@@ -1045,7 +1063,6 @@
                 'product_id': {{ $product->id }}
             }, function(data) {
                 $('#also_bought_section').html(data);
-                // owlCarouselConfig2()
             });
         }
 
@@ -1175,27 +1192,6 @@
         }
 
         var productDetails = function() {
-            // $slick_slider_1.slick({
-            //     slidesToShow: 1,
-            //     slidesToScroll: 1,
-            //     arrows: false,
-            //     fade: false,
-            //     asNavFor: ".slider-nav-thumbnails-2"
-            // });
-            // $slick_slider_2.slick({
-            //     slidesToShow: 4,
-            //     slidesToScroll: 1,
-            //     asNavFor: ".product-image-slider-2",
-            //     dots: false,
-            //     focusOnSelect: true,
-            //     vertical: false,
-            //     adaptiveHeight: false,
-            //     prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
-            //     nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
-            // });
-
-
-
             $(".product-image-slider").on("beforeChange", function(event, slick, currentSlide, nextSlide) {
                 var img = $(slick.$slides[nextSlide]).find("img");
                 $(".zoomWindowContainer,.zoomContainer").remove();

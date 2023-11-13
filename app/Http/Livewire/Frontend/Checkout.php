@@ -33,6 +33,7 @@ class Checkout extends Component
     public $coupon_rate = 0;
     public $shipping_rate = 0;
     public $copupn_applied = false;
+    public $tax = 0;
     public $total = 0;
 
 
@@ -161,7 +162,6 @@ class Checkout extends Component
         if ($this->carts->count() && Auth::check()) {
             $this->addresses = Address::with([
                 'country',
-                'city',
                 'state',
             ])->whereUserId($this->user_id)->orderBy('set_default', 'desc')->get();
 
@@ -221,7 +221,7 @@ class Checkout extends Component
             'new_address_address.required' => "Please enter your address",
             'new_address_country.required' => "Please choose a country",
             'new_address_state.required' => "Please choose a state",
-            'new_address_city.required' => "Please choose a city",
+            'new_address_city.required' => "Please enter a city",
             'new_address_pincode.required' => "Please enter a pincode",
             'new_address_phone.required' => "Please enter your phone number",
         ]);
@@ -296,7 +296,7 @@ class Checkout extends Component
                 'guest_address_address.required' => "Please enter your address",
                 'guest_address_country.required' => "Please choose a country",
                 'guest_address_state.required' => "Please choose a state",
-                'guest_address_city.required' => "Please choose a city",
+                'guest_address_city.required' => "Please enter a city",
                 'guest_address_pincode.required' => "Please enter a pincode",
                 'guest_address_phone.required' => "Please enter your phone number",
             ]);
@@ -346,7 +346,7 @@ class Checkout extends Component
             'billing_address_address.required' => "Please enter your address",
             'billing_address_country.required' => "Please choose a country",
             'billing_address_state.required' => "Please choose a state",
-            'billing_address_city.required' => "Please choose a city",
+            'billing_address_city.required' => "Please enter a city",
             'billing_address_pincode.required' => "Please enter a pincode",
             'billing_address_phone.required' => "Please enter your phone number",
         ]);
