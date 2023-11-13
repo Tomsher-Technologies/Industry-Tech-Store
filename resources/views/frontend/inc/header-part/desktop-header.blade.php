@@ -229,7 +229,7 @@
                         <ul class="navigation__extra" id="currency-change">
                             <li>
                                 <div class="ps-dropdown">
-                                    <a href="#">{{ $currentCurrency->name }}{{ $currentCurrency->symbol }}</a>
+                                    <a href="#">{{ $currentCurrency->symbol }}</a>
                                     <ul class="ps-dropdown-menu">
                                         @foreach (getCurrency() as $key => $currency)
                                             <li>
