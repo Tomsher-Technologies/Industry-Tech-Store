@@ -31,24 +31,15 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>
-                                                <a href="{{ route('auction-product', $cart->product->slug) }}"
-                                                    target="_blank">
+                                                <a href="{{ route('product', $cart->product->slug) }}" target="_blank">
                                                     <img height="50"
                                                         src="{{ uploaded_asset($cart->product->thumbnail_img) }}"></a>
                                             </td>
                                             <td>
-                                                @if ($cart->product != null && $cart->product->auction_product == 0)
-                                                    <strong><a href="{{ route('product', $cart->product->slug) }}"
-                                                            target="_blank"
-                                                            class="text-muted">{{ $cart->product->name }}</a></strong>
-                                                    <small>{{ $cart->variation }}</small>
-                                                @elseif ($cart->product != null && $cart->product->auction_product == 1)
-                                                    <strong><a href="{{ route('auction-product', $cart->product->slug) }}"
-                                                            target="_blank"
-                                                            class="text-muted">{{ $cart->product->name }}</a></strong>
-                                                @else
-                                                    <strong>Product Unavailable</strong>
-                                                @endif
+                                                <strong><a href="{{ route('product', $cart->product->slug) }}"
+                                                        target="_blank"
+                                                        class="text-muted">{{ $cart->product->name }}</a></strong>
+                                                <small>{{ $cart->variation }}</small>
                                             </td>
                                             <td>{{ $cart->created_at->format('d-m-Y h:i:s A') }}</td>
                                             <td class="text-center">{{ $cart->quantity }}</td>

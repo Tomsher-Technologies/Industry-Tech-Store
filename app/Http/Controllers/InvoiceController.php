@@ -18,6 +18,14 @@ class InvoiceController extends Controller
 
         set_time_limit(300);
 
+        return view('backend.invoices.invoice', [
+            'order' => $order,
+            'font_family' => $font_family,
+            'direction' => $direction,
+            'text_align' => $text_align,
+            'not_text_align' => $not_text_align
+        ]);
+
         $pdf = Pdf::loadView('backend.invoices.invoice', [
             'order' => $order,
             'font_family' => $font_family,

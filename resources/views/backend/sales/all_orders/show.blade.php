@@ -15,28 +15,6 @@
                     $payment_status = $order->payment_status;
                 @endphp
 
-                <!--Assign Delivery Boy-->
-                @if (addon_is_activated('delivery_boy'))
-                    <div class="col-md-3 ml-auto">
-                        <label for="assign_deliver_boy">Assign Deliver Boy</label>
-                        @if ($delivery_status == 'pending' || $delivery_status == 'confirmed' || $delivery_status == 'picked_up')
-                            <select class="form-control aiz-selectpicker" data-live-search="true"
-                                data-minimum-results-for-search="Infinity" id="assign_deliver_boy">
-                                <option value="">Select Delivery Boy</option>
-                                @foreach ($delivery_boys as $delivery_boy)
-                                    <option value="{{ $delivery_boy->id }}"
-                                        @if ($order->assign_delivery_boy == $delivery_boy->id) selected @endif>
-                                        {{ $delivery_boy->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        @else
-                            <input type="text" class="form-control" value="{{ optional($order->delivery_boy)->name }}"
-                                disabled>
-                        @endif
-                    </div>
-                @endif
-
                 <div class="col-md-3 ml-auto">
                     <label for="update_payment_status">Payment Status</label>
                     <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity"
@@ -191,18 +169,6 @@
                                             <strong>Product Unavailable</strong>
                                         @endif
                                     </td>
-                                    {{-- <td>
-                                        @if ($order->shipping_type != null && $order->shipping_type == 'home_delivery')
-                                            Home Delivery
-                                        @elseif ($order->shipping_type == 'pickup_point')
-                                            @if ($order->pickup_point != null)
-                                                {{ $order->pickup_point->name }}
-                                                (Pickup Point)
-                                            @else
-                                                Pickup Point
-                                            @endif
-                                        @endif
-                                    </td> --}}
                                     <td class="text-center">{{ $orderDetail->quantity }}</td>
                                     <td class="text-center">
                                         @if ($orderDetail->og_price)

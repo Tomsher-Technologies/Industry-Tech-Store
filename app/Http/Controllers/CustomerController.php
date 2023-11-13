@@ -103,7 +103,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = User::where('user_type', 'customer')->with(['addresses', 'addresses.country', 'addresses.state', 'addresses.city'])->withCount(['orders'])->findOrFail($id);
+        $customer = User::where('user_type', 'customer')->with(['addresses', 'addresses.country', 'addresses.state',])->withCount(['orders'])->findOrFail($id);
         // dd($customer);
 
         $country = Country::all();

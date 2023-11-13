@@ -9,7 +9,12 @@ use Livewire\Component;
 
 class ReviewForm extends Component
 {
-    public $commentable = false;
+    public $commentable = [
+        'can_comment' => false,
+        'has_comment' => false,
+    ];
+
+    public $hasCommented = false;
 
     public $rating = 1;
     public $comment = '';
@@ -20,26 +25,14 @@ class ReviewForm extends Component
     {
         $this->product_id = $product;
         if (Auth::check() && !isAdmin()) {
-            $user_id = $this->user_id = Auth::id();
-            $review_count = Review::where('user_id', $this->user_id)
-                ->where('product_id', $this->product_id)->count();
-
-            $purchases_count = OrderDetail::where([
-                'product_id' => $this->product_id,
-                'delivery_status' => 'delivered',
-            ])->whereHas('order', function ($q) use ($user_id) {
-                $q->where('user_id', $user_id);
-            })->count();
-
-            if ($purchases_count > 0 && $review_count == 0) {
-                $this->commentable = true;
-            }
+            $this->user_id = Auth::id();
+            $this->commentable = canReview($this->product_id, $this->user_id);
         }
     }
 
     public function save()
     {
-        if ($this->commentable) {
+        if ($this->commentable['can_comment']) {
             $review = Review::create([
                 'product_id' => $this->product_id,
                 'user_id' => $this->user_id,
@@ -48,9 +41,14 @@ class ReviewForm extends Component
                 'status' => 0,
                 'viewed' => 0,
             ]);
+
+            $this->hasCommented = true;
+
         }
-        $this->commentable = false;
-        
+        $this->commentable = [
+            'can_comment' => false,
+            'has_comment' => false,
+        ];
     }
 
     public function render()

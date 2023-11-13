@@ -312,11 +312,11 @@
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
+                            {{-- <li class="aiz-side-nav-item">
                                 <a href="{{ route('general_setting.index') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">General Settings</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
 
                             <li class="aiz-side-nav-item">

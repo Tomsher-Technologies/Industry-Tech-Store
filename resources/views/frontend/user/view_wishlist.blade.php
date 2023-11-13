@@ -54,10 +54,26 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center" data-label="actions-add">
-                                                    <a class="ps-btn" title="Add to cart" data-loop-id={{ $key }}
-                                                        href="javascript:void(0)"
-                                                        onclick="moveToCart(this,'{{ $wishlist->product->slug }}')">Add to
-                                                        cart</a>
+                                                    @if ($wishlist->product->variant_product)
+                                                        <a class="ps-btn" title="Add to cart"
+                                                            data-loop-id={{ $key }}
+                                                            href="{{ route('product', $wishlist->product->slug) }}">Add
+                                                            to
+                                                            cart</a>
+                                                    @else
+                                                        @if ($wishlist->product->stocks->first()->qty >= 1)
+                                                            <a class="ps-btn" title="Add to cart"
+                                                                data-loop-id={{ $key }}
+                                                                data-list-id={{ $wishlist->id }} href="javascript:void(0)"
+                                                                onclick="moveToCart(this,'{{ $wishlist->product->slug }}')">Add
+                                                                to
+                                                                cart</a>
+                                                        @else
+                                                            <p>
+                                                                Out Of Stock
+                                                            </p>
+                                                        @endif
+                                                    @endif
                                                 </td>
                                                 <td class="text-center" data-label="Actions">
                                                     <button id="wishlistRemove{{ $key }}"
@@ -113,17 +129,14 @@
     <script>
         function moveToCart(that, slug) {
             loop_id = $(that).data('loop-id');
+            list_id = $(that).data('list-id');
+
             addToCart(slug);
             $('#wishlistRemove' + loop_id).trigger('click');
         }
-    </script>
 
-    <script>
-        $('.wishlistRemove').on('click', function() {
-            loop_id = $(this).data('loop-id');
-            list_id = $(this).data('list-id');
-            $(this).attr('disabled', true);
 
+        function removeFromWishlist(list_id, loop_id) {
             $.ajax({
                 type: "POST",
                 url: "{{ route('wishlists.remove') }}",
@@ -150,6 +163,14 @@
                     }
                 },
             });
+        }
+
+
+        $('.wishlistRemove').on('click', function() {
+            loop_id = $(this).data('loop-id');
+            list_id = $(this).data('list-id');
+            $(this).attr('disabled', true);
+            removeFromWishlist(list_id, loop_id);
         });
     </script>
 @endsection

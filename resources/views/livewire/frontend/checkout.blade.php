@@ -62,7 +62,7 @@
                                                                                     class="text-muted fw-normal text-wrap mb-1 d-block">
                                                                                     {{ $address->address }}, <br>
                                                                                     {{ $address->postal_code }}, <br>
-                                                                                    {{ $address->city->name }}, <br>
+                                                                                    {{ $address->city }}, <br>
                                                                                     {{ $address->state->name }}, <br>
                                                                                     {{ $address->country->name }}
                                                                                 </span>
@@ -252,11 +252,8 @@
                                                                     <label>City<sup>*</sup>
                                                                     </label>
                                                                     <div class="form-group__content" wire:ignore>
-                                                                        <select wire:model="guest_address_city"
-                                                                            class="form-control mb-3 aiz-selectpicker"
-                                                                            data-live-search="true" name="city_id"
-                                                                            required>
-                                                                        </select>
+                                                                        <input wire:model.lazy='guest_address_city'
+                                                                            class="form-control" type="text" required>
                                                                     </div>
                                                                 </div>
                                                                 @error('guest_address_city')
@@ -397,10 +394,8 @@
                                                             <label>City<sup>*</sup>
                                                             </label>
                                                             <div class="form-group__content" wire:ignore>
-                                                                <select wire:model="billing_address_city"
-                                                                    class="form-control mb-3 aiz-selectpicker"
-                                                                    data-live-search="true" name="city_id" required>
-                                                                </select>
+                                                                <input wire:model.lazy='billing_address_city'
+                                                                    class="form-control" type="text" required>
                                                             </div>
                                                         </div>
                                                         @error('billing_address_city')
@@ -576,7 +571,7 @@
                                                                                 {{ $cart->product->name }} x
                                                                                 {{ $cart->quantity }}
                                                                             </td>
-                                                                            <td class="text-end">
+                                                                            <td class="text-end" style="white-space: nowrap;">
                                                                                 {{ format_price(convert_price($cart->quantity * $cart->price)) }}
                                                                             </td>
                                                                         </tr>
@@ -694,9 +689,9 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="mb-3" wire:ignore>
-                                        <select wire:model="new_address_country" 
-                                            class="form-control aiz-selectpicker" data-live-search="true"
-                                            data-placeholder="Select your country" name="country_id" required>
+                                        <select wire:model="new_address_country" class="form-control aiz-selectpicker"
+                                            data-live-search="true" data-placeholder="Select your country"
+                                            name="country_id" required>
                                             <option value="">Select your country</option>
                                             @if ($country)
                                                 @foreach ($country as $key => $coun)
@@ -724,9 +719,8 @@
                                     <label>City</label>
                                 </div>
                                 <div class="col-md-10" wire:ignore>
-                                    <select wire:model="new_address_city" class="form-control mb-3 aiz-selectpicker"
-                                        data-live-search="true" name="city_id" required>
-                                    </select>
+                                    <input type="text" class="form-control mb-3" placeholder="Your City"
+                                        name="new_address_city" wire:model.lazy="new_address_city" required>
                                 </div>
                             </div>
 
@@ -763,22 +757,6 @@
 
     @section('script')
         <script>
-            // Add active class to the current list tem (highlight it)
-
-            // var checkoutList = document.getElementById("checkoutList");
-            // var checkoutItems = checkoutList.getElementsByClassName("step-checkout_item");
-            // for (var i = 0; i < checkoutItems.length; i++) {
-            //     checkoutItems[i].addEventListener("click", function() {
-
-            //         var current = checkoutList.getElementsByClassName("active");
-            //         current[0].className = current[0].className.replace(" active", "");
-            //         this.className += " active";
-            //     });
-            // }
-
-            /*
-              // Checkout payment methods
-              */
             $(function() {
                 $('[name="checkout_payment_method"]').on('change', function() {
                     const currentItem = $(this).closest('.payment-methods__item');
@@ -824,14 +802,6 @@
                 launchToast('Address added');
             })
 
-            // window.addEventListener('showStep', event => {
-            //     var checkoutList = document.getElementById("checkoutList");
-            //     var checkoutItems = checkoutList.getElementsByClassName("step-checkout_item");
-            //     var current = checkoutList.getElementsByClassName("active");
-            //     current[0].className = current[0].className.replace(" active", "");
-            //     checkoutItems[event.detail - 1].className += " active";
-            // })
-
             function add_new_address() {
                 $('#new-address-modal').modal('show');
             }
@@ -843,7 +813,6 @@
 
             $(document).on('change', '[name=state_id]', function() {
                 var state_id = $(this).val();
-                get_city(state_id);
             });
 
             function get_states(country_id) {
@@ -866,25 +835,6 @@
                 });
             }
 
-            function get_city(state_id) {
-                $('[name="city"]').html("");
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: "{{ route('get-city') }}",
-                    type: 'POST',
-                    data: {
-                        state_id: state_id
-                    },
-                    success: function(response) {
-                        var obj = JSON.parse(response);
-                        if (obj != '') {
-                            $('[name="city_id"]').html(obj);
-                        }
-                    }
-                });
-            }
         </script>
 
 

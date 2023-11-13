@@ -37,7 +37,7 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}')" data-toggle="tooltip"
+                <a class="{{ whishlistHasProduct($product->id) ? 'active' : '' }}" href="javascript:void(0)" onclick="addToWishList('{{ $product->slug }}',this)" data-toggle="tooltip"
                     data-placement="top" title="Add to Whishlist">
                     <i class="icon-heart"></i>
                 </a>

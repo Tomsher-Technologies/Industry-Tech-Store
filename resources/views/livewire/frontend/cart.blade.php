@@ -74,10 +74,15 @@
                                                     </td>
                                                     <td data-label="Quantity">
                                                         <div class="form-group--number">
-                                                            <button wire:click.prevent="increment({{ $cart->id }})"
+                                                            <button
+                                                                {{ $cart->quantity == $cart->product->stocks->first()->qty ? 'disabled' : '' }}
+                                                                wire:click.prevent="increment({{ $cart->id }})"
                                                                 type="button" class="up quantity-plus">
                                                                 <i class="fa fa-plus"></i></button>
-                                                            <button wire:click.prevent="decrement({{ $cart->id }})"
+
+                                                            <button
+                                                                {{ $cart->quantity == ($cart->product->min_qty ?? 1) ? 'disabled' : '' }}
+                                                                wire:click.prevent="decrement({{ $cart->id }})"
                                                                 type="button" class="down quantity-minus">
                                                                 <i class="fa fa-minus"></i>
                                                             </button>
@@ -201,4 +206,12 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .quantity-minus:disabled i,
+        .quantity-plus:disabled i {
+            color: #cacaca
+        }
+    </style>
+
 </div>

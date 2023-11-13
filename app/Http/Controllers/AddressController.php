@@ -23,7 +23,6 @@ class AddressController extends Controller
         $addresses->load([
             'country',
             'state',
-            'city',
         ]);
 
         $country = Country::all();
@@ -31,7 +30,6 @@ class AddressController extends Controller
         return view('frontend.user.addresses')->with([
             'addresses' => $addresses,
             'country' => $country,
-
         ]);
     }
 
@@ -63,7 +61,7 @@ class AddressController extends Controller
         $address->address       = $request->address;
         $address->country_id    = $request->country_id;
         $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
+        $address->city          = $request->city;
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;
@@ -72,8 +70,7 @@ class AddressController extends Controller
 
         $address->load([
             'country',
-            'state',
-            'city'
+            'state'
         ]);
 
         $html = "<div class='col-lg-6'>
@@ -101,7 +98,7 @@ class AddressController extends Controller
             </div>
             <div>
               <span class='w-50 fw-600'>City:</span>
-              <span class='ml-2'>" . $address->city->name . "</span>
+              <span class='ml-2'>" . $address->city . "</span>
             </div>
             <div>
               <span class='w-50 fw-600'>State:</span>
@@ -150,11 +147,9 @@ class AddressController extends Controller
     {
         $data['address_data'] = Address::findOrFail($id);
         $data['states'] = State::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
-        $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
 
         $returnHTML = view('frontend.partials.address_edit_modal', $data)->render();
         return response()->json(array('data' => $data, 'html' => $returnHTML));
-        //        return ;
     }
 
     /**
@@ -171,7 +166,7 @@ class AddressController extends Controller
         $address->address       = $request->address;
         $address->country_id    = $request->country_id;
         $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
+        $address->city          = $request->city;
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;

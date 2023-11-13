@@ -1,6 +1,11 @@
 @extends('frontend.layouts.app')
 
 @section('content')
+
+    @php
+        $subtotal = 0;
+    @endphp
+
     <div class="ps-breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
@@ -49,6 +54,9 @@
                                                                 <td>{{ $item->product->name }}</td>
                                                                 <td>{{ format_price($item->price) }}</td>
                                                                 <td>{{ format_price($item->price * $item->quantity) }}</td>
+                                                                @php
+                                                                    $subtotal += ($item->price * $item->quantity);
+                                                                @endphp
                                                             </tr>
                                                         @endforeach
 
@@ -57,12 +65,12 @@
                                                         <tr>
                                                             <th>Subtotal</th>
                                                             <td></td>
-                                                            <td>{{ format_price($order->grand_total) }}</td>
+                                                            <td>{{ format_price($subtotal) }}</td>
                                                         </tr>
                                                         <tr>
                                                             <th>Shipping</th>
                                                             <td></td>
-                                                            <td>$25.00</td>
+                                                            <td>{{ format_price($order->shipping_cost) }}</td>
                                                         </tr>
                                                         <tr>
                                                             <th>Tax</th>
@@ -74,7 +82,7 @@
                                                         <tr>
                                                             <th>Total</th>
                                                             <td></td>
-                                                            <td>$1596.00</td>
+                                                            <td>{{ format_price($order->grand_total) }}</td>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

@@ -19,8 +19,10 @@ use App\Models\Addon;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Cart;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Products\ProductEnquiries;
+use App\Models\Review;
 use App\Models\Shop;
 use App\Models\Wishlist;
 use App\Utility\SendSMSUtility;
@@ -1201,6 +1203,42 @@ function hasStock($product)
 //     return $html;
 // }
 
+function canReview($product_id, $user_id)
+{
+
+    $res = [
+        'can_comment' => false,
+        'has_comment' => false,
+    ];
+
+    if ($user_id) {
+        $review_count = Review::where('user_id', $user_id)
+            ->where('product_id', $product_id)->count();
+
+        $purchases_count = OrderDetail::where([
+            'product_id' => $product_id,
+            'delivery_status' => 'delivered',
+        ])->whereHas('order', function ($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        })->count();
+
+        if ($purchases_count > 0) {
+            $res['can_comment'] = true;
+        }
+
+        if ($review_count == 0) {
+            $res['can_comment'] = true;
+        } else {
+            $res['can_comment'] = false;
+            $res['has_comment'] = true;
+        }
+    }
+
+
+
+    return $res;
+}
+
 function getAdminEmail()
 {
     $emails = Cache::rememberForever('admin_emails', function () {
@@ -1214,4 +1252,17 @@ function getAdminEmail()
     } else {
         return 'info@industrytechstore.com';
     }
+}
+
+
+function whishlistHasProduct($product_id)
+{
+    if (Auth::check()) {
+        if (session()->has('whishlist_' . Auth::user()->id)) {
+            if (in_array($product_id, session()->get('whishlist_' . Auth::user()->id))) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

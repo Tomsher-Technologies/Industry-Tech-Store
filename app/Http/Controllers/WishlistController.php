@@ -31,9 +31,13 @@ class WishlistController extends Controller
                         'discount_start_date',
                         'discount_end_date',
                         'slug',
+                        'variant_product',
                     ]);
-                }
+                }, 'product.stocks'
             ])->paginate(10);
+
+            // dd($wishlists );
+
             return view('frontend.user.view_wishlist', compact('wishlists'));
         }
         // return redirect()->route('user.login');
@@ -64,6 +68,18 @@ class WishlistController extends Controller
                 'product_id' => $product_id
             ]);
 
+            if (session()->exists('whishlist_' .  Auth::user()->id)) {
+                $current_session = session()->get('whishlist_' .  Auth::user()->id);
+                if (!in_array($product_id, $current_session)) {
+                    $current_session[] = $product_id;
+                }
+                session(['whishlist_' .  Auth::user()->id => $current_session]);
+            } else {
+                session(['whishlist_' .  Auth::user()->id => array(
+                    $product_id
+                )]);
+            }
+
             if ($wishlist->wasRecentlyCreated) {
                 Cache::forget('user_wishlist_count_' . Auth::id());
                 return response()->json([
@@ -89,6 +105,19 @@ class WishlistController extends Controller
                 'id' => $request->id,
                 'user_id' => Auth::id()
             ])->firstOrFail();
+
+
+            if (session()->exists('whishlist_' .  Auth::user()->id)) {
+                $current_session = session()->get('whishlist_' .  Auth::user()->id);
+                if (in_array($wishlist->product_id, $current_session)) {
+                    $current_session = array_diff($current_session, array($wishlist->product_id));
+                }
+                session(['whishlist_' .  Auth::user()->id => $current_session]);
+            } else {
+                session(['whishlist_' .  Auth::user()->id => array(
+                    $wishlist->product_id
+                )]);
+            }
 
             if ($wishlist->delete()) {
                 Cache::forget('user_wishlist_count_' . Auth::id());
