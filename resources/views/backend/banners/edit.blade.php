@@ -46,7 +46,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">
                                 Mobile Banner
                             </label>
@@ -67,7 +67,7 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Link Type</label>
