@@ -6,7 +6,8 @@
             <div class="ps-container">
                 @if ($sliders)
                     <div class="ps-section__left">
-                        <div class="ps-carousel--nav-inside owl-slider" data-owl-auto="true" data-owl-loop="true"
+
+                        <div class="mobile-none ps-carousel--nav-inside owl-slider" data-owl-auto="true" data-owl-loop="true"
                             data-owl-speed="5000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="1"
                             data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1"
                             data-owl-duration="1000" data-owl-mousedrag="on" data-owl-animate-in="fadeIn"
@@ -14,6 +15,19 @@
                             @foreach ($sliders as $slider)
                                 <div class="ps-banner bg--cover"
                                     data-background="{{ get_uploads_image($slider->mainImage) }}">
+                                    <a class="ps-banner__overlay" href="{{ $slider->a_link }}"></a>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="desk-none ps-carousel--nav-inside owl-slider" data-owl-auto="true" data-owl-loop="true"
+                            data-owl-speed="5000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true"
+                            data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1"
+                            data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="on"
+                            data-owl-animate-in="fadeIn" data-owl-animate-out="fadeOut">
+                            @foreach ($sliders as $slider)
+                                <div class="ps-banner bg--cover"
+                                    data-background="{{ get_uploads_image($slider->mobileImage) }}">
                                     <a class="ps-banner__overlay" href="{{ $slider->a_link }}"></a>
                                 </div>
                             @endforeach
@@ -55,7 +69,7 @@
                     <div class="row">
 
                         @foreach ($ads_banners as $item)
-                            <div class="{{ $img_class }} col-md-12 col-sm-12 col-12">
+                            <div class="{{ $img_class }} col-md-12 col-sm-12 col-12 pb-4">
                                 <a class="ps-collection" href="{{ $item->a_link }}">
                                     <img src="{{ get_uploads_image($item->mainImage) }}" alt="" />
                                 </a>
@@ -121,14 +135,14 @@
                     <div class="row">
 
                         @php
-                            $aclass = $cat_banners ? 'col-md-9' : 'col-md-12';
+                            $aclass = $cat_banners ? 'col-ld-9 col-md-12 col-sm-12' : 'col-md-12';
                         @endphp
 
                         @if ($cat_banners)
                             @foreach ($cat_banners as $item)
-                                <div class="col-md-3">
-                                    <a href="{{ $item->a_link }}" class="ps-block__overlay">
-                                        <img src="{{ get_uploads_image($item->mainImage) }}" alt="">
+                                <div class="col-lg-3 col-md-12 col-sm-12 pb-4">
+                                    <a href="{{ $item->a_link }}" class="ps-block__overlay d-block">
+                                        <img src="{{ get_uploads_image($item->mainImage) }}" alt="" class="w-100">
                                     </a>
                                 </div>
                             @endforeach
@@ -184,6 +198,41 @@
     </div>
 @endsection
 
+@section('header')
+    <style>
+        @media screen and (min-width: 991px) {
+            .desk-none {
+                display: none !important;
+            }
+        }
+
+        @media screen and (max-width: 991px) {
+            .mobile-none {
+                display: none !important;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+            .trending-category {
+                display: -ms-grid;
+                display: grid;
+                -ms-grid-columns: (1fr)[5];
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .trending2-category {
+                display: -ms-grid;
+                display: grid;
+                -ms-grid-columns: (1fr)[5];
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+    </style>
+@endsection
 
 @section('script')
     <script>
