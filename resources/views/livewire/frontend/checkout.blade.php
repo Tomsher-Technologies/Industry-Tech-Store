@@ -480,7 +480,6 @@
                                                                     {!! $shp_rate['note'] !!}
                                                                 </span>
                                                             @endif
-
                                                         </span>
                                                     </label>
                                                 @endforeach

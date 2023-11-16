@@ -75,6 +75,8 @@ class Checkout extends Component
     public $guest_address_pincode;
     public $guest_address_phone;
 
+    public $pickup_address;
+
     public function mount()
     {
         if (Auth::check()) {
@@ -84,6 +86,8 @@ class Checkout extends Component
             $this->user_col = "temp_user_id";
             $this->user_id = getTempUserId();
         }
+
+        $this->pickup_address = get_setting('pickup_address');
 
         $this->carts = Cart::where($this->user_col, $this->user_id)->with('product')->get();
 
@@ -188,7 +192,7 @@ class Checkout extends Component
         if (get_setting('pickup_from_store') == 'on') {
             $this->shipping_rates['pickup_from_store']['name'] = "Pick up from store";
             $this->shipping_rates['pickup_from_store']['rate'] = 0;
-            $this->shipping_rates['pickup_from_store']['note'] = "For international shipments, contact <a href='mailto:info@industrytechstore.com'>info@industrytechstore.com</a> for courier charges.";
+            $this->shipping_rates['pickup_from_store']['note'] = "For international shipments, contact <a href='mailto:info@industrytechstore.com'>info@industrytechstore.com</a> for courier charges. <br /> <b>Pickup Address</b>: " . $this->pickup_address;
         }
 
         if (get_setting('cod_status')) {
@@ -462,11 +466,6 @@ class Checkout extends Component
             'country' => $country
         ])->extends('frontend.layouts.app');
     }
-
-
-    // public function updating($name, $value)
-    // {
-    // }
 
     public function updatedShippingMethod($value)
     {
