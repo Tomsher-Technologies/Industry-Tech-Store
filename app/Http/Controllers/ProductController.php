@@ -39,20 +39,13 @@ class ProductController extends Controller
         $seller_id = null;
         $sort_search = null;
         $products = Product::orderBy('created_at', 'desc');
-        if ($request->search != null) {
-            $sort_search = $request->search;
-            $products = $products
-                ->where('name', 'like', '%' . $sort_search . '%')
-                ->orWhereHas('stocks', function ($q) use ($sort_search) {
-                    $q->where('sku', 'like', '%' . $sort_search . '%');
-                });
-        }
+        
         if ($request->type != null) {
             $var = explode(",", $request->type);
             $col_name = $var[0];
             $query = $var[1];
             if ($col_name == 'status') {
-                $products = $products->where('published', $query);
+                $products = $products->where('published', (int)$query);
             } else {
                 $products = $products->orderBy($col_name, $query);
             }
@@ -65,6 +58,16 @@ class ProductController extends Controller
                 $q->where('id', $request->category);
             });
         }
+
+        if ($request->search != null) {
+            $sort_search = $request->search;
+            $products = $products
+                ->where('name', 'like', '%' . $sort_search . '%')
+                ->orWhereHas('stocks', function ($q) use ($sort_search) {
+                    $q->where('sku', 'like', '%' . $sort_search . '%');
+                });
+        }
+
         $products->with('category');
         $products = $products->paginate(15);
         $type = 'All';
