@@ -135,12 +135,12 @@
                     <div class="row">
 
                         @php
-                            $aclass = $cat_banners ? 'col-ld-9 col-md-12 col-sm-12' : 'col-md-12';
+                            $aclass = $cat_banners ? 'col-ld-9 col-md-9 col-sm-12' : 'col-md-12';
                         @endphp
 
                         @if ($cat_banners)
                             @foreach ($cat_banners as $item)
-                                <div class="col-lg-3 col-md-12 col-sm-12 pb-4">
+                                <div class="col-lg-3 col-md-3 col-sm-12 pb-4">
                                     <a href="{{ $item->a_link }}" class="ps-block__overlay d-block">
                                         <img src="{{ get_uploads_image($item->mainImage) }}" alt="" class="w-100">
                                     </a>
