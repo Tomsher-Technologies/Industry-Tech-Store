@@ -4,14 +4,13 @@
             <div class="item">
                 <img src="{{ get_product_image($product->thumbnail_img, '300') }}" alt="{{ $product->name }}">
             </div>
-            {{-- @foreach (explode(',', $product->photos) as $photo)
-                <img src="{{ get_product_image($photo, '300') }}" alt="{{ $product->name }}">
-            @endforeach --}}
         </div>
     </div>
     <div class="ps-product__info">
         <h1>
-            {{ $product->name }}
+            <a href="{{ route('product', $product->slug) }}" title="{{ $product->name }}">
+                {{ $product->name }}
+            </a>
         </h1>
         <div class="ps-product__meta">
 
@@ -34,7 +33,7 @@
             </h4>
         @endif
         <div class="ps-product__desc">
-            {!! $product->description !!}
+            {!! Str::limit(strip_tags($product->description), 250, $end = '...') !!}
         </div>
         <div class="ps-product__shopping">
             @if (!$product->hide_price)
@@ -48,6 +47,7 @@
                     onclick="addToWishList('{{ $product->slug }}',this)" title="Add to wishlist">
                     <i class="icon-heart"></i></a>
             </div>
+            
         </div>
     </div>
 </div>
