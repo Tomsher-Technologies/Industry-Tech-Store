@@ -93,6 +93,16 @@
 
     {{ get_setting('footer_script') }}
 
+    <div class="whtsapp-link">
+        <a href="https://wa.link/ki5sfu" target="_blank">
+            <div class="whatsapp-icon">
+                <img src="{{ asset('assets/img/whats-app-logo.svg') }}" alt="whatsapp-chat" style="margin-top: 0px;">
+
+            </div>
+            <h5>Chat Now</h5>
+        </a>
+    </div>
+
     <script>
         var config = {
             routes: {
@@ -133,6 +143,23 @@
             $('.headerCartCount').html(event.detail.count);
         })
     </script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6565be531db16644c555700a/1hgamutq7';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+
 </body>
 
 </html>

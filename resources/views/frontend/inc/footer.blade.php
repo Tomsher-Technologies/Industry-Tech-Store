@@ -93,7 +93,7 @@
         <div class="ps-footer__widgets">
             <aside aria-label="Footer menu 1" class="widget widget_footer">
                 <a class="ps-logo" href="{{ route('home') }}" title="Home">
-                    <img src="{{ frontendAsset('img/logo_new.webp') }}" alt="{{ env('APP_NAME') }}" width="250">
+                    <img src="{{ frontendAsset('img/ITS_Logo_Transparent.webp') }}" alt="{{ env('APP_NAME') }}" width="250">
                 </a>
             </aside>
             <aside aria-label="Footer menu 2" class="widget widget_footer widget_contact-us">
