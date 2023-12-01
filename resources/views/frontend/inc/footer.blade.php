@@ -44,6 +44,13 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if (get_setting('linkedin_link') != null)
+                                    <li>
+                                        <a class="linkedin" href="{{ get_setting('linkedin_link') }}" target="_blank">
+                                            <img src="{{ frontendAsset('img/icons/linkedin.png') }}" alt="Linkedin">
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         @endif
                     </div>

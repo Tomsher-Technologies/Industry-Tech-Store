@@ -26,16 +26,18 @@
             </figure>
             <figure class="ps-custom-scrollbar" data-height="250">
                 <h4 class="widget-title">BY BRANDS</h4>
-                @foreach ($brands as $key => $brand)
-                    <div class="ps-checkbox">
-                        <input value="{{ $brand->id }}" {{ in_array($brand->id, $side_brands) ? 'checked' : '' }}
-                            {{ $brand_id == $brand->id ? 'checked' : '' }} class="form-control brands-select"
-                            type="checkbox" id="brand-{{ $key }}" />
-                        <label for="brand-{{ $key }}">
-                            {{ $brand->name }}
-                        </label>
-                    </div>
-                @endforeach
+                <div class="ps-list--brands">
+                    @foreach ($brands as $key => $brand)
+                        <div class="ps-checkbox">
+                            <input value="{{ $brand->id }}" {{ in_array($brand->id, $side_brands) ? 'checked' : '' }}
+                                {{ $brand_id == $brand->id ? 'checked' : '' }} class="form-control brands-select"
+                                type="checkbox" id="brand-{{ $key }}" />
+                            <label for="brand-{{ $key }}">
+                                {{ $brand->name }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
             </figure>
             <figure>
                 <h4 class="widget-title">By Price</h4>
@@ -124,6 +126,13 @@
         </form>
     </aside>
 </div>
+<style>
+    .ps-list--brands,
+    .ps-list--categories {
+        max-height: 250px;
+        overflow-y: scroll;
+    }
+</style>
 <script>
     // var arrayClean = function(thisArray, thisName) {
     //     "use strict";
