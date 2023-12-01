@@ -27,7 +27,7 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Livewire\Frontend\Cart;
 use App\Http\Livewire\Frontend\Checkout;
-use App\Models\Order;
+
 
 // Route::get('/demo/cron_1', [DemoController::class, 'cron_1']);
 // Route::get('/demo/cron_2', [DemoController::class, 'cron_2']);
